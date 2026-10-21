@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz & Flashcards Interativos - Comparative Adjectives | E. M. Nísia Vivea Fernandes</title>
+  <meta name="description" content="Quiz interativo por tela e Flashcards de memória sobre Comparative Adjectives para o 8º ano - Turma 804. Professor Neimar Oliveira.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="mode-one-question">
+  <!-- Canvas para Confetes da Celebração -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Camada Flutuante para Números de XP (+150 XP!) -->
+  <div id="floating-points-layer"></div>
+
+  <!-- Top Institutional Bar (Header oficial) -->
+  <header class="school-header" id="school-header">
+    <div class="header-inner">
+      <div class="school-seal">
+        <img src="assets/caxias_header_logo.jpg" alt="Brasão Duque de Caxias" class="header-logo-img" />
+        <div class="school-meta">
+          <span class="gov-title">PREFEITURA MUNICIPAL DE DUQUE DE CAXIAS • SME</span>
+          <span class="school-name">ESCOLA MUNICIPAL NÍSIA VIVEA FERNANDES</span>
+        </div>
+      </div>
+      
+      <div class="class-info-badge">
+        <div class="badge-item"><span class="badge-label">Prof.:</span> <strong>Neimar Oliveira</strong></div>
+        <div class="badge-item"><span class="badge-label">Turma:</span> <span class="tag-pill">804 – 8º ano</span></div>
+        <div class="badge-item"><span class="badge-label">Disciplina:</span> <strong>Língua Inglesa</strong></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- App Main Wrapper -->
+  <main class="main-container">
+
+    <!-- Top Navigation & Gamer HUD Bar -->
+    <section class="top-nav-gamer-bar">
+      <!-- Stage Navigation Tabs -->
+      <nav class="stages-nav-bar" aria-label="Navegação entre Etapas da Atividade">
+        <button id="nav-btn-stage1" class="stage-nav-pill active" type="button" title="Quiz das 10 Questões - 1 questão por tela">
+          <span class="pill-stage-badge">Etapa 1</span>
+          <span class="pill-stage-name">📝 Quiz por Tela</span>
+        </button>
+        <button id="nav-btn-stage2" class="stage-nav-pill" type="button" title="Desafio dos Flashcards de Memória (Tela Estática)">
+          <span class="pill-stage-badge accent">Etapa 2</span>
+          <span class="pill-stage-name">🧠 Flashcards (Tela Estática)</span>
+          <span class="pill-badge-highlight">30s</span>
+        </button>
+      </nav>
+
+      <!-- Gamer Profile & Stats HUD -->
+      <div class="gamer-mini-hud" id="gamer-mini-hud">
+        <!-- Player Identity & Avatar Selection -->
+        <div class="player-profile-box" id="player-profile-click" title="Clique para trocar seu avatar!">
+          <div class="avatar-select-wrapper">
+            <img src="assets/avatar_mateus.jpg" alt="Avatar Atual" id="player-avatar-img" class="player-avatar-img" />
+            <button id="btn-change-avatar" class="avatar-badge-btn" type="button" title="Trocar Avatar">✏️</button>
+          </div>
+          <div class="player-text-details">
+            <div class="player-name-line">
+              <input type="text" id="student-name-input" class="gamer-name-input" value="Player 804" placeholder="Seu nome..." maxlength="18" />
+              <span class="player-level-pill" id="player-level-badge">⭐ Nível 1: Detective</span>
+            </div>
+            <div class="player-xp-container">
+              <div class="xp-bar-track">
+                <div class="xp-bar-fill" id="xp-bar-fill" style="width: 15%;"></div>
+              </div>
+              <span class="xp-text" id="xp-text-display">150 / 1000 XP</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Combo Multiplier & Meters -->
+        <div class="gamer-stats-meters">
+          <div class="meter-box combo-meter" id="combo-meter-box" title="Combo Multiplicador de Pontos">
+            <span class="meter-icon" id="combo-flame-icon">🔥</span>
+            <div>
+              <span class="meter-val" id="hud-combo-val">x1</span>
+              <span class="meter-lbl">COMBO</span>
+            </div>
+          </div>
+          <div class="meter-box score-meter" title="Total de Pontos XP">
+            <span class="meter-icon">🪙</span>
+            <div>
+              <span class="meter-val" id="hud-score-pts">150</span>
+              <span class="meter-lbl">XP PONTOS</span>
+            </div>
+          </div>
+          <div class="meter-box hits-meter" title="Acertos no Quiz">
+            <span class="meter-icon">🎯</span>
+            <div>
+              <span class="meter-val" id="hud-hits-count">0 / 10</span>
+              <span class="meter-lbl">ACERTOS</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sound & Modals Triggers -->
+        <div class="hud-quick-tools">
+          <button id="btn-toggle-sound" class="hud-tool-btn" title="Alternar efeitos de som (SFX)">
+            <span id="sound-icon">🔊</span> <span class="hide-mobile">SFX</span>
+          </button>
+          <button id="btn-toggle-music" class="hud-tool-btn music-btn" title="Ligar/Desligar Música de Fundo Arcade Chiptune">
+            <span id="music-icon">🎵</span> <span id="music-status-text">BGM</span>
+          </button>
+          <button id="btn-open-leaderboard" class="hud-tool-btn rank-btn" title="Ver ranking da Turma 804">
+            🏆 <span class="hide-mobile">Ranking 804</span>
+          </button>
+          <button id="btn-open-achievements" class="hud-tool-btn badge-btn" title="Ver medalhas e conquistas">
+            🎖️ <span id="achievements-unlocked-count">0/6</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         ETAPA 1: O QUIZ TRADICIONAL (1 QUESTÃO POR TELA)
+         ==================================================================== -->
+    <div id="stage-1-container" class="stage-section active">
+
+      <!-- Quiz Quick Control & Reference Bar -->
+      <div class="quiz-controls-bar">
+        <div class="mode-toggles">
+          <button id="btn-mode-interactive" class="control-btn active" title="Exibe estritamente 1 questão por tela (Modo Gamificado)">
+            <span class="btn-icon">⚡</span> 1 Questão por Tela
+          </button>
+          <button id="btn-mode-full" class="control-btn" title="Visualizar todas as 10 questões em folha contínua">
+            <span class="btn-icon">📄</span> Folha Completa
+          </button>
+        </div>
+
+        <!-- Quick Popups for Reference without cluttering the screen -->
+        <div class="reference-quick-buttons">
+          <button id="btn-open-gallery-modal" class="ref-btn" title="Abrir tabela visual dos 8 estudantes e idades">
+            📋 Galeria dos 8 Estudantes
+          </button>
+          <button id="btn-open-reading-modal" class="ref-btn" title="Abrir texto e glossário de Alice e Bruno">
+            📖 Texto da Alice &amp; Bruno
+          </button>
+          <button id="btn-open-comparator-modal" class="ref-btn" title="Comparador interativo de idades">
+            ⚖️ Comparador
+          </button>
+          <button id="btn-view-original" class="ref-btn" title="Visualizar a folha de atividade original">
+            🖼️ Folha Original
+          </button>
+          <button id="btn-mode-print" class="ref-btn" title="Imprimir atividade limpa ou gerar PDF">
+            🖨️ Imprimir
+          </button>
+        </div>
+
+        <!-- Options Format Switcher (2 opções da folha vs 4 alternativas A,B,C,D) -->
+        <div class="options-format-toggle">
+          <span class="toggle-label">Formato:</span>
+          <div class="toggle-switch">
+            <button id="btn-options-sheet" class="pill-btn active" title="Exatamente como na folha original">
+              Original da Folha
+            </button>
+            <button id="btn-options-quad" class="pill-btn" title="4 Alternativas completas (A, B, C, D)">
+              4 Alternativas (A-D)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUIZ SECTION: FOCUSED 1-QUESTION-PER-SCREEN VIEW -->
+      <section class="quiz-section interactive-mode" id="quiz-section">
+
+        <!-- Stepper HUD (Top of the question screen) -->
+        <div class="quiz-stepper-header" id="stepper-header">
+          <div class="stepper-top-line">
+            <div class="stepper-info">
+              <span class="step-label">Questão <strong id="current-q-index">1</strong> de 10</span>
+              <span class="step-activity-tag" id="step-activity-tag">Atividade 1</span>
+            </div>
+
+            <!-- Quiz Power-Ups Lifelines -->
+            <div class="powerups-bar" id="quiz-powerups-bar">
+              <button type="button" id="powerup-5050" class="powerup-btn" title="Elimina 2 alternativas incorretas">
+                <span class="p-icon">✂️</span> 50/50 (<span id="count-5050">2</span>x)
+              </button>
+              <button type="button" id="powerup-hint" class="powerup-btn" title="Mostra a dica gramatical desta questão">
+                <span class="p-icon">💡</span> Dica
+              </button>
+              <div class="powerup-badge-speed" title="Responda rápido para até +100 XP extras de bônus!">
+                <span class="p-icon">⚡</span> Rapidez: <strong id="speed-bonus-live">+50 XP</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-fill" style="width: 10%;"></div>
+          </div>
+
+          <!-- 10 Question Dots for Direct Navigation -->
+          <div class="question-nav-dots" id="question-nav-dots">
+            <!-- Injected by app.js -->
+          </div>
+        </div>
+
+        <!-- The 10 Questions Container: in interactive mode, only 1 is active & visible -->
+        <form id="quiz-form" onsubmit="event.preventDefault();">
+          <div class="questions-container" id="questions-container">
+            <!-- Questions rendered via app.js -->
+          </div>
+
+          <!-- Stepper Navigation Controls -->
+          <div class="stepper-actions" id="stepper-actions">
+            <button type="button" id="btn-prev-question" class="step-btn secondary" disabled>
+              ← Questão Anterior
+            </button>
+            <button type="button" id="btn-speak-question" class="step-btn sound-listen" title="Ouvir pronúncia da pergunta em inglês nativo">
+              🔊 Ouvir Pergunta
+            </button>
+            <button type="button" id="btn-next-question" class="step-btn primary">
+              Próxima Questão →
+            </button>
+            <button type="button" id="btn-finish-quiz" class="step-btn finish-btn hidden">
+              🏆 Finalizar e Ver Nota
+            </button>
+          </div>
+        </form>
+
+        <!-- Full Sheet Submit Button (shown ONLY in Full Mode) -->
+        <div class="full-sheet-actions hidden" id="full-sheet-actions">
+          <button type="button" id="btn-submit-full" class="primary-action-btn">
+            ✨ Corrigir Todas as 10 Questões
+          </button>
+        </div>
+
+      </section>
+
+      <!-- Reference Wrapper (Displayed ONLY when in Full Sheet mode or Print mode) -->
+      <div id="full-sheet-reference-wrapper" class="full-sheet-reference-wrapper hidden">
+        <!-- Visual Context 1: 8 Students Gallery -->
+        <section class="pedagogical-panel activity-1-context" id="gallery-panel">
+          <div class="panel-header">
+            <div class="badge-num">1</div>
+            <div>
+              <h2 class="panel-title">Activity 1 – Students Reference Board</h2>
+              <p class="panel-desc">Observe os 8 estudantes e suas respectivas idades para responder às <strong>questões 1 a 5</strong>:</p>
+            </div>
+            <button id="btn-open-comparator-full" class="tool-btn" title="Comparar dois estudantes interativamente">
+              ⚖️ Comparador Rápido
+            </button>
+          </div>
+
+          <div class="students-grid" id="students-grid">
+            <div class="student-card" data-student="juliana" data-age="12">
+              <div class="card-img-wrapper"><img src="assets/card_juliana.jpg" alt="Juliana - 12 years old" class="real-card-img" /></div>
+            </div>
+            <div class="student-card" data-student="mateus" data-age="14">
+              <div class="card-img-wrapper"><img src="assets/card_mateus.jpg" alt="Mateus - 14 years old" class="real-card-img" /></div>
+            </div>
+            <div class="student-card" data-student="carlos" data-age="13">
+              <div class="card-img-wrapper"><img src="assets/card_carlos.jpg" alt="Carlos - 13 years old" class="real-card-img" /></div>
+            </div>
+            <div class="student-card" data-student="gabriel" data-age="11">
+              <div class="card-img-wrapper"><img src="assets/card_gabriel.jpg" alt="Gabriel - 11 years old" class="real-card-img" /></div>
+            </div>
+            <div class="student-card" data-student="rafael" data-age="12">
+              <div class="card-img-wrapper"><img src="assets/card_rafael.jpg" alt="Rafael - 12 years old" class="real-card-img" /></div>
+            </div>
+            <div class="student-card" data-student="beatriz" data-age="14">
+              <div class="card-img-wrapper"><img src="assets/card_beatriz.jpg" alt="Beatriz - 14 years old" class="real-card-img" /></div>
+            </div>
+            <div class="student-card" data-student="larissa" data-age="13">
+              <div class="card-img-wrapper"><img src="assets/card_larissa.jpg" alt="Larissa - 13 years old" class="real-card-img" /></div>
+            </div>
+            <div class="student-card" data-student="sofia" data-age="12">
+              <div class="card-img-wrapper"><img src="assets/card_sofia.jpg" alt="Sofia - 12 years old" class="real-card-img" /></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Visual Context 2: Text & Glossary -->
+        <section class="pedagogical-panel activity-2-context" id="reading-panel">
+          <div class="panel-header">
+            <div class="badge-num">2</div>
+            <div>
+              <h2 class="panel-title">Activity 2 – Reading Text &amp; Glossary</h2>
+              <p class="panel-desc">Leia o texto com atenção para responder às <strong>questões 6 a 10</strong>:</p>
+            </div>
+            <button id="btn-speak-text-full" class="speech-btn" title="Ouvir a pronúncia do texto em inglês nativo">
+              🔊 Ouvir Texto em Inglês
+            </button>
+          </div>
+
+          <div class="reading-layout">
+            <article class="text-card">
+              <div class="activity2-characters-banner">
+                <img src="assets/alice_and_bruno.jpg" alt="Alice (13) e Bruno (14)" class="real-alice-bruno-img" />
+              </div>
+              <div class="reading-passage">
+                <p>
+                  "Hello! I'm <strong>Alice</strong> and this is my friend <strong>Bruno</strong>.
+                  We study at the <span class="gloss-word" data-term="same school">same school</span> and we have been
+                  <span class="gloss-word" data-term="friend">friends</span> <span class="gloss-word" data-term="since kindergarten">since kindergarten</span>.
+                  I am <strong>13 years old</strong> and Bruno is <strong>14 years old</strong>.
+                  My <span class="gloss-word" data-term="mother">mother</span> is <strong>Paula</strong>. She is <strong>40 years old</strong>.
+                  My <span class="gloss-word" data-term="father">father</span> is <strong>Marcos</strong>. He is <strong>38 years old</strong>."
+                </p>
+              </div>
+              <div class="family-cards-mini">
+                <div class="family-badge">
+                  <span class="f-role">Mãe da Alice</span>
+                  <span class="f-name">Paula</span>
+                  <span class="f-age">40 years old</span>
+                </div>
+                <div class="family-badge">
+                  <span class="f-role">Pai da Alice</span>
+                  <span class="f-name">Marcos</span>
+                  <span class="f-age">38 years old</span>
+                </div>
+              </div>
+            </article>
+
+            <aside class="glossary-card">
+              <div class="glossary-title">
+                <span class="g-icon">📖</span> Glossary (Vocabulário)
+              </div>
+              <ul class="glossary-list">
+                <li data-key="friend"><span class="en">friend</span> <span class="eq">=</span> <span class="pt">amigo(a)</span></li>
+                <li data-key="same school"><span class="en">same school</span> <span class="eq">=</span> <span class="pt">mesma escola</span></li>
+                <li data-key="since kindergarten"><span class="en">since kindergarten</span> <span class="eq">=</span> <span class="pt">desde o jardim</span></li>
+                <li data-key="years old"><span class="en">years old</span> <span class="eq">=</span> <span class="pt">anos de idade</span></li>
+                <li data-key="mother"><span class="en">mother</span> <span class="eq">=</span> <span class="pt">mãe</span></li>
+                <li data-key="father"><span class="en">father</span> <span class="eq">=</span> <span class="pt">pai</span></li>
+                <li data-key="older"><span class="en">older</span> <span class="eq">=</span> <span class="pt">mais velho(a)</span></li>
+                <li data-key="younger"><span class="en">younger</span> <span class="eq">=</span> <span class="pt">mais novo(a)</span></li>
+              </ul>
+            </aside>
+          </div>
+        </section>
+      </div>
+
+    </div> <!-- /stage-1-container -->
+
+
+    <!-- ====================================================================
+         ETAPA 2: FLASHCARDS DE MEMÓRIA (TELA ESTÁTICA INTERATIVA)
+         ==================================================================== -->
+    <div id="stage-2-container" class="stage-section hidden">
+      <div class="fc-static-screen-board">
+
+        <!-- Top Static Status & HUD Bar -->
+        <div class="fc-static-top-hud">
+          <div class="fc-hud-left">
+            <span class="fc-stage-pill">STEP 2 • MEMÓRIA INTERATIVA</span>
+            <span class="fc-status-badge" id="fc-cards-status-text">⏳ Fase de Memorização</span>
+          </div>
+
+          <div class="fc-hud-center">
+            <div class="fc-meter-pill">
+              <span class="fc-meter-label">Rodada:</span>
+              <strong id="fc-round-display">1 / 5</strong>
+            </div>
+            <div class="fc-meter-pill chances-pill">
+              <span class="fc-meter-label">Chances:</span>
+              <span id="fc-lives-display" class="fc-hearts-live">❤️❤️❤️</span>
+            </div>
+            <div class="fc-meter-pill score-pill">
+              <span class="fc-meter-label">Pontos:</span>
+              <strong id="fc-score-display">0 pts</strong>
+            </div>
+          </div>
+
+          <div class="fc-hud-right">
+            <button id="btn-fc-peek" class="fc-tool-pill" title="Espiar os cartões por 4 segundos se esquecer">
+              👁️ Espiar (4s)
+            </button>
+            <button id="btn-fc-shuffle" class="fc-tool-pill" title="Re-embaralhar posições das cartas">
+              🔀 Re-embaralhar
+            </button>
+            <button id="btn-fc-reset-all" class="fc-tool-pill" title="Reiniciar desafio do zero">
+              🔄 Reiniciar
+            </button>
+          </div>
+        </div>
+
+        <!-- Static Challenge & Countdown Stage -->
+        <div class="fc-static-challenge-container">
+          <!-- 30-Second Countdown (Memorization Phase) -->
+          <div id="fc-timer-panel" class="fc-static-timer-card">
+            <div class="fc-timer-circle" id="fc-timer-circle">
+              <span class="fc-timer-num" id="fc-countdown-num">30</span>
+              <span class="fc-timer-sub">seg</span>
+            </div>
+            <div class="fc-timer-info">
+              <div class="fc-timer-title">⏳ Memorize os nomes e idades dos 8 estudantes!</div>
+              <p class="fc-timer-subtext">
+                Observe quem é <strong>older</strong> (mais velho), <strong>younger</strong> (mais novo) ou <strong>as old as</strong> (mesma idade). Em <strong id="fc-seconds-live">30s</strong> as cartas virarão!
+              </p>
+              <div class="fc-timer-bar-track">
+                <div class="fc-timer-bar-fill" id="fc-progress-fill" style="width: 100%;"></div>
+              </div>
+            </div>
+            <button id="btn-fc-skip-timer" class="fc-start-now-btn" title="Iniciar o desafio imediatamente">
+              ⚡ Já Memorizei! Iniciar Desafio
+            </button>
+          </div>
+
+          <!-- Challenge Question Prompt (Shown when cards flip face-down) -->
+          <div id="fc-challenge-banner" class="fc-static-question-card hidden">
+            <div class="fc-question-top">
+              <span class="fc-challenge-badge">🎯 DESAFIO COMPARATIVO:</span>
+              <span class="fc-chances-hint">Você tem <strong id="fc-chances-left-text">3 chances</strong></span>
+              <button id="btn-speak-challenge" class="fc-audio-btn" title="Ouvir a pergunta em inglês nativo">
+                🔊 Pronunciar Desafio
+              </button>
+            </div>
+
+            <div class="fc-english-question" id="fc-question-text">
+              "Mateus is 14 years old. Who is younger than Mateus?"
+            </div>
+
+            <div class="fc-portuguese-hint" id="fc-question-subtext">
+              💡 (Mateus tem 14 anos. Quem é mais novo que Mateus?)
+            </div>
+
+            <!-- Dynamic Feedback Notification -->
+            <div id="fc-live-alert" class="fc-feedback-alert hidden"></div>
+
+            <button id="btn-fc-next-challenge" class="fc-next-btn hidden">
+              Próximo Desafio →
+            </button>
+          </div>
+        </div>
+
+        <!-- The 8 Cards Static 3D Board (Fits within viewport without scrolling!) -->
+        <div class="fc-static-board-wrapper">
+          <div class="fc-grid-3d" id="fc-grid-3d">
+            <!-- The 8 cards rendered dynamically in app.js -->
+          </div>
+        </div>
+
+        <!-- Static Footer Return Bar -->
+        <div class="fc-static-footer-bar">
+          <button id="btn-fc-return-quiz" class="fc-return-quiz-btn" type="button">
+            ← Voltar para a Etapa 1 (Quiz por Tela)
+          </button>
+          <span class="fc-footer-tip">💡 Dica: Toque no cartão virado para conferir se atende à comparação em inglês!</span>
+        </div>
+
+      </div>
+    </div> <!-- /stage-2-container -->
+
+    <!-- ====================================================================
+         MODALS (POP-UPS INTERATIVOS SEM POLUIR A TELA PRINCIPAL)
+         ==================================================================== -->
+
+    <!-- Modal 1: Galeria Completa dos 8 Estudantes com Fotos Reais -->
+    <div id="gallery-modal" class="modal-backdrop hidden">
+      <div class="modal-card modal-lg">
+        <div class="modal-header">
+          <div class="modal-title-box">
+            <h2>📋 Tabela de Estudantes e Idades (Atividade 1)</h2>
+            <p>E. M. Nísia Vivea Fernandes • Turma 804 • Prof. Neimar Oliveira</p>
+          </div>
+          <button class="modal-close-x" id="btn-close-gallery-modal" aria-label="Fechar">✕</button>
+        </div>
+        <div class="modal-body-scroll">
+          <div class="students-grid modal-students-grid">
+            <div class="student-card"><img src="assets/card_juliana.jpg" alt="Juliana - 12 years old" class="real-card-img" /></div>
+            <div class="student-card"><img src="assets/card_mateus.jpg" alt="Mateus - 14 years old" class="real-card-img" /></div>
+            <div class="student-card"><img src="assets/card_carlos.jpg" alt="Carlos - 13 years old" class="real-card-img" /></div>
+            <div class="student-card"><img src="assets/card_gabriel.jpg" alt="Gabriel - 11 years old" class="real-card-img" /></div>
+            <div class="student-card"><img src="assets/card_rafael.jpg" alt="Rafael - 12 years old" class="real-card-img" /></div>
+            <div class="student-card"><img src="assets/card_beatriz.jpg" alt="Beatriz - 14 years old" class="real-card-img" /></div>
+            <div class="student-card"><img src="assets/card_larissa.jpg" alt="Larissa - 13 years old" class="real-card-img" /></div>
+            <div class="student-card"><img src="assets/card_sofia.jpg" alt="Sofia - 12 years old" class="real-card-img" /></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-btn primary" id="btn-close-gallery-modal-2">Entendido! Voltar à Questão</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 2: Texto e Glossário de Alice & Bruno (Atividade 2) -->
+    <div id="reading-modal" class="modal-backdrop hidden">
+      <div class="modal-card modal-lg">
+        <div class="modal-header">
+          <div class="modal-title-box">
+            <h2>📖 Texto e Glossário da Alice &amp; Bruno (Atividade 2)</h2>
+            <p>Texto original de apoio para as questões 6 a 10</p>
+          </div>
+          <button class="modal-close-x" id="btn-close-reading-modal" aria-label="Fechar">✕</button>
+        </div>
+        <div class="modal-body-scroll">
+          <div class="reading-layout modal-reading-layout">
+            <article class="text-card">
+              <div class="activity2-characters-banner">
+                <img src="assets/alice_and_bruno.jpg" alt="Alice e Bruno" class="real-alice-bruno-img" />
+              </div>
+              <div class="reading-passage">
+                <p>
+                  "Hello! I'm <strong>Alice</strong> and this is my friend <strong>Bruno</strong>.
+                  We study at the <span class="gloss-word" data-term="same school">same school</span> and we have been
+                  <span class="gloss-word" data-term="friend">friends</span> <span class="gloss-word" data-term="since kindergarten">since kindergarten</span>.
+                  I am <strong>13 years old</strong> and Bruno is <strong>14 years old</strong>.
+                  My <span class="gloss-word" data-term="mother">mother</span> is <strong>Paula</strong>. She is <strong>40 years old</strong>.
+                  My <span class="gloss-word" data-term="father">father</span> is <strong>Marcos</strong>. He is <strong>38 years old</strong>."
+                </p>
+              </div>
+              <div class="family-cards-mini">
+                <div class="family-badge">
+                  <span class="f-role">Mãe da Alice</span>
+                  <span class="f-name">Paula</span>
+                  <span class="f-age">40 years old</span>
+                </div>
+                <div class="family-badge">
+                  <span class="f-role">Pai da Alice</span>
+                  <span class="f-name">Marcos</span>
+                  <span class="f-age">38 years old</span>
+                </div>
+              </div>
+            </article>
+
+            <aside class="glossary-card">
+              <div class="glossary-title"><span class="g-icon">📖</span> Glossário da Folha</div>
+              <ul class="glossary-list">
+                <li data-key="friend"><span class="en">friend</span> = <span class="pt">amigo(a)</span></li>
+                <li data-key="same school"><span class="en">same school</span> = <span class="pt">mesma escola</span></li>
+                <li data-key="since kindergarten"><span class="en">since kindergarten</span> = <span class="pt">desde o jardim</span></li>
+                <li data-key="years old"><span class="en">years old</span> = <span class="pt">anos de idade</span></li>
+                <li data-key="mother"><span class="en">mother</span> = <span class="pt">mãe</span></li>
+                <li data-key="father"><span class="en">father</span> = <span class="pt">pai</span></li>
+                <li data-key="older"><span class="en">older</span> = <span class="pt">mais velho(a)</span></li>
+                <li data-key="younger"><span class="en">younger</span> = <span class="pt">mais novo(a)</span></li>
+              </ul>
+              <button id="btn-speak-text-modal" class="speech-btn" style="margin-top: 12px; width: 100%;">
+                🔊 Ouvir Leitura em Inglês
+              </button>
+            </aside>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-btn primary" id="btn-close-reading-modal-2">Fechar e Responder</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 3: Comparador Interativo de Idades -->
+    <div id="comparator-modal" class="modal-backdrop hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-title-box">
+            <h2>⚖️ Comparador Interativo de Idades</h2>
+            <p>Selecione dois estudantes para ver a comparação em inglês</p>
+          </div>
+          <button class="modal-close-x" id="btn-close-comparator-modal" aria-label="Fechar">✕</button>
+        </div>
+        <div class="modal-body-scroll">
+          <div class="comparator-selectors">
+            <div class="select-col">
+              <label for="cmp-student-1">Estudante 1:</label>
+              <select id="cmp-student-1">
+                <option value="mateus">Mateus (14)</option>
+                <option value="juliana">Juliana (12)</option>
+                <option value="carlos">Carlos (13)</option>
+                <option value="gabriel">Gabriel (11)</option>
+                <option value="rafael">Rafael (12)</option>
+                <option value="beatriz">Beatriz (14)</option>
+                <option value="larissa">Larissa (13)</option>
+                <option value="sofia">Sofia (12)</option>
+              </select>
+            </div>
+            <div class="vs-badge">VS</div>
+            <div class="select-col">
+              <label for="cmp-student-2">Estudante 2:</label>
+              <select id="cmp-student-2">
+                <option value="carlos">Carlos (13)</option>
+                <option value="mateus">Mateus (14)</option>
+                <option value="juliana">Juliana (12)</option>
+                <option value="gabriel">Gabriel (11)</option>
+                <option value="rafael">Rafael (12)</option>
+                <option value="beatriz">Beatriz (14)</option>
+                <option value="larissa">Larissa (13)</option>
+                <option value="sofia">Sofia (12)</option>
+              </select>
+            </div>
+          </div>
+          <div class="comparator-result" id="cmp-result">
+            <!-- Dynamic comparison sentence -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-btn primary" id="btn-close-comparator-modal-2">Fechar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 4: Seleção de Avatar do Gamer -->
+    <div id="avatar-modal" class="modal-backdrop hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-title-box">
+            <h2>🎭 Escolha seu Avatar de Estudante</h2>
+            <p>Selecione seu personagem da Turma 804</p>
+          </div>
+          <button class="modal-close-x" id="btn-close-avatar-modal" aria-label="Fechar">✕</button>
+        </div>
+        <div class="avatar-selection-grid" id="avatar-selection-grid">
+          <!-- Avatars dynamically generated -->
+        </div>
+        <div class="modal-footer">
+          <button class="modal-btn primary" id="btn-close-avatar-modal-2">Confirmar Avatar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 5: Ranking Gamificado da Turma 804 -->
+    <div id="leaderboard-modal" class="modal-backdrop hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-title-box">
+            <h2>🏆 Ranking de XP – Turma 804</h2>
+            <p>E. M. Nísia Vivea Fernandes • Duque de Caxias</p>
+          </div>
+          <button class="modal-close-x" id="btn-close-leaderboard-modal" aria-label="Fechar">✕</button>
+        </div>
+        <div class="leaderboard-list" id="leaderboard-list">
+          <!-- Injected via app.js -->
+        </div>
+        <div class="modal-footer">
+          <button class="modal-btn primary" id="btn-close-leaderboard-modal-2">Fechar Ranking</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 6: Medalhas e Conquistas (Achievements) -->
+    <div id="achievements-modal" class="modal-backdrop hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-title-box">
+            <h2>🎖️ Conquistas &amp; Medalhas</h2>
+            <p>Desbloqueie jogando o Quiz e os Flashcards</p>
+          </div>
+          <button class="modal-close-x" id="btn-close-achievements-modal" aria-label="Fechar">✕</button>
+        </div>
+        <div class="achievements-grid" id="achievements-grid">
+          <!-- Injected via app.js -->
+        </div>
+        <div class="modal-footer">
+          <button class="modal-btn primary" id="btn-close-achievements-modal-2">Fechar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 7: Dica Gramatical Secreta (Power-Up Hint) -->
+    <div id="hint-modal" class="modal-backdrop hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-title-box">
+            <h2>💡 Dica Gramatical do Professor Neimar</h2>
+            <p>Ajuda rápida para Comparative Adjectives</p>
+          </div>
+          <button class="modal-close-x" id="btn-close-hint-modal" aria-label="Fechar">✕</button>
+        </div>
+        <div class="hint-modal-content" id="hint-modal-content">
+          <!-- Injected dynamically -->
+        </div>
+        <div class="modal-footer">
+          <button class="modal-btn primary" id="btn-close-hint-modal-2">Entendi! Responder</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 8: Folha de Atividade Original -->
+    <div id="original-sheet-modal" class="modal-backdrop hidden">
+      <div class="modal-card sheet-modal-card">
+        <div class="modal-header">
+          <div class="modal-title-box">
+            <h2>📄 Folha de Atividade Original da Turma 804</h2>
+            <p>E. M. Nísia Vivea Fernandes • Professor Neimar Oliveira</p>
+          </div>
+          <button class="modal-close-x" id="btn-close-sheet-modal" aria-label="Fechar">✕</button>
+        </div>
+        <div class="original-sheet-viewer">
+          <img src="assets/activity_original.jpg" alt="Folha de Atividade Original" class="original-sheet-img" />
+        </div>
+        <div class="modal-footer">
+          <a href="assets/activity_original.jpg" target="_blank" class="modal-btn outline">🔍 Abrir em Nova Aba</a>
+          <button id="btn-close-sheet-modal-2" class="modal-btn primary">Fechar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 9: Resultado Final do Quiz com Revisão Comentada -->
+    <div id="results-modal" class="modal-backdrop hidden">
+      <div class="modal-card modal-lg">
+        <div class="modal-header">
+          <div class="confetti-burst">🎉</div>
+          <div class="modal-title-box">
+            <h2 id="modal-title">Resultado do Quiz!</h2>
+            <p id="modal-subtitle">E. M. Nísia Vivea Fernandes • Turma 804</p>
+          </div>
+        </div>
+
+        <div class="score-display">
+          <div class="score-circle">
+            <span class="score-value" id="final-score-val">10</span>
+            <span class="score-total">/ 10</span>
+          </div>
+          <div class="score-details">
+            <h3 id="score-greeting">Parabéns! Desempenho Excelente!</h3>
+            <p id="score-feedback">Você dominou o uso de Comparative Adjectives (Equality e Superiority).</p>
+            <div class="accuracy-pill" id="accuracy-pill">100% de Aproveitamento</div>
+          </div>
+        </div>
+
+        <div class="detailed-review-section">
+          <h3>📋 Revisão Comentada Questão por Questão:</h3>
+          <div id="review-list" class="review-items">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button id="btn-advance-to-stage2" class="modal-btn accent">🚀 Avançar para a Etapa 2: Flashcards →</button>
+          <button id="btn-print-results" class="modal-btn outline">🖨️ Imprimir Relatório</button>
+          <button id="btn-retry-quiz" class="modal-btn primary">🔄 Tentar Novamente</button>
+          <button id="btn-close-results-modal" class="modal-btn secondary">Fechar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Compact Educational Grammar Summary (Rodapé de Apoio) -->
+    <footer class="grammar-summary-card">
+      <div class="grammar-title">
+        <span class="icon">📚</span> Resumo Gramatical – Comparative Adjectives
+      </div>
+      <div class="grammar-grid">
+        <div class="grammar-col">
+          <h4>1. Superioridade (Adjetivos Curtos):</h4>
+          <div class="grammar-rule">
+            <code>Adjetivo Curto + <strong>-er</strong> + <strong>than</strong></code>
+          </div>
+          <p class="rule-example">
+            • <em>old</em> → <strong>older than</strong> (mais velho que)<br>
+            • <em>young</em> → <strong>younger than</strong> (mais novo que)
+          </p>
+          <p class="rule-tip">Exemplo: Mateus (14) is <strong>older than</strong> Carlos (13).</p>
+        </div>
+
+        <div class="grammar-col">
+          <h4>2. Igualdade:</h4>
+          <div class="grammar-rule">
+            <code><strong>as</strong> + Adjetivo + <strong>as</strong></code>
+          </div>
+          <p class="rule-example">
+            • <em>as old as</em> = tão velho quanto / mesma idade que
+          </p>
+          <p class="rule-tip">Exemplo: Juliana (12) is <strong>as old as</strong> Sofia (12).</p>
+        </div>
+      </div>
+      <div class="footer-credits">
+        Material didático digital elaborado para a <strong>Turma 804 (8º ano)</strong> da <strong>E. M. Nísia Vivea Fernandes</strong> • Duque de Caxias • Professor <strong>Neimar Oliveira</strong>.
+      </div>
+    </footer>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

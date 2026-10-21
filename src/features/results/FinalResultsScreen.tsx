@@ -1,0 +1,239 @@
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { 
+  Trophy, 
+  Award, 
+  Star, 
+  Shield, 
+  CheckCircle2, 
+  BookOpen, 
+  Layers, 
+  Sparkles,
+  ArrowRight,
+  Home,
+  RotateCcw
+} from 'lucide-react';
+import { useGame } from '../../context/GameContext';
+import { audioService } from '../../services/audio';
+import { fireConfetti } from '../../components/ui/ConfettiEffect';
+import { storageService } from '../../services/storage';
+import { GameHeader } from '../../components/layout/GameHeader';
+
+export const FinalResultsScreen: React.FC = () => {
+  const navigate = useNavigate();
+  const { currentPlayer, quizResult, flashcardResult, totalScore } = useGame();
+  const [playerRank, setPlayerRank] = useState<number | null>(null);
+
+  useEffect(() => {
+    audioService.playFanfare();
+    fireConfetti();
+
+    // Fetch player rank
+    const loadRank = async () => {
+      if (currentPlayer) {
+        const board = await storageService.getLeaderboard();
+        const found = board.find(e => e.playerId === currentPlayer.id);
+        if (found) {
+          setPlayerRank(found.rank);
+        }
+      }
+    };
+    loadRank();
+  }, [currentPlayer]);
+
+  if (!currentPlayer) {
+    navigate('/register');
+    return null;
+  }
+
+  const qScore = quizResult?.totalScore || 0;
+  const fcScore = flashcardResult?.totalScore || 0;
+  const isBlue = currentPlayer.team === 'blue';
+
+  let medalName = 'Bronze Star';
+  let medalColor = 'text-amber-700 border-amber-600 bg-amber-900/30';
+  if (totalScore >= 1300) {
+    medalName = 'Gold Star Master';
+    medalColor = 'text-yellow-300 border-yellow-400 bg-yellow-950/40 shadow-[0_0_25px_rgba(234,179,8,0.4)]';
+  } else if (totalScore >= 900) {
+    medalName = 'Silver Star Champion';
+    medalColor = 'text-slate-200 border-slate-300 bg-slate-800/50 shadow-[0_0_20px_rgba(203,213,225,0.3)]';
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-white flex flex-col justify-between">
+      <GameHeader />
+
+      <main className="flex-1 w-full max-w-4xl mx-auto px-4 py-6 md:py-8 flex flex-col justify-center">
+        
+        {/* Main Victory Card */}
+        <div className="bg-slate-900/90 border-2 border-slate-700 rounded-3xl p-6 md:p-8 shadow-2xl backdrop-blur-md text-center animate-in zoom-in-95 duration-400">
+          
+          {/* Trophy & Badge */}
+          <div className="relative inline-block mb-3">
+            <div className="p-4 rounded-full bg-gradient-to-br from-amber-400 to-yellow-600 text-slate-950 shadow-[0_0_40px_rgba(245,158,11,0.6)]">
+              <Trophy className="w-14 h-14 md:w-16 md:h-16 stroke-[2.5]" />
+            </div>
+            <div className="absolute -top-1 -right-1 p-1.5 rounded-full bg-blue-600 text-white shadow-md">
+              <Sparkles className="w-5 h-5 text-amber-300" />
+            </div>
+          </div>
+
+          <h1 className="text-3xl md:text-5xl font-black font-bungee tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400">
+            CONGRATULATIONS!
+          </h1>
+          <p className="text-base md:text-xl font-bold text-slate-200 mt-2 font-bungee">
+            YOU COMPLETED YOUR ENGLISH ADVENTURE!
+          </p>
+
+          <p className="text-xs md:text-sm text-slate-400 mt-1">
+            Escola Municipal Nísia Vilela Fernandes • Duque de Caxias
+          </p>
+
+          {/* Player Identity Pill */}
+          <div className="my-5 inline-flex flex-wrap items-center justify-center gap-3 px-5 py-2.5 rounded-2xl bg-slate-950/80 border border-slate-800 shadow-md">
+            <span className="font-extrabold text-sm md:text-base text-white">
+              {currentPlayer.displayName}
+            </span>
+            <span className="text-slate-600">•</span>
+            <span className="text-xs font-bold text-slate-300">
+              Turma {currentPlayer.className}
+            </span>
+            <span className="text-slate-600">•</span>
+            <div className={`flex items-center gap-1 text-xs font-bungee ${isBlue ? 'text-blue-400' : 'text-purple-400'}`}>
+              <Shield className="w-4 h-4 fill-current" />
+              <span>{isBlue ? 'BLUE TEAM' : 'PURPLE TEAM'}</span>
+            </div>
+            {playerRank && (
+              <>
+                <span className="text-slate-600">•</span>
+                <span className="px-2 py-0.5 rounded-lg bg-amber-500/20 text-amber-300 font-bold text-xs border border-amber-400/40">
+                  RANK #{playerRank}
+                </span>
+              </>
+            )}
+          </div>
+
+          {/* Award Medal Banner */}
+          <div className={`p-4 rounded-2xl border-2 my-4 flex items-center justify-center gap-3 ${medalColor}`}>
+            <Award className="w-8 h-8 flex-shrink-0" />
+            <div className="text-left">
+              <span className="text-[11px] uppercase tracking-wider font-extrabold opacity-80">Honors Awarded</span>
+              <div className="text-lg md:text-xl font-black font-bungee">{medalName}</div>
+            </div>
+          </div>
+
+          {/* Score Summary Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 my-6">
+            
+            {/* Quiz Mission */}
+            <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 text-left flex flex-col justify-between">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-extrabold uppercase text-slate-400 flex items-center gap-1.5">
+                  <BookOpen className="w-4 h-4 text-blue-400" />
+                  Mission 1 (Quiz)
+                </span>
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              </div>
+              <div className="text-2xl font-bungee text-blue-400">
+                {qScore} <span className="text-xs text-slate-400 font-sans">/ 1,000 pts</span>
+              </div>
+              <span className="text-[11px] text-slate-400 mt-1">Comparative Adjectives</span>
+            </div>
+
+            {/* Flashcard Mission */}
+            <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 text-left flex flex-col justify-between">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-extrabold uppercase text-slate-400 flex items-center gap-1.5">
+                  <Layers className="w-4 h-4 text-purple-400" />
+                  Mission 2 (Cards)
+                </span>
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              </div>
+              <div className="text-2xl font-bungee text-purple-400">
+                {fcScore} <span className="text-xs text-slate-400 font-sans">/ 500 pts</span>
+              </div>
+              <span className="text-[11px] text-slate-400 mt-1">Age Memory Challenge</span>
+            </div>
+
+            {/* Total Combined Score */}
+            <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-950/60 to-yellow-950/40 border-2 border-amber-400 text-left flex flex-col justify-between shadow-[0_0_20px_rgba(245,158,11,0.2)]">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-black uppercase text-amber-300 flex items-center gap-1.5">
+                  <Trophy className="w-4 h-4 text-amber-400" />
+                  TOTAL SCORE
+                </span>
+                <Sparkles className="w-4 h-4 text-amber-400" />
+              </div>
+              <div className="text-3xl font-bungee text-amber-400">
+                {totalScore} <span className="text-xs text-amber-200 font-sans">/ 1,500 pts</span>
+              </div>
+              <span className="text-[11px] font-bold text-amber-300 mt-1">Contributed to {currentPlayer.team.toUpperCase()} TEAM</span>
+            </div>
+
+          </div>
+
+          {/* Missions Progress Banner */}
+          <div className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/60 mb-8 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <CheckCircle2 className="w-6 h-6 text-emerald-400" />
+              <div className="text-left">
+                <span className="font-bungee text-sm md:text-base text-emerald-300">
+                  2 OF 2 MISSIONS COMPLETED (100%)
+                </span>
+                <p className="text-xs text-emerald-200">
+                  Your official results have been stored for the school leaderboard.
+                </p>
+              </div>
+            </div>
+            <div className="hidden sm:block text-xs font-mono font-bold text-emerald-400 bg-emerald-900/50 px-3 py-1 rounded-lg">
+              VERIFIED
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4">
+            <button
+              type="button"
+              onClick={() => {
+                audioService.playClick();
+                navigate('/leaderboard');
+              }}
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-b from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 font-bungee text-lg md:text-xl tracking-wider shadow-[0_8px_0_#92400e,0_15px_25px_rgba(245,158,11,0.5)] active:translate-y-1 active:shadow-[0_2px_0_#92400e] border-2 border-yellow-200 flex items-center justify-center gap-2.5 transition-all cursor-pointer animate-arcade-pulse"
+            >
+              <Trophy className="w-6 h-6 fill-slate-950" />
+              <span>VIEW LEADERBOARD</span>
+              <ArrowRight className="w-5 h-5 stroke-[3]" />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                audioService.playClick();
+                navigate('/missions');
+              }}
+              className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-sm border-2 border-slate-600 hover:border-slate-400 flex items-center justify-center gap-2 transition-all cursor-pointer"
+            >
+              <RotateCcw className="w-4 h-4 text-blue-400" />
+              <span>Review Activities</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                audioService.playClick();
+                navigate('/');
+              }}
+              className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-sm border-2 border-slate-600 hover:border-slate-400 flex items-center justify-center gap-2 transition-all cursor-pointer"
+            >
+              <Home className="w-4 h-4 text-amber-400" />
+              <span>Back to Start</span>
+            </button>
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+  );
+};
