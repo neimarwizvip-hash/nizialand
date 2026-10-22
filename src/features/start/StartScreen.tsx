@@ -24,11 +24,11 @@ export const StartScreen: React.FC = () => {
       {/* Background: Official NISIALAND School Artwork */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/assets/nisialand_hero.jpg"
+          src="/assets/nisialand_cover_official.jpg"
           alt="NISIALAND - Escola Municipal Nísia Vilela Fernandes"
           className="w-full h-full object-cover object-center filter brightness-95"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-slate-950/40"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-slate-950/30"></div>
       </div>
 
       {/* Top Floating Badge & Slogan */}
