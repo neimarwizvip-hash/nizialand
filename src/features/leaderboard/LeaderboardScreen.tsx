@@ -8,10 +8,13 @@ import {
   Star, 
   Filter, 
   ArrowLeft, 
-  Sparkles,
-  Flame,
-  Award,
-  Crown
+  Sparkles, 
+  Flame, 
+  Award, 
+  Crown,
+  Flag,
+  AlertCircle,
+  CheckCircle2
 } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { storageService } from '../../services/storage';
@@ -23,6 +26,8 @@ import {
 } from '../../types';
 import { audioService } from '../../services/audio';
 import { GameHeader } from '../../components/layout/GameHeader';
+import { PlayerAvatar } from '../../components/ui/PlayerAvatar';
+import { nameModerationService } from '../../services/nameModeration';
 
 type TabMode = 'players' | 'classes' | 'teams';
 
@@ -38,6 +43,11 @@ export const LeaderboardScreen: React.FC = () => {
   // Filters for player ranking
   const [selectedClass, setSelectedClass] = useState<string>('all');
   const [selectedTeam, setSelectedTeam] = useState<string>('all');
+
+  // Name reporting modal state
+  const [reportingPlayer, setReportingPlayer] = useState<{ id: string; name: string } | null>(null);
+  const [reportReason, setReportReason] = useState<string>('Nome inadequado para ambiente escolar');
+  const [reportSuccess, setReportSuccess] = useState<boolean>(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -223,19 +233,30 @@ export const LeaderboardScreen: React.FC = () => {
                         {/* Player info */}
                         <td className="py-3 px-3">
                           <div className="flex items-center gap-2.5">
-                            <img
-                              src={p.avatar}
-                              alt={p.displayName}
-                              onError={(e) => { e.currentTarget.src = isBlue ? '/assets/avatar_mateus.jpg' : '/assets/avatar_juliana.jpg'; }}
-                              className="w-9 h-9 rounded-xl object-cover border border-slate-600 flex-shrink-0"
+                            <PlayerAvatar
+                              avatarId={p.avatar}
+                              size="sm"
+                              className="border border-slate-600 flex-shrink-0"
                             />
                             <div>
                               <div className="font-extrabold text-white flex items-center gap-1.5">
                                 <span>{p.displayName}</span>
-                                {isCurrent && (
+                                {isCurrent ? (
                                   <span className="px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 text-[10px] font-black uppercase">
                                     YOU
                                   </span>
+                                ) : (
+                                  <button
+                                    onClick={() => {
+                                      setReportingPlayer({ id: p.playerId, name: p.displayName });
+                                      setReportSuccess(false);
+                                    }}
+                                    className="text-slate-600 hover:text-red-400 p-1 rounded transition-colors"
+                                    title="Denunciar nome inadequado"
+                                    aria-label="Denunciar nome"
+                                  >
+                                    <Flag className="w-3 h-3" />
+                                  </button>
                                 )}
                               </div>
                               <span className="text-[10px] text-slate-400 capitalize">
@@ -494,6 +515,85 @@ export const LeaderboardScreen: React.FC = () => {
             <span>RETURN TO MISSIONS</span>
           </button>
         </div>
+
+        {/* REPORT NAME MODAL */}
+        {reportingPlayer && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
+            <div className="bg-slate-900 border-3 border-amber-500 rounded-3xl max-w-md w-full p-6 shadow-2xl text-white">
+              {!reportSuccess ? (
+                <div>
+                  <div className="flex items-center gap-3 pb-3 border-b border-slate-800 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-red-500/20 text-red-400 border border-red-500/40 flex items-center justify-center">
+                      <Flag className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-heading font-black text-base text-white">
+                        Denunciar Nome de Jogador
+                      </h3>
+                      <p className="text-xs text-slate-400">
+                        Ajude a manter o Nisialand seguro e respeitoso
+                      </p>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-slate-300 mb-4">
+                    Você deseja reportar o nome <strong className="text-amber-300">"{reportingPlayer.name}"</strong> para moderação da equipe pedagógica?
+                  </p>
+
+                  <div className="mb-5">
+                    <label className="block text-[11px] font-heading font-bold text-slate-400 uppercase mb-1.5">
+                      Motivo:
+                    </label>
+                    <select
+                      value={reportReason}
+                      onChange={e => setReportReason(e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-amber-400"
+                    >
+                      <option value="Nome ofensivo ou desrespeitoso">Nome ofensivo ou desrespeitoso</option>
+                      <option value="Palavrão ou termo impróprio">Palavrão ou termo impróprio</option>
+                      <option value="Trocadilho malicioso">Trocadilho malicioso</option>
+                      <option value="Outro motivo">Outro motivo</option>
+                    </select>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setReportingPlayer(null)}
+                      className="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-heading font-bold"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      onClick={() => {
+                        nameModerationService.reportName(reportingPlayer.id, reportingPlayer.name, reportReason);
+                        setReportSuccess(true);
+                        setTimeout(() => {
+                          setReportingPlayer(null);
+                          setReportSuccess(false);
+                        }, 2000);
+                      }}
+                      className="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-heading font-black uppercase shadow"
+                    >
+                      Enviar Denúncia
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="py-4 text-center">
+                  <div className="w-12 h-12 mx-auto rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center mb-3">
+                    <CheckCircle2 className="w-6 h-6" />
+                  </div>
+                  <h4 className="font-heading font-black text-base text-emerald-300 mb-1">
+                    Denúncia Enviada!
+                  </h4>
+                  <p className="text-xs text-slate-400">
+                    Obrigado por colaborar com um ambiente escolar seguro e positivo!
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
       </main>
     </div>

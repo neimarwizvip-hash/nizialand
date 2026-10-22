@@ -1,0 +1,356 @@
+[
+  {
+    "file": "activity2_full_context.jpg",
+    "size": 62774,
+    "ext": "jpg",
+    "dimensions": "685x195"
+  },
+  {
+    "file": "activity_original.jpg",
+    "size": 440340,
+    "ext": "jpg",
+    "dimensions": "724x1024"
+  },
+  {
+    "file": "alice.jpg",
+    "size": 8018,
+    "ext": "jpg",
+    "dimensions": "115x125"
+  },
+  {
+    "file": "alice_and_bruno.jpg",
+    "size": 13184,
+    "ext": "jpg",
+    "dimensions": "212x118"
+  },
+  {
+    "file": "alice_bruno.jpg",
+    "size": 16467,
+    "ext": "jpg",
+    "dimensions": "245x132"
+  },
+  {
+    "file": "avatar_beatriz.jpg",
+    "size": 4866,
+    "ext": "jpg",
+    "dimensions": "156x78"
+  },
+  {
+    "file": "avatar_carlos.jpg",
+    "size": 4222,
+    "ext": "jpg",
+    "dimensions": "156x78"
+  },
+  {
+    "file": "avatar_gabriel.jpg",
+    "size": 4361,
+    "ext": "jpg",
+    "dimensions": "156x78"
+  },
+  {
+    "file": "avatar_juliana.jpg",
+    "size": 5491,
+    "ext": "jpg",
+    "dimensions": "156x78"
+  },
+  {
+    "file": "avatar_larissa.jpg",
+    "size": 4493,
+    "ext": "jpg",
+    "dimensions": "156x78"
+  },
+  {
+    "file": "avatar_mateus.jpg",
+    "size": 3964,
+    "ext": "jpg",
+    "dimensions": "156x78"
+  },
+  {
+    "file": "avatar_rafael.jpg",
+    "size": 4213,
+    "ext": "jpg",
+    "dimensions": "156x78"
+  },
+  {
+    "file": "avatar_sofia.jpg",
+    "size": 4251,
+    "ext": "jpg",
+    "dimensions": "156x78"
+  },
+  {
+    "file": "banner_activity1.jpg",
+    "size": 11563,
+    "ext": "jpg",
+    "dimensions": "696x40"
+  },
+  {
+    "file": "banner_activity2.jpg",
+    "size": 9443,
+    "ext": "jpg",
+    "dimensions": "696x40"
+  },
+  {
+    "file": "beatriz.jpg",
+    "size": 6839,
+    "ext": "jpg",
+    "dimensions": "158x110"
+  },
+  {
+    "file": "bruno.jpg",
+    "size": 7148,
+    "ext": "jpg",
+    "dimensions": "115x125"
+  },
+  {
+    "file": "card_beatriz.jpg",
+    "size": 7939,
+    "ext": "jpg",
+    "dimensions": "164x125"
+  },
+  {
+    "file": "card_carlos.jpg",
+    "size": 6873,
+    "ext": "jpg",
+    "dimensions": "164x123"
+  },
+  {
+    "file": "card_gabriel.jpg",
+    "size": 6858,
+    "ext": "jpg",
+    "dimensions": "164x123"
+  },
+  {
+    "file": "card_juliana.jpg",
+    "size": 8118,
+    "ext": "jpg",
+    "dimensions": "164x123"
+  },
+  {
+    "file": "card_larissa.jpg",
+    "size": 7216,
+    "ext": "jpg",
+    "dimensions": "164x125"
+  },
+  {
+    "file": "card_mateus.jpg",
+    "size": 6777,
+    "ext": "jpg",
+    "dimensions": "164x123"
+  },
+  {
+    "file": "card_rafael.jpg",
+    "size": 7256,
+    "ext": "jpg",
+    "dimensions": "164x125"
+  },
+  {
+    "file": "card_sofia.jpg",
+    "size": 7063,
+    "ext": "jpg",
+    "dimensions": "164x125"
+  },
+  {
+    "file": "carlos.jpg",
+    "size": 6268,
+    "ext": "jpg",
+    "dimensions": "158x110"
+  },
+  {
+    "file": "caxias_header_logo.jpg",
+    "size": 12797,
+    "ext": "jpg",
+    "dimensions": "320x68"
+  },
+  {
+    "file": "gabriel.jpg",
+    "size": 6522,
+    "ext": "jpg",
+    "dimensions": "158x110"
+  },
+  {
+    "file": "juliana.jpg",
+    "size": 7776,
+    "ext": "jpg",
+    "dimensions": "158x110"
+  },
+  {
+    "file": "larissa.jpg",
+    "size": 6245,
+    "ext": "jpg",
+    "dimensions": "158x110"
+  },
+  {
+    "file": "mateus.jpg",
+    "size": 6040,
+    "ext": "jpg",
+    "dimensions": "158x110"
+  },
+  {
+    "file": "media_1792623238677.png",
+    "size": 556623,
+    "ext": "png",
+    "dimensions": "768x1024"
+  },
+  {
+    "file": "media_1792623249982.png",
+    "size": 527742,
+    "ext": "png",
+    "dimensions": "768x1024"
+  },
+  {
+    "file": "media_1792624804991.png",
+    "size": 543072,
+    "ext": "png",
+    "dimensions": "768x1024"
+  },
+  {
+    "file": "media_1792624808929.png",
+    "size": 495522,
+    "ext": "png",
+    "dimensions": "768x1024"
+  },
+  {
+    "file": "mockup_flashcard_screen.jpg",
+    "size": 373035,
+    "ext": "jpg",
+    "dimensions": "1024x580"
+  },
+  {
+    "file": "mockup_quiz_screen.jpg",
+    "size": 313524,
+    "ext": "jpg",
+    "dimensions": "1024x576"
+  },
+  {
+    "file": "nisialand_16_avatars_board.jpg",
+    "size": 404758,
+    "ext": "jpg",
+    "dimensions": "1024x682"
+  },
+  {
+    "file": "nisialand_auditorium_bg.jpg",
+    "size": 790714,
+    "ext": "jpg",
+    "dimensions": "1376x768"
+  },
+  {
+    "file": "nisialand_hallway_bg.jpg",
+    "size": 884652,
+    "ext": "jpg",
+    "dimensions": "1376x768"
+  },
+  {
+    "file": "nisialand_hero.jpg",
+    "size": 548554,
+    "ext": "jpg",
+    "dimensions": "1024x576"
+  },
+  {
+    "file": "nisialand_inclusive_students.png",
+    "size": 947478,
+    "ext": "png",
+    "dimensions": "1024x682"
+  },
+  {
+    "file": "nisialand_institutional_characters.jpg",
+    "size": 493092,
+    "ext": "jpg",
+    "dimensions": "1024x682"
+  },
+  {
+    "file": "nisialand_intro.mp4",
+    "size": 26878075,
+    "ext": "mp4",
+    "dimensions": "1920x1080 (video)"
+  },
+  {
+    "file": "nisialand_registration_bg.jpg",
+    "size": 548554,
+    "ext": "jpg",
+    "dimensions": "1024x576"
+  },
+  {
+    "file": "nisialand_school_facade_clean.jpg",
+    "size": 503674,
+    "ext": "jpg",
+    "dimensions": "1024x576"
+  },
+  {
+    "file": "nizialand_hero.jpg",
+    "size": 516158,
+    "ext": "jpg",
+    "dimensions": "1024x576"
+  },
+  {
+    "file": "nizialand_registration_bg.jpg",
+    "size": 479258,
+    "ext": "jpg",
+    "dimensions": "1024x576"
+  },
+  {
+    "file": "nizialand_school_alt.jpg",
+    "size": 502174,
+    "ext": "jpg",
+    "dimensions": "1024x576"
+  },
+  {
+    "file": "prefeitura_logo.jpg",
+    "size": 12380,
+    "ext": "jpg",
+    "dimensions": "320x68"
+  },
+  {
+    "file": "rafael.jpg",
+    "size": 6292,
+    "ext": "jpg",
+    "dimensions": "158x110"
+  },
+  {
+    "file": "sofia.jpg",
+    "size": 6160,
+    "ext": "jpg",
+    "dimensions": "158x110"
+  },
+  {
+    "file": "students_board_full.jpg",
+    "size": 65295,
+    "ext": "jpg",
+    "dimensions": "685x305"
+  },
+  {
+    "file": "student_boy_hoodie.png",
+    "size": 543072,
+    "ext": "png",
+    "dimensions": "768x1024"
+  },
+  {
+    "file": "student_boy_tshirt.png",
+    "size": 495522,
+    "ext": "png",
+    "dimensions": "768x1024"
+  },
+  {
+    "file": "student_girl_curly.png",
+    "size": 527742,
+    "ext": "png",
+    "dimensions": "768x1024"
+  },
+  {
+    "file": "student_girl_ponytail.png",
+    "size": 556623,
+    "ext": "png",
+    "dimensions": "768x1024"
+  },
+  {
+    "file": "test_alice_bruno.jpg",
+    "size": 15375,
+    "ext": "jpg",
+    "dimensions": "230x135"
+  },
+  {
+    "file": "test_juliana_margin.jpg",
+    "size": 8094,
+    "ext": "jpg",
+    "dimensions": "165x125"
+  }
+]

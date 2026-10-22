@@ -42,7 +42,7 @@ export const MissionBriefingScreen: React.FC = () => {
           </div>
 
           <h1 className="text-3xl md:text-5xl font-black font-bungee tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400 drop-shadow-md">
-            WELCOME TO NIZIALAND!
+            WELCOME TO NISIALAND!
           </h1>
 
           <div className="mt-3 flex items-center justify-center gap-2 text-lg md:text-xl font-bold">

@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { PlayerProfile, QuizResult, FlashcardResult, TeamId } from '../types';
+import { PlayerProfile, QuizResult, FlashcardResult, TeamId, calculatePlayerLevel } from '../types';
 import { storageService } from '../services/storage';
 import { audioService } from '../services/audio';
 
 interface GameContextType {
   currentPlayer: PlayerProfile | null;
   setCurrentPlayer: (player: PlayerProfile | null) => void;
-  register: (data: { name: string; age: number; className: string; team: TeamId; avatar?: string }) => Promise<PlayerProfile>;
+  register: (data: { name: string; age: number; className: string; team: TeamId; avatar?: string; skinTone?: 'light' | 'medium' | 'dark' | 'warm' }) => Promise<PlayerProfile>;
   loginWithCode: (code: string) => Promise<boolean>;
   logout: () => void;
   quizResult: QuizResult | null;
@@ -14,6 +14,7 @@ interface GameContextType {
   flashcardResult: FlashcardResult | null;
   saveFlashcardResult: (result: FlashcardResult) => Promise<void>;
   totalScore: number;
+  playerLevel: number;
   missionsCompletedCount: number;
   isSoundOn: boolean;
   toggleSound: () => void;
@@ -48,7 +49,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     refreshUserData();
   }, [currentPlayer]);
 
-  const register = async (data: { name: string; age: number; className: string; team: TeamId; avatar?: string }) => {
+  const register = async (data: { name: string; age: number; className: string; team: TeamId; avatar?: string; skinTone?: 'light' | 'medium' | 'dark' | 'warm' }) => {
     const newPlayer = await storageService.registerPlayer(data);
     setCurrentPlayer(newPlayer);
     return newPlayer;
@@ -95,6 +96,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const totalScore = (quizResult?.totalScore || 0) + (flashcardResult?.totalScore || 0);
+  const playerLevel = calculatePlayerLevel(totalScore);
   const missionsCompletedCount = (quizResult?.completed ? 1 : 0) + (flashcardResult?.completed ? 1 : 0);
 
   return (
@@ -110,6 +112,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         flashcardResult,
         saveFlashcardResult,
         totalScore,
+        playerLevel,
         missionsCompletedCount,
         isSoundOn,
         toggleSound,

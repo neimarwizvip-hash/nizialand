@@ -11,6 +11,15 @@ import { INITIAL_LEADERBOARD } from '../data/mockData';
 import { supabase, isSupabaseConfigured } from './supabase';
 
 const STORAGE_KEYS = {
+  CURRENT_PLAYER: 'nisialand_current_player',
+  PLAYERS_LIST: 'nisialand_players_db',
+  QUIZ_RESULTS: 'nisialand_quiz_results',
+  FLASHCARD_RESULTS: 'nisialand_flashcard_results',
+  AUDIT_LOGS: 'nisialand_audit_logs',
+  COMPETITION_STATUS: 'nisialand_competition_status'
+};
+
+const LEGACY_STORAGE_KEYS = {
   CURRENT_PLAYER: 'nizialand_current_player',
   PLAYERS_LIST: 'nizialand_players_db',
   QUIZ_RESULTS: 'nizialand_quiz_results',
@@ -19,14 +28,22 @@ const STORAGE_KEYS = {
   COMPETITION_STATUS: 'nizialand_competition_status'
 };
 
-// Generate a memorable and secure player code (e.g. NZL-804-A79)
+function getLocalItem(key: keyof typeof STORAGE_KEYS): string | null {
+  try {
+    return localStorage.getItem(STORAGE_KEYS[key]) || localStorage.getItem(LEGACY_STORAGE_KEYS[key]);
+  } catch {
+    return null;
+  }
+}
+
+// Generate a memorable and secure player code (e.g. NSL-804-A79)
 export function generatePlayerCode(className: string): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let randomPart = '';
   for (let i = 0; i < 3; i++) {
     randomPart += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-  return `NZL-${className}-${randomPart}`;
+  return `NSL-${className}-${randomPart}`;
 }
 
 class StorageService {
@@ -34,7 +51,7 @@ class StorageService {
 
   public getStoredCurrentPlayer(): PlayerProfile | null {
     try {
-      const data = localStorage.getItem(STORAGE_KEYS.CURRENT_PLAYER);
+      const data = getLocalItem('CURRENT_PLAYER');
       return data ? JSON.parse(data) : null;
     } catch {
       return null;
@@ -55,6 +72,7 @@ class StorageService {
     className: string;
     team: 'blue' | 'purple';
     avatar?: string;
+    skinTone?: 'light' | 'medium' | 'dark' | 'warm';
   }): Promise<PlayerProfile> {
     const defaultAvatar = data.team === 'blue' ? '/assets/avatar_mateus.jpg' : '/assets/avatar_juliana.jpg';
     const playerCode = generatePlayerCode(data.className);
@@ -67,6 +85,8 @@ class StorageService {
       className: data.className,
       team: data.team,
       avatar: data.avatar || defaultAvatar,
+      skinTone: data.skinTone || 'light',
+      level: 0,
       createdAt: new Date().toISOString(),
       lastLoginAt: new Date().toISOString()
     };
@@ -135,9 +155,18 @@ class StorageService {
       }
     }
 
-    // Local fallback
+    // Local fallback (matches either NSL or legacy NZL prefix)
+    const altCode = formattedCode.startsWith('NSL-')
+      ? formattedCode.replace('NSL-', 'NZL-')
+      : formattedCode.startsWith('NZL-')
+        ? formattedCode.replace('NZL-', 'NSL-')
+        : formattedCode;
+
     const players = this.getAllPlayers();
-    const found = players.find(p => p.playerCode.toUpperCase() === formattedCode);
+    const found = players.find(p => {
+      const pCode = p.playerCode.toUpperCase();
+      return pCode === formattedCode || pCode === altCode;
+    });
     if (found) {
       found.lastLoginAt = new Date().toISOString();
       this.setStoredCurrentPlayer(found);
@@ -150,7 +179,7 @@ class StorageService {
 
   public getAllPlayers(): PlayerProfile[] {
     try {
-      const data = localStorage.getItem(STORAGE_KEYS.PLAYERS_LIST);
+      const data = getLocalItem('PLAYERS_LIST');
       if (!data) return [];
       return JSON.parse(data);
     } catch {
@@ -196,7 +225,7 @@ class StorageService {
 
   public getAllQuizResults(): Record<string, QuizResult> {
     try {
-      const data = localStorage.getItem(STORAGE_KEYS.QUIZ_RESULTS);
+      const data = getLocalItem('QUIZ_RESULTS');
       return data ? JSON.parse(data) : {};
     } catch {
       return {};
@@ -237,7 +266,7 @@ class StorageService {
 
   public getAllFlashcardResults(): Record<string, FlashcardResult> {
     try {
-      const data = localStorage.getItem(STORAGE_KEYS.FLASHCARD_RESULTS);
+      const data = getLocalItem('FLASHCARD_RESULTS');
       return data ? JSON.parse(data) : {};
     } catch {
       return {};
@@ -389,7 +418,7 @@ class StorageService {
 
   public getAuditLogs(): TeacherAuditLog[] {
     try {
-      const data = localStorage.getItem(STORAGE_KEYS.AUDIT_LOGS);
+      const data = getLocalItem('AUDIT_LOGS');
       return data ? JSON.parse(data) : [];
     } catch {
       return [];
@@ -410,6 +439,42 @@ class StorageService {
 
   public resetPlayerProgress(playerId: string): void {
     this.resetPlayerAttempts(playerId);
+  }
+
+  public async updatePlayerName(playerId: string, newName: string): Promise<boolean> {
+    const cleanName = newName.trim();
+    if (!cleanName) return false;
+
+    // Update local players
+    const all = this.getAllPlayers();
+    const updated = all.map(p => {
+      if (p.id === playerId) {
+        return { ...p, name: cleanName, displayName: cleanName };
+      }
+      return p;
+    });
+    localStorage.setItem(STORAGE_KEYS.PLAYERS_LIST, JSON.stringify(updated));
+
+    // Update current player if active
+    const cur = this.getStoredCurrentPlayer();
+    if (cur && cur.id === playerId) {
+      this.setStoredCurrentPlayer({ ...cur, name: cleanName, displayName: cleanName });
+    }
+
+    // Try Supabase update if configured
+    if (isSupabaseConfigured && supabase) {
+      try {
+        await supabase
+          .from('players')
+          .update({ name: cleanName, display_name: cleanName })
+          .eq('id', playerId);
+      } catch (err) {
+        console.warn('Supabase name update error:', err);
+      }
+    }
+
+    this.logAudit('RENAME_PLAYER', `Teacher renamed player ${playerId} to "${cleanName}"`);
+    return true;
   }
 }
 

@@ -240,3 +240,42 @@ export const READING_TEXT = {
     { en: "younger", pt: "mais novo(a)" }
   ]
 };
+
+// Fisher-Yates shuffle algorithm
+export function shuffleArray<T>(array: T[]): T[] {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+/**
+ * Returns a randomized quiz session where:
+ * 1. Questions order within each activity is shuffled.
+ * 2. Options (A, B, C, D) for each question are shuffled so option A is never predictable.
+ * 3. Correct answer mapping (isCorrect: true) is strictly maintained.
+ */
+export function getRandomizedQuizSession(): QuizQuestion[] {
+  const letters = ['A', 'B', 'C', 'D'];
+
+  const act1 = QUIZ_QUESTIONS.filter(q => q.activity === 1);
+  const act2 = QUIZ_QUESTIONS.filter(q => q.activity === 2);
+
+  const shuffledAct1 = shuffleArray(act1);
+  const shuffledAct2 = shuffleArray(act2);
+
+  return [...shuffledAct1, ...shuffledAct2].map(q => {
+    const shuffledQuad = shuffleArray(q.optionsQuad).map((opt, idx) => ({
+      ...opt,
+      letter: letters[idx] || opt.letter
+    }));
+
+    return {
+      ...q,
+      optionsQuad: shuffledQuad
+    };
+  });
+}
+

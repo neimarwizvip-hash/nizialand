@@ -3,9 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Volume2, VolumeX, Music, Trophy, Shield, LogOut, Lock } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { TEAMS_CONFIG } from '../../data/mockData';
+import { PlayerAvatar } from '../ui/PlayerAvatar';
 
 export const GameHeader: React.FC = () => {
-  const { currentPlayer, totalScore, isSoundOn, toggleSound, isMusicOn, toggleMusic, logout } = useGame();
+  const { currentPlayer, totalScore, playerLevel, isSoundOn, toggleSound, isMusicOn, toggleMusic, logout } = useGame();
   const navigate = useNavigate();
 
   const team = currentPlayer ? TEAMS_CONFIG[currentPlayer.team] : null;
@@ -45,7 +46,7 @@ export const GameHeader: React.FC = () => {
         {/* Game Logo & Motto */}
         <Link to="/" className="flex items-center gap-2 group">
           <div className="bg-gradient-to-b from-amber-400 to-amber-600 text-slate-950 font-heading font-black text-xl sm:text-2xl px-3 py-1 rounded-xl shadow-game-sm border border-amber-300 transform group-hover:scale-105 transition-transform">
-            NIZIALAND
+            NISIALAND
           </div>
           <span className="hidden md:inline-block text-xs font-heading font-bold text-amber-400 tracking-widest uppercase">
             EXPLORE • LEARN • PLAY
@@ -57,14 +58,18 @@ export const GameHeader: React.FC = () => {
           <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
             {/* Player Card */}
             <div className="flex items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-2xl border border-slate-700 shadow-sm">
-              <img
-                src={currentPlayer.avatar}
-                alt={currentPlayer.displayName}
-                className="w-8 h-8 rounded-full border-2 border-amber-400 object-cover shadow-sm"
+              <PlayerAvatar
+                avatarId={currentPlayer.avatar}
+                skinTone={currentPlayer.skinTone}
+                size="sm"
+                className="border-2 border-amber-400"
               />
               <div className="leading-tight">
                 <div className="font-heading font-black text-sm text-slate-100 flex items-center gap-1.5">
                   {currentPlayer.displayName}
+                  <span className="text-[9px] font-heading font-black px-1.5 py-0.5 bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 rounded-md shadow-xs">
+                    NV {playerLevel}
+                  </span>
                   <span className="text-[10px] font-bold px-1.5 py-0.2 bg-slate-700 text-amber-400 rounded-full">
                     {currentPlayer.className}
                   </span>

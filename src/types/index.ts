@@ -1,4 +1,4 @@
-// Shared TypeScript types for NIZIALAND Educational Game
+// Shared TypeScript types for NISIALAND Educational Game
 
 export type TeamId = 'blue' | 'purple';
 
@@ -23,8 +23,19 @@ export interface PlayerProfile {
   className: string; // e.g. '804', '801', '802', '803'
   team: TeamId;
   avatar: string;
+  skinTone?: 'light' | 'medium' | 'dark' | 'warm';
+  level?: number;
   createdAt: string;
   lastLoginAt: string;
+}
+
+export function calculatePlayerLevel(score: number): number {
+  if (score >= 1600) return 5;
+  if (score >= 1200) return 4;
+  if (score >= 800) return 3;
+  if (score >= 400) return 2;
+  if (score >= 100) return 1;
+  return 0; // Level 0
 }
 
 export interface QuizOption {

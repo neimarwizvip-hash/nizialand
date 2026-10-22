@@ -7,12 +7,26 @@ export default {
   theme: {
     extend: {
       colors: {
+        'nisia-blue': {
+          DEFAULT: '#2563eb',
+          dark: '#1d4ed8',
+          light: '#60a5fa',
+          deep: '#1e3a8a',
+          glow: 'rgba(59, 130, 246, 0.6)'
+        },
         'nizia-blue': {
           DEFAULT: '#2563eb',
           dark: '#1d4ed8',
           light: '#60a5fa',
           deep: '#1e3a8a',
           glow: 'rgba(59, 130, 246, 0.6)'
+        },
+        'nisia-purple': {
+          DEFAULT: '#7c3aed',
+          dark: '#6d28d9',
+          light: '#c084fc',
+          deep: '#4c1d95',
+          glow: 'rgba(168, 85, 247, 0.6)'
         },
         'nizia-purple': {
           DEFAULT: '#7c3aed',
@@ -21,11 +35,22 @@ export default {
           deep: '#4c1d95',
           glow: 'rgba(168, 85, 247, 0.6)'
         },
+        'nisia-gold': {
+          DEFAULT: '#f59e0b',
+          light: '#fde047',
+          dark: '#b45309',
+          glow: 'rgba(245, 158, 11, 0.6)'
+        },
         'nizia-gold': {
           DEFAULT: '#f59e0b',
           light: '#fde047',
           dark: '#b45309',
           glow: 'rgba(245, 158, 11, 0.6)'
+        },
+        'nisia-green': {
+          DEFAULT: '#10b981',
+          light: '#6ee7b7',
+          dark: '#047857'
         },
         'nizia-green': {
           DEFAULT: '#10b981',

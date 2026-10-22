@@ -16,13 +16,26 @@ import {
 } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { FLASHCARD_STUDENTS, FLASHCARD_CHALLENGES } from '../../data/flashcardData';
-import { FlashcardStudent, FlashcardRoundAttempt, FlashcardResult } from '../../types';
+import { shuffleArray } from '../../data/quizQuestions';
+import { FlashcardStudent, FlashcardChallenge, FlashcardRoundAttempt, FlashcardResult } from '../../types';
 import { audioService } from '../../services/audio';
 import { speechService } from '../../services/speech';
 import { fireConfetti } from '../../components/ui/ConfettiEffect';
 import { GameHeader } from '../../components/layout/GameHeader';
 
 type GamePhase = 'memorize' | 'challenge' | 'round_completed' | 'finished';
+
+// Vibrant card header colors matching mockups
+const STUDENT_COLORS: Record<string, { bg: string; text: string; ageBg: string }> = {
+  juliana: { bg: 'bg-[#fbcfe8]', text: 'text-slate-900', ageBg: 'bg-amber-400 text-slate-950' },
+  mateus: { bg: 'bg-[#bae6fd]', text: 'text-slate-900', ageBg: 'bg-amber-400 text-slate-950' },
+  carlos: { bg: 'bg-[#bbf7d0]', text: 'text-slate-900', ageBg: 'bg-amber-400 text-slate-950' },
+  gabriel: { bg: 'bg-[#fef08a]', text: 'text-slate-900', ageBg: 'bg-amber-400 text-slate-950' },
+  rafael: { bg: 'bg-[#bfdbfe]', text: 'text-slate-900', ageBg: 'bg-amber-400 text-slate-950' },
+  beatriz: { bg: 'bg-[#fed7aa]', text: 'text-slate-900', ageBg: 'bg-amber-400 text-slate-950' },
+  larissa: { bg: 'bg-[#e9d5ff]', text: 'text-slate-900', ageBg: 'bg-amber-400 text-slate-950' },
+  sofia: { bg: 'bg-[#99f6e4]', text: 'text-slate-900', ageBg: 'bg-amber-400 text-slate-950' }
+};
 
 export const FlashcardScreen: React.FC = () => {
   const navigate = useNavigate();
@@ -32,6 +45,11 @@ export const FlashcardScreen: React.FC = () => {
     navigate('/register');
     return null;
   }
+
+  // Shuffled cards array on every game session / mount so memorization positions are never identical
+  const [sessionStudents] = useState<FlashcardStudent[]>(() => shuffleArray(FLASHCARD_STUDENTS));
+  // Shuffled challenges for dynamic round variation
+  const [sessionChallenges] = useState<FlashcardChallenge[]>(() => shuffleArray(FLASHCARD_CHALLENGES));
 
   // --- GAME STATE ---
   const [phase, setPhase] = useState<GamePhase>('memorize');
@@ -51,8 +69,16 @@ export const FlashcardScreen: React.FC = () => {
     detail: string;
   }>({ type: 'none', message: '', detail: '' });
 
-  const currentChallenge = FLASHCARD_CHALLENGES[currentRoundIndex];
+  const currentChallenge = sessionChallenges[currentRoundIndex] || sessionChallenges[0];
   const isBlue = currentPlayer.team === 'blue';
+
+  // Duck music volume on flashcard mount for focus, restore on unmount
+  useEffect(() => {
+    audioService.duckVolume(true);
+    return () => {
+      audioService.duckVolume(false);
+    };
+  }, []);
 
   // --- 30S COUNTDOWN TIMER ---
   useEffect(() => {
@@ -94,40 +120,36 @@ export const FlashcardScreen: React.FC = () => {
     }
   };
 
-  // --- CARD CLICK INTERACTION ---
+  // Card click interaction in Challenge Phase
   const handleCardClick = (student: FlashcardStudent) => {
     if (phase !== 'challenge' || revealedCardIds.includes(student.id)) return;
 
     audioService.playFlip();
-    const newRevealed = [...revealedCardIds, student.id];
-    setRevealedCardIds(newRevealed);
+    const isCorrect = currentChallenge.validateCard(student);
+    const newAttemptNumber = attemptsThisRound + 1;
+    setAttemptsThisRound(newAttemptNumber);
+    setRevealedCardIds(prev => [...prev, student.id]);
     setLastPickedStudent(student);
 
-    const newAttemptsCount = attemptsThisRound + 1;
-    setAttemptsThisRound(newAttemptsCount);
-
-    const isMatch = currentChallenge.validateCard(student);
-
-    if (isMatch) {
-      // Correct Match!
-      const points = newAttemptsCount === 1 ? 100 : (newAttemptsCount === 2 ? 50 : 25);
+    if (isCorrect) {
+      // Correct!
+      const points = newAttemptNumber === 1 ? 100 : newAttemptNumber === 2 ? 50 : 25;
       audioService.playCorrect();
       fireConfetti();
-      setAccumulatedScore((prev) => prev + points);
+      setAccumulatedScore(prev => prev + points);
 
       setRoundFeedback({
         type: 'correct',
-        message: `CORRECT! +${points} POINTS!`,
-        detail: `${student.name} is ${student.age} years old! (${currentChallenge.compText} ${currentChallenge.targetName})`
+        message: `CORRECT! ${student.name} is ${student.age} years old!`,
+        detail: currentChallenge.ruleExplanation
       });
 
-      // Record round attempt
-      setRoundAttempts((prev) => [
+      setRoundAttempts(prev => [
         ...prev,
         {
           round: currentRoundIndex + 1,
           challengeId: currentChallenge.id,
-          attemptsUsed: newAttemptsCount,
+          attemptsUsed: newAttemptNumber,
           chosenStudentId: student.id,
           isCorrect: true,
           pointsEarned: points
@@ -136,31 +158,25 @@ export const FlashcardScreen: React.FC = () => {
 
       setPhase('round_completed');
     } else {
-      // Wrong Match!
+      // Wrong card chosen!
       audioService.playWrong();
-      const nextHearts = heartsLeft - 1;
-      setHeartsLeft(nextHearts);
+      const newHearts = heartsLeft - 1;
+      setHeartsLeft(newHearts);
 
-      if (nextHearts > 0 && newAttemptsCount < 3) {
+      if (newHearts <= 0) {
+        // Out of hearts for this round
         setRoundFeedback({
           type: 'wrong',
-          message: 'TRY AGAIN!',
-          detail: `${student.name} is ${student.age} years old. Find someone ${currentChallenge.compText} ${currentChallenge.targetName} (${currentChallenge.targetAge})!`
-        });
-      } else {
-        // Out of attempts for this round
-        setRoundFeedback({
-          type: 'wrong',
-          message: 'ROUND OVER (0 PTS)',
+          message: `NO MORE HEARTS! ${student.name} is ${student.age} years old.`,
           detail: currentChallenge.ruleExplanation
         });
 
-        setRoundAttempts((prev) => [
+        setRoundAttempts(prev => [
           ...prev,
           {
             round: currentRoundIndex + 1,
             challengeId: currentChallenge.id,
-            attemptsUsed: newAttemptsCount,
+            attemptsUsed: 3,
             chosenStudentId: student.id,
             isCorrect: false,
             pointsEarned: 0
@@ -168,6 +184,13 @@ export const FlashcardScreen: React.FC = () => {
         ]);
 
         setPhase('round_completed');
+      } else {
+        // Still has hearts left
+        setRoundFeedback({
+          type: 'wrong',
+          message: `Not quite! ${student.name} is ${student.age} years old.`,
+          detail: `You have ${newHearts} ${newHearts === 1 ? 'heart' : 'hearts'} left! Try again.`
+        });
       }
     }
   };
@@ -175,7 +198,7 @@ export const FlashcardScreen: React.FC = () => {
   // --- ADVANCE TO NEXT ROUND OR COMPLETE MISSION ---
   const handleNextRound = async () => {
     audioService.playClick();
-    if (currentRoundIndex < FLASHCARD_CHALLENGES.length - 1) {
+    if (currentRoundIndex < sessionChallenges.length - 1) {
       setCurrentRoundIndex((prev) => prev + 1);
       setAttemptsThisRound(0);
       setRevealedCardIds([]);
@@ -193,7 +216,7 @@ export const FlashcardScreen: React.FC = () => {
       const result: FlashcardResult = {
         completed: true,
         totalScore,
-        roundsCompleted: FLASHCARD_CHALLENGES.length,
+        roundsCompleted: sessionChallenges.length,
         stars,
         startedAt: new Date(Date.now() - 300000).toISOString(),
         completedAt: new Date().toISOString(),
@@ -206,224 +229,247 @@ export const FlashcardScreen: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex flex-col justify-between overflow-x-hidden">
-      <GameHeader />
+    <div className="relative min-h-screen bg-slate-950 text-white flex flex-col justify-between overflow-x-hidden">
+      {/* Background: Hallway matching approved mockup */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <img
+          src="/assets/nisialand_hallway_bg.jpg"
+          alt="Corredor da Escola"
+          className="w-full h-full object-cover filter brightness-[0.88]"
+        />
+        <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-[1px]" />
+      </div>
 
-      <main className="flex-1 w-full max-w-5xl mx-auto px-3 py-3 md:py-4 flex flex-col justify-between">
+      <div className="relative z-10">
+        <GameHeader />
+      </div>
+
+      <main className="relative z-10 flex-1 w-full max-w-5xl mx-auto px-3 sm:px-4 py-3 md:py-6 flex flex-col justify-center">
         
-        {/* Top Control Bar: Round, Hearts, Timer, Points */}
-        <div className="bg-slate-900/90 border-2 border-slate-700 rounded-2xl p-3 md:p-4 shadow-xl backdrop-blur-sm mb-3">
-          <div className="flex items-center justify-between gap-2 flex-wrap">
-            
-            {/* Round info */}
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-xl bg-purple-600/30 border border-purple-400 text-purple-300 font-bungee text-xs tracking-wider">
-                {phase === 'memorize' ? 'PHASE 1: MEMORIZE' : `ROUND ${currentRoundIndex + 1} OF ${FLASHCARD_CHALLENGES.length}`}
-              </span>
-              <div className={`hidden sm:flex items-center gap-1 px-2.5 py-0.5 rounded-xl text-xs font-bold border ${
-                isBlue ? 'bg-blue-900/40 border-blue-400 text-blue-300' : 'bg-purple-900/40 border-purple-400 text-purple-300'
-              }`}>
-                <Shield className="w-3.5 h-3.5 fill-current" />
-                <span>{isBlue ? 'BLUE' : 'PURPLE'}</span>
-              </div>
-            </div>
-
-            {/* Phase 1 Countdown or Hearts */}
-            {phase === 'memorize' ? (
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 px-3 py-1 bg-amber-500/20 border border-amber-400 text-amber-300 rounded-xl font-bungee text-sm">
-                  <Clock className="w-4 h-4 animate-spin" />
-                  <span>{countdown}s</span>
+        {/* --- MAIN FLOATING FLASHCARD PANEL (Neon Cyan Glow as in Mockup) --- */}
+        <div className="w-full rounded-3xl border-2 border-cyan-400 bg-[#0b1528]/95 p-4 sm:p-6 shadow-[0_0_35px_rgba(0,210,255,0.4)] backdrop-blur-xl flex flex-col justify-between my-auto animate-fadeIn">
+          
+          {/* Top Control Bar: Phase, Team, Timer, Hearts, Score */}
+          <div className="border-b border-cyan-500/30 pb-3 mb-4">
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              
+              {/* Phase info pill */}
+              <div className="flex items-center gap-2">
+                <span className="px-3.5 py-1 rounded-full bg-purple-600/40 border border-purple-400 text-purple-200 font-heading font-black text-xs sm:text-sm tracking-wider uppercase shadow-game-sm">
+                  {phase === 'memorize' ? 'PHASE 1: MEMORIZE' : `ROUND ${currentRoundIndex + 1} OF ${sessionChallenges.length}`}
+                </span>
+                
+                <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-heading font-black border shadow-sm ${
+                  isBlue ? 'bg-blue-600/30 border-cyan-400 text-cyan-300' : 'bg-purple-600/30 border-purple-400 text-purple-300'
+                }`}>
+                  <Shield className="w-3.5 h-3.5 fill-current" />
+                  <span>{isBlue ? 'BLUE' : 'PURPLE'}</span>
                 </div>
-                <button
-                  type="button"
-                  onClick={handleSkipTimer}
-                  className="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold border border-blue-400 shadow-sm transition-all cursor-pointer"
-                >
-                  I'm Ready! →
-                </button>
+              </div>
+
+              {/* Phase 1 Countdown or Phase 2 Hearts */}
+              {phase === 'memorize' ? (
+                <div className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-500/20 border-2 border-amber-400 text-amber-300 rounded-full font-heading font-black text-xs sm:text-sm shadow-sm animate-pulse">
+                    <Clock className="w-4 h-4 text-amber-400" />
+                    <span>⏱️ {countdown}s</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleSkipTimer}
+                    className="px-3.5 py-1 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-400 hover:to-cyan-400 text-white rounded-full text-xs font-heading font-black border border-white shadow-sm transition-all transform active:scale-95"
+                  >
+                    I'm Ready! →
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 bg-[#07101e] px-3 py-1 rounded-full border border-slate-700">
+                  <span className="text-[11px] text-slate-300 font-heading font-bold uppercase hidden sm:inline">Chances:</span>
+                  {[1, 2, 3].map((heartIndex) => (
+                    <Heart
+                      key={heartIndex}
+                      className={`w-5 h-5 transition-transform ${
+                        heartIndex <= heartsLeft
+                          ? 'text-red-500 fill-red-500 scale-110 drop-shadow-[0_0_8px_rgba(239,68,68,0.7)]'
+                          : 'text-slate-700 fill-slate-800 scale-90'
+                      }`}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Score tracker */}
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400 text-amber-300 font-heading font-black text-xs sm:text-sm shadow-sm">
+                <Award className="w-4 h-4 text-amber-400" />
+                <span>{accumulatedScore} PTS</span>
+              </div>
+
+            </div>
+          </div>
+
+          {/* Prompt Banner (Center Header) */}
+          <div className="bg-[#081324] border border-cyan-500/40 rounded-2xl p-3.5 mb-4 text-center shadow-lg">
+            {phase === 'memorize' ? (
+              <div>
+                <h2 className="text-base sm:text-xl font-heading font-black text-amber-300 flex items-center justify-center gap-2">
+                  <span>🃏</span> MEMORIZE THE 8 STUDENTS AND THEIR AGES! <span>🃏</span>
+                </h2>
+                <p className="text-xs text-cyan-200 mt-1 font-medium">
+                  You have <strong className="text-amber-400">{countdown} seconds</strong> before the cards flip face-down!
+                </p>
               </div>
             ) : (
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs text-slate-400 font-bold uppercase hidden sm:inline">Chances:</span>
-                {[1, 2, 3].map((heartIndex) => (
-                  <Heart
-                    key={heartIndex}
-                    className={`w-5 h-5 transition-transform ${
-                      heartIndex <= heartsLeft
-                        ? 'text-red-500 fill-red-500 scale-105'
-                        : 'text-slate-700 fill-slate-800'
-                    }`}
-                  />
-                ))}
+              <div>
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <span className="text-xs font-heading font-black text-cyan-400 uppercase tracking-widest">
+                    🎯 MISSION 2 • FIND THE RIGHT CARD:
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handlePronounce}
+                    className="p-1 rounded-lg bg-blue-600/30 text-cyan-300 hover:bg-blue-600/50 transition-colors"
+                    title="Ouvir desafio em inglês"
+                  >
+                    <Volume2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                <h2 className="text-lg sm:text-2xl font-heading font-black text-amber-300">
+                  {currentChallenge?.questionEn}
+                </h2>
+                <p className="text-xs text-slate-300 mt-0.5 italic">
+                  ({currentChallenge?.questionPt})
+                </p>
               </div>
             )}
-
-            {/* Score tracker */}
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-500/20 border border-amber-400/50 text-amber-300 font-black text-sm">
-              <Award className="w-4 h-4 text-amber-400" />
-              <span>{accumulatedScore} PTS</span>
-            </div>
-
           </div>
-        </div>
 
-        {/* --- CHALLENGE QUESTION PROMPT (Static top area) --- */}
-        <div className="bg-slate-900/80 border-2 border-slate-700 rounded-2xl p-4 shadow-xl backdrop-blur-md mb-3 text-center relative overflow-hidden">
-          {phase === 'memorize' ? (
-            <div>
-              <h2 className="text-base sm:text-xl font-black font-bungee text-amber-300">
-                MEMORIZE THE 8 STUDENTS AND THEIR AGES!
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-300 mt-1">
-                You have <strong>{countdown} seconds</strong> before the cards flip face-down!
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-xs font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-purple-900/60 border border-purple-400 text-purple-300">
-                  CHALLENGE {currentRoundIndex + 1}
-                </span>
-                <button
-                  type="button"
-                  onClick={handlePronounce}
-                  title="Pronounce in English"
-                  className="p-1 rounded-lg bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 border border-blue-400/30 text-xs font-bold transition-all cursor-pointer flex items-center gap-1"
-                >
-                  <Volume2 className="w-4 h-4 text-blue-400" />
-                  <span className="text-[11px] hidden sm:inline">Listen</span>
-                </button>
-              </div>
+          {/* 8 Flashcards Grid (4 columns x 2 rows as in Mockup) */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 mb-3">
+            {sessionStudents.map((student) => {
+              const isRevealed = phase === 'memorize' || revealedCardIds.includes(student.id);
+              const isLastPicked = lastPickedStudent?.id === student.id;
+              const isCorrectMatch = currentChallenge?.validateCard(student);
+              const colorInfo = STUDENT_COLORS[student.id] || { bg: 'bg-[#bae6fd]', text: 'text-slate-900', ageBg: 'bg-amber-400 text-slate-950' };
 
-              <h2 className="text-lg sm:text-2xl font-black font-bungee text-amber-300 tracking-wide">
-                "{currentChallenge.questionEn}"
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-400 font-medium">
-                {currentChallenge.questionPt}
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* --- 8 FLASHCARDS GRID (4 columns x 2 rows, compact, no scroll) --- */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 my-auto">
-          {FLASHCARD_STUDENTS.map((student) => {
-            const isRevealed = phase === 'memorize' || revealedCardIds.includes(student.id);
-            const isLastPicked = lastPickedStudent?.id === student.id;
-            const isCorrectMatch = currentChallenge?.validateCard(student);
-
-            let borderEffect = "border-slate-700 hover:border-purple-400";
-            if (isRevealed && phase !== 'memorize') {
-              if (isCorrectMatch) {
-                borderEffect = "border-emerald-400 ring-4 ring-emerald-500/40 shadow-[0_0_20px_rgba(16,185,129,0.5)]";
-              } else if (isLastPicked) {
-                borderEffect = "border-red-500 ring-4 ring-red-500/40 shadow-[0_0_20px_rgba(239,68,68,0.5)]";
+              let borderEffect = "border-cyan-500/40 hover:border-cyan-300";
+              if (isRevealed && phase !== 'memorize') {
+                if (isCorrectMatch) {
+                  borderEffect = "border-emerald-400 ring-4 ring-emerald-500/50 shadow-[0_0_20px_rgba(16,185,129,0.7)]";
+                } else if (isLastPicked) {
+                  borderEffect = "border-red-500 ring-4 ring-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.7)]";
+                }
               }
-            }
 
-            return (
-              <div
-                key={student.id}
-                onClick={() => handleCardClick(student)}
-                className={`perspective-1000 aspect-[3/4] max-h-48 sm:max-h-56 cursor-pointer transition-transform duration-200 select-none ${
-                  phase === 'challenge' && !revealedCardIds.includes(student.id) ? 'hover:scale-103 active:scale-97' : ''
-                }`}
-              >
+              return (
                 <div
-                  className={`w-full h-full relative transition-transform duration-500 transform-style-preserve-3d rounded-2xl ${
-                    isRevealed ? '' : 'rotate-y-180'
+                  key={student.id}
+                  onClick={() => handleCardClick(student)}
+                  className={`perspective-1000 aspect-[3/4] max-h-52 sm:max-h-60 cursor-pointer transition-transform duration-200 select-none ${
+                    phase === 'challenge' && !revealedCardIds.includes(student.id) ? 'hover:scale-103 active:scale-97' : ''
                   }`}
                 >
-                  {/* FRONT: Student Photo, Name & Age Badge */}
                   <div
-                    className={`absolute inset-0 w-full h-full rounded-2xl border-3 bg-gradient-to-b from-slate-800 to-slate-900 backface-hidden p-2 flex flex-col justify-between items-center shadow-lg ${borderEffect}`}
+                    className={`w-full h-full relative transition-transform duration-500 transform-style-preserve-3d rounded-2xl ${
+                      isRevealed ? '' : 'rotate-y-180'
+                    }`}
                   >
-                    <div className="w-full flex items-center justify-between">
-                      <span className="font-bungee text-xs sm:text-sm text-white truncate">
-                        {student.name}
+                    {/* FRONT: Colorful Pastel Background Card */}
+                    <div
+                      className={`absolute inset-0 w-full h-full rounded-2xl border-2 bg-[#0c1a32] backface-hidden p-2 flex flex-col justify-between items-center shadow-lg ${borderEffect}`}
+                    >
+                      {/* Top Header of Card: Name and Age Badge */}
+                      <div className="w-full flex items-center justify-between px-1">
+                        <span className="font-heading font-black text-xs sm:text-sm text-white truncate">
+                          {student.name}
+                        </span>
+                        <span className="px-2 py-0.5 rounded-md bg-amber-400 text-slate-950 font-heading font-black text-[10px] sm:text-xs shadow">
+                          {student.age} yrs
+                        </span>
+                      </div>
+
+                      {/* Photo Container with Pastel Background */}
+                      <div className={`relative w-full flex-1 my-1.5 rounded-xl overflow-hidden ${colorInfo.bg} flex items-center justify-center p-1 border border-slate-700/60`}>
+                        <img
+                          src={student.img}
+                          alt={student.name}
+                          onError={(e) => { e.currentTarget.src = `/assets/avatar_${student.id}.jpg`; }}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      </div>
+
+                      {/* Footer: Name + Age + School */}
+                      <div className="w-full text-center leading-tight">
+                        <div className="text-xs font-heading font-black text-white">
+                          {student.name}
+                        </div>
+                        <div className="text-[11px] font-bold text-amber-300">
+                          {student.age} years old
+                        </div>
+                        <span className="text-[9px] text-slate-400 block truncate">
+                          Nísia Vilela Fernandes
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* BACK: NISIALAND Official Card Back */}
+                    <div
+                      className="absolute inset-0 w-full h-full rounded-2xl border-2 border-cyan-400/80 bg-gradient-to-br from-blue-950 via-indigo-950 to-slate-950 backface-hidden rotate-y-180 p-2 flex flex-col items-center justify-center text-center shadow-xl hover:border-amber-300 transition-colors"
+                    >
+                      <div className="w-11 h-11 rounded-2xl bg-blue-900/80 border-2 border-cyan-400 flex items-center justify-center text-amber-300 shadow-md mb-2">
+                        <Layers className="w-6 h-6 text-cyan-300" />
+                      </div>
+                      <span className="font-heading font-black text-xs sm:text-sm text-amber-300 tracking-wider">
+                        NISIALAND
                       </span>
-                      <span className="px-2 py-0.5 rounded-lg bg-amber-400 text-slate-950 font-black text-xs shadow">
-                        {student.age} yrs
+                      <span className="text-[9px] text-cyan-200 font-heading font-bold uppercase mt-1">
+                        Tap to reveal
                       </span>
                     </div>
 
-                    <div className="relative w-full flex-1 my-1.5 rounded-xl overflow-hidden border border-slate-700 bg-slate-950">
-                      <img
-                        src={student.img}
-                        alt={student.name}
-                        onError={(e) => { e.currentTarget.src = `/assets/avatar_${student.id}.jpg`; }}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-
-                    <div className="w-full text-center">
-                      <span className="text-[10px] font-semibold text-slate-400">
-                        Nísia Vilela Fernandes
-                      </span>
-                    </div>
                   </div>
-
-                  {/* BACK: NIZIALAND Game Card Back */}
-                  <div
-                    className="absolute inset-0 w-full h-full rounded-2xl border-3 border-indigo-400/60 bg-gradient-to-br from-indigo-900 via-purple-950 to-slate-900 backface-hidden rotate-y-180 p-2 flex flex-col items-center justify-center text-center shadow-xl hover:border-amber-300 transition-colors"
-                  >
-                    <div className="w-12 h-12 rounded-2xl bg-indigo-800/80 border-2 border-indigo-300 flex items-center justify-center text-amber-300 shadow-md mb-2">
-                      <Layers className="w-6 h-6" />
-                    </div>
-                    <span className="font-bungee text-xs sm:text-sm text-amber-300 tracking-wider">
-                      NIZIALAND
-                    </span>
-                    <span className="text-[10px] text-purple-300 font-bold uppercase mt-1">
-                      Tap to reveal
-                    </span>
-                  </div>
-
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
 
-        {/* --- BOTTOM FEEDBACK & NEXT ACTION BAR --- */}
-        <div className="mt-3">
-          {roundFeedback.type !== 'none' && (
-            <div className={`p-3 rounded-2xl border-2 flex items-center justify-between gap-3 animate-in fade-in duration-200 ${
-              roundFeedback.type === 'correct'
-                ? 'bg-emerald-950/80 border-emerald-500 text-emerald-200'
-                : 'bg-red-950/80 border-red-500 text-red-200'
-            }`}>
-              <div className="flex items-center gap-2.5">
-                {roundFeedback.type === 'correct' ? (
-                  <CheckCircle2 className="w-6 h-6 text-emerald-400 flex-shrink-0" />
-                ) : (
-                  <AlertCircle className="w-6 h-6 text-red-400 flex-shrink-0" />
-                )}
-                <div>
-                  <div className="font-bungee text-sm sm:text-base">
-                    {roundFeedback.message}
-                  </div>
-                  <p className="text-xs sm:text-sm opacity-90">
-                    {roundFeedback.detail}
-                  </p>
+          {/* Feedback & Continue Bar after round */}
+          {phase === 'round_completed' && (
+            <div className="pt-3 border-t border-cyan-500/30 flex flex-col sm:flex-row items-center justify-between gap-3 animate-fadeIn">
+              <div className="text-left">
+                <div className="flex items-center gap-2 mb-0.5">
+                  {roundFeedback.type === 'correct' ? (
+                    <span className="text-emerald-400 font-heading font-black text-sm flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4" /> {roundFeedback.message}
+                    </span>
+                  ) : (
+                    <span className="text-red-400 font-heading font-black text-sm flex items-center gap-1.5">
+                      <AlertCircle className="w-4 h-4" /> {roundFeedback.message}
+                    </span>
+                  )}
                 </div>
+                <p className="text-xs text-slate-300 max-w-xl">
+                  {roundFeedback.detail}
+                </p>
               </div>
 
-              {phase === 'round_completed' && (
-                <button
-                  type="button"
-                  onClick={handleNextRound}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-b from-amber-400 to-yellow-500 hover:from-amber-300 text-slate-950 font-bungee text-xs sm:text-sm tracking-wider shadow-md active:translate-y-0.5 border border-yellow-200 flex items-center gap-2 transition-all cursor-pointer flex-shrink-0"
-                >
-                  <span>{currentRoundIndex < FLASHCARD_CHALLENGES.length - 1 ? 'NEXT ROUND' : 'SEE FINAL RESULTS'}</span>
-                  <ArrowRight className="w-4 h-4 stroke-[3]" />
-                </button>
-              )}
+              <button
+                type="button"
+                onClick={handleNextRound}
+                className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 text-slate-950 font-heading font-black text-sm uppercase tracking-wider rounded-full border-2 border-amber-600 shadow-glow-gold hover:from-amber-300 hover:to-amber-200 transform active:scale-95 transition-all flex items-center justify-center gap-2 flex-shrink-0"
+              >
+                <span>{currentRoundIndex < sessionChallenges.length - 1 ? 'NEXT ROUND →' : 'FINAL RESULTS →'}</span>
+              </button>
             </div>
           )}
-        </div>
 
+        </div>
       </main>
+
+      {/* Footer Branding */}
+      <footer className="relative z-10 w-full text-center py-3 text-xs text-slate-400 border-t border-slate-900 bg-slate-950/70 backdrop-blur-sm">
+        Escola Municipal Nísia Vilela Fernandes • Duque de Caxias • Prof. Neimar Oliveira
+      </footer>
     </div>
   );
 };

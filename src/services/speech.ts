@@ -1,4 +1,4 @@
-// Web Speech API Service for NIZIALAND
+// Web Speech API Service for NISIALAND
 
 export function speakEnglish(text: string) {
   if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
@@ -30,5 +30,6 @@ export function speakEnglish(text: string) {
 }
 
 export const speechService = {
-  speakEnglish
+  speakEnglish,
+  speak: (text: string, _lang: string = 'en-US') => speakEnglish(text)
 };

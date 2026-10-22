@@ -1,17 +1,17 @@
 import { describe, it, expect } from 'vitest';
 import { generatePlayerCode } from '../src/services/storage';
-import { QUIZ_QUESTIONS } from '../src/data/quizQuestions';
+import { QUIZ_QUESTIONS, getRandomizedQuizSession, shuffleArray } from '../src/data/quizQuestions';
 import { FLASHCARD_CHALLENGES, FLASHCARD_STUDENTS } from '../src/data/flashcardData';
 
-describe('NIZIALAND Educational Game — Core Rules & Integrity', () => {
+describe('NISIALAND Educational Game — Core Rules & Integrity', () => {
 
   describe('Player Identification & Privacy', () => {
-    it('generates a secure, non-predictable player code format NZL-{class}-{random}', () => {
+    it('generates a secure, non-predictable player code format NSL-{class}-{random}', () => {
       const code1 = generatePlayerCode('804');
       const code2 = generatePlayerCode('804');
       
-      expect(code1).toMatch(/^NZL-804-[A-Z0-9]{3}$/);
-      expect(code2).toMatch(/^NZL-804-[A-Z0-9]{3}$/);
+      expect(code1).toMatch(/^NSL-804-[A-Z0-9]{3}$/);
+      expect(code2).toMatch(/^NSL-804-[A-Z0-9]{3}$/);
       expect(code1).not.toBe(code2);
     });
   });
@@ -42,6 +42,32 @@ describe('NIZIALAND Educational Game — Core Rules & Integrity', () => {
       expect(calcPoints(false, 1)).toBe(0);
       expect(calcPoints(false, 2)).toBe(0);
       expect(calcPoints(true, 3)).toBe(0); // Max 2 attempts allowed
+    });
+
+    it('shuffles quiz options so correct answers are not predictable at option A', () => {
+      const session = getRandomizedQuizSession();
+      expect(session.length).toBe(10);
+
+      // Verify every question still has exactly 1 correct option with matching text
+      session.forEach((q) => {
+        const correctOpts = q.optionsQuad.filter((opt) => opt.isCorrect);
+        expect(correctOpts.length).toBe(1);
+        expect(q.optionsQuad.length).toBe(4);
+        expect(['A', 'B', 'C', 'D']).toEqual(q.optionsQuad.map((o) => o.letter));
+      });
+
+      // Sample multiple sessions: correct option letters must not be universally 'A'
+      const correctIndices: number[] = [];
+      for (let s = 0; s < 10; s++) {
+        const sess = getRandomizedQuizSession();
+        sess.forEach((q) => {
+          const idx = q.optionsQuad.findIndex((o) => o.isCorrect);
+          correctIndices.push(idx);
+        });
+      }
+      // There must be answers at index 1, 2, or 3 (letters B, C, D)
+      const hasNonZeroIndex = correctIndices.some((idx) => idx > 0);
+      expect(hasNonZeroIndex).toBe(true);
     });
   });
 

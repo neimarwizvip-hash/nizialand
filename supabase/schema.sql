@@ -1,5 +1,5 @@
 -- ============================================================================
--- NIZIALAND — DATABASE SCHEMA & RLS POLICIES (Supabase / PostgreSQL)
+-- NISIALAND — DATABASE SCHEMA & RLS POLICIES (Supabase / PostgreSQL)
 -- Escola Municipal Nísia Vilela Fernandes • Duque de Caxias
 -- ============================================================================
 
@@ -9,7 +9,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- 1. COMPETITIONS TABLE
 CREATE TABLE IF NOT EXISTS public.competitions (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  title TEXT NOT NULL DEFAULT 'NIZIALAND English Adventure 2026',
+  title TEXT NOT NULL DEFAULT 'NISIALAND English Adventure 2026',
   term TEXT NOT NULL DEFAULT '1º Bimestre',
   is_active BOOLEAN NOT NULL DEFAULT true,
   created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),

@@ -9,3 +9,5 @@ Thumbs.db
 .playwright-mcp/
 .vercel/
 *.log
+
+/*.mp4

@@ -14,7 +14,10 @@ import {
   KeyRound,
   Shield,
   HelpCircle,
-  AlertTriangle
+  AlertTriangle,
+  Flag,
+  UserCheck,
+  UserX
 } from 'lucide-react';
 import { storageService } from '../../services/storage';
 import { 
@@ -26,6 +29,8 @@ import {
 } from '../../types';
 import { QUIZ_QUESTIONS } from '../../data/quizQuestions';
 import { audioService } from '../../services/audio';
+import { PlayerAvatar } from '../../components/ui/PlayerAvatar';
+import { nameModerationService, ReportedNameRecord } from '../../services/nameModeration';
 
 export const AdminPanel: React.FC = () => {
   const navigate = useNavigate();
@@ -39,18 +44,38 @@ export const AdminPanel: React.FC = () => {
   const [players, setPlayers] = useState<PlayerProfile[]>([]);
   const [leaderboard, setLeaderboard] = useState<LeaderboardPlayerEntry[]>([]);
   const [auditLogs, setAuditLogs] = useState<TeacherAuditLog[]>([]);
+  const [reports, setReports] = useState<ReportedNameRecord[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filterClass, setFilterClass] = useState<string>('all');
-  const [activeTab, setActiveTab] = useState<'roster' | 'analytics' | 'audit'>('roster');
+  const [activeTab, setActiveTab] = useState<'roster' | 'analytics' | 'moderation' | 'audit'>('roster');
 
   // Load Data
   const refreshData = async () => {
     const allPlayers = storageService.getAllPlayers();
     const board = await storageService.getLeaderboard();
     const logs = storageService.getAuditLogs();
+    const allReports = nameModerationService.getReports();
     setPlayers(allPlayers);
     setLeaderboard(board);
     setAuditLogs(logs);
+    setReports(allReports);
+  };
+
+  const handleResolveReport = (reportId: string, status: 'resolved' | 'dismissed') => {
+    nameModerationService.resolveReport(reportId, status);
+    refreshData();
+  };
+
+  const handleRenameReportedStudent = async (playerId: string, currentName: string, reportId: string) => {
+    const player = players.find(p => p.id === playerId);
+    const defaultSafe = `Estudante_${player?.className || '804'}`;
+    const newName = window.prompt(`Digite o novo nome para ${currentName}:`, defaultSafe);
+    if (!newName) return;
+
+    await storageService.updatePlayerName(playerId, newName);
+    nameModerationService.resolveReport(reportId, 'resolved');
+    await refreshData();
+    alert(`Nome alterado para "${newName}" com sucesso!`);
   };
 
   useEffect(() => {
@@ -116,7 +141,7 @@ export const AdminPanel: React.FC = () => {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `NIZIALAND_Resultados_Escola_Nisia_Vilela_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute('download', `NISIALAND_Resultados_Escola_Nisia_Vilela_${new Date().toISOString().split('T')[0]}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -229,7 +254,7 @@ export const AdminPanel: React.FC = () => {
             </div>
             <div>
               <h2 className="font-bungee text-sm sm:text-base text-white">
-                PAINEL PEDAGÓGICO • NIZIALAND
+                PAINEL PEDAGÓGICO • NISIALAND
               </h2>
               <p className="text-[11px] text-slate-400">
                 Prof. Neimar Oliveira • E. M. Nísia Vilela Fernandes
@@ -327,6 +352,24 @@ export const AdminPanel: React.FC = () => {
 
           <button
             type="button"
+            onClick={() => setActiveTab('moderation')}
+            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all ${
+              activeTab === 'moderation'
+                ? 'bg-red-600 text-white shadow'
+                : 'text-slate-400 hover:text-white hover:bg-slate-900'
+            }`}
+          >
+            <Flag className="w-4 h-4" />
+            <span>Moderação de Nomes</span>
+            {reports.filter(r => r.status === 'pending').length > 0 && (
+              <span className="bg-red-500 text-white px-2 py-0.5 rounded-full text-[10px] font-black animate-pulse">
+                {reports.filter(r => r.status === 'pending').length}
+              </span>
+            )}
+          </button>
+
+          <button
+            type="button"
             onClick={() => setActiveTab('audit')}
             className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all ${
               activeTab === 'audit'
@@ -396,7 +439,10 @@ export const AdminPanel: React.FC = () => {
                           {code}
                         </td>
                         <td className="py-3 px-3 font-bold text-white">
-                          {p.displayName}
+                          <div className="flex items-center gap-2">
+                            <PlayerAvatar avatarId={p.avatar} size="xs" />
+                            <span>{p.displayName}</span>
+                          </div>
                         </td>
                         <td className="py-3 px-2 text-slate-300 font-medium">
                           {p.className}
@@ -480,7 +526,86 @@ export const AdminPanel: React.FC = () => {
           </div>
         )}
 
-        {/* --- TAB 3: AUDIT LOGS --- */}
+        {/* --- TAB 3: MODERATION OF STUDENT NAMES --- */}
+        {activeTab === 'moderation' && (
+          <div className="space-y-4">
+            <div className="p-4 bg-slate-900/80 rounded-2xl border border-slate-800 text-xs text-slate-300 leading-relaxed">
+              🛡️ <strong>Moderação de Nomes Escolares:</strong> Analise nomes denunciados por colegas ou sinalizados pelo sistema. Você pode aprovar o nome caso seja legítimo ou substituí-lo por um nome escolar padrão protegido (ex: <em>Estudante_804</em>).
+            </div>
+
+            <div className="bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden shadow-xl">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-slate-800 text-slate-400 font-extrabold uppercase text-[11px]">
+                    <th className="py-3 px-3">Data</th>
+                    <th className="py-3 px-3">Nome Reportado</th>
+                    <th className="py-3 px-3">Motivo da Denúncia</th>
+                    <th className="py-3 px-2 text-center">Status</th>
+                    <th className="py-3 px-3 text-center">Ações do Professor</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60">
+                  {reports.map((rep) => (
+                    <tr key={rep.id} className="hover:bg-slate-800/40 transition-colors">
+                      <td className="py-3 px-3 font-mono text-[10px] text-slate-400">
+                        {new Date(rep.reportedAt).toLocaleDateString()}
+                      </td>
+                      <td className="py-3 px-3 font-bold text-amber-300">
+                        "{rep.reportedName}"
+                      </td>
+                      <td className="py-3 px-3 text-slate-300">
+                        {rep.reason}
+                      </td>
+                      <td className="py-3 px-2 text-center">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase ${
+                          rep.status === 'pending'
+                            ? 'bg-amber-900/60 text-amber-300'
+                            : rep.status === 'resolved'
+                            ? 'bg-emerald-900/60 text-emerald-300'
+                            : 'bg-slate-800 text-slate-400'
+                        }`}>
+                          {rep.status === 'pending' ? 'Pendente' : rep.status === 'resolved' ? 'Renomeado' : 'Descartado'}
+                        </span>
+                      </td>
+                      <td className="py-3 px-3 text-center">
+                        {rep.status === 'pending' ? (
+                          <div className="flex items-center justify-center gap-2">
+                            <button
+                              onClick={() => handleRenameReportedStudent(rep.playerId, rep.reportedName, rep.id)}
+                              className="px-2.5 py-1 bg-red-600 hover:bg-red-500 text-white rounded-lg font-bold text-[11px] flex items-center gap-1 shadow"
+                              title="Substituir nome por padrão seguro"
+                            >
+                              <UserX className="w-3.5 h-3.5" />
+                              <span>Renomear</span>
+                            </button>
+                            <button
+                              onClick={() => handleResolveReport(rep.id, 'dismissed')}
+                              className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg font-bold text-[11px] flex items-center gap-1 border border-slate-700"
+                              title="Nome é legítimo / Descartar denúncia"
+                            >
+                              <UserCheck className="w-3.5 h-3.5" />
+                              <span>Aprovar</span>
+                            </button>
+                          </div>
+                        ) : (
+                          <span className="text-[11px] text-slate-500 font-medium">Concluído</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              {reports.length === 0 && (
+                <div className="py-12 text-center text-slate-500 text-xs">
+                  ✅ Nenhuma denúncia de nome pendente no momento. Ambiente escolar exemplar!
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* --- TAB 4: AUDIT LOGS --- */}
         {activeTab === 'audit' && (
           <div className="space-y-4">
             <div className="bg-slate-900 rounded-3xl border border-slate-800 p-4">

@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { GameProvider } from './context/GameContext';
 import { StartScreen } from './features/start/StartScreen';
+import { Level0Screen } from './features/level0/Level0Screen';
+import { OrientationScreen } from './features/orientation/OrientationScreen';
 import { RegistrationScreen } from './features/auth/RegistrationScreen';
 import { MissionBriefingScreen } from './features/missions/MissionBriefingScreen';
 import { QuizScreen } from './features/quiz/QuizScreen';
@@ -18,6 +20,12 @@ export const App: React.FC = () => {
         <Routes>
           {/* Tela 1: Start Screen */}
           <Route path="/" element={<StartScreen />} />
+
+          {/* Nível 0: Ingresso na Aventura & Modo Visitante */}
+          <Route path="/level0" element={<Level0Screen />} />
+
+          {/* Reunião Educativa & Orientadora Edileia */}
+          <Route path="/orientation" element={<OrientationScreen />} />
 
           {/* Tela 2: Registration / Player Login */}
           <Route path="/register" element={<RegistrationScreen />} />
