@@ -7,7 +7,11 @@ interface StartupVideoScreenProps {
 /** Vídeo institucional exibido antes de a tela de abertura do jogo ser montada. */
 export const StartupVideoScreen: React.FC<StartupVideoScreenProps> = ({ onComplete }) => {
   const hasCompleted = useRef(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const hasPlayedPlim = useRef(false);
   const [stage, setStage] = useState<'first-video' | 'loading' | 'second-video'>('first-video');
+  const [requiresSoundActivation, setRequiresSoundActivation] = useState(false);
 
   const complete = () => {
     if (hasCompleted.current) return;
@@ -22,7 +26,67 @@ export const StartupVideoScreen: React.FC<StartupVideoScreenProps> = ({ onComple
     return () => window.clearTimeout(timer);
   }, [stage]);
 
+  useEffect(() => {
+    if (stage === 'loading') return;
+
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = false;
+    video.volume = 1;
+    video.play().then(
+      () => setRequiresSoundActivation(false),
+      () => setRequiresSoundActivation(true),
+    );
+  }, [stage]);
+
   const advanceFromFirstVideo = () => setStage('loading');
+
+  const playPlim = () => {
+    const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (!AudioCtx) return;
+
+    const context = audioContextRef.current ?? new AudioCtx();
+    audioContextRef.current = context;
+
+    void context.resume().then(() => {
+      const now = context.currentTime;
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(1046.5, now);
+      oscillator.frequency.exponentialRampToValueAtTime(1568, now + 0.12);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.22, now + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
+
+      oscillator.connect(gain);
+      gain.connect(context.destination);
+      oscillator.start(now);
+      oscillator.stop(now + 0.3);
+    });
+  };
+
+  const handleFirstVideoTimeUpdate = () => {
+    const currentTime = videoRef.current?.currentTime ?? 0;
+    if (currentTime < 2 || hasPlayedPlim.current) return;
+
+    hasPlayedPlim.current = true;
+    playPlim();
+  };
+
+  const startWithSound = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = false;
+    video.volume = 1;
+    void video.play().then(
+      () => setRequiresSoundActivation(false),
+      () => setRequiresSoundActivation(true),
+    );
+  };
 
   if (stage === 'loading') {
     return (
@@ -38,17 +102,27 @@ export const StartupVideoScreen: React.FC<StartupVideoScreenProps> = ({ onComple
   return (
     <main className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-black" aria-label="Vídeo de abertura">
       <video
+        ref={videoRef}
         className={`h-full w-full ${isFirstVideo ? 'object-contain' : 'object-cover'}`}
         autoPlay
-        muted
         playsInline
         preload="auto"
         src={isFirstVideo ? '/assets/sequencia01_1.mp4' : '/assets/sequencia01_2.mp4'}
         onEnded={isFirstVideo ? advanceFromFirstVideo : complete}
         onError={isFirstVideo ? advanceFromFirstVideo : complete}
+        onTimeUpdate={isFirstVideo ? handleFirstVideoTimeUpdate : undefined}
       >
         Seu navegador não suporta a reprodução deste vídeo.
       </video>
+      {requiresSoundActivation && (
+        <button
+          type="button"
+          onClick={startWithSound}
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-blue-700 px-7 py-4 font-heading text-lg font-black uppercase tracking-wide text-white shadow-[0_5px_0_0_#1e3a8a] transition hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+        >
+          ▶ Iniciar com som
+        </button>
+      )}
       <button
         type="button"
         onClick={complete}
