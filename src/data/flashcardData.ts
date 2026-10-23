@@ -42,7 +42,7 @@ export const FLASHCARD_CHALLENGES: FlashcardChallenge[] = [
     compText: "as old as",
     questionEn: "Sofia is 12 years old. Who is as old as Sofia?",
     questionPt: "Sofia tem 12 anos. Quem tem a mesma idade que Sofia?",
-    ruleExplanation: "Juliana and Rafael also have 12 years old, so they are as old as Sofia.",
+    ruleExplanation: "Juliana and Rafael are also 12 years old, so they are as old as Sofia.",
     validateCard: (card) => card.age === 12 && card.id !== "sofia"
   },
   {
@@ -64,7 +64,7 @@ export const FLASHCARD_CHALLENGES: FlashcardChallenge[] = [
     compText: "as old as",
     questionEn: "Rafael is 12 years old. Who is as old as Rafael?",
     questionPt: "Rafael tem 12 anos. Quem tem a mesma idade que Rafael?",
-    ruleExplanation: "Juliana (12) and Sofia (12) have the same age as Rafael (equality: as old as).",
+    ruleExplanation: "Juliana (12) and Sofia (12) are the same age as Rafael (equality: as old as).",
     validateCard: (card) => card.age === 12 && card.id !== "rafael"
   }
 ];

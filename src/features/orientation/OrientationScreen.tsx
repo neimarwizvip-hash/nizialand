@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Sparkles,
@@ -13,7 +13,7 @@ import {
   HeartHandshake
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { soundEffects } from '../../services/audio';
+import { soundEffects, audioService } from '../../services/audio';
 import { speechService } from '../../services/speech';
 
 interface RuleGroup {
@@ -33,9 +33,9 @@ const RULE_GROUPS: RuleGroup[] = [
     titleEn: 'Community & Respect',
     titlePt: '1. Regras de Convivência',
     icon: '🤝',
-    color: 'text-amber-400',
+    color: 'text-amber-600',
     borderColor: 'border-amber-500',
-    bgGrad: 'from-amber-950/80 to-slate-900',
+    bgGrad: 'from-amber-100 to-sky-50',
     rules: [
       {
         title: 'Respeito Mútuo entre Equipes',
@@ -59,9 +59,9 @@ const RULE_GROUPS: RuleGroup[] = [
     titleEn: 'Fair Play & Game Rules',
     titlePt: '2. Regras do Jogo e Fair Play',
     icon: '🎮',
-    color: 'text-cyan-400',
+    color: 'text-cyan-600',
     borderColor: 'border-cyan-500',
-    bgGrad: 'from-blue-950/80 to-slate-900',
+    bgGrad: 'from-blue-100 to-sky-50',
     rules: [
       {
         title: 'Quiz de Comparativos (2 Tentativas)',
@@ -85,9 +85,9 @@ const RULE_GROUPS: RuleGroup[] = [
     titleEn: 'Learning & Growth',
     titlePt: '3. Regras de Aprendizagem',
     icon: '📚',
-    color: 'text-emerald-400',
+    color: 'text-emerald-600',
     borderColor: 'border-emerald-500',
-    bgGrad: 'from-emerald-950/80 to-slate-900',
+    bgGrad: 'from-emerald-100 to-sky-50',
     rules: [
       {
         title: 'Ouvir e Praticar a Pronúncia',
@@ -110,6 +110,12 @@ const RULE_GROUPS: RuleGroup[] = [
 
 export const OrientationScreen: React.FC = () => {
   const navigate = useNavigate();
+
+  // Sem trilha de fundo na reunião narrada
+  useEffect(() => {
+    audioService.holdMusicForStory();
+    return () => audioService.releaseMusicForStory();
+  }, []);
 
   // Active Tab: 'convivencia' | 'jogo' | 'aprendizagem' | 'quiz' | 'terms'
   const [activeTab, setActiveTab] = useState<'convivencia' | 'jogo' | 'aprendizagem' | 'quiz' | 'terms'>('convivencia');
@@ -155,7 +161,7 @@ export const OrientationScreen: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-slate-950 text-white flex flex-col justify-between overflow-hidden">
+    <div className="relative min-h-screen game-sky text-slate-900 flex flex-col justify-between overflow-hidden">
       {/* Background: School Auditorium Artwork */}
       <div className="absolute inset-0 z-0">
         <img
@@ -163,7 +169,7 @@ export const OrientationScreen: React.FC = () => {
           alt="Auditório da Escola Nísia Vilela Fernandes"
           className="w-full h-full object-cover filter brightness-[0.75] transition-all duration-700"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-slate-950/70"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-sky-50 via-white/60 to-sky-50/70"></div>
       </div>
 
       {/* Top Header */}
@@ -176,7 +182,7 @@ export const OrientationScreen: React.FC = () => {
 
         <button
           onClick={() => navigate('/')}
-          className="text-xs font-heading font-bold text-slate-400 hover:text-white px-3 py-1 bg-slate-800/80 rounded-lg border border-slate-700"
+          className="text-xs font-heading font-bold text-slate-500 hover:text-slate-900 px-3 py-1 bg-sky-50/80 rounded-lg border border-sky-200"
         >
           Voltar ao Início
         </button>
@@ -185,10 +191,10 @@ export const OrientationScreen: React.FC = () => {
       {/* Main Body */}
       <main className="relative z-10 w-full max-w-4xl mx-auto px-4 my-auto py-4">
         {/* Presenter Card: Orientadora Edileia ("Leia") */}
-        <div className="bg-slate-900/90 border-3 border-emerald-500/80 rounded-3xl p-4 sm:p-6 mb-4 shadow-2xl backdrop-blur-md flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+        <div className="game-panel !border-emerald-300 !shadow-[0_6px_0_0_#34d399] p-4 sm:p-6 mb-4 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
           {/* Avatar Cutout / Turnaround */}
           <div className="relative flex-shrink-0">
-            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-3 border-emerald-400 shadow-glow-emerald bg-slate-950 p-1 flex items-center justify-center">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-3 border-emerald-400 shadow-glow-emerald bg-white/95 p-1 flex items-center justify-center">
               <img
                 src="/assets/nisialand_institutional_characters.jpg"
                 alt="Orientadora Edileia (Leia)"
@@ -204,32 +210,32 @@ export const OrientationScreen: React.FC = () => {
           <div className="text-center sm:text-left flex-1">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1">
               <div>
-                <h1 className="text-xl sm:text-2xl font-heading font-black text-white">
+                <h1 className="text-xl sm:text-2xl font-heading font-black text-slate-900">
                   Edileia "Leia" • Orientação Educacional
                 </h1>
-                <p className="text-xs text-emerald-300 font-medium">
+                <p className="text-xs text-emerald-700 font-medium">
                   Escola Municipal Nísia Vilela Fernandes
                 </p>
               </div>
 
               <button
                 onClick={handleSpeakSlogan}
-                className="self-center sm:self-auto px-3 py-1.5 bg-emerald-950 border border-emerald-500/60 hover:bg-emerald-900 text-emerald-300 text-xs font-heading font-bold rounded-xl flex items-center gap-1.5 transition-all"
+                className="self-center sm:self-auto px-3 py-1.5 bg-emerald-100 border border-emerald-500/60 hover:bg-emerald-100 text-emerald-700 text-xs font-heading font-bold rounded-xl flex items-center gap-1.5 transition-all"
                 title="Ouvir slogan em inglês"
               >
-                <Volume2 className="w-4 h-4 text-emerald-400" />
+                <Volume2 className="w-4 h-4 text-emerald-600" />
                 <span>Ouvir Lema</span>
               </button>
             </div>
 
             {/* Slogan Callout */}
-            <div className="mt-2 bg-gradient-to-r from-emerald-950/90 via-slate-900 to-cyan-950/80 border-2 border-emerald-400/60 rounded-2xl px-4 py-2 flex items-center gap-3">
+            <div className="mt-2 bg-gradient-to-r from-emerald-100 via-white/40 to-cyan-100 border-2 border-emerald-400/60 rounded-2xl px-4 py-2 flex items-center gap-3">
               <span className="text-2xl">💡</span>
               <div>
-                <div className="text-xs sm:text-sm font-heading font-black text-emerald-300 tracking-wider">
+                <div className="text-xs sm:text-sm font-heading font-black text-emerald-700 tracking-wider">
                   "{slogan}"
                 </div>
-                <div className="text-[11px] text-slate-300">
+                <div className="text-[11px] text-slate-600">
                   "LEIA! Conheça as regras, aprenda e vá mais longe!"
                 </div>
               </div>
@@ -244,7 +250,7 @@ export const OrientationScreen: React.FC = () => {
             className={`px-3.5 py-2 rounded-xl font-heading font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all ${
               activeTab === 'convivencia'
                 ? 'bg-amber-500 text-slate-950 shadow-game-gold scale-105'
-                : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700'
+                : 'bg-sky-50/80 text-slate-600 hover:bg-sky-100'
             }`}
           >
             <span>🤝</span> <span>1. Convivência</span>
@@ -255,7 +261,7 @@ export const OrientationScreen: React.FC = () => {
             className={`px-3.5 py-2 rounded-xl font-heading font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all ${
               activeTab === 'jogo'
                 ? 'bg-cyan-500 text-slate-950 shadow-game-blue scale-105'
-                : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700'
+                : 'bg-sky-50/80 text-slate-600 hover:bg-sky-100'
             }`}
           >
             <span>🎮</span> <span>2. Jogo &amp; Fair Play</span>
@@ -266,7 +272,7 @@ export const OrientationScreen: React.FC = () => {
             className={`px-3.5 py-2 rounded-xl font-heading font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all ${
               activeTab === 'aprendizagem'
                 ? 'bg-emerald-500 text-slate-950 shadow-game-emerald scale-105'
-                : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700'
+                : 'bg-sky-50/80 text-slate-600 hover:bg-sky-100'
             }`}
           >
             <span>📚</span> <span>3. Aprendizagem</span>
@@ -277,7 +283,7 @@ export const OrientationScreen: React.FC = () => {
             className={`px-3.5 py-2 rounded-xl font-heading font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all ${
               activeTab === 'quiz'
                 ? 'bg-purple-500 text-white shadow-game-purple scale-105'
-                : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700'
+                : 'bg-sky-50/80 text-slate-600 hover:bg-sky-100'
             }`}
           >
             <span>❓</span> <span>Perguntas Rápidas</span>
@@ -288,7 +294,7 @@ export const OrientationScreen: React.FC = () => {
             className={`px-3.5 py-2 rounded-xl font-heading font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all ${
               activeTab === 'terms'
                 ? 'bg-gradient-to-r from-amber-400 to-emerald-400 text-slate-950 shadow-game-gold scale-105 font-black'
-                : 'bg-slate-800/80 text-amber-300 hover:bg-slate-700'
+                : 'bg-sky-50/80 text-amber-700 hover:bg-sky-100'
             }`}
           >
             <span>📜</span> <span>Termo &amp; Cadastro</span>
@@ -296,7 +302,7 @@ export const OrientationScreen: React.FC = () => {
         </div>
 
         {/* Tab Content Cards */}
-        <div className="bg-slate-900/95 border-3 border-slate-700 rounded-3xl p-5 sm:p-6 shadow-2xl backdrop-blur-md animate-fadeIn">
+        <div className="game-panel p-5 sm:p-6 animate-fadeIn">
           {/* TAB 1, 2, 3: RULE GROUPS */}
           {(activeTab === 'convivencia' || activeTab === 'jogo' || activeTab === 'aprendizagem') && (
             <div>
@@ -304,14 +310,14 @@ export const OrientationScreen: React.FC = () => {
                 const grp = RULE_GROUPS.find(g => g.id === activeTab)!;
                 return (
                   <div>
-                    <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800">
+                    <div className="flex items-center justify-between pb-3 mb-4 border-b border-sky-200">
                       <div className="flex items-center gap-2">
                         <span className="text-2xl">{grp.icon}</span>
                         <div>
                           <h2 className={`font-heading font-black text-lg ${grp.color}`}>
                             {grp.titlePt}
                           </h2>
-                          <p className="text-xs text-slate-400 font-heading uppercase">
+                          <p className="text-xs text-slate-500 font-heading uppercase">
                             {grp.titleEn}
                           </p>
                         </div>
@@ -327,7 +333,7 @@ export const OrientationScreen: React.FC = () => {
                               : 'quiz';
                           setActiveTab(next);
                         }}
-                        className="text-xs font-heading font-bold text-cyan-300 hover:text-cyan-200 flex items-center gap-1 bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-700"
+                        className="text-xs font-heading font-bold text-cyan-700 hover:text-cyan-800 flex items-center gap-1 bg-sky-50 px-3 py-1.5 rounded-xl border border-sky-200"
                       >
                         <span>Próximo Grupo</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -338,25 +344,25 @@ export const OrientationScreen: React.FC = () => {
                       {grp.rules.map((rule, idx) => (
                         <div
                           key={idx}
-                          className="bg-slate-950/80 border-2 border-slate-800 hover:border-slate-600 rounded-2xl p-4 flex flex-col justify-between transition-all hover:scale-[1.02]"
+                          className="bg-white border-2 border-sky-200 hover:border-sky-300 rounded-2xl p-4 flex flex-col justify-between shadow-[0_4px_0_0_#bae6fd] transition-all hover:-translate-y-0.5"
                         >
                           <div>
                             <div className="flex items-center gap-2 mb-2">
-                              <span className="w-6 h-6 rounded-full bg-slate-800 text-slate-200 font-heading font-black text-xs flex items-center justify-center">
+                              <span className="w-6 h-6 rounded-full bg-sky-50 text-slate-700 font-heading font-black text-xs flex items-center justify-center">
                                 {idx + 1}
                               </span>
-                              <h3 className="font-heading font-bold text-sm text-white">
+                              <h3 className="font-heading font-bold text-sm text-slate-900">
                                 {rule.title}
                               </h3>
                             </div>
-                            <p className="text-xs text-slate-300 leading-relaxed mb-3">
+                            <p className="text-xs text-slate-600 leading-relaxed mb-3">
                               {rule.desc}
                             </p>
                           </div>
 
                           {rule.enDesc && (
-                            <div className="pt-2 border-t border-slate-900 flex items-start gap-1.5 text-[11px] text-cyan-300/90 italic">
-                              <Sparkles className="w-3.5 h-3.5 text-cyan-400 flex-shrink-0 mt-0.5" />
+                            <div className="pt-2 border-t border-sky-200 flex items-start gap-1.5 text-[11px] text-cyan-700/90 italic">
+                              <Sparkles className="w-3.5 h-3.5 text-cyan-600 flex-shrink-0 mt-0.5" />
                               <span>{rule.enDesc}</span>
                             </div>
                           )}
@@ -372,20 +378,20 @@ export const OrientationScreen: React.FC = () => {
           {/* TAB 4: FORMATIVE QUESTIONS */}
           {activeTab === 'quiz' && (
             <div>
-              <div className="pb-3 mb-4 border-b border-slate-800">
-                <h2 className="font-heading font-black text-lg text-purple-300 flex items-center gap-2">
+              <div className="pb-3 mb-4 border-b border-sky-200">
+                <h2 className="font-heading font-black text-lg text-purple-700 flex items-center gap-2">
                   <span>❓</span> PERGUNTAS FORMATIVAS DA ORIENTADORA LEIA
                 </h2>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-500">
                   Teste rápido para fixar os princípios antes de ingressar no jogo!
                 </p>
               </div>
 
               <div className="space-y-6">
                 {/* Question 1 */}
-                <div className="bg-slate-950/70 border border-slate-800 rounded-2xl p-4">
-                  <h3 className="font-heading font-bold text-sm text-white mb-2">
-                    1. O que expressa o slogan da Orientadora: <em className="text-amber-300">"LEIA! Know the rules, learn and go further!"</em>?
+                <div className="bg-sky-50 border-2 border-sky-200 shadow-[0_3px_0_0_#bae6fd] rounded-2xl p-4">
+                  <h3 className="font-heading font-bold text-sm text-slate-900 mb-2">
+                    1. O que expressa o slogan da Orientadora: <em className="text-amber-700">"LEIA! Know the rules, learn and go further!"</em>?
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                     {[
@@ -398,9 +404,9 @@ export const OrientationScreen: React.FC = () => {
                         className={`p-3 rounded-xl border text-left font-medium transition-all ${
                           q1Answer === i
                             ? opt.correct
-                              ? 'bg-emerald-950 border-emerald-500 text-emerald-200'
-                              : 'bg-red-950 border-red-500 text-red-200'
-                            : 'bg-slate-900 border-slate-700 hover:border-slate-500 text-slate-300'
+                              ? 'bg-emerald-100 border-emerald-500 text-emerald-800'
+                              : 'bg-red-100 border-red-500 text-red-800'
+                            : 'bg-white/95 border-sky-200 hover:border-sky-400 text-slate-600'
                         }`}
                       >
                         {opt.text}
@@ -410,9 +416,9 @@ export const OrientationScreen: React.FC = () => {
                 </div>
 
                 {/* Question 2 */}
-                <div className="bg-slate-950/70 border border-slate-800 rounded-2xl p-4">
-                  <h3 className="font-heading font-bold text-sm text-white mb-2">
-                    2. Como deve ser a relação entre o <span className="text-blue-400">BLUE TEAM</span> e o <span className="text-purple-400">PURPLE TEAM</span>?
+                <div className="bg-sky-50 border-2 border-sky-200 shadow-[0_3px_0_0_#bae6fd] rounded-2xl p-4">
+                  <h3 className="font-heading font-bold text-sm text-slate-900 mb-2">
+                    2. Como deve ser a relação entre o <span className="text-blue-600">BLUE TEAM</span> e o <span className="text-purple-600">PURPLE TEAM</span>?
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                     {[
@@ -425,9 +431,9 @@ export const OrientationScreen: React.FC = () => {
                         className={`p-3 rounded-xl border text-left font-medium transition-all ${
                           q2Answer === i
                             ? opt.correct
-                              ? 'bg-emerald-950 border-emerald-500 text-emerald-200'
-                              : 'bg-red-950 border-red-500 text-red-200'
-                            : 'bg-slate-900 border-slate-700 hover:border-slate-500 text-slate-300'
+                              ? 'bg-emerald-100 border-emerald-500 text-emerald-800'
+                              : 'bg-red-100 border-red-500 text-red-800'
+                            : 'bg-white/95 border-sky-200 hover:border-sky-400 text-slate-600'
                         }`}
                       >
                         {opt.text}
@@ -439,7 +445,7 @@ export const OrientationScreen: React.FC = () => {
                 <div className="text-right">
                   <button
                     onClick={() => setActiveTab('terms')}
-                    className="px-6 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-heading font-black text-xs uppercase rounded-xl shadow-game-purple hover:scale-105 transition-all inline-flex items-center gap-1.5"
+                    className="px-6 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-heading font-black text-xs uppercase rounded-xl border-2 border-purple-900 shadow-[0_4px_0_0_#3b0764] active:translate-y-1 active:shadow-[0_1px_0_0_#3b0764] transition-all inline-flex items-center gap-1.5"
                   >
                     <span>Ir para o Termo de Compromisso</span>
                     <ArrowRight className="w-4 h-4" />
@@ -452,27 +458,27 @@ export const OrientationScreen: React.FC = () => {
           {/* TAB 5: TERMS AND TRANSITION TO REGISTRATION */}
           {activeTab === 'terms' && (
             <div className="text-center max-w-xl mx-auto">
-              <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center text-emerald-400">
+              <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center text-emerald-600">
                 <ShieldCheck className="w-8 h-8" />
               </div>
 
-              <h2 className="font-heading font-black text-xl text-white mb-2">
+              <h2 className="font-heading font-black text-xl text-slate-900 mb-2">
                 TERMO DE CIÊNCIA E COMPROMISSO
               </h2>
-              <p className="text-xs text-slate-300 mb-6 leading-relaxed">
+              <p className="text-xs text-slate-600 mb-6 leading-relaxed">
                 Você concluiu a Orientação Educativa da Escola Municipal Nísia Vilela Fernandes com sucesso. Para registrar sua pontuação e defender sua turma no ranking, confirme seu compromisso:
               </p>
 
               {/* Agreement Box */}
-              <label className="flex items-start gap-3 bg-slate-950/90 border-2 border-amber-500/60 rounded-2xl p-4 text-left cursor-pointer mb-6 hover:border-amber-400 transition-colors">
+              <label className="flex items-start gap-3 bg-amber-50 border-2 border-amber-300 shadow-[0_4px_0_0_#f59e0b] rounded-2xl p-4 text-left cursor-pointer mb-6 hover:border-amber-400 transition-colors">
                 <input
                   type="checkbox"
                   checked={agreedToTerms}
                   onChange={e => setAgreedToTerms(e.target.checked)}
                   className="mt-1 w-5 h-5 accent-emerald-500 rounded cursor-pointer flex-shrink-0"
                 />
-                <div className="text-xs text-slate-200">
-                  <strong className="text-amber-300 block font-heading mb-0.5">
+                <div className="text-xs text-slate-700">
+                  <strong className="text-amber-700 block font-heading mb-0.5">
                     Declaração do Estudante:
                   </strong>
                   "Li e compreendi as regras do Nisialand. Comprometo-me a respeitar meus colegas, jogar com honestidade, não usar ofensas e dar o meu melhor para aprender Língua Inglesa!"
@@ -483,7 +489,7 @@ export const OrientationScreen: React.FC = () => {
               <button
                 onClick={handleFinishOrientation}
                 disabled={!agreedToTerms}
-                className="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 text-slate-950 font-heading font-black text-base uppercase tracking-wider rounded-full border-3 border-amber-600 shadow-glow-gold hover:from-amber-300 hover:to-amber-200 disabled:opacity-40 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 transition-all inline-flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 text-slate-950 font-heading font-black text-base uppercase tracking-wider rounded-full border-[3px] border-amber-600 shadow-[0_6px_0_0_#b45309] active:translate-y-1 active:shadow-[0_2px_0_0_#b45309] hover:from-amber-300 hover:to-amber-200 disabled:opacity-40 disabled:cursor-not-allowed transition-all inline-flex items-center justify-center gap-2"
               >
                 <span>CRIAR MEU CADASTRO OFICIAL (ESCOLHER AVATAR)</span>
                 <ArrowRight className="w-5 h-5" />
@@ -494,7 +500,7 @@ export const OrientationScreen: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 w-full text-center py-3 text-xs text-slate-400 border-t border-slate-900 bg-slate-950/70 backdrop-blur-sm">
+      <footer className="relative z-10 w-full text-center py-3 text-xs text-slate-500 border-t border-sky-200 bg-white/80 backdrop-blur-sm">
         Escola Municipal Nísia Vilela Fernandes • Orientadora Edileia "Leia" • Duque de Caxias
       </footer>
     </div>

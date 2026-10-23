@@ -30,7 +30,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [quizResult, setQuizResult] = useState<QuizResult | null>(null);
   const [flashcardResult, setFlashcardResult] = useState<FlashcardResult | null>(null);
   const [isSoundOn, setIsSoundOn] = useState<boolean>(true);
-  const [isMusicOn, setIsMusicOn] = useState<boolean>(false);
+  const [isMusicOn, setIsMusicOn] = useState<boolean>(() => audioService.isMusicOn());
 
   // Sync results on player change
   const refreshUserData = () => {

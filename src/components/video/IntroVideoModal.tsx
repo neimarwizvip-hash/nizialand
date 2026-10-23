@@ -87,21 +87,21 @@ export const IntroVideoModal: React.FC<IntroVideoModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-xl animate-fadeIn p-2 sm:p-6"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-sky-950/75 backdrop-blur-md animate-fadeIn p-2 sm:p-6"
       role="dialog"
       aria-modal="true"
       aria-label="Vídeo de Abertura do Nisialand"
     >
-      <div className="relative w-full max-w-5xl bg-slate-950 border-2 sm:border-4 border-amber-500/80 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col">
+      <div className="relative w-full max-w-5xl bg-white border-2 sm:border-4 border-white rounded-2xl sm:rounded-[1.75rem] shadow-[0_8px_0_0_#7dd3fc,0_30px_60px_-20px_rgba(8,47,73,0.6)] overflow-hidden flex flex-col">
         {/* Header Bar */}
-        <div className="flex items-center justify-between px-4 sm:px-6 py-3 bg-gradient-to-r from-blue-950 via-slate-900 to-purple-950 border-b border-amber-500/40 z-20">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3 bg-gradient-to-r from-sky-50 via-white to-amber-50 border-b-2 border-sky-200 z-20">
           <div className="flex items-center gap-2">
             <span className="text-xl sm:text-2xl">🎬</span>
             <div>
-              <h2 className="text-sm sm:text-base font-heading font-black tracking-wider text-amber-300 uppercase flex items-center gap-1.5">
-                NISIALAND: THE TRANSFORMATION <Sparkles className="w-4 h-4 text-cyan-400" />
+              <h2 className="text-sm sm:text-base font-heading font-black tracking-wider text-blue-800 uppercase flex items-center gap-1.5">
+                NISIALAND: THE TRANSFORMATION <Sparkles className="w-4 h-4 text-amber-500" />
               </h2>
-              <p className="text-[11px] text-slate-300 hidden sm:block">
+              <p className="text-[11px] text-slate-500 font-semibold hidden sm:block">
                 Escola Municipal Nísia Vilela Fernandes se transforma em aventura!
               </p>
             </div>
@@ -109,7 +109,7 @@ export const IntroVideoModal: React.FC<IntroVideoModalProps> = ({
 
           <button
             onClick={handleSkip}
-            className="flex items-center gap-2 px-3 sm:px-4 py-1.5 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-heading font-black text-xs sm:text-sm rounded-full border-2 border-amber-600 shadow-glow-gold transition-all transform active:scale-95"
+            className="flex items-center gap-2 px-3 sm:px-4 py-1.5 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-heading font-black text-xs sm:text-sm rounded-full border-2 border-amber-600 shadow-[0_3px_0_0_#b45309] transition-all transform active:scale-95"
             aria-label="Pular abertura"
           >
             <span>PULAR ABERTURA</span>
@@ -122,7 +122,7 @@ export const IntroVideoModal: React.FC<IntroVideoModalProps> = ({
           {!hasError ? (
             <video
               ref={videoRef}
-              src="/assets/nisialand_intro.mp4"
+              src="/assets/nisialand_hq.mp4"
               className="w-full h-full object-contain"
               autoPlay
               playsInline

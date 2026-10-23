@@ -60,6 +60,7 @@ export default {
       },
       fontFamily: {
         heading: ['Outfit', 'sans-serif'],
+        bungee: ['Bungee', 'Outfit', 'sans-serif'],
         body: ['Plus Jakarta Sans', 'sans-serif'],
       },
       boxShadow: {
@@ -79,6 +80,8 @@ export default {
         'bounce-slight': 'bounceSlight 1.5s infinite ease-in-out',
         'shake-wrong': 'wrongShake 0.5s ease-in-out',
         'pulse-correct': 'correctPulse 0.6s ease-in-out',
+        'ze-slide-in': 'zeSlideIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both',
+        'card-shuffle': 'cardShuffle 0.45s ease-in-out 3',
       },
       keyframes: {
         pulseGlow: {
@@ -98,6 +101,15 @@ export default {
           '0%': { transform: 'scale(1)' },
           '50%': { transform: 'scale(1.08)' },
           '100%': { transform: 'scale(1)' },
+        },
+        zeSlideIn: {
+          '0%': { transform: 'translateX(120%)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+        cardShuffle: {
+          '0%, 100%': { transform: 'translateX(0) rotate(0deg)' },
+          '25%': { transform: 'translateX(-14px) rotate(-6deg)' },
+          '75%': { transform: 'translateX(14px) rotate(6deg)' },
         }
       }
     },

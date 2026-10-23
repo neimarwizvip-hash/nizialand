@@ -14,7 +14,7 @@ import {
   ShieldAlert
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { soundEffects } from '../../services/audio';
+import { soundEffects, audioService } from '../../services/audio';
 import { speechService } from '../../services/speech';
 
 interface ComicPanel {
@@ -45,10 +45,34 @@ const COMIC_PANELS: ComicPanel[] = [
   },
   {
     id: 2,
+    speaker: "Estudante",
+    speakerRole: "Aluna Exploradora",
+    speakerBadgeColor: "from-pink-600 to-rose-500",
+    avatarImg: "/assets/student_girl_ponytail.png",
+    bgImg: "/assets/nisialand_school_facade_clean.jpg",
+    speechEn: "Good morning! Hurry up, the bell is ringing! Today we have English class!",
+    speechPt: "Bom dia! Corre, o sinal está tocando! Hoje tem aula de inglês!",
+    reaction: "🔔 A colega chega correndo e chama o amigo para entrar.",
+    instruction: "Ouça como se diz 'bom dia' e 'aula de inglês'."
+  },
+  {
+    id: 3,
+    speaker: "Estudante",
+    speakerRole: "Aluna Exploradora",
+    speakerBadgeColor: "from-violet-600 to-fuchsia-500",
+    avatarImg: "/assets/student_girl_curly.png",
+    bgImg: "/assets/nisialand_hallway_bg.jpg",
+    speechEn: "Hi, friends! Wait for me! Please, put your phone in your bag before the principal sees it!",
+    speechPt: "Oi, amigos! Me esperem! Por favor, guarde o celular na mochila antes que o diretor veja!",
+    reaction: "🎒 Outra colega alcança o grupo no corredor e dá um conselho.",
+    instruction: "Repare nas palavras 'please', 'phone' e 'bag'."
+  },
+  {
+    id: 4,
     speaker: "Diretor Márcio",
     speakerRole: "Principal / Direção",
     speakerBadgeColor: "from-amber-600 to-amber-700",
-    avatarImg: "/assets/nisialand_institutional_characters.jpg",
+    avatarImg: "/assets/diretor_marcio.png",
     bgImg: "/assets/nisialand_hallway_bg.jpg",
     speechEn: "Attention, students! In this school, we learn and play together. No cell phones in the hallway! Let's go to class!",
     speechPt: "Atenção, estudantes! Nesta escola, aprendemos e nos divertimos juntos. Nada de celular no corredor! Vamos para a sala!",
@@ -56,7 +80,19 @@ const COMIC_PANELS: ComicPanel[] = [
     instruction: "Ouça com atenção a regra escolar em inglês."
   },
   {
-    id: 3,
+    id: 5,
+    speaker: "A Turma",
+    speakerRole: "Todos Juntos",
+    speakerBadgeColor: "from-emerald-600 to-teal-500",
+    avatarImg: "/assets/nisialand_inclusive_students.png",
+    bgImg: "/assets/nisialand_hallway_bg.jpg",
+    speechEn: "Yes, Mr. Márcio! We are all different, and we learn together!",
+    speechPt: "Sim, Diretor Márcio! Somos todos diferentes, e aprendemos juntos!",
+    reaction: "🤝 A turma inteira responde junta ao diretor.",
+    instruction: "'Together' quer dizer 'juntos'. Guarde essa palavra!"
+  },
+  {
+    id: 6,
     speaker: "Estudante",
     speakerRole: "Aluno Explorador",
     speakerBadgeColor: "from-blue-600 to-cyan-600",
@@ -137,6 +173,12 @@ export const Level0Screen: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [quizFeedback, setQuizFeedback] = useState<'correct' | 'incorrect' | null>(null);
   const [quizScore, setQuizScore] = useState<number>(0);
+
+  // Sem trilha de fundo durante a história: só a narração em inglês
+  useEffect(() => {
+    audioService.holdMusicForStory();
+    return () => audioService.releaseMusicForStory();
+  }, []);
 
   // Speak Comic Speech on change
   useEffect(() => {
@@ -246,7 +288,7 @@ export const Level0Screen: React.FC = () => {
   const currentQ = LEVEL0_QUESTIONS[quizQuestionIndex];
 
   return (
-    <div className="relative min-h-screen bg-slate-950 text-white flex flex-col justify-between overflow-hidden">
+    <div className="relative min-h-screen game-sky text-slate-900 flex flex-col justify-between overflow-hidden">
       {/* Dynamic Background */}
       <div className="absolute inset-0 z-0">
         <img
@@ -260,9 +302,9 @@ export const Level0Screen: React.FC = () => {
               : "/assets/nisialand_school_facade_clean.jpg"
           }
           alt="NISIALAND Background"
-          className="w-full h-full object-cover filter brightness-[0.85] transition-all duration-700"
+          className="w-full h-full object-cover filter brightness-[0.85] transition-opacity duration-500"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/70"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-sky-50 via-white/40 to-sky-50/70"></div>
       </div>
 
       {/* Top Header Navigation */}
@@ -272,7 +314,7 @@ export const Level0Screen: React.FC = () => {
             <span>⭐</span> <span>NÍVEL 0: INTRODUÇÃO</span>
           </div>
 
-          <div className="hidden sm:flex items-center gap-1.5 bg-slate-900/80 border border-slate-700 px-3 py-1 rounded-xl text-xs font-bold text-slate-300">
+          <div className="hidden sm:flex items-center gap-1.5 bg-white/90 border border-sky-200 px-3 py-1 rounded-xl text-xs font-bold text-slate-600">
             <span>Modo Visitante</span>
           </div>
         </div>
@@ -291,7 +333,7 @@ export const Level0Screen: React.FC = () => {
                 ? 'bg-amber-400 ring-4 ring-amber-400/30'
                 : stage === 'quiz' || stage === 'complete'
                 ? 'bg-emerald-400'
-                : 'bg-slate-700'
+                : 'bg-sky-100'
             }`}
             title="Ato 2: Perseguição no Corredor"
           />
@@ -301,20 +343,20 @@ export const Level0Screen: React.FC = () => {
                 ? 'bg-amber-400 ring-4 ring-amber-400/30'
                 : stage === 'complete'
                 ? 'bg-emerald-400'
-                : 'bg-slate-700'
+                : 'bg-sky-100'
             }`}
             title="Ato 3: Mini-Desafio de Regras"
           />
           <span
             className={`w-3 h-3 rounded-full transition-all ${
-              stage === 'complete' ? 'bg-emerald-400 ring-4 ring-emerald-400/30' : 'bg-slate-700'
+              stage === 'complete' ? 'bg-emerald-400 ring-4 ring-emerald-400/30' : 'bg-sky-100'
             }`}
             title="Ato 4: Conclusão"
           />
 
           <button
             onClick={() => navigate('/')}
-            className="ml-4 text-xs font-heading font-bold text-slate-400 hover:text-white px-3 py-1 bg-slate-800/80 rounded-lg border border-slate-700"
+            className="ml-4 text-xs font-heading font-bold text-slate-500 hover:text-slate-900 px-3 py-1 bg-sky-50/80 rounded-lg border border-sky-200"
           >
             Sair
           </button>
@@ -327,16 +369,16 @@ export const Level0Screen: React.FC = () => {
         {/* ATO 1: HQ ANIMADA INTERATIVA (COMIC STRIP) */}
         {/* ========================================================= */}
         {stage === 'comic' && (
-          <div className="bg-slate-900/90 border-4 border-amber-500 rounded-3xl p-5 sm:p-8 shadow-2xl backdrop-blur-md animate-fadeIn">
+          <div className="bg-white/90 border-4 border-amber-500 rounded-3xl p-5 sm:p-8 shadow-2xl backdrop-blur-md animate-fadeIn">
             {/* Comic Header Info */}
-            <div className="flex justify-between items-center pb-4 border-b border-slate-800">
+            <div className="flex justify-between items-center pb-4 border-b border-sky-200">
               <div className="flex items-center gap-3">
                 <span className="text-2xl">📖</span>
                 <div>
-                  <h2 className="font-heading font-black text-lg sm:text-xl text-amber-300">
+                  <h2 className="font-heading font-black text-lg sm:text-xl text-amber-700">
                     ATO 1: O ENCONTRO NO PÁTIO
                   </h2>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-slate-500">
                     Painel {comicIndex + 1} de {COMIC_PANELS.length} • {currentComic.reaction}
                   </p>
                 </div>
@@ -344,7 +386,7 @@ export const Level0Screen: React.FC = () => {
 
               <button
                 onClick={handleSkipComic}
-                className="text-xs text-slate-400 hover:text-amber-300 flex items-center gap-1 font-heading uppercase px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700 hover:border-amber-500/50"
+                className="text-xs text-slate-500 hover:text-amber-700 flex items-center gap-1 font-heading uppercase px-3 py-1.5 rounded-lg bg-sky-50/80 border border-sky-200 hover:border-amber-500/50"
               >
                 <span>Pular HQ</span>
                 <FastForward className="w-3.5 h-3.5" />
@@ -356,7 +398,7 @@ export const Level0Screen: React.FC = () => {
               {/* Speaker Character Spotlight */}
               <div className="md:col-span-4 flex flex-col items-center text-center">
                 <div className="relative group">
-                  <div className="w-36 h-48 sm:w-44 sm:h-56 rounded-2xl overflow-hidden border-4 border-amber-400/80 shadow-glow-gold bg-slate-950 flex items-center justify-center p-2">
+                  <div className={`${currentComic.id === 5 ? 'w-64 h-44 sm:w-72 sm:h-52' : 'w-36 h-48 sm:w-44 sm:h-56'} rounded-2xl overflow-hidden border-4 border-amber-400/80 shadow-glow-gold bg-white/95 flex items-center justify-center p-2`}>
                     <img
                       src={currentComic.avatarImg}
                       alt={currentComic.speaker}
@@ -369,7 +411,7 @@ export const Level0Screen: React.FC = () => {
                 </div>
 
                 <div className="mt-4">
-                  <span className="text-xs font-bold text-amber-300 bg-amber-950/80 px-2.5 py-0.5 rounded-md border border-amber-800">
+                  <span className="text-xs font-bold text-amber-700 bg-amber-100/80 px-2.5 py-0.5 rounded-md border border-amber-300">
                     {currentComic.speakerRole}
                   </span>
                 </div>
@@ -377,59 +419,59 @@ export const Level0Screen: React.FC = () => {
 
               {/* Comic Speech Bubble */}
               <div className="md:col-span-8 flex flex-col justify-center">
-                <div className="relative bg-slate-950/95 border-3 border-cyan-400 rounded-3xl p-6 shadow-game-blue text-left">
+                <div className="relative bg-white/95 border-3 border-cyan-400 rounded-3xl p-6 shadow-game-blue text-left">
                   {/* Comic Speech Pointer Tail */}
                   <div className="hidden md:block absolute -left-3.5 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[10px] border-t-transparent border-b-[10px] border-b-transparent border-r-[14px] border-r-cyan-400"></div>
 
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-heading font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="text-xs font-heading font-bold text-cyan-700 uppercase tracking-wider flex items-center gap-1.5">
                       <span>🗣️</span> DIÁLOGO EM INGLÊS:
                     </span>
                     <button
                       onClick={() => handleSpeakSpeech(currentComic.speechEn)}
-                      className="p-2 bg-cyan-900/60 hover:bg-cyan-800 text-cyan-300 rounded-xl transition-all border border-cyan-600 flex items-center gap-1.5 text-xs font-bold"
+                      className="p-2 bg-cyan-100/80 hover:bg-cyan-100 text-cyan-700 rounded-xl transition-all border border-cyan-600 flex items-center gap-1.5 text-xs font-bold"
                       title="Ouvir pronúncia em inglês"
                     >
-                      <Volume2 className="w-4 h-4 text-cyan-300" />
+                      <Volume2 className="w-4 h-4 text-cyan-700" />
                       <span>Ouvir</span>
                     </button>
                   </div>
 
                   {/* Speech English Text */}
-                  <p className="text-lg sm:text-xl font-heading font-bold text-white leading-relaxed mb-4">
+                  <p className="text-lg sm:text-xl font-heading font-bold text-slate-900 leading-relaxed mb-4">
                     "{currentComic.speechEn}"
                   </p>
 
                   {/* Translation Toggle & Text */}
-                  <div className="pt-3 border-t border-slate-800">
+                  <div className="pt-3 border-t border-sky-200">
                     <button
                       onClick={() => setShowPtTranslation(!showPtTranslation)}
-                      className="text-xs font-heading font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1.5 mb-2"
+                      className="text-xs font-heading font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1.5 mb-2"
                     >
                       <Languages className="w-4 h-4" />
                       <span>{showPtTranslation ? "Ocultar Tradução" : "Ver Tradução em Português"}</span>
                     </button>
 
                     {showPtTranslation && (
-                      <p className="text-sm font-sans text-slate-300 bg-slate-900/90 p-3 rounded-xl border border-slate-700 animate-fadeIn">
+                      <p className="text-sm font-sans text-slate-600 bg-white/90 p-3 rounded-xl border border-sky-200 animate-fadeIn">
                         "{currentComic.speechPt}"
                       </p>
                     )}
                   </div>
                 </div>
 
-                <div className="mt-3 text-xs text-slate-400 italic">
+                <div className="mt-3 text-xs text-slate-500 italic">
                   💡 {currentComic.instruction}
                 </div>
               </div>
             </div>
 
             {/* Comic Navigation Controls */}
-            <div className="flex justify-between items-center pt-4 border-t border-slate-800">
+            <div className="flex justify-between items-center pt-4 border-t border-sky-200">
               <button
                 onClick={handlePrevComic}
                 disabled={comicIndex === 0}
-                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed text-xs sm:text-sm font-heading font-bold flex items-center gap-1.5"
+                className="px-4 py-2 rounded-xl bg-sky-50 hover:bg-sky-100 disabled:opacity-30 disabled:cursor-not-allowed text-xs sm:text-sm font-heading font-bold flex items-center gap-1.5"
               >
                 <ChevronLeft className="w-4 h-4" />
                 <span>Anterior</span>
@@ -450,19 +492,19 @@ export const Level0Screen: React.FC = () => {
         {/* ATO 2: A PERSEGUIÇÃO NO CORREDOR (THE HALLWAY CHASE) */}
         {/* ========================================================= */}
         {stage === 'chase' && (
-          <div className="bg-slate-900/95 border-4 border-cyan-400 rounded-3xl p-5 sm:p-8 shadow-2xl backdrop-blur-md animate-fadeIn text-center">
-            <div className="flex justify-between items-center pb-3 border-b border-slate-800 mb-4">
+          <div className="bg-white/95 border-4 border-cyan-400 rounded-3xl p-5 sm:p-8 shadow-2xl backdrop-blur-md animate-fadeIn text-center">
+            <div className="flex justify-between items-center pb-3 border-b border-sky-200 mb-4">
               <div className="text-left">
-                <h2 className="font-heading font-black text-lg sm:text-xl text-cyan-300 flex items-center gap-2">
+                <h2 className="font-heading font-black text-lg sm:text-xl text-cyan-700 flex items-center gap-2">
                   🏃💨 ATO 2: THE HALLWAY CHASE!
                 </h2>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-500">
                   Desvie dos obstáculos no corredor e chegue à sala a tempo!
                 </p>
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-700 text-xs font-mono font-bold text-amber-300">
+                <div className="bg-sky-50 px-3 py-1.5 rounded-xl border border-sky-200 text-xs font-mono font-bold text-amber-700">
                   ⏱️ {chaseSeconds}s restantes
                 </div>
                 <div className="bg-amber-400 text-slate-950 px-3 py-1.5 rounded-xl font-heading font-black text-xs">
@@ -472,15 +514,14 @@ export const Level0Screen: React.FC = () => {
             </div>
 
             {/* Chase Animation Arena */}
-            <div className="relative w-full h-64 sm:h-80 bg-gradient-to-b from-blue-950/80 to-slate-950 rounded-2xl overflow-hidden border-2 border-cyan-500/50 flex flex-col justify-between p-4 my-4">
+            <div className="relative w-full h-64 sm:h-80 bg-gradient-to-b from-blue-100 to-sky-50 rounded-2xl overflow-hidden border-2 border-cyan-500/50 flex flex-col justify-between p-4 my-4">
               {/* Hallway Backdrop with Speed Lines */}
               <img
                 src="/assets/nisialand_hallway_bg.jpg"
                 alt="Corredor da Escola"
-                className="absolute inset-0 w-full h-full object-cover filter brightness-75 scale-105"
+                className="absolute inset-0 w-full h-full object-cover filter brightness-75"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent animate-pulse"></div>
-
+              
               {/* Warning Sign */}
               <div className="relative z-10 mx-auto bg-amber-500/90 text-slate-950 px-4 py-1 rounded-full text-xs font-heading font-black flex items-center gap-1.5 shadow-md">
                 <ShieldAlert className="w-4 h-4" />
@@ -491,14 +532,14 @@ export const Level0Screen: React.FC = () => {
               <div className="relative z-10 w-full h-36 flex items-end justify-between px-6 pb-2">
                 {/* Pursuing Principal Márcio (Left Side) */}
                 <div className="flex flex-col items-center transform transition-transform animate-bounce">
-                  <div className="w-20 h-28 sm:w-24 sm:h-32 bg-slate-900/80 border-2 border-amber-400 rounded-xl overflow-hidden shadow-lg p-1">
+                  <div className="w-20 h-28 sm:w-24 sm:h-32 bg-white/90 border-2 border-amber-400 rounded-xl overflow-hidden shadow-lg p-1">
                     <img
-                      src="/assets/nisialand_institutional_characters.jpg"
+                      src="/assets/diretor_marcio.png"
                       alt="Diretor Márcio"
-                      className="w-full h-full object-cover object-left"
+                      className="w-full h-full object-contain"
                     />
                   </div>
-                  <span className="text-[10px] font-heading font-black text-amber-300 mt-1 bg-slate-950/80 px-2 py-0.5 rounded">
+                  <span className="text-[10px] font-heading font-black text-amber-700 mt-1 bg-white/90 px-2 py-0.5 rounded">
                     Diretor Márcio
                   </span>
                 </div>
@@ -514,14 +555,14 @@ export const Level0Screen: React.FC = () => {
                     chaseJump ? '-translate-y-16 scale-110' : 'translate-y-0'
                   }`}
                 >
-                  <div className="w-20 h-28 sm:w-24 sm:h-32 bg-slate-900/80 border-2 border-cyan-400 rounded-xl overflow-hidden shadow-game-blue p-1">
+                  <div className="w-20 h-28 sm:w-24 sm:h-32 bg-white/90 border-2 border-cyan-400 rounded-xl overflow-hidden shadow-game-blue p-1">
                     <img
                       src="/assets/student_boy_tshirt.png"
                       alt="Estudante Correndo"
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <span className="text-[10px] font-heading font-black text-cyan-300 mt-1 bg-slate-950/80 px-2 py-0.5 rounded">
+                  <span className="text-[10px] font-heading font-black text-cyan-700 mt-1 bg-white/90 px-2 py-0.5 rounded">
                     Você (Aluno)
                   </span>
                 </div>
@@ -538,7 +579,7 @@ export const Level0Screen: React.FC = () => {
               </div>
             </div>
 
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-500">
               💡 Pressione o botão <strong>PULAR</strong> para desviar da mochila no corredor e ganhar pontos extras!
             </p>
           </div>
@@ -548,13 +589,13 @@ export const Level0Screen: React.FC = () => {
         {/* ATO 3: MINI-DESAFIO DE LÍNGUA INGLESA & REGRAS */}
         {/* ========================================================= */}
         {stage === 'quiz' && (
-          <div className="bg-slate-900/95 border-4 border-amber-500 rounded-3xl p-5 sm:p-8 shadow-2xl backdrop-blur-md animate-fadeIn">
-            <div className="flex justify-between items-center pb-4 border-b border-slate-800">
+          <div className="bg-white/95 border-4 border-amber-500 rounded-3xl p-5 sm:p-8 shadow-2xl backdrop-blur-md animate-fadeIn">
+            <div className="flex justify-between items-center pb-4 border-b border-sky-200">
               <div>
-                <span className="text-xs font-heading font-bold text-amber-400 uppercase tracking-widest flex items-center gap-1.5">
+                <span className="text-xs font-heading font-bold text-amber-600 uppercase tracking-widest flex items-center gap-1.5">
                   <Sparkles className="w-4 h-4" /> ATO 3: DESAFIO PEDAGÓGICO DE INGLÊS
                 </span>
-                <h2 className="font-heading font-black text-lg sm:text-xl text-white">
+                <h2 className="font-heading font-black text-lg sm:text-xl text-slate-900">
                   Pergunta {quizQuestionIndex + 1} de {LEVEL0_QUESTIONS.length}
                 </h2>
               </div>
@@ -567,20 +608,20 @@ export const Level0Screen: React.FC = () => {
             {/* Question Text */}
             <div className="my-6">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-slate-400">Question in English:</span>
+                <span className="text-xs text-slate-500">Question in English:</span>
                 <button
                   onClick={() => speechService.speak(currentQ.promptEn, 'en-US')}
-                  className="p-1.5 bg-slate-800 text-cyan-300 rounded-lg hover:bg-slate-700 flex items-center gap-1 text-xs font-bold"
+                  className="p-1.5 bg-sky-50 text-cyan-700 rounded-lg hover:bg-sky-100 flex items-center gap-1 text-xs font-bold"
                 >
                   <Volume2 className="w-3.5 h-3.5" />
                   <span>Listen</span>
                 </button>
               </div>
 
-              <h3 className="text-xl sm:text-2xl font-heading font-black text-amber-300 mb-2">
+              <h3 className="text-xl sm:text-2xl font-heading font-black text-amber-700 mb-2">
                 {currentQ.promptEn}
               </h3>
-              <p className="text-sm text-slate-400 italic">
+              <p className="text-sm text-slate-500 italic">
                 Tradução: {currentQ.promptPt}
               </p>
             </div>
@@ -591,14 +632,14 @@ export const Level0Screen: React.FC = () => {
                 const isSelected = selectedOption === idx;
                 const letter = String.fromCharCode(65 + idx); // A, B, C, D
 
-                let btnStyles = "bg-slate-800/90 border-slate-700 hover:border-amber-400 text-white";
+                let btnStyles = "bg-sky-50/90 border-sky-200 hover:border-amber-400 text-slate-900";
                 if (selectedOption !== null) {
                   if (option.isCorrect) {
-                    btnStyles = "bg-emerald-950/90 border-emerald-500 text-emerald-200 shadow-glow-emerald";
+                    btnStyles = "bg-emerald-100/80 border-emerald-500 text-emerald-800 shadow-glow-emerald";
                   } else if (isSelected && !option.isCorrect) {
-                    btnStyles = "bg-red-950/90 border-red-500 text-red-200";
+                    btnStyles = "bg-red-100/80 border-red-500 text-red-800";
                   } else {
-                    btnStyles = "opacity-40 border-slate-800";
+                    btnStyles = "opacity-40 border-sky-200";
                   }
                 }
 
@@ -609,7 +650,7 @@ export const Level0Screen: React.FC = () => {
                     disabled={selectedOption !== null}
                     className={`flex items-center gap-3 p-4 rounded-2xl border-2 font-heading font-bold text-left transition-all text-sm sm:text-base ${btnStyles}`}
                   >
-                    <span className="w-8 h-8 rounded-full bg-slate-950 border border-slate-600 flex items-center justify-center text-amber-400 font-black flex-shrink-0">
+                    <span className="w-8 h-8 rounded-full bg-white/95 border border-sky-300 flex items-center justify-center text-amber-600 font-black flex-shrink-0">
                       {letter}
                     </span>
                     <span>{option.text}</span>
@@ -620,20 +661,20 @@ export const Level0Screen: React.FC = () => {
 
             {/* Feedback and Continue */}
             {selectedOption !== null && (
-              <div className="p-4 rounded-2xl bg-slate-950/90 border-2 border-slate-800 animate-fadeIn flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div className="p-4 rounded-2xl bg-white/90 border-2 border-sky-200 animate-fadeIn flex flex-col sm:flex-row justify-between items-center gap-4">
                 <div className="text-left">
                   <div className="flex items-center gap-2 mb-1">
                     {quizFeedback === 'correct' ? (
-                      <span className="text-emerald-400 font-heading font-black text-sm flex items-center gap-1">
+                      <span className="text-emerald-600 font-heading font-black text-sm flex items-center gap-1">
                         <CheckCircle2 className="w-4 h-4" /> EXCELLENT! Resposta Correta (+100 PTS)
                       </span>
                     ) : (
-                      <span className="text-amber-400 font-heading font-black text-sm">
+                      <span className="text-amber-600 font-heading font-black text-sm">
                         Quase lá! Veja a explicação:
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-slate-300">
+                  <p className="text-xs text-slate-600">
                     {currentQ.explanation}
                   </p>
                 </div>
@@ -654,35 +695,35 @@ export const Level0Screen: React.FC = () => {
         {/* ATO 4: LEVEL 0 COMPLETE & READY FOR ORIENTATION */}
         {/* ========================================================= */}
         {stage === 'complete' && (
-          <div className="bg-slate-900/95 border-4 border-emerald-500 rounded-3xl p-6 sm:p-10 shadow-2xl backdrop-blur-md animate-fadeIn text-center max-w-2xl mx-auto">
+          <div className="bg-white/95 border-4 border-emerald-500 rounded-3xl p-6 sm:p-10 shadow-2xl backdrop-blur-md animate-fadeIn text-center max-w-2xl mx-auto">
             <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 rounded-full bg-gradient-to-tr from-amber-500 via-amber-400 to-yellow-300 flex items-center justify-center text-4xl sm:text-5xl shadow-glow-gold border-4 border-white animate-bounce">
               🏆
             </div>
 
-            <div className="inline-block bg-emerald-950/90 border border-emerald-500 text-emerald-300 px-4 py-1.5 rounded-full text-xs font-heading font-black uppercase mb-3">
+            <div className="inline-block bg-emerald-100/80 border border-emerald-500 text-emerald-700 px-4 py-1.5 rounded-full text-xs font-heading font-black uppercase mb-3">
               ★ LEVEL 0 COMPLETED! ★
             </div>
 
-            <h2 className="text-2xl sm:text-4xl font-heading font-black text-white mb-3">
+            <h2 className="text-2xl sm:text-4xl font-heading font-black text-slate-900 mb-3">
               PARABÉNS, EXPLORADOR!
             </h2>
 
-            <p className="text-sm sm:text-base text-slate-300 mb-6 leading-relaxed">
-              Você aprendeu as primeiras regras escolares com o <strong className="text-amber-400">Diretor Márcio</strong> e concluiu a introdução do Nisialand com sucesso!
+            <p className="text-sm sm:text-base text-slate-600 mb-6 leading-relaxed">
+              Você aprendeu as primeiras regras escolares com o <strong className="text-amber-600">Diretor Márcio</strong> e concluiu a introdução do Nisialand com sucesso!
             </p>
 
             {/* Score Summary Box */}
-            <div className="bg-slate-950/80 border-2 border-slate-800 rounded-2xl p-4 mb-8 flex justify-around items-center">
+            <div className="bg-white/90 border-2 border-sky-200 rounded-2xl p-4 mb-8 flex justify-around items-center">
               <div>
-                <span className="text-xs text-slate-400 block font-heading">Pontos de Abertura</span>
-                <span className="text-2xl sm:text-3xl font-heading font-black text-amber-400">
+                <span className="text-xs text-slate-500 block font-heading">Pontos de Abertura</span>
+                <span className="text-2xl sm:text-3xl font-heading font-black text-amber-600">
                   +{quizScore + chaseScore} PTS
                 </span>
               </div>
-              <div className="h-10 w-px bg-slate-800"></div>
+              <div className="h-10 w-px bg-sky-50"></div>
               <div>
-                <span className="text-xs text-slate-400 block font-heading">Próximo Passo</span>
-                <span className="text-sm sm:text-base font-heading font-black text-cyan-300">
+                <span className="text-xs text-slate-500 block font-heading">Próximo Passo</span>
+                <span className="text-sm sm:text-base font-heading font-black text-cyan-700">
                   Reunião Educativa
                 </span>
               </div>
@@ -700,7 +741,7 @@ export const Level0Screen: React.FC = () => {
 
               <button
                 onClick={() => navigate('/')}
-                className="w-full sm:w-auto px-6 py-3.5 bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-heading font-bold text-xs uppercase rounded-full border border-slate-700 transition-all"
+                className="w-full sm:w-auto px-6 py-3.5 bg-sky-50/80 hover:bg-sky-100 text-slate-600 font-heading font-bold text-xs uppercase rounded-full border border-sky-200 transition-all"
               >
                 Voltar ao Início
               </button>
@@ -710,7 +751,7 @@ export const Level0Screen: React.FC = () => {
       </main>
 
       {/* Footer Branding */}
-      <footer className="relative z-10 w-full text-center py-4 text-xs text-slate-400 border-t border-slate-900 bg-slate-950/70 backdrop-blur-sm">
+      <footer className="relative z-10 w-full text-center py-4 text-xs text-slate-500 border-t border-sky-200 bg-white/80 backdrop-blur-sm">
         Escola Municipal Nísia Vilela Fernandes • Duque de Caxias • Prof. Neimar Oliveira
       </footer>
     </div>

@@ -25,18 +25,29 @@ export interface PlayerProfile {
   avatar: string;
   skinTone?: 'light' | 'medium' | 'dark' | 'warm';
   level?: number;
+  // 'guest' = visitante (sem código, fora da lista de alunos e do ranking). Ausente = aluno.
+  kind?: 'guest' | 'student';
   createdAt: string;
   lastLoginAt: string;
 }
 
-export function calculatePlayerLevel(score: number): number {
-  if (score >= 1600) return 5;
-  if (score >= 1200) return 4;
-  if (score >= 800) return 3;
-  if (score >= 400) return 2;
-  if (score >= 100) return 1;
-  return 0; // Level 0
+export function isGuestPlayer(player: PlayerProfile | null | undefined): boolean {
+  return player?.kind === 'guest';
 }
+
+// Patente do jogador (0 a 5), calculada pelo XP acumulado (pontos do Quiz + Flashcards).
+// Não confundir com o "Nível 0", que é a etapa da história.
+export function calculateXpRank(xp: number): number {
+  if (xp >= 1600) return 5;
+  if (xp >= 1200) return 4;
+  if (xp >= 800) return 3;
+  if (xp >= 400) return 2;
+  if (xp >= 100) return 1;
+  return 0;
+}
+
+// Nome antigo mantido por compatibilidade (avatares desbloqueiam por patente).
+export const calculatePlayerLevel = calculateXpRank;
 
 export interface QuizOption {
   letter?: string;
@@ -84,14 +95,15 @@ export interface FlashcardStudent {
   name: string;
   age: number;
   img: string;
+  info?: string; // fato mostrado na carta (6º/7º/9º); sem ele, mostra a idade
 }
 
 export interface FlashcardChallenge {
   id: number;
   targetName: string;
-  targetAge: number;
-  compType: 'older' | 'younger' | 'same';
-  compText: string;
+  targetAge?: number;
+  compType?: 'older' | 'younger' | 'same';
+  compText?: string;
   questionEn: string;
   questionPt: string;
   ruleExplanation: string;

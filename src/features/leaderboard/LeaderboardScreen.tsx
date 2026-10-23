@@ -31,6 +31,27 @@ import { nameModerationService } from '../../services/nameModeration';
 
 type TabMode = 'players' | 'classes' | 'teams';
 
+const EMPTY_RANKING_MESSAGE = 'Ainda não há resultados. Jogue o Nível 0 para aparecer aqui!';
+
+// Ranking vazio: aparece enquanto nenhum aluno cadastrado tem resultado salvo.
+const EmptyRanking: React.FC<{ onPlay: () => void }> = ({ onPlay }) => (
+  <div className="py-10 px-4 flex flex-col items-center text-center gap-3" data-testid="empty-ranking">
+    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-300 to-amber-500 border-2 border-white shadow-[0_0_18px_rgba(234,179,8,0.45)] flex items-center justify-center">
+      <Trophy className="w-8 h-8 text-slate-950" />
+    </div>
+    <p className="font-heading font-black text-base sm:text-lg text-slate-800 max-w-sm">
+      {EMPTY_RANKING_MESSAGE}
+    </p>
+    <button
+      type="button"
+      onClick={onPlay}
+      className="mt-1 px-5 py-2.5 rounded-xl bg-gradient-to-b from-green-400 via-emerald-500 to-green-600 text-white font-bungee text-sm tracking-wider shadow-[0_4px_0_#065f46] active:translate-y-1 active:shadow-[0_1px_0_#065f46] border-2 border-emerald-300 transition-all"
+    >
+      JOGAR O NÍVEL 0 ▶
+    </button>
+  </div>
+);
+
 export const LeaderboardScreen: React.FC = () => {
   const navigate = useNavigate();
   const { currentPlayer } = useGame();
@@ -74,35 +95,35 @@ export const LeaderboardScreen: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex flex-col justify-between">
+    <div className="min-h-screen game-sky text-slate-900 flex flex-col justify-between">
       <GameHeader />
 
       <main className="flex-1 w-full max-w-5xl mx-auto px-3 sm:px-4 py-5 md:py-6 flex flex-col">
         
         {/* Header Title */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400 text-amber-300 font-bold text-xs uppercase tracking-widest mb-2 shadow-sm">
-            <Trophy className="w-4 h-4 text-amber-400" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400 text-amber-700 font-bold text-xs uppercase tracking-widest mb-2 shadow-sm">
+            <Trophy className="w-4 h-4 text-amber-600" />
             <span>Escola Municipal Nísia Vilela Fernandes</span>
           </div>
 
-          <h1 className="text-3xl md:text-5xl font-black font-bungee tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400">
+          <h1 className="text-3xl md:text-5xl game-title">
             LEADERBOARD
           </h1>
-          <p className="text-xs sm:text-sm text-slate-300 mt-1 font-semibold">
+          <p className="text-xs sm:text-sm text-slate-600 mt-1 font-semibold">
             Official English Adventure Standings & Team Clash
           </p>
         </div>
 
         {/* 3 Main Tabs: Players, Classes, Teams */}
-        <div className="grid grid-cols-3 gap-1.5 sm:gap-2 p-1.5 bg-slate-900 border-2 border-slate-700 rounded-2xl mb-6 shadow-xl">
+        <div className="grid grid-cols-3 gap-1.5 sm:gap-2 p-1.5 game-panel !rounded-2xl mb-6">
           <button
             type="button"
             onClick={() => handleTabChange('players')}
             className={`py-3 px-2 sm:px-4 rounded-xl font-bungee text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 ${
               activeTab === 'players'
                 ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                : 'text-slate-500 hover:text-slate-900 hover:bg-sky-50'
             }`}
           >
             <Crown className="w-4 h-4" />
@@ -115,7 +136,7 @@ export const LeaderboardScreen: React.FC = () => {
             className={`py-3 px-2 sm:px-4 rounded-xl font-bungee text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 ${
               activeTab === 'classes'
                 ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                : 'text-slate-500 hover:text-slate-900 hover:bg-sky-50'
             }`}
           >
             <Users className="w-4 h-4" />
@@ -128,7 +149,7 @@ export const LeaderboardScreen: React.FC = () => {
             className={`py-3 px-2 sm:px-4 rounded-xl font-bungee text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 ${
               activeTab === 'teams'
                 ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                : 'text-slate-500 hover:text-slate-900 hover:bg-sky-50'
             }`}
           >
             <Shield className="w-4 h-4" />
@@ -141,9 +162,9 @@ export const LeaderboardScreen: React.FC = () => {
           <div className="space-y-4">
             
             {/* Filter Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-slate-900/80 border border-slate-800 rounded-2xl">
-              <div className="flex items-center gap-2 text-xs font-extrabold text-slate-400 uppercase">
-                <Filter className="w-4 h-4 text-amber-400" />
+            <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-sky-50 border-2 border-sky-200 shadow-[0_3px_0_0_#bae6fd] rounded-2xl">
+              <div className="flex items-center gap-2 text-xs font-extrabold text-slate-500 uppercase">
+                <Filter className="w-4 h-4 text-amber-600" />
                 <span>Filters:</span>
               </div>
 
@@ -152,7 +173,7 @@ export const LeaderboardScreen: React.FC = () => {
                 <select
                   value={selectedClass}
                   onChange={(e) => setSelectedClass(e.target.value)}
-                  className="bg-slate-950 border border-slate-700 text-white rounded-xl px-3 py-1.5 text-xs font-bold outline-none cursor-pointer"
+                  className="bg-white/95 border border-sky-200 text-slate-900 rounded-xl px-3 py-1.5 text-xs font-bold outline-none cursor-pointer"
                 >
                   <option value="all">All Classes</option>
                   <option value="804">Turma 804</option>
@@ -165,7 +186,7 @@ export const LeaderboardScreen: React.FC = () => {
                 <select
                   value={selectedTeam}
                   onChange={(e) => setSelectedTeam(e.target.value)}
-                  className="bg-slate-950 border border-slate-700 text-white rounded-xl px-3 py-1.5 text-xs font-bold outline-none cursor-pointer"
+                  className="bg-white/95 border border-sky-200 text-slate-900 rounded-xl px-3 py-1.5 text-xs font-bold outline-none cursor-pointer"
                 >
                   <option value="all">All Teams</option>
                   <option value="blue">Blue Team</option>
@@ -175,10 +196,10 @@ export const LeaderboardScreen: React.FC = () => {
             </div>
 
             {/* Players Table / List */}
-            <div className="bg-slate-900/90 border-2 border-slate-700 rounded-3xl p-3 sm:p-5 shadow-2xl backdrop-blur-md overflow-x-auto">
+            <div className="game-panel p-3 sm:p-5 overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-800 text-[11px] sm:text-xs font-extrabold uppercase text-slate-400">
+                  <tr className="border-b border-sky-200 text-[11px] sm:text-xs font-extrabold uppercase text-slate-500">
                     <th className="py-3 px-2 sm:px-3 text-center w-12">#</th>
                     <th className="py-3 px-3">Player</th>
                     <th className="py-3 px-2 text-center">Class</th>
@@ -194,7 +215,7 @@ export const LeaderboardScreen: React.FC = () => {
                     const isBlue = p.team === 'blue';
 
                     let rankBadge = (
-                      <span className="font-bungee text-slate-400">#{p.rank}</span>
+                      <span className="font-bungee text-slate-500">#{p.rank}</span>
                     );
                     if (p.rank === 1) {
                       rankBadge = (
@@ -222,7 +243,7 @@ export const LeaderboardScreen: React.FC = () => {
                         className={`transition-colors ${
                           isCurrent 
                             ? 'bg-amber-500/10 font-bold border-l-4 border-amber-400' 
-                            : 'hover:bg-slate-800/50'
+                            : 'hover:bg-sky-50/50'
                         }`}
                       >
                         {/* Rank */}
@@ -236,10 +257,10 @@ export const LeaderboardScreen: React.FC = () => {
                             <PlayerAvatar
                               avatarId={p.avatar}
                               size="sm"
-                              className="border border-slate-600 flex-shrink-0"
+                              className="border border-sky-300 flex-shrink-0"
                             />
                             <div>
-                              <div className="font-extrabold text-white flex items-center gap-1.5">
+                              <div className="font-extrabold text-slate-900 flex items-center gap-1.5">
                                 <span>{p.displayName}</span>
                                 {isCurrent ? (
                                   <span className="px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 text-[10px] font-black uppercase">
@@ -251,7 +272,7 @@ export const LeaderboardScreen: React.FC = () => {
                                       setReportingPlayer({ id: p.playerId, name: p.displayName });
                                       setReportSuccess(false);
                                     }}
-                                    className="text-slate-600 hover:text-red-400 p-1 rounded transition-colors"
+                                    className="text-slate-600 hover:text-red-600 p-1 rounded transition-colors"
                                     title="Denunciar nome inadequado"
                                     aria-label="Denunciar nome"
                                   >
@@ -259,7 +280,7 @@ export const LeaderboardScreen: React.FC = () => {
                                   </button>
                                 )}
                               </div>
-                              <span className="text-[10px] text-slate-400 capitalize">
+                              <span className="text-[10px] text-slate-500 capitalize">
                                 {p.medal} Star
                               </span>
                             </div>
@@ -267,7 +288,7 @@ export const LeaderboardScreen: React.FC = () => {
                         </td>
 
                         {/* Class */}
-                        <td className="py-3 px-2 text-center font-semibold text-slate-300">
+                        <td className="py-3 px-2 text-center font-semibold text-slate-600">
                           {p.className}
                         </td>
 
@@ -275,8 +296,8 @@ export const LeaderboardScreen: React.FC = () => {
                         <td className="py-3 px-2 text-center">
                           <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-bold border ${
                             isBlue 
-                              ? 'bg-blue-950/60 border-blue-500/60 text-blue-300' 
-                              : 'bg-purple-950/60 border-purple-500/60 text-purple-300'
+                              ? 'bg-blue-100/80 border-blue-500/60 text-blue-700' 
+                              : 'bg-purple-100/80 border-purple-500/60 text-purple-700'
                           }`}>
                             <Shield className="w-3.5 h-3.5 fill-current" />
                             <span className="hidden sm:inline">{isBlue ? 'Blue' : 'Purple'}</span>
@@ -284,21 +305,21 @@ export const LeaderboardScreen: React.FC = () => {
                         </td>
 
                         {/* Quiz */}
-                        <td className="py-3 px-2 text-center text-slate-400 font-mono hidden md:table-cell">
+                        <td className="py-3 px-2 text-center text-slate-500 font-mono hidden md:table-cell">
                           {p.quizScore}
                         </td>
 
                         {/* Cards */}
-                        <td className="py-3 px-2 text-center text-slate-400 font-mono hidden md:table-cell">
+                        <td className="py-3 px-2 text-center text-slate-500 font-mono hidden md:table-cell">
                           {p.flashcardScore}
                         </td>
 
                         {/* Total Score */}
                         <td className="py-3 px-3 text-right">
-                          <span className="font-bungee text-base sm:text-lg text-amber-400">
+                          <span className="font-bungee text-base sm:text-lg text-amber-600">
                             {p.totalScore}
                           </span>
-                          <span className="text-[10px] text-slate-400 block font-semibold">pts</span>
+                          <span className="text-[10px] text-slate-500 block font-semibold">pts</span>
                         </td>
                       </tr>
                     );
@@ -306,8 +327,10 @@ export const LeaderboardScreen: React.FC = () => {
                 </tbody>
               </table>
 
-              {filteredPlayers.length === 0 && (
-                <div className="py-12 text-center text-slate-400">
+              {playersList.length === 0 ? (
+                <EmptyRanking onPlay={() => { audioService.playClick(); navigate('/missions'); }} />
+              ) : filteredPlayers.length === 0 && (
+                <div className="py-12 text-center text-slate-500">
                   No participants found matching the current filters.
                 </div>
               )}
@@ -318,7 +341,7 @@ export const LeaderboardScreen: React.FC = () => {
         {/* --- TAB 2: CLASS RANKING --- */}
         {activeTab === 'classes' && (
           <div className="space-y-4">
-            <div className="p-4 bg-slate-900/60 border border-slate-800 rounded-2xl text-xs sm:text-sm text-slate-300">
+            <div className="p-4 bg-white/80 border border-sky-200 rounded-2xl text-xs sm:text-sm text-slate-600">
               💡 <strong>Fair Competition Note:</strong> Classes are ranked primarily by <strong>Average Score</strong> per student to ensure fair competition between classes of different sizes, alongside total accumulated points.
             </div>
 
@@ -326,27 +349,27 @@ export const LeaderboardScreen: React.FC = () => {
               {classList.map((c, idx) => (
                 <div 
                   key={c.className}
-                  className="p-5 rounded-3xl bg-slate-900/90 border-2 border-slate-700 shadow-xl flex flex-col justify-between"
+                  className="p-5 game-panel flex flex-col justify-between"
                 >
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-400 text-amber-300 flex items-center justify-center font-bungee text-lg">
+                      <div className="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-400 text-amber-700 flex items-center justify-center font-bungee text-lg">
                         #{idx + 1}
                       </div>
                       <div>
-                        <h3 className="font-bungee text-xl text-white">Turma {c.className}</h3>
-                        <p className="text-xs text-slate-400">{c.studentsCount} participating students</p>
+                        <h3 className="font-bungee text-xl text-slate-900">Turma {c.className}</h3>
+                        <p className="text-xs text-slate-500">{c.studentsCount} participating students</p>
                       </div>
                     </div>
 
                     <div className="text-right">
-                      <span className="text-xs uppercase font-extrabold text-slate-400 block">Class Average</span>
-                      <span className="text-2xl font-bungee text-amber-400">{c.averageScore} pts</span>
+                      <span className="text-xs uppercase font-extrabold text-slate-500 block">Class Average</span>
+                      <span className="text-2xl font-bungee text-amber-600">{c.averageScore} pts</span>
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
-                    <span>Total Points: <strong className="text-white font-mono">{c.totalPoints.toLocaleString()}</strong></span>
+                  <div className="pt-3 border-t border-sky-200 flex items-center justify-between text-xs text-slate-500">
+                    <span>Total Points: <strong className="text-slate-900 font-mono">{c.totalPoints.toLocaleString()}</strong></span>
                     <span>Nísia Vilela Fernandes</span>
                   </div>
                 </div>
@@ -360,17 +383,17 @@ export const LeaderboardScreen: React.FC = () => {
           <div className="space-y-6">
             
             {/* Winner Announcement Banner */}
-            <div className="p-4 rounded-3xl bg-gradient-to-r from-blue-950 via-slate-900 to-purple-950 border-2 border-slate-700 text-center shadow-xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-bold text-xs uppercase mb-2">
-                <Flame className="w-4 h-4 text-amber-400" />
+            <div className="p-4 rounded-3xl bg-gradient-to-r from-blue-100 via-white to-purple-100 border-[3px] border-sky-200 text-center shadow-[0_6px_0_0_#7dd3fc]">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-700 font-bold text-xs uppercase mb-2">
+                <Flame className="w-4 h-4 text-amber-600" />
                 <span>FACTION CLASH STANDINGS</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-bungee text-white">
+              <h2 className="text-2xl sm:text-3xl font-bungee text-slate-900">
                 {teamComparison.leadingTeam === 'blue' && 'BLUE TEAM IS CURRENTLY LEADING! 🔵'}
                 {teamComparison.leadingTeam === 'purple' && 'PURPLE TEAM IS CURRENTLY LEADING! 🟣'}
                 {teamComparison.leadingTeam === 'tie' && 'IT IS CURRENTLY A TIE! ⚔️'}
               </h2>
-              <p className="text-xs sm:text-sm text-slate-300 mt-1">
+              <p className="text-xs sm:text-sm text-slate-600 mt-1">
                 Classified by Average Score per player for equal opportunity between teams.
               </p>
             </div>
@@ -379,7 +402,7 @@ export const LeaderboardScreen: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               
               {/* BLUE TEAM CARD */}
-              <div className="p-6 rounded-3xl bg-gradient-to-b from-blue-950/70 to-slate-900 border-3 border-blue-500 shadow-[0_0_30px_rgba(37,99,235,0.25)] flex flex-col justify-between">
+              <div className="p-6 rounded-3xl bg-gradient-to-b from-blue-100 to-sky-50 border-[3px] border-blue-500 shadow-[0_6px_0_0_#1d4ed8] flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
@@ -387,8 +410,8 @@ export const LeaderboardScreen: React.FC = () => {
                         <Shield className="w-7 h-7 fill-white" />
                       </div>
                       <div>
-                        <h3 className="font-bungee text-2xl text-blue-300">BLUE TEAM</h3>
-                        <p className="text-xs font-semibold text-blue-400">Smart & United</p>
+                        <h3 className="font-bungee text-2xl text-blue-700">BLUE TEAM</h3>
+                        <p className="text-xs font-semibold text-blue-600">Smart & United</p>
                       </div>
                     </div>
                     {teamComparison.leadingTeam === 'blue' && (
@@ -399,30 +422,30 @@ export const LeaderboardScreen: React.FC = () => {
                   </div>
 
                   <div className="space-y-3 my-6">
-                    <div className="flex items-center justify-between p-3 rounded-xl bg-blue-900/30 border border-blue-800">
-                      <span className="text-xs font-bold text-slate-300 uppercase">Team Average (Primary)</span>
-                      <span className="text-2xl font-bungee text-blue-300">{teamComparison.blueTeam.averageScore} pts</span>
+                    <div className="flex items-center justify-between p-3 rounded-xl bg-blue-100/80 border border-blue-300">
+                      <span className="text-xs font-bold text-slate-600 uppercase">Team Average (Primary)</span>
+                      <span className="text-2xl font-bungee text-blue-700">{teamComparison.blueTeam.averageScore} pts</span>
                     </div>
 
-                    <div className="flex items-center justify-between p-3 rounded-xl bg-blue-900/20 border border-blue-800/60">
-                      <span className="text-xs font-bold text-slate-300 uppercase">Total Points</span>
-                      <span className="text-xl font-bungee text-white">{teamComparison.blueTeam.totalPoints.toLocaleString()}</span>
+                    <div className="flex items-center justify-between p-3 rounded-xl bg-blue-100/80 border border-blue-300">
+                      <span className="text-xs font-bold text-slate-600 uppercase">Total Points</span>
+                      <span className="text-xl font-bungee text-slate-900">{teamComparison.blueTeam.totalPoints.toLocaleString()}</span>
                     </div>
 
-                    <div className="flex items-center justify-between p-3 rounded-xl bg-blue-900/20 border border-blue-800/60">
-                      <span className="text-xs font-bold text-slate-300 uppercase">Active Players</span>
-                      <span className="text-lg font-bold text-blue-300">{teamComparison.blueTeam.playersCount} students</span>
+                    <div className="flex items-center justify-between p-3 rounded-xl bg-blue-100/80 border border-blue-300">
+                      <span className="text-xs font-bold text-slate-600 uppercase">Active Players</span>
+                      <span className="text-lg font-bold text-blue-700">{teamComparison.blueTeam.playersCount} students</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="text-[11px] text-blue-400 font-semibold text-center">
+                <div className="text-[11px] text-blue-600 font-semibold text-center">
                   Contributes to school pride!
                 </div>
               </div>
 
               {/* PURPLE TEAM CARD */}
-              <div className="p-6 rounded-3xl bg-gradient-to-b from-purple-950/70 to-slate-900 border-3 border-purple-500 shadow-[0_0_30px_rgba(147,51,234,0.25)] flex flex-col justify-between">
+              <div className="p-6 rounded-3xl bg-gradient-to-b from-purple-100 to-sky-50 border-[3px] border-purple-500 shadow-[0_6px_0_0_#7e22ce] flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
@@ -430,8 +453,8 @@ export const LeaderboardScreen: React.FC = () => {
                         <Shield className="w-7 h-7 fill-white" />
                       </div>
                       <div>
-                        <h3 className="font-bungee text-2xl text-purple-300">PURPLE TEAM</h3>
-                        <p className="text-xs font-semibold text-purple-400">Brave & Bright</p>
+                        <h3 className="font-bungee text-2xl text-purple-700">PURPLE TEAM</h3>
+                        <p className="text-xs font-semibold text-purple-600">Brave & Bright</p>
                       </div>
                     </div>
                     {teamComparison.leadingTeam === 'purple' && (
@@ -442,24 +465,24 @@ export const LeaderboardScreen: React.FC = () => {
                   </div>
 
                   <div className="space-y-3 my-6">
-                    <div className="flex items-center justify-between p-3 rounded-xl bg-purple-900/30 border border-purple-800">
-                      <span className="text-xs font-bold text-slate-300 uppercase">Team Average (Primary)</span>
-                      <span className="text-2xl font-bungee text-purple-300">{teamComparison.purpleTeam.averageScore} pts</span>
+                    <div className="flex items-center justify-between p-3 rounded-xl bg-purple-100/80 border border-purple-300">
+                      <span className="text-xs font-bold text-slate-600 uppercase">Team Average (Primary)</span>
+                      <span className="text-2xl font-bungee text-purple-700">{teamComparison.purpleTeam.averageScore} pts</span>
                     </div>
 
-                    <div className="flex items-center justify-between p-3 rounded-xl bg-purple-900/20 border border-purple-800/60">
-                      <span className="text-xs font-bold text-slate-300 uppercase">Total Points</span>
-                      <span className="text-xl font-bungee text-white">{teamComparison.purpleTeam.totalPoints.toLocaleString()}</span>
+                    <div className="flex items-center justify-between p-3 rounded-xl bg-purple-100/80 border border-purple-300">
+                      <span className="text-xs font-bold text-slate-600 uppercase">Total Points</span>
+                      <span className="text-xl font-bungee text-slate-900">{teamComparison.purpleTeam.totalPoints.toLocaleString()}</span>
                     </div>
 
-                    <div className="flex items-center justify-between p-3 rounded-xl bg-purple-900/20 border border-purple-800/60">
-                      <span className="text-xs font-bold text-slate-300 uppercase">Active Players</span>
-                      <span className="text-lg font-bold text-purple-300">{teamComparison.purpleTeam.playersCount} students</span>
+                    <div className="flex items-center justify-between p-3 rounded-xl bg-purple-100/80 border border-purple-300">
+                      <span className="text-xs font-bold text-slate-600 uppercase">Active Players</span>
+                      <span className="text-lg font-bold text-purple-700">{teamComparison.purpleTeam.playersCount} students</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="text-[11px] text-purple-400 font-semibold text-center">
+                <div className="text-[11px] text-purple-600 font-semibold text-center">
                   Contributes to school pride!
                 </div>
               </div>
@@ -467,14 +490,14 @@ export const LeaderboardScreen: React.FC = () => {
             </div>
 
             {/* Visual Balance Bar */}
-            <div className="p-5 rounded-3xl bg-slate-900/90 border border-slate-700">
+            <div className="p-5 game-panel">
               <div className="flex items-center justify-between text-xs font-bungee mb-2">
-                <span className="text-blue-400">BLUE TEAM ({teamComparison.blueTeam.averageScore} AVG)</span>
-                <span className="text-purple-400">PURPLE TEAM ({teamComparison.purpleTeam.averageScore} AVG)</span>
+                <span className="text-blue-600">BLUE TEAM ({teamComparison.blueTeam.averageScore} AVG)</span>
+                <span className="text-purple-600">PURPLE TEAM ({teamComparison.purpleTeam.averageScore} AVG)</span>
               </div>
 
               {/* Progress gauge */}
-              <div className="w-full h-5 bg-slate-950 rounded-full overflow-hidden flex border-2 border-slate-700">
+              <div className="w-full h-5 bg-white/95 rounded-full overflow-hidden flex border-2 border-sky-200">
                 <div 
                   className="h-full bg-gradient-to-r from-blue-600 to-blue-400 transition-all duration-500"
                   style={{
@@ -509,7 +532,7 @@ export const LeaderboardScreen: React.FC = () => {
               audioService.playClick();
               navigate('/missions');
             }}
-            className="px-8 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-bungee text-sm border-2 border-slate-600 hover:border-slate-400 inline-flex items-center gap-2 transition-all cursor-pointer"
+            className="px-8 py-3.5 rounded-2xl bg-white hover:bg-sky-50 text-blue-800 border-2 border-sky-300 shadow-[0_4px_0_0_#7dd3fc] active:translate-y-1 active:shadow-[0_1px_0_0_#7dd3fc] font-bungee text-sm inline-flex items-center gap-2 transition-all cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>RETURN TO MISSIONS</span>
@@ -518,36 +541,36 @@ export const LeaderboardScreen: React.FC = () => {
 
         {/* REPORT NAME MODAL */}
         {reportingPlayer && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-            <div className="bg-slate-900 border-3 border-amber-500 rounded-3xl max-w-md w-full p-6 shadow-2xl text-white">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/90 backdrop-blur-md animate-fadeIn">
+            <div className="game-panel-gold max-w-md w-full p-6 text-slate-900 max-h-[90dvh] overflow-y-auto">
               {!reportSuccess ? (
                 <div>
-                  <div className="flex items-center gap-3 pb-3 border-b border-slate-800 mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-red-500/20 text-red-400 border border-red-500/40 flex items-center justify-center">
+                  <div className="flex items-center gap-3 pb-3 border-b border-sky-200 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-red-500/20 text-red-600 border border-red-500/40 flex items-center justify-center">
                       <Flag className="w-5 h-5" />
                     </div>
                     <div>
-                      <h3 className="font-heading font-black text-base text-white">
+                      <h3 className="font-heading font-black text-base text-slate-900">
                         Denunciar Nome de Jogador
                       </h3>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-slate-500">
                         Ajude a manter o Nisialand seguro e respeitoso
                       </p>
                     </div>
                   </div>
 
-                  <p className="text-xs text-slate-300 mb-4">
-                    Você deseja reportar o nome <strong className="text-amber-300">"{reportingPlayer.name}"</strong> para moderação da equipe pedagógica?
+                  <p className="text-xs text-slate-600 mb-4">
+                    Você deseja reportar o nome <strong className="text-amber-700">"{reportingPlayer.name}"</strong> para moderação da equipe pedagógica?
                   </p>
 
                   <div className="mb-5">
-                    <label className="block text-[11px] font-heading font-bold text-slate-400 uppercase mb-1.5">
+                    <label className="block text-[11px] font-heading font-bold text-slate-500 uppercase mb-1.5">
                       Motivo:
                     </label>
                     <select
                       value={reportReason}
                       onChange={e => setReportReason(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-amber-400"
+                      className="w-full bg-white/95 border border-sky-200 rounded-xl px-3 py-2 text-xs text-slate-900 outline-none focus:border-amber-400"
                     >
                       <option value="Nome ofensivo ou desrespeitoso">Nome ofensivo ou desrespeitoso</option>
                       <option value="Palavrão ou termo impróprio">Palavrão ou termo impróprio</option>
@@ -559,7 +582,7 @@ export const LeaderboardScreen: React.FC = () => {
                   <div className="flex gap-2">
                     <button
                       onClick={() => setReportingPlayer(null)}
-                      className="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-heading font-bold"
+                      className="flex-1 py-2.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-slate-600 text-xs font-heading font-bold"
                     >
                       Cancelar
                     </button>
@@ -580,13 +603,13 @@ export const LeaderboardScreen: React.FC = () => {
                 </div>
               ) : (
                 <div className="py-4 text-center">
-                  <div className="w-12 h-12 mx-auto rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center mb-3">
+                  <div className="w-12 h-12 mx-auto rounded-full bg-emerald-500/20 text-emerald-600 border border-emerald-500/40 flex items-center justify-center mb-3">
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
-                  <h4 className="font-heading font-black text-base text-emerald-300 mb-1">
+                  <h4 className="font-heading font-black text-base text-emerald-700 mb-1">
                     Denúncia Enviada!
                   </h4>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-slate-500">
                     Obrigado por colaborar com um ambiente escolar seguro e positivo!
                   </p>
                 </div>

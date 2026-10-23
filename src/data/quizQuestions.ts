@@ -23,7 +23,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       { letter: "C", text: "as old as", isCorrect: false },
       { letter: "D", text: "the oldest", isCorrect: false }
     ],
-    explanation: "Mateus has 14 years old and Carlos has 13 years old. Since 14 > 13, Mateus is older than Carlos."
+    explanation: "Mateus is 14 years old and Carlos is 13. Since 14 > 13, Mateus is older than Carlos."
   },
   {
     id: 2,
@@ -33,7 +33,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     sentence: "Juliana is _______ Sofia.",
     spokenText: "Juliana is blank Sofia.",
     contextHint: "Juliana (12 years old) vs Sofia (12 years old)",
-    hint: "Juliana and Sofia have the same age (12). Comparative of equality uses: as + adjective + as -> as old as.",
+    hint: "Juliana and Sofia are the same age (12). Comparative of equality uses: as + adjective + as -> as old as.",
     targetStudent1: "juliana",
     targetStudent2: "sofia",
     optionsSheet: [
@@ -46,7 +46,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       { letter: "C", text: "younger than", isCorrect: false },
       { letter: "D", text: "the same as", isCorrect: false }
     ],
-    explanation: "Juliana (12) and Sofia (12) have the exact same age. We use equality: 'as old as' (as + adjective + as)."
+    explanation: "Juliana (12) and Sofia (12) are exactly the same age. We use equality: 'as old as' (as + adjective + as)."
   },
   {
     id: 3,
@@ -69,7 +69,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       { letter: "C", text: "older than", isCorrect: false },
       { letter: "D", text: "as young as", isCorrect: false }
     ],
-    explanation: "Gabriel has 11 years old and Rafael has 12. Since 11 < 12, Gabriel is younger than Rafael."
+    explanation: "Gabriel is 11 years old and Rafael is 12. Since 11 < 12, Gabriel is younger than Rafael."
   },
   {
     id: 4,
@@ -92,7 +92,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       { letter: "C", text: "as old as", isCorrect: false },
       { letter: "D", text: "more old than", isCorrect: false }
     ],
-    explanation: "Beatriz has 14 years old and Larissa has 13 years old. 14 > 13, so Beatriz is older than Larissa."
+    explanation: "Beatriz is 14 years old and Larissa is 13. 14 > 13, so Beatriz is older than Larissa."
   },
   {
     id: 5,
@@ -102,7 +102,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     sentence: "Rafael is _______ Juliana.",
     spokenText: "Rafael is blank Juliana.",
     contextHint: "Rafael (12 years old) vs Juliana (12 years old)",
-    hint: "Both Rafael and Juliana are 12 years old. They have the same age -> as old as.",
+    hint: "Both Rafael and Juliana are 12 years old. They are the same age -> as old as.",
     targetStudent1: "rafael",
     targetStudent2: "juliana",
     optionsSheet: [
@@ -115,7 +115,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       { letter: "C", text: "younger than", isCorrect: false },
       { letter: "D", text: "as older than", isCorrect: false }
     ],
-    explanation: "Rafael (12) and Juliana (12) have the same age. In English, equality is expressed by: 'as old as'."
+    explanation: "Rafael (12) and Juliana (12) are the same age. In English, equality is expressed by: 'as old as'."
   },
 
   // --- ATIVIDADE 2: Leitura do Texto e Glossário (Alice & Bruno) ---
@@ -157,9 +157,9 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       { letter: "A", text: "Marcos (38 years old)", isCorrect: true },
       { letter: "B", text: "Paula (40 years old)", isCorrect: false },
       { letter: "C", text: "Alice (13 years old)", isCorrect: false },
-      { letter: "D", text: "Both have the same age", isCorrect: false }
+      { letter: "D", text: "Both are the same age", isCorrect: false }
     ],
-    explanation: "Paula has 40 years old and Marcos has 38 years old. Therefore, Marcos (38) is younger than Paula (40)."
+    explanation: "Paula is 40 years old and Marcos is 38. Therefore, Marcos (38) is younger than Paula (40)."
   },
   {
     id: 8,

@@ -17,7 +17,8 @@ import {
   AlertTriangle,
   Flag,
   UserCheck,
-  UserX
+  UserX,
+  BookOpen
 } from 'lucide-react';
 import { storageService } from '../../services/storage';
 import { 
@@ -31,6 +32,7 @@ import { QUIZ_QUESTIONS } from '../../data/quizQuestions';
 import { audioService } from '../../services/audio';
 import { PlayerAvatar } from '../../components/ui/PlayerAvatar';
 import { nameModerationService, ReportedNameRecord } from '../../services/nameModeration';
+import { QuestionBankManager } from './QuestionBankManager';
 
 export const AdminPanel: React.FC = () => {
   const navigate = useNavigate();
@@ -47,7 +49,7 @@ export const AdminPanel: React.FC = () => {
   const [reports, setReports] = useState<ReportedNameRecord[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filterClass, setFilterClass] = useState<string>('all');
-  const [activeTab, setActiveTab] = useState<'roster' | 'analytics' | 'moderation' | 'audit'>('roster');
+  const [activeTab, setActiveTab] = useState<'roster' | 'analytics' | 'moderation' | 'audit' | 'questions'>('roster');
 
   // Load Data
   const refreshData = async () => {
@@ -87,13 +89,12 @@ export const AdminPanel: React.FC = () => {
   // Handle Passcode Submit
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Default teacher passcode: prof804
     if (passcode.trim().toLowerCase() === 'prof804') {
       setIsAuthenticated(true);
       setLoginError(null);
       audioService.playChime();
     } else {
-      setLoginError('Senha incorreta. (Dica de desenvolvimento: prof804)');
+      setLoginError('Senha incorreta.');
       audioService.playWrong();
     }
   };
@@ -213,9 +214,6 @@ export const AdminPanel: React.FC = () => {
                 required
                 className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 focus:border-blue-500 outline-none text-white font-mono font-bold"
               />
-              <span className="text-[11px] text-slate-500 mt-1 block">
-                Padrão institucional: <code className="text-blue-400 font-bold">prof804</code>
-              </span>
             </div>
 
             <button
@@ -323,7 +321,7 @@ export const AdminPanel: React.FC = () => {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex items-center gap-2 border-b border-slate-800 pb-2">
+        <div className="flex flex-wrap items-center gap-2 border-b border-slate-800 pb-2">
           <button
             type="button"
             onClick={() => setActiveTab('roster')}
@@ -379,6 +377,19 @@ export const AdminPanel: React.FC = () => {
           >
             <FileText className="w-4 h-4" />
             <span>Auditoria & Logs</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('questions')}
+            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all ${
+              activeTab === 'questions'
+                ? 'bg-amber-500 text-slate-950 shadow'
+                : 'text-slate-400 hover:text-white hover:bg-slate-900'
+            }`}
+          >
+            <BookOpen className="w-4 h-4" />
+            <span>Banco de Questões (Treino livre)</span>
           </button>
         </div>
 
@@ -627,6 +638,16 @@ export const AdminPanel: React.FC = () => {
               </div>
             </div>
           </div>
+        )}
+
+        {/* --- TAB 5: QUESTION BANK (TREINO LIVRE) --- */}
+        {activeTab === 'questions' && (
+          <QuestionBankManager
+            onLog={(action, details) => {
+              storageService.logAudit(action, details);
+              setAuditLogs(storageService.getAuditLogs());
+            }}
+          />
         )}
 
       </main>

@@ -1,15 +1,35 @@
 // Web Audio API Synthesizer & BGM Service for NISIALAND
 // Features Cleyton Kauffman's CC0 'Superhero' Adventure Theme with Chiptune Fallback
 
-export type BGMTrack = 'loop' | 'intro' | 'violin' | 'violin_loop';
+// Trilhas por momento do jogo:
+// apresentacao = abertura/menu (superhero_intro -> superhero_violin_loop)
+// mapa = mapa do Nível 0, cadastro e ranking
+// desafio = quiz, flashcards e Treino livre
+// vitoria = telas de resultado (toca uma vez e volta para a trilha do mapa)
+export type MusicTrack = 'apresentacao' | 'mapa' | 'desafio' | 'vitoria';
+
+const MUSIC_PREF_KEY = 'nisialand_music_on';
+const CROSSFADE_MS = 800;
+const DUCK_FACTOR = 0.5;
+
+// Música ligada por padrão; respeita a escolha salva do aluno.
+function readMusicPref(): boolean {
+  try {
+    return localStorage.getItem(MUSIC_PREF_KEY) !== '0';
+  } catch {
+    return true;
+  }
+}
 
 class AudioController {
   private ctx: AudioContext | null = null;
   private bgmAudio: HTMLAudioElement | null = null;
   private bgmInterval: number | null = null;
   private isSoundMuted: boolean = false;
-  private isMusicMuted: boolean = true; // BGM off by default until student or game turns it on
-  private currentTrack: BGMTrack = 'loop';
+  private isMusicMuted: boolean = !readMusicPref();
+  private currentTrack: MusicTrack | null = null;
+  private introDone: boolean = false;
+  private fades = new Map<HTMLAudioElement, number>();
   private targetVolume: number = 0.35;
   private sfxVolume: number = 0.3;
   private isDucked: boolean = false;
@@ -36,18 +56,17 @@ class AudioController {
   private attachAutoplayUnlock() {
     if (this.autoplayUnlockAttached) return;
     this.autoplayUnlockAttached = true;
+    // O navegador só libera o áudio depois de um toque; a cada interação, se a trilha
+    // deveria estar tocando e ficou parada pelo bloqueio, ela começa.
     const unlock = () => {
       this.initCtx();
-      if (!this.isMusicMuted && this.bgmAudio && this.bgmAudio.paused) {
-        this.bgmAudio.play().catch(() => {});
+      if (this.shouldPlayMusic() && this.bgmAudio && this.bgmAudio.paused) {
+        this.applyTrack();
       }
-      window.removeEventListener('click', unlock);
-      window.removeEventListener('keydown', unlock);
-      window.removeEventListener('touchstart', unlock);
     };
-    window.addEventListener('click', unlock, { once: true });
-    window.addEventListener('keydown', unlock, { once: true });
-    window.addEventListener('touchstart', unlock, { once: true });
+    window.addEventListener('click', unlock);
+    window.addEventListener('keydown', unlock);
+    window.addEventListener('touchstart', unlock);
   }
 
   public setSoundMuted(muted: boolean) {
@@ -56,17 +75,18 @@ class AudioController {
 
   public setMusicMuted(muted: boolean) {
     this.isMusicMuted = muted;
-    if (muted) {
-      this.stopBGM();
-    } else {
-      this.startBGM(this.currentTrack);
+    try {
+      localStorage.setItem(MUSIC_PREF_KEY, muted ? '0' : '1');
+    } catch {
+      // ignora
     }
+    this.applyTrack();
   }
 
   public setBgmVolume(vol: number) {
     this.targetVolume = Math.max(0, Math.min(1, vol));
     if (this.bgmAudio) {
-      this.bgmAudio.volume = this.isDucked ? this.targetVolume * 0.2 : this.targetVolume;
+      this.fadeTo(this.bgmAudio, this.effectiveVolume(), 200);
     }
   }
 
@@ -87,10 +107,13 @@ class AudioController {
    */
   public duckVolume(duck: boolean) {
     this.isDucked = duck;
-    if (this.bgmAudio) {
-      const effective = duck ? this.targetVolume * 0.2 : this.targetVolume;
-      this.bgmAudio.volume = Math.max(0, effective);
+    if (this.bgmAudio && !this.bgmAudio.paused) {
+      this.fadeTo(this.bgmAudio, this.effectiveVolume(), 300);
     }
+  }
+
+  private effectiveVolume(): number {
+    return this.isDucked ? this.targetVolume * DUCK_FACTOR : this.targetVolume;
   }
 
   // --- SOUND EFFECTS ---
@@ -262,76 +285,200 @@ class AudioController {
     }
   }
 
-  // --- OFFICIAL BGM (Cleyton Kauffman - Superhero Theme) ---
-
-  private getAudioSource(track: BGMTrack): string {
-    // Check if can play OGG or fallback to MP3
-    const testAudio = typeof Audio !== 'undefined' ? new Audio() : null;
-    const canPlayOgg = testAudio && testAudio.canPlayType('audio/ogg; codecs="vorbis"');
-
-    const ext = canPlayOgg ? 'ogg' : 'mp3';
-    switch (track) {
-      case 'intro':
-        return `/assets/audio/superhero_intro.${ext}`;
-      case 'violin':
-        return `/assets/audio/superhero_violin.ogg`;
-      case 'violin_loop':
-        return `/assets/audio/superhero_violin_loop.ogg`;
-      case 'loop':
-      default:
-        return `/assets/audio/superhero_loop.${ext}`;
+  // Sequência de acertos: arpejo que sobe mais a cada nível de combo.
+  public playCombo(level: number = 2) {
+    if (this.isSoundMuted) return;
+    try {
+      this.initCtx();
+      if (!this.ctx) return;
+      const base = 523.25 * Math.pow(2, Math.min(Math.max(level - 2, 0), 4) / 12); // sobe um semitom por nível
+      [1, 1.25, 1.5, 2].forEach((ratio, index) => {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        const start = this.ctx.currentTime + 0.12 + index * 0.06;
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(base * ratio, start);
+        gain.gain.setValueAtTime(this.sfxVolume * 0.35, start);
+        gain.gain.exponentialRampToValueAtTime(0.001, start + 0.16);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(start);
+        osc.stop(start + 0.18);
+      });
+    } catch {
+      // Audio fallback
     }
   }
 
-  public startBGM(track: BGMTrack = 'loop') {
+  // --- DIRETOR DE MÚSICA (trilhas por momento, com crossfade) ---
+
+  private canPlayOgg(): boolean {
+    if (typeof Audio === 'undefined') return false;
+    return !!new Audio().canPlayType('audio/ogg; codecs="vorbis"');
+  }
+
+  private trackSource(track: MusicTrack): { src: string; loop: boolean } {
+    const ogg = this.canPlayOgg();
+    const ext = ogg ? 'ogg' : 'mp3';
+    switch (track) {
+      case 'apresentacao':
+        if (!this.introDone) return { src: `/assets/audio/superhero_intro.${ext}`, loop: false };
+        // O loop de violino só existe em OGG; sem OGG usa o loop original.
+        return { src: ogg ? '/assets/audio/superhero_violin_loop.ogg' : '/assets/audio/superhero_loop.mp3', loop: true };
+      case 'mapa':
+        return { src: `/assets/audio/trilha_mapa.${ext}`, loop: true };
+      case 'desafio':
+        return { src: `/assets/audio/trilha_desafio.${ext}`, loop: true };
+      case 'vitoria':
+        return { src: `/assets/audio/vitoria.${ext}`, loop: false };
+    }
+  }
+
+  private shouldPlayMusic(): boolean {
+    return !this.isMusicMuted && this.storyHolds === 0 && this.currentTrack !== null;
+  }
+
+  /** Troca a trilha de fundo com crossfade (~0.8 s). Repetir a trilha atual não reinicia a música. */
+  public playTrack(track: MusicTrack) {
     this.currentTrack = track;
-    if (this.isMusicMuted) return;
+    this.applyTrack();
+  }
 
+  /** Toca a vinheta de vitória uma vez e depois volta para a trilha do mapa. */
+  public playVictory() {
+    if (this.isMusicMuted) {
+      this.currentTrack = 'mapa';
+      return;
+    }
+    // Cada tela de resultado toca a vinheta desde o início.
+    if (this.bgmAudio?.dataset.track === 'vitoria') this.bgmAudio.dataset.src = '';
+    this.playTrack('vitoria');
+  }
+
+  public getCurrentTrack(): MusicTrack | null {
+    return this.currentTrack;
+  }
+
+  // Silencia a trilha enquanto um vídeo ou história narrada está na tela,
+  // para a música não competir com a escuta do inglês. Ao terminar, a trilha continua de onde parou.
+  private storyHolds = 0;
+
+  public holdMusicForStory() {
+    this.storyHolds++;
+    this.applyTrack();
+  }
+
+  public releaseMusicForStory() {
+    this.storyHolds = Math.max(0, this.storyHolds - 1);
+    this.applyTrack();
+  }
+
+  private applyTrack() {
     if (typeof window === 'undefined') return;
+    if (!this.shouldPlayMusic() || !this.currentTrack) {
+      this.stopBGM();
+      return;
+    }
+    const track = this.currentTrack;
+    const { src, loop } = this.trackSource(track);
+    const current = this.bgmAudio;
 
-    const src = this.getAudioSource(track);
-    const effectiveVol = this.isDucked ? this.targetVolume * 0.2 : this.targetVolume;
+    // Mesma trilha: só garante que está tocando no volume certo (retoma depois de uma pausa).
+    if (current && current.dataset.src === src) {
+      this.stopChiptuneFallback();
+      if (current.paused) {
+        current.volume = 0;
+        this.safePlay(current);
+      }
+      this.fadeTo(current, this.effectiveVolume(), current.volume === 0 ? 400 : 200);
+      return;
+    }
 
     try {
-      if (!this.bgmAudio) {
-        this.bgmAudio = new Audio();
-        this.bgmAudio.preload = 'auto';
-      }
+      const next = new Audio();
+      next.preload = 'auto';
+      next.src = src;
+      next.loop = loop;
+      next.volume = 0;
+      next.dataset.src = src;
+      next.dataset.track = track;
+      next.addEventListener('ended', () => this.onTrackEnded(next));
+      next.addEventListener('error', () => {
+        if (this.bgmAudio === next) this.startChiptuneFallback();
+      });
 
-      // If already playing the same source, adjust volume and ensure playing
-      if (this.bgmAudio.src.endsWith(src) && !this.bgmAudio.paused) {
-        this.bgmAudio.volume = effectiveVol;
-        return;
-      }
-
-      this.bgmAudio.src = src;
-      this.bgmAudio.loop = track === 'loop' || track === 'violin_loop';
-      this.bgmAudio.volume = effectiveVol;
-
-      const playPromise = this.bgmAudio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((err) => {
-          console.warn('[Audio] Autoplay blocked, will start on next interaction or fallback to synth:', err);
-          // If audio file fails, fallback to retro chiptune synth
-          this.startChiptuneFallback();
-        });
-      }
+      if (current) this.fadeTo(current, 0, CROSSFADE_MS, () => current.pause());
+      this.bgmAudio = next;
+      this.stopChiptuneFallback();
+      this.safePlay(next);
+      this.fadeTo(next, this.effectiveVolume(), CROSSFADE_MS);
     } catch (err) {
       console.warn('[Audio] HTML5 Audio error, using synthesizer fallback:', err);
       this.startChiptuneFallback();
     }
   }
 
+  private onTrackEnded(el: HTMLAudioElement) {
+    if (this.bgmAudio !== el) return;
+    const track = el.dataset.track;
+    if (track === 'apresentacao') {
+      this.introDone = true;
+      this.applyTrack();
+    } else if (track === 'vitoria' && this.currentTrack === 'vitoria') {
+      this.currentTrack = 'mapa';
+      this.applyTrack();
+    }
+  }
+
+  // Bloqueio de autoplay não é erro: a trilha fica pronta e começa no próximo toque.
+  private safePlay(el: HTMLAudioElement) {
+    try {
+      const p = el.play();
+      if (p !== undefined) {
+        p.catch((err: unknown) => {
+          const name = (err as { name?: string } | null)?.name;
+          if (name === 'NotAllowedError' || name === 'AbortError') return;
+          if (this.bgmAudio === el) this.startChiptuneFallback();
+        });
+      }
+    } catch {
+      // ambiente sem mídia (testes)
+    }
+  }
+
+  private fadeTo(el: HTMLAudioElement, target: number, ms: number, then?: () => void) {
+    const running = this.fades.get(el);
+    if (running) clearInterval(running);
+    const from = el.volume;
+    const steps = Math.max(1, Math.round(ms / 40));
+    let i = 0;
+    const id = window.setInterval(() => {
+      i++;
+      el.volume = Math.max(0, Math.min(1, from + (target - from) * (i / steps)));
+      if (i >= steps) {
+        clearInterval(id);
+        this.fades.delete(el);
+        then?.();
+      }
+    }, 40);
+    this.fades.set(el, id);
+  }
+
   public stopBGM() {
-    if (this.bgmAudio) {
-      this.bgmAudio.pause();
+    const el = this.bgmAudio;
+    if (el && !el.paused) {
+      this.fadeTo(el, 0, 250, () => {
+        // Só pausa se a música continua sem dever tocar (pode ter sido retomada no meio do fade).
+        if (!this.shouldPlayMusic() || this.bgmAudio !== el) el.pause();
+      });
     }
     this.stopChiptuneFallback();
   }
 
   // --- RETRO CHIPTUNE SYNTHESIZER FALLBACK ---
   private startChiptuneFallback() {
-    if (this.isMusicMuted) return;
+    if (this.isMusicMuted || this.storyHolds > 0) return;
     this.initCtx();
     if (!this.ctx || this.bgmInterval) return;
 
@@ -381,6 +528,7 @@ export const soundEffects = {
   cardFlip: () => audioService.playFlip(),
   buttonClick: () => audioService.playClick(),
   fanfare: () => audioService.playFanfare(),
-  levelUp: () => audioService.playPowerup()
+  levelUp: () => audioService.playPowerup(),
+  combo: (level?: number) => audioService.playCombo(level)
 };
 

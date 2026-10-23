@@ -2,7 +2,7 @@ import React from 'react';
 import { audioService } from '../../services/audio';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'gold' | 'blue' | 'purple' | 'green' | 'slate' | 'outline';
+  variant?: 'gold' | 'blue' | 'purple' | 'green' | 'slate' | 'outline' | 'sky';
   size?: 'sm' | 'md' | 'lg' | 'xl';
   glow?: boolean;
 }
@@ -39,7 +39,8 @@ export const Button: React.FC<ButtonProps> = ({
     purple: "bg-gradient-to-b from-purple-400 via-purple-500 to-purple-700 text-white border-2 border-purple-950 hover:from-purple-300 hover:to-purple-600",
     green: "bg-gradient-to-b from-emerald-400 via-emerald-500 to-emerald-600 text-white border-2 border-emerald-900 hover:from-emerald-300 hover:to-emerald-500",
     slate: "bg-gradient-to-b from-slate-700 to-slate-800 text-slate-100 border-2 border-slate-900 hover:from-slate-600 hover:to-slate-700",
-    outline: "bg-white/10 backdrop-blur-md text-white border-2 border-white/30 hover:bg-white/20 hover:border-white/60"
+    outline: "bg-white/10 backdrop-blur-md text-white border-2 border-white/30 hover:bg-white/20 hover:border-white/60",
+    sky: "bg-white text-blue-800 border-2 border-sky-300 hover:bg-sky-50 hover:border-sky-400 !shadow-[0_4px_0_0_#7dd3fc]"
   };
 
   const glowStyles = glow ? {
@@ -48,7 +49,8 @@ export const Button: React.FC<ButtonProps> = ({
     purple: "shadow-glow-purple animate-pulse-glow",
     green: "shadow-game-green animate-pulse-glow",
     slate: "",
-    outline: ""
+    outline: "",
+    sky: ""
   }[variant] : "";
 
   return (

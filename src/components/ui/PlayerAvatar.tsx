@@ -124,7 +124,7 @@ export const PlayerAvatar: React.FC<PlayerAvatarProps> = ({
     const posY = found.row === 0 ? 8 : 92;
     return (
       <div
-        className={`${sizeCls} rounded-full overflow-hidden bg-slate-950 flex-shrink-0 border-2 border-amber-400 shadow-md ${className}`}
+        className={`${sizeCls} rounded-full overflow-hidden bg-sky-100 flex-shrink-0 border-2 border-amber-400 shadow-md ${className}`}
         style={{
           backgroundImage: 'url(/assets/nisialand_16_avatars_board.jpg)',
           backgroundSize: '820% 210%',
@@ -132,7 +132,7 @@ export const PlayerAvatar: React.FC<PlayerAvatarProps> = ({
           backgroundRepeat: 'no-repeat',
           ...filterStyle
         }}
-        title={`${found.name} (Nível ${found.unlockLevel})`}
+        title={`${found.name} (Patente ${found.unlockLevel})`}
         aria-label={alt || found.name}
       />
     );
@@ -144,7 +144,7 @@ export const PlayerAvatar: React.FC<PlayerAvatarProps> = ({
     const posY = found.row === 0 ? 10 : 90;
     return (
       <div
-        className={`${sizeCls} rounded-full overflow-hidden bg-slate-950 flex-shrink-0 border-2 border-emerald-400 shadow-md ${className}`}
+        className={`${sizeCls} rounded-full overflow-hidden bg-sky-100 flex-shrink-0 border-2 border-emerald-400 shadow-md ${className}`}
         style={{
           backgroundImage: 'url(/assets/nisialand_inclusive_students.png)',
           backgroundSize: '420% 210%',
@@ -152,7 +152,7 @@ export const PlayerAvatar: React.FC<PlayerAvatarProps> = ({
           backgroundRepeat: 'no-repeat',
           ...filterStyle
         }}
-        title={`${found.name} (Nível ${found.unlockLevel})`}
+        title={`${found.name} (Patente ${found.unlockLevel})`}
         aria-label={alt || found.name}
       />
     );
@@ -162,7 +162,7 @@ export const PlayerAvatar: React.FC<PlayerAvatarProps> = ({
   const imageSrc = found?.src || (avatarId.startsWith('/') ? avatarId : '/assets/student_boy_hoodie.png');
 
   return (
-    <div className={`${sizeCls} rounded-full overflow-hidden bg-slate-900 flex-shrink-0 border-2 border-amber-400 shadow-md flex items-center justify-center ${className}`}>
+    <div className={`${sizeCls} rounded-full overflow-hidden bg-sky-100 flex-shrink-0 border-2 border-amber-400 shadow-md flex items-center justify-center ${className}`}>
       <img
         src={imageSrc}
         alt={alt}

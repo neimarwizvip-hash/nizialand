@@ -90,10 +90,10 @@ export const RegistrationScreen: React.FC = () => {
       style={{ backgroundImage: `url('/assets/nisialand_registration_bg.jpg')` }}
     >
       {/* Dark gradient overlay for high contrast and readability */}
-      <div className="absolute inset-0 bg-slate-950/50 backdrop-blur-[2px]" />
+      <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px]" />
 
       {/* Main Registration Card: Scaled down (max-w-lg), high-contrast & compact */}
-      <div className="relative z-10 w-full max-w-lg bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] border-3 border-amber-400 p-4 sm:p-6 animate-in fade-in zoom-in-95 duration-300 my-4">
+      <div className="relative z-10 w-full max-w-lg game-panel p-4 sm:p-6 animate-rise-in my-4">
         
         {/* Card Header */}
         <div className="flex items-center justify-between border-b-2 border-slate-100 pb-3 mb-3.5">
@@ -102,7 +102,7 @@ export const RegistrationScreen: React.FC = () => {
               <User className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-wider uppercase font-bungee leading-none">
+              <h1 className="text-xl sm:text-2xl game-title tracking-wider uppercase leading-none">
                 REGISTRATION
               </h1>
               <p className="text-[11px] font-bold text-blue-700 mt-0.5">

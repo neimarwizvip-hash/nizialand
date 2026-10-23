@@ -7,7 +7,6 @@ import {
   TeamRankingComparison,
   TeacherAuditLog
 } from '../types';
-import { INITIAL_LEADERBOARD } from '../data/mockData';
 import { supabase, isSupabaseConfigured } from './supabase';
 
 const STORAGE_KEYS = {
@@ -276,8 +275,8 @@ class StorageService {
   // --- LEADERBOARD & RANKING COMPUTATIONS ---
 
   public async getLeaderboard(): Promise<LeaderboardPlayerEntry[]> {
-    // Collect registered players & benchmark initial players
-    const players = this.getAllPlayers();
+    // Collect registered players (visitors never enter the ranking)
+    const players = this.getAllPlayers().filter(p => p.kind !== 'guest');
     const quizResults = this.getAllQuizResults();
     const fcResults = this.getAllFlashcardResults();
 
@@ -307,13 +306,8 @@ class StorageService {
       };
     });
 
-    // Merge benchmark initial entries with real registered entries (filter duplicates)
+    // Só alunos cadastrados de verdade entram no ranking (sem jogadores fictícios nem visitantes).
     const combined = [...registeredEntries];
-    INITIAL_LEADERBOARD.forEach(init => {
-      if (!combined.some(c => c.displayName.toLowerCase() === init.displayName.toLowerCase())) {
-        combined.push(init);
-      }
-    });
 
     // Deterministic sorting: Total Score DESC -> Completed At ASC -> Name ASC
     combined.sort((a, b) => {

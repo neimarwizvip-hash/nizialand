@@ -1,30 +1,66 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import React, { Suspense, lazy, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { GameProvider } from './context/GameContext';
-import { ScreenTransitionLoader } from './components/layout/ScreenTransitionLoader';
+import { ScreenTransitionLoader, ScreenLoadingFallback } from './components/layout/ScreenTransitionLoader';
+import { RequirePlayer } from './components/layout/RequirePlayer';
 import { StartScreen } from './features/start/StartScreen';
-import { Level0Screen } from './features/level0/Level0Screen';
-import { OrientationScreen } from './features/orientation/OrientationScreen';
 import { RegistrationScreen } from './features/auth/RegistrationScreen';
 import { MissionBriefingScreen } from './features/missions/MissionBriefingScreen';
 import { QuizScreen } from './features/quiz/QuizScreen';
 import { QuizResultsScreen } from './features/quiz/QuizResultsScreen';
 import { FlashcardScreen } from './features/flashcards/FlashcardScreen';
 import { FinalResultsScreen } from './features/results/FinalResultsScreen';
-import { LeaderboardScreen } from './features/leaderboard/LeaderboardScreen';
-import { AdminPanel } from './features/admin/AdminPanel';
+import { PhaseStoryGate } from './components/video/PhaseStoryGate';
+import { keepFullscreen } from './services/fullscreen';
+import { audioService, MusicTrack } from './services/audio';
+
+// Telas pesadas ou menos usadas ficam fora do pacote principal (baixadas quando abertas).
+const Level0Screen = lazy(() => import('./features/level0/Level0Screen').then(m => ({ default: m.Level0Screen })));
+const ArcadeLevel0Screen = lazy(() => import('./features/level0/ArcadeLevel0Screen').then(m => ({ default: m.ArcadeLevel0Screen })));
+const OrientationScreen = lazy(() => import('./features/orientation/OrientationScreen').then(m => ({ default: m.OrientationScreen })));
+const LeaderboardScreen = lazy(() => import('./features/leaderboard/LeaderboardScreen').then(m => ({ default: m.LeaderboardScreen })));
+const AdminPanel = lazy(() => import('./features/admin/AdminPanel').then(m => ({ default: m.AdminPanel })));
+
+// Trilha de cada tela. Telas fora da lista (história, orientação, admin) mantêm a trilha atual.
+const ROUTE_TRACKS: Record<string, MusicTrack> = {
+  '/': 'apresentacao',
+  '/missions': 'mapa',
+  '/register': 'mapa',
+  '/leaderboard': 'mapa',
+  '/quiz': 'desafio',
+  '/flashcards': 'desafio',
+  '/level0': 'desafio',
+};
+const VICTORY_ROUTES = ['/quiz/results', '/results/final'];
+
+const RouteMusic: React.FC = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    if (VICTORY_ROUTES.includes(pathname)) audioService.playVictory();
+    else if (ROUTE_TRACKS[pathname]) audioService.playTrack(ROUTE_TRACKS[pathname]);
+  }, [pathname]);
+  return null;
+};
 
 export const App: React.FC = () => {
+  // Depois do primeiro toque, o jogo inteiro (missões incluídas) fica em tela cheia, não só a abertura.
+  useEffect(() => keepFullscreen(), []);
+
   return (
     <GameProvider>
       <BrowserRouter>
+        <RouteMusic />
         <ScreenTransitionLoader>
+          <Suspense fallback={<ScreenLoadingFallback />}>
           <Routes>
             {/* Tela 1: Start Screen */}
             <Route path="/" element={<StartScreen />} />
 
-            {/* Nível 0: Ingresso na Aventura & Modo Visitante */}
-            <Route path="/level0" element={<Level0Screen />} />
+            {/* Nível 0: Arcade com escolha de série e tópicos (banco de questões) */}
+            <Route path="/level0" element={<ArcadeLevel0Screen />} />
+
+            {/* Modo História: HQ do Diretor Márcio que leva às Missões do 8º ano */}
+            <Route path="/historia" element={<Level0Screen />} />
 
             {/* Reunião Educativa & Orientadora Edileia */}
             <Route path="/orientation" element={<OrientationScreen />} />
@@ -33,19 +69,19 @@ export const App: React.FC = () => {
             <Route path="/register" element={<RegistrationScreen />} />
 
             {/* Tela 3: Mission Briefing */}
-            <Route path="/missions" element={<MissionBriefingScreen />} />
+            <Route path="/missions" element={<RequirePlayer><PhaseStoryGate story="nivel0"><MissionBriefingScreen /></PhaseStoryGate></RequirePlayer>} />
 
             {/* Tela 4: Mission 1 Quiz */}
-            <Route path="/quiz" element={<QuizScreen />} />
+            <Route path="/quiz" element={<RequirePlayer><QuizScreen /></RequirePlayer>} />
 
             {/* Tela 5: Mission 1 Results */}
             <Route path="/quiz/results" element={<QuizResultsScreen />} />
 
             {/* Tela 6: Mission 2 Flashcard Challenge */}
-            <Route path="/flashcards" element={<FlashcardScreen />} />
+            <Route path="/flashcards" element={<RequirePlayer><FlashcardScreen /></RequirePlayer>} />
 
             {/* Tela 7: Final Results */}
-            <Route path="/results/final" element={<FinalResultsScreen />} />
+            <Route path="/results/final" element={<RequirePlayer><FinalResultsScreen /></RequirePlayer>} />
 
             {/* Tela 8: Leaderboard */}
             <Route path="/leaderboard" element={<LeaderboardScreen />} />
@@ -56,6 +92,7 @@ export const App: React.FC = () => {
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          </Suspense>
         </ScreenTransitionLoader>
       </BrowserRouter>
     </GameProvider>

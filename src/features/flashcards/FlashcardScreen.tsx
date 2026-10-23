@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Clock, 
@@ -15,8 +15,10 @@ import {
   Flame
 } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
-import { FLASHCARD_STUDENTS, FLASHCARD_CHALLENGES } from '../../data/flashcardData';
 import { shuffleArray } from '../../data/quizQuestions';
+import { cardFact, getFlashcardSet } from '../../data/level0Content';
+import { getPlayerGrade } from '../../services/grade';
+import { ZeCartinha } from '../../components/ze/ZeCartinha';
 import { FlashcardStudent, FlashcardChallenge, FlashcardRoundAttempt, FlashcardResult } from '../../types';
 import { audioService } from '../../services/audio';
 import { speechService } from '../../services/speech';
@@ -39,17 +41,29 @@ const STUDENT_COLORS: Record<string, { bg: string; text: string; ageBg: string }
 
 export const FlashcardScreen: React.FC = () => {
   const navigate = useNavigate();
-  const { currentPlayer, saveFlashcardResult } = useGame();
+  const { currentPlayer: maybePlayer, saveFlashcardResult } = useGame();
+  // Guaranteed by <RequirePlayer> in App routes
+  const currentPlayer = maybePlayer!;
 
-  if (!currentPlayer) {
-    navigate('/register');
-    return null;
-  }
-
+  // Conjunto de cartas da série do aluno (8º = idades; 6º, 7º e 9º = fatos em inglês)
+  const [flashcardSet] = useState(() => getFlashcardSet(getPlayerGrade(currentPlayer) ?? '8'));
   // Shuffled cards array on every game session / mount so memorization positions are never identical
-  const [sessionStudents] = useState<FlashcardStudent[]>(() => shuffleArray(FLASHCARD_STUDENTS));
+  const [sessionStudents, setSessionStudents] = useState<FlashcardStudent[]>(() => shuffleArray(flashcardSet.students));
   // Shuffled challenges for dynamic round variation
-  const [sessionChallenges] = useState<FlashcardChallenge[]>(() => shuffleArray(FLASHCARD_CHALLENGES));
+  const [sessionChallenges] = useState<FlashcardChallenge[]>(() => shuffleArray(flashcardSet.challenges));
+  const showsAge = !flashcardSet.students.some((s) => s.info);
+
+  // Zé Cartinha embaralha as cartas em 1 ou 2 rodadas (nunca na primeira).
+  // Depois do embaralhamento há uma espiada rápida de 3s; cliques ficam bloqueados durante o evento.
+  const [zeRounds] = useState<number[]>(() => shuffleArray([1, 2, 3, 4]).slice(0, Math.random() < 0.5 ? 1 : 2));
+  const zeDoneRef = useRef<number[]>([]);
+  const zeTimersRef = useRef<number[]>([]);
+  // Acertos seguidos: a partir do 2º toca o som de combo.
+  const streakRef = useRef<number>(0);
+  const [zeVisible, setZeVisible] = useState<boolean>(false);
+  const [zeShuffling, setZeShuffling] = useState<boolean>(false);
+  const [zePeek, setZePeek] = useState<boolean>(false);
+  const zeEventActive = zeVisible || zeShuffling || zePeek;
 
   // --- GAME STATE ---
   const [phase, setPhase] = useState<GamePhase>('memorize');
@@ -101,6 +115,26 @@ export const FlashcardScreen: React.FC = () => {
     return () => clearInterval(timer);
   }, [phase]);
 
+  // Evento do Zé no início das rodadas sorteadas
+  useEffect(() => {
+    if (phase !== 'challenge' || !zeRounds.includes(currentRoundIndex) || zeDoneRef.current.includes(currentRoundIndex)) return;
+    zeDoneRef.current.push(currentRoundIndex);
+    setZeVisible(true);
+    setZeShuffling(true);
+    zeTimersRef.current.push(window.setTimeout(() => {
+      audioService.playFlip();
+      setSessionStudents((prev) => shuffleArray(prev));
+      setZeShuffling(false);
+      setZePeek(true);
+    }, 1400));
+    zeTimersRef.current.push(window.setTimeout(() => {
+      setZePeek(false);
+      setZeVisible(false);
+    }, 4400));
+  }, [phase, currentRoundIndex, zeRounds]);
+
+  useEffect(() => () => zeTimersRef.current.forEach((t) => window.clearTimeout(t)), []);
+
   const startChallengePhase = () => {
     audioService.playFlip();
     setPhase('challenge');
@@ -122,7 +156,7 @@ export const FlashcardScreen: React.FC = () => {
 
   // Card click interaction in Challenge Phase
   const handleCardClick = (student: FlashcardStudent) => {
-    if (phase !== 'challenge' || revealedCardIds.includes(student.id)) return;
+    if (phase !== 'challenge' || zeEventActive || revealedCardIds.includes(student.id)) return;
 
     audioService.playFlip();
     const isCorrect = currentChallenge.validateCard(student);
@@ -135,12 +169,14 @@ export const FlashcardScreen: React.FC = () => {
       // Correct!
       const points = newAttemptNumber === 1 ? 100 : newAttemptNumber === 2 ? 50 : 25;
       audioService.playCorrect();
+      streakRef.current += 1;
+      if (streakRef.current >= 2) audioService.playCombo(streakRef.current);
       fireConfetti();
       setAccumulatedScore(prev => prev + points);
 
       setRoundFeedback({
         type: 'correct',
-        message: `CORRECT! ${student.name} is ${student.age} years old!`,
+        message: showsAge ? `CORRECT! ${student.name} is ${student.age} years old!` : `CORRECT! ${student.name}: "${cardFact(student)}"`,
         detail: currentChallenge.ruleExplanation
       });
 
@@ -160,6 +196,7 @@ export const FlashcardScreen: React.FC = () => {
     } else {
       // Wrong card chosen!
       audioService.playWrong();
+      streakRef.current = 0;
       const newHearts = heartsLeft - 1;
       setHeartsLeft(newHearts);
 
@@ -167,7 +204,7 @@ export const FlashcardScreen: React.FC = () => {
         // Out of hearts for this round
         setRoundFeedback({
           type: 'wrong',
-          message: `NO MORE HEARTS! ${student.name} is ${student.age} years old.`,
+          message: showsAge ? `NO MORE HEARTS! ${student.name} is ${student.age} years old.` : `NO MORE HEARTS! ${student.name}: "${cardFact(student)}"`,
           detail: currentChallenge.ruleExplanation
         });
 
@@ -188,7 +225,7 @@ export const FlashcardScreen: React.FC = () => {
         // Still has hearts left
         setRoundFeedback({
           type: 'wrong',
-          message: `Not quite! ${student.name} is ${student.age} years old.`,
+          message: showsAge ? `Not quite! ${student.name} is ${student.age} years old.` : `Not quite! ${student.name}: "${cardFact(student)}"`,
           detail: `You have ${newHearts} ${newHearts === 1 ? 'heart' : 'hearts'} left! Try again.`
         });
       }
@@ -229,7 +266,7 @@ export const FlashcardScreen: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-slate-950 text-white flex flex-col justify-between overflow-x-hidden">
+    <div className="relative min-h-screen game-sky text-slate-900 flex flex-col justify-between overflow-x-hidden">
       {/* Background: Hallway matching approved mockup */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <img
@@ -237,7 +274,7 @@ export const FlashcardScreen: React.FC = () => {
           alt="Corredor da Escola"
           className="w-full h-full object-cover filter brightness-[0.88]"
         />
-        <div className="absolute inset-0 bg-slate-950/40 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px]" />
       </div>
 
       <div className="relative z-10">
@@ -247,7 +284,7 @@ export const FlashcardScreen: React.FC = () => {
       <main className="relative z-10 flex-1 w-full max-w-5xl mx-auto px-3 sm:px-4 py-3 md:py-6 flex flex-col justify-center">
         
         {/* --- MAIN FLOATING FLASHCARD PANEL (Neon Cyan Glow as in Mockup) --- */}
-        <div className="w-full rounded-3xl border-2 border-cyan-400 bg-[#0b1528]/95 p-4 sm:p-6 shadow-[0_0_35px_rgba(0,210,255,0.4)] backdrop-blur-xl flex flex-col justify-between my-auto animate-fadeIn">
+        <div className="w-full game-panel p-4 sm:p-6 flex flex-col justify-between my-auto animate-fadeIn">
           
           {/* Top Control Bar: Phase, Team, Timer, Hearts, Score */}
           <div className="border-b border-cyan-500/30 pb-3 mb-4">
@@ -255,12 +292,12 @@ export const FlashcardScreen: React.FC = () => {
               
               {/* Phase info pill */}
               <div className="flex items-center gap-2">
-                <span className="px-3.5 py-1 rounded-full bg-purple-600/40 border border-purple-400 text-purple-200 font-heading font-black text-xs sm:text-sm tracking-wider uppercase shadow-game-sm">
+                <span className="px-3.5 py-1 rounded-full bg-purple-600/40 border border-purple-400 text-purple-800 font-heading font-black text-xs sm:text-sm tracking-wider uppercase shadow-game-sm">
                   {phase === 'memorize' ? 'PHASE 1: MEMORIZE' : `ROUND ${currentRoundIndex + 1} OF ${sessionChallenges.length}`}
                 </span>
                 
                 <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-heading font-black border shadow-sm ${
-                  isBlue ? 'bg-blue-600/30 border-cyan-400 text-cyan-300' : 'bg-purple-600/30 border-purple-400 text-purple-300'
+                  isBlue ? 'bg-blue-600/30 border-cyan-400 text-cyan-700' : 'bg-purple-600/30 border-purple-400 text-purple-700'
                 }`}>
                   <Shield className="w-3.5 h-3.5 fill-current" />
                   <span>{isBlue ? 'BLUE' : 'PURPLE'}</span>
@@ -270,8 +307,8 @@ export const FlashcardScreen: React.FC = () => {
               {/* Phase 1 Countdown or Phase 2 Hearts */}
               {phase === 'memorize' ? (
                 <div className="flex items-center gap-2.5">
-                  <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-500/20 border-2 border-amber-400 text-amber-300 rounded-full font-heading font-black text-xs sm:text-sm shadow-sm animate-pulse">
-                    <Clock className="w-4 h-4 text-amber-400" />
+                  <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-500/20 border-2 border-amber-400 text-amber-700 rounded-full font-heading font-black text-xs sm:text-sm shadow-sm animate-pulse">
+                    <Clock className="w-4 h-4 text-amber-600" />
                     <span>⏱️ {countdown}s</span>
                   </div>
                   <button
@@ -283,8 +320,8 @@ export const FlashcardScreen: React.FC = () => {
                   </button>
                 </div>
               ) : (
-                <div className="flex items-center gap-2 bg-[#07101e] px-3 py-1 rounded-full border border-slate-700">
-                  <span className="text-[11px] text-slate-300 font-heading font-bold uppercase hidden sm:inline">Chances:</span>
+                <div className="flex items-center gap-2 bg-white/90 px-3 py-1 rounded-full border border-sky-200">
+                  <span className="text-[11px] text-slate-600 font-heading font-bold uppercase hidden sm:inline">Chances:</span>
                   {[1, 2, 3].map((heartIndex) => (
                     <Heart
                       key={heartIndex}
@@ -299,8 +336,8 @@ export const FlashcardScreen: React.FC = () => {
               )}
 
               {/* Score tracker */}
-              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400 text-amber-300 font-heading font-black text-xs sm:text-sm shadow-sm">
-                <Award className="w-4 h-4 text-amber-400" />
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400 text-amber-700 font-heading font-black text-xs sm:text-sm shadow-sm">
+                <Award className="w-4 h-4 text-amber-600" />
                 <span>{accumulatedScore} PTS</span>
               </div>
 
@@ -308,36 +345,36 @@ export const FlashcardScreen: React.FC = () => {
           </div>
 
           {/* Prompt Banner (Center Header) */}
-          <div className="bg-[#081324] border border-cyan-500/40 rounded-2xl p-3.5 mb-4 text-center shadow-lg">
+          <div className="game-panel-gold !rounded-2xl p-3.5 mb-4 text-center">
             {phase === 'memorize' ? (
               <div>
-                <h2 className="text-base sm:text-xl font-heading font-black text-amber-300 flex items-center justify-center gap-2">
-                  <span>🃏</span> MEMORIZE THE 8 STUDENTS AND THEIR AGES! <span>🃏</span>
+                <h2 className="text-base sm:text-xl font-heading font-black text-amber-700 flex items-center justify-center gap-2">
+                  <span>🃏</span> {flashcardSet.memorizeTitle} <span>🃏</span>
                 </h2>
-                <p className="text-xs text-cyan-200 mt-1 font-medium">
-                  You have <strong className="text-amber-400">{countdown} seconds</strong> before the cards flip face-down!
+                <p className="text-xs text-cyan-800 mt-1 font-medium">
+                  You have <strong className="text-amber-600">{countdown} seconds</strong> before the cards flip face-down!
                 </p>
               </div>
             ) : (
               <div>
                 <div className="flex items-center justify-center gap-2 mb-1">
-                  <span className="text-xs font-heading font-black text-cyan-400 uppercase tracking-widest">
-                    🎯 MISSION 2 • FIND THE RIGHT CARD:
+                  <span className="text-xs font-heading font-black text-cyan-600 uppercase tracking-widest">
+                    {zePeek ? '👀 ESPIA RÁPIDA!' : '🎯 ATIVIDADE 2 • FIND THE RIGHT CARD:'}
                   </span>
                   <button
                     type="button"
                     onClick={handlePronounce}
-                    className="p-1 rounded-lg bg-blue-600/30 text-cyan-300 hover:bg-blue-600/50 transition-colors"
+                    className="p-1 rounded-lg bg-blue-600/30 text-cyan-700 hover:bg-blue-600/50 transition-colors"
                     title="Ouvir desafio em inglês"
                   >
                     <Volume2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
 
-                <h2 className="text-lg sm:text-2xl font-heading font-black text-amber-300">
+                <h2 className="text-lg sm:text-2xl font-heading font-black text-amber-700">
                   {currentChallenge?.questionEn}
                 </h2>
-                <p className="text-xs text-slate-300 mt-0.5 italic">
+                <p className="text-xs text-slate-600 mt-0.5 italic">
                   ({currentChallenge?.questionPt})
                 </p>
               </div>
@@ -345,15 +382,15 @@ export const FlashcardScreen: React.FC = () => {
           </div>
 
           {/* 8 Flashcards Grid (4 columns x 2 rows as in Mockup) */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 mb-3">
+          <div className={`grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 mb-3 ${zeShuffling ? 'animate-card-shuffle' : ''}`}>
             {sessionStudents.map((student) => {
-              const isRevealed = phase === 'memorize' || revealedCardIds.includes(student.id);
+              const isRevealed = phase === 'memorize' || zePeek || revealedCardIds.includes(student.id);
               const isLastPicked = lastPickedStudent?.id === student.id;
               const isCorrectMatch = currentChallenge?.validateCard(student);
               const colorInfo = STUDENT_COLORS[student.id] || { bg: 'bg-[#bae6fd]', text: 'text-slate-900', ageBg: 'bg-amber-400 text-slate-950' };
 
               let borderEffect = "border-cyan-500/40 hover:border-cyan-300";
-              if (isRevealed && phase !== 'memorize') {
+              if (revealedCardIds.includes(student.id) && phase !== 'memorize') {
                 if (isCorrectMatch) {
                   borderEffect = "border-emerald-400 ring-4 ring-emerald-500/50 shadow-[0_0_20px_rgba(16,185,129,0.7)]";
                 } else if (isLastPicked) {
@@ -366,7 +403,7 @@ export const FlashcardScreen: React.FC = () => {
                   key={student.id}
                   onClick={() => handleCardClick(student)}
                   className={`perspective-1000 aspect-[3/4] max-h-52 sm:max-h-60 cursor-pointer transition-transform duration-200 select-none ${
-                    phase === 'challenge' && !revealedCardIds.includes(student.id) ? 'hover:scale-103 active:scale-97' : ''
+                    phase === 'challenge' && !zeEventActive && !revealedCardIds.includes(student.id) ? 'hover:scale-103 active:scale-97' : ''
                   }`}
                 >
                   <div
@@ -376,20 +413,22 @@ export const FlashcardScreen: React.FC = () => {
                   >
                     {/* FRONT: Colorful Pastel Background Card */}
                     <div
-                      className={`absolute inset-0 w-full h-full rounded-2xl border-2 bg-[#0c1a32] backface-hidden p-2 flex flex-col justify-between items-center shadow-lg ${borderEffect}`}
+                      className={`absolute inset-0 w-full h-full rounded-2xl border-2 bg-white/90 backface-hidden p-2 flex flex-col justify-between items-center shadow-lg ${borderEffect}`}
                     >
                       {/* Top Header of Card: Name and Age Badge */}
                       <div className="w-full flex items-center justify-between px-1">
-                        <span className="font-heading font-black text-xs sm:text-sm text-white truncate">
+                        <span className="font-heading font-black text-xs sm:text-sm text-slate-900 truncate">
                           {student.name}
                         </span>
-                        <span className="px-2 py-0.5 rounded-md bg-amber-400 text-slate-950 font-heading font-black text-[10px] sm:text-xs shadow">
-                          {student.age} yrs
-                        </span>
+                        {showsAge && (
+                          <span className="px-2 py-0.5 rounded-md bg-amber-400 text-slate-950 font-heading font-black text-[10px] sm:text-xs shadow">
+                            {student.age} yrs
+                          </span>
+                        )}
                       </div>
 
                       {/* Photo Container with Pastel Background */}
-                      <div className={`relative w-full flex-1 my-1.5 rounded-xl overflow-hidden ${colorInfo.bg} flex items-center justify-center p-1 border border-slate-700/60`}>
+                      <div className={`relative w-full flex-1 my-1.5 rounded-xl overflow-hidden ${colorInfo.bg} flex items-center justify-center p-1 border border-sky-200/60`}>
                         <img
                           src={student.img}
                           alt={student.name}
@@ -400,13 +439,13 @@ export const FlashcardScreen: React.FC = () => {
 
                       {/* Footer: Name + Age + School */}
                       <div className="w-full text-center leading-tight">
-                        <div className="text-xs font-heading font-black text-white">
+                        <div className="text-xs font-heading font-black text-slate-900">
                           {student.name}
                         </div>
-                        <div className="text-[11px] font-bold text-amber-300">
-                          {student.age} years old
+                        <div className={`font-bold text-amber-700 ${showsAge ? 'text-[11px]' : 'text-[10px] sm:text-[11px] leading-snug line-clamp-3'}`}>
+                          {cardFact(student)}
                         </div>
-                        <span className="text-[9px] text-slate-400 block truncate">
+                        <span className="text-[9px] text-slate-500 block truncate">
                           Nísia Vilela Fernandes
                         </span>
                       </div>
@@ -414,15 +453,15 @@ export const FlashcardScreen: React.FC = () => {
 
                     {/* BACK: NISIALAND Official Card Back */}
                     <div
-                      className="absolute inset-0 w-full h-full rounded-2xl border-2 border-cyan-400/80 bg-gradient-to-br from-blue-950 via-indigo-950 to-slate-950 backface-hidden rotate-y-180 p-2 flex flex-col items-center justify-center text-center shadow-xl hover:border-amber-300 transition-colors"
+                      className="absolute inset-0 w-full h-full rounded-2xl border-[3px] border-sky-300 bg-gradient-to-br from-blue-100 via-indigo-100 to-sky-50 backface-hidden rotate-y-180 p-2 flex flex-col items-center justify-center text-center shadow-[0_4px_0_0_#7dd3fc] hover:border-amber-300 transition-colors"
                     >
-                      <div className="w-11 h-11 rounded-2xl bg-blue-900/80 border-2 border-cyan-400 flex items-center justify-center text-amber-300 shadow-md mb-2">
-                        <Layers className="w-6 h-6 text-cyan-300" />
+                      <div className="w-11 h-11 rounded-2xl bg-blue-100/80 border-2 border-cyan-400 flex items-center justify-center text-amber-700 shadow-md mb-2">
+                        <Layers className="w-6 h-6 text-cyan-700" />
                       </div>
-                      <span className="font-heading font-black text-xs sm:text-sm text-amber-300 tracking-wider">
+                      <span className="font-heading font-black text-xs sm:text-sm text-amber-700 tracking-wider">
                         NISIALAND
                       </span>
-                      <span className="text-[9px] text-cyan-200 font-heading font-bold uppercase mt-1">
+                      <span className="text-[9px] text-cyan-800 font-heading font-bold uppercase mt-1">
                         Tap to reveal
                       </span>
                     </div>
@@ -439,16 +478,16 @@ export const FlashcardScreen: React.FC = () => {
               <div className="text-left">
                 <div className="flex items-center gap-2 mb-0.5">
                   {roundFeedback.type === 'correct' ? (
-                    <span className="text-emerald-400 font-heading font-black text-sm flex items-center gap-1.5">
+                    <span className="text-emerald-600 font-heading font-black text-sm flex items-center gap-1.5">
                       <CheckCircle2 className="w-4 h-4" /> {roundFeedback.message}
                     </span>
                   ) : (
-                    <span className="text-red-400 font-heading font-black text-sm flex items-center gap-1.5">
+                    <span className="text-red-600 font-heading font-black text-sm flex items-center gap-1.5">
                       <AlertCircle className="w-4 h-4" /> {roundFeedback.message}
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-slate-300 max-w-xl">
+                <p className="text-xs text-slate-600 max-w-xl">
                   {roundFeedback.detail}
                 </p>
               </div>
@@ -456,7 +495,7 @@ export const FlashcardScreen: React.FC = () => {
               <button
                 type="button"
                 onClick={handleNextRound}
-                className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 text-slate-950 font-heading font-black text-sm uppercase tracking-wider rounded-full border-2 border-amber-600 shadow-glow-gold hover:from-amber-300 hover:to-amber-200 transform active:scale-95 transition-all flex items-center justify-center gap-2 flex-shrink-0"
+                className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 text-slate-950 font-heading font-black text-sm uppercase tracking-wider rounded-full border-2 border-amber-600 shadow-[0_5px_0_0_#b45309] hover:from-amber-300 hover:to-amber-200 active:translate-y-1 active:shadow-[0_1px_0_0_#b45309] transition-all flex items-center justify-center gap-2 flex-shrink-0"
               >
                 <span>{currentRoundIndex < sessionChallenges.length - 1 ? 'NEXT ROUND →' : 'FINAL RESULTS →'}</span>
               </button>
@@ -466,8 +505,13 @@ export const FlashcardScreen: React.FC = () => {
         </div>
       </main>
 
+      <ZeCartinha
+        visible={zeVisible}
+        message={zePeek ? 'Espia rápida! Lembra onde cada um foi parar?' : 'Hehe! Vou embaralhar essas cartas!'}
+      />
+
       {/* Footer Branding */}
-      <footer className="relative z-10 w-full text-center py-3 text-xs text-slate-400 border-t border-slate-900 bg-slate-950/70 backdrop-blur-sm">
+      <footer className="relative z-10 w-full text-center py-3 text-xs text-slate-500 border-t border-sky-200 bg-white/80 backdrop-blur-sm">
         Escola Municipal Nísia Vilela Fernandes • Duque de Caxias • Prof. Neimar Oliveira
       </footer>
     </div>
