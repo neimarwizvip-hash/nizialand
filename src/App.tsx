@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { GameProvider } from './context/GameContext';
 import { ScreenTransitionLoader, ScreenLoadingFallback } from './components/layout/ScreenTransitionLoader';
@@ -11,6 +11,7 @@ import { QuizResultsScreen } from './features/quiz/QuizResultsScreen';
 import { FlashcardScreen } from './features/flashcards/FlashcardScreen';
 import { FinalResultsScreen } from './features/results/FinalResultsScreen';
 import { PhaseStoryGate } from './components/video/PhaseStoryGate';
+import { StartupVideoScreen } from './components/video/StartupVideoScreen';
 import { keepFullscreen } from './services/fullscreen';
 import { audioService, MusicTrack } from './services/audio';
 
@@ -43,8 +44,14 @@ const RouteMusic: React.FC = () => {
 };
 
 export const App: React.FC = () => {
+  const [startupVideoFinished, setStartupVideoFinished] = useState(false);
+
   // Depois do primeiro toque, o jogo inteiro (missões incluídas) fica em tela cheia, não só a abertura.
   useEffect(() => keepFullscreen(), []);
+
+  if (!startupVideoFinished) {
+    return <StartupVideoScreen onComplete={() => setStartupVideoFinished(true)} />;
+  }
 
   return (
     <GameProvider>
