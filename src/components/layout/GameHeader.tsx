@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Volume2, VolumeX, Music, Trophy, Shield, LogOut, Lock } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { TEAMS_CONFIG } from '../../data/mockData';
+import { isGuestPlayer } from '../../types';
 import { PlayerAvatar } from '../ui/PlayerAvatar';
 import { FullscreenButton } from '../ui/FullscreenButton';
 
@@ -79,9 +80,18 @@ export const GameHeader: React.FC = () => {
                     {currentPlayer.className}
                   </span>
                 </div>
-                <div className="text-[11px] font-semibold text-slate-500">
-                  Code: <span className="text-amber-700 font-mono">{currentPlayer.playerCode}</span>
-                </div>
+                {isGuestPlayer(currentPlayer) ? (
+                  <div className="text-[11px] font-semibold text-slate-500">
+                    Visitante ·{' '}
+                    <Link to="/register" className="text-emerald-700 font-bold hover:underline">
+                      Fazer meu cadastro definitivo
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="text-[11px] font-semibold text-slate-500">
+                    Code: <span className="text-amber-700 font-mono">{currentPlayer.playerCode}</span>
+                  </div>
+                )}
               </div>
             </div>
 

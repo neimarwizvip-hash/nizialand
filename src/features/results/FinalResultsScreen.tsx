@@ -11,13 +11,15 @@ import {
   Sparkles,
   ArrowRight,
   Home,
-  RotateCcw
+  RotateCcw,
+  UserPlus
 } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { audioService } from '../../services/audio';
 import { fireConfetti } from '../../components/ui/ConfettiEffect';
 import { storageService } from '../../services/storage';
 import { GameHeader } from '../../components/layout/GameHeader';
+import { isGuestPlayer } from '../../types';
 
 export const FinalResultsScreen: React.FC = () => {
   const navigate = useNavigate();
@@ -42,6 +44,7 @@ export const FinalResultsScreen: React.FC = () => {
   }, [currentPlayer]);
 
   if (!currentPlayer) return null; // redirect handled by <RequirePlayer>
+  const isGuest = isGuestPlayer(currentPlayer);
 
   const qScore = quizResult?.totalScore || 0;
   const fcScore = flashcardResult?.totalScore || 0;
@@ -184,7 +187,9 @@ export const FinalResultsScreen: React.FC = () => {
                   2 OF 2 MISSIONS COMPLETED (100%)
                 </span>
                 <p className="text-xs text-emerald-800">
-                  Your official results have been stored for the school leaderboard.
+                  {isGuest
+                    ? 'Você jogou como visitante: seus pontos não entram no ranking. Faça seu cadastro definitivo para guardá-los.'
+                    : 'Your official results have been stored for the school leaderboard.'}
                 </p>
               </div>
             </div>
@@ -195,6 +200,20 @@ export const FinalResultsScreen: React.FC = () => {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4">
+            {isGuest && (
+              <button
+                type="button"
+                onClick={() => {
+                  audioService.playClick();
+                  navigate('/register');
+                }}
+                className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-gradient-to-b from-green-400 via-emerald-500 to-green-600 hover:from-green-300 hover:to-emerald-500 text-white font-heading font-black text-sm shadow-[0_4px_0_0_#065f46] active:translate-y-1 active:shadow-[0_1px_0_0_#065f46] border-2 border-emerald-300 flex items-center justify-center gap-2 transition-all cursor-pointer"
+              >
+                <UserPlus className="w-4 h-4" />
+                <span>Fazer meu cadastro definitivo</span>
+              </button>
+            )}
+
             <button
               type="button"
               onClick={() => {

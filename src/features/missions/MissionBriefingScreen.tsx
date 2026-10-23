@@ -6,6 +6,9 @@ import { audioService } from '../../services/audio';
 import { GameHeader } from '../../components/layout/GameHeader';
 import { getPlayerGrade, setPlayerGrade } from '../../services/grade';
 import { GRADE_FLASHCARD_THEME, GRADE_LABELS, GRADE_QUIZ_THEME, SCHOOL_GRADES, SchoolGrade } from '../../data/level0Content';
+import { LEVEL0, LEVEL0_MISSION_FLASHCARDS, LEVEL0_MISSION_QUIZ } from '../../content/level0';
+import { level0Results } from '../../engines/pedagogy/adapters';
+import { getLevelProgress } from '../../engines/progression/progress';
 
 // Mapa do Nível 0 — Missão: desviar das distrações do Zé Cartinha e da brincadeira do bafo.
 // GANCHO DE HISTÓRIA: quando a HQ de abertura do nível existir, envolver esta tela com
@@ -13,14 +16,20 @@ import { GRADE_FLASHCARD_THEME, GRADE_LABELS, GRADE_QUIZ_THEME, SCHOOL_GRADES, S
 // antes do mapa. Por enquanto o mapa abre direto.
 export const MissionBriefingScreen: React.FC = () => {
   const navigate = useNavigate();
-  const { currentPlayer, quizResult, flashcardResult, missionsCompletedCount } = useGame();
+  const { currentPlayer, quizResult, flashcardResult } = useGame();
   const [grade, setGrade] = useState<SchoolGrade | null>(() => getPlayerGrade(currentPlayer));
   const [choosingGrade, setChoosingGrade] = useState<boolean>(false);
 
   if (!currentPlayer) return null; // redirect handled by <RequirePlayer>
 
-  const isQuizDone = quizResult?.completed;
-  const isFlashcardsDone = flashcardResult?.completed;
+  // Estado das missões vem do progresso do Nível 0 (src/engines/progression).
+  const progress = getLevelProgress(LEVEL0, level0Results(quizResult, flashcardResult, grade), grade !== null);
+  const stateOf = (missionId: string) => progress.missions.find(m => m.mission.id === missionId)?.state;
+  const isQuizDone = stateOf(LEVEL0_MISSION_QUIZ.id) === 'completed';
+  const isFlashcardsDone = stateOf(LEVEL0_MISSION_FLASHCARDS.id) === 'completed';
+  const missionsCompletedCount = progress.completedCount;
+  const quizPath = LEVEL0_MISSION_QUIZ.activity.path;
+  const flashcardsPath = LEVEL0_MISSION_FLASHCARDS.activity.path;
   const isBlue = currentPlayer.team === 'blue';
   const showGradeChooser = grade === null || choosingGrade;
 
@@ -38,8 +47,8 @@ export const MissionBriefingScreen: React.FC = () => {
   };
 
   const handleStartPlay = () => {
-    if (!isQuizDone) goTo('/quiz');
-    else if (!isFlashcardsDone) goTo('/flashcards');
+    if (!isQuizDone) goTo(quizPath);
+    else if (!isFlashcardsDone) goTo(flashcardsPath);
     else goTo('/results/final');
   };
 
@@ -157,13 +166,13 @@ export const MissionBriefingScreen: React.FC = () => {
               <div>
                 <div className="text-xs uppercase font-extrabold text-slate-500">Progresso</div>
                 <div className="text-lg font-bungee text-amber-600 whitespace-nowrap">
-                  {missionsCompletedCount} / 2 FEITAS
+                  {missionsCompletedCount} / {progress.total} FEITAS
                 </div>
               </div>
               <div className="w-16 h-3 bg-white/95 rounded-full overflow-hidden border border-sky-200">
                 <div
                   className="h-full bg-gradient-to-r from-amber-400 to-emerald-400 transition-all duration-500"
-                  style={{ width: `${(missionsCompletedCount / 2) * 100}%` }}
+                  style={{ width: `${(missionsCompletedCount / progress.total) * 100}%` }}
                 />
               </div>
             </div>
@@ -174,7 +183,8 @@ export const MissionBriefingScreen: React.FC = () => {
             <button
               type="button"
               disabled={locked}
-              onClick={() => goTo('/quiz')}
+              onClick={() => goTo(quizPath)}
+              title={`Missão 1: ${LEVEL0_MISSION_QUIZ.title}`}
               className={`text-left p-5 rounded-2xl border-2 transition-all relative overflow-hidden group disabled:cursor-not-allowed ${
                 isQuizDone
                   ? 'bg-emerald-100/80 border-emerald-500/60 hover:border-emerald-400'
@@ -188,7 +198,7 @@ export const MissionBriefingScreen: React.FC = () => {
                 {isQuizDone ? (
                   <span className="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400 text-emerald-700 text-xs font-bold flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5" />
-                    FEITA ({quizResult.totalScore} PTS)
+                    FEITA ({quizResult?.totalScore ?? 0} PTS)
                   </span>
                 ) : (
                   <span className="px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400 text-blue-700 text-xs font-bold flex items-center gap-1.5">
@@ -216,7 +226,8 @@ export const MissionBriefingScreen: React.FC = () => {
             <button
               type="button"
               disabled={locked}
-              onClick={() => goTo('/flashcards')}
+              onClick={() => goTo(flashcardsPath)}
+              title={`Missão 2: ${LEVEL0_MISSION_FLASHCARDS.title}`}
               className={`text-left p-5 rounded-2xl border-2 transition-all relative overflow-hidden group disabled:cursor-not-allowed ${
                 isFlashcardsDone
                   ? 'bg-emerald-100/80 border-emerald-500/60 hover:border-emerald-400'
@@ -230,7 +241,7 @@ export const MissionBriefingScreen: React.FC = () => {
                 {isFlashcardsDone ? (
                   <span className="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400 text-emerald-700 text-xs font-bold flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5" />
-                    FEITA ({flashcardResult.totalScore} PTS)
+                    FEITA ({flashcardResult?.totalScore ?? 0} PTS)
                   </span>
                 ) : (
                   <span className="px-3 py-1 rounded-full bg-purple-500/20 border border-purple-400 text-purple-700 text-xs font-bold flex items-center gap-1.5">

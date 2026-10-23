@@ -1,12 +1,20 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { PlayerProfile, QuizResult, FlashcardResult, TeamId, calculatePlayerLevel } from '../types';
+import { PlayerProfile, QuizResult, FlashcardResult, TeamId, calculatePlayerLevel, isGuestPlayer } from '../types';
 import { storageService } from '../services/storage';
 import { audioService } from '../services/audio';
+import { getPlayerGrade, setPlayerGrade } from '../services/grade';
+import { gameEvents } from '../core/events';
+import type { ActivityResult } from '../core/types';
+import { LEVEL0 } from '../content/level0';
+import { fromFlashcardResult, fromQuizResult, level0Results } from '../engines/pedagogy/adapters';
+import { getLevelProgress } from '../engines/progression/progress';
+import type { SchoolGrade } from '../data/level0Content';
 
 interface GameContextType {
   currentPlayer: PlayerProfile | null;
   setCurrentPlayer: (player: PlayerProfile | null) => void;
   register: (data: { name: string; age: number; className: string; team: TeamId; avatar?: string; skinTone?: 'light' | 'medium' | 'dark' | 'warm' }) => Promise<PlayerProfile>;
+  startGuest: (data: { name: string; grade: SchoolGrade; avatar: string }) => PlayerProfile;
   loginWithCode: (code: string) => Promise<boolean>;
   logout: () => void;
   quizResult: QuizResult | null;
@@ -50,9 +58,23 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [currentPlayer]);
 
   const register = async (data: { name: string; age: number; className: string; team: TeamId; avatar?: string; skinTone?: 'light' | 'medium' | 'dark' | 'warm' }) => {
+    // Visitante fazendo o cadastro definitivo: leva pontos e série para o novo aluno.
+    const guest = isGuestPlayer(currentPlayer) ? currentPlayer : null;
     const newPlayer = await storageService.registerPlayer(data);
+    if (guest) {
+      const guestGrade = getPlayerGrade(guest);
+      await storageService.convertGuest(guest.id, newPlayer.id);
+      if (guestGrade) setPlayerGrade(newPlayer, guestGrade);
+    }
     setCurrentPlayer(newPlayer);
     return newPlayer;
+  };
+
+  const startGuest = (data: { name: string; grade: SchoolGrade; avatar: string }) => {
+    const guest = storageService.startGuest(data);
+    setPlayerGrade(guest, data.grade);
+    setCurrentPlayer(guest);
+    return guest;
   };
 
   const loginWithCode = async (code: string) => {
@@ -71,16 +93,32 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setFlashcardResult(null);
   };
 
+  // Avisa o resto do jogo (eventos tipados) depois que um resultado é salvo.
+  const emitProgress = (player: PlayerProfile, result: ActivityResult, nextQuiz: QuizResult | null, nextFlashcards: FlashcardResult | null) => {
+    const grade = result.grade;
+    const wasCompleted = getLevelProgress(LEVEL0, level0Results(quizResult, flashcardResult, grade), true).isCompleted;
+    gameEvents.emit('activity.completed', { playerId: player.id, result });
+    if (result.completed) {
+      gameEvents.emit('mission.completed', { playerId: player.id, levelId: LEVEL0.id, missionId: result.missionId, result });
+    }
+    const isCompleted = getLevelProgress(LEVEL0, level0Results(nextQuiz, nextFlashcards, grade), true).isCompleted;
+    if (isCompleted && !wasCompleted) {
+      gameEvents.emit('level.completed', { playerId: player.id, levelId: LEVEL0.id });
+    }
+  };
+
   const saveQuizResult = async (result: QuizResult) => {
     if (!currentPlayer) return;
     await storageService.saveQuizResult(currentPlayer.id, result);
     setQuizResult(result);
+    emitProgress(currentPlayer, fromQuizResult(result, getPlayerGrade(currentPlayer)), result, flashcardResult);
   };
 
   const saveFlashcardResult = async (result: FlashcardResult) => {
     if (!currentPlayer) return;
     await storageService.saveFlashcardResult(currentPlayer.id, result);
     setFlashcardResult(result);
+    emitProgress(currentPlayer, fromFlashcardResult(result, getPlayerGrade(currentPlayer)), quizResult, result);
   };
 
   const toggleSound = () => {
@@ -105,6 +143,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         currentPlayer,
         setCurrentPlayer,
         register,
+        startGuest,
         loginWithCode,
         logout,
         quizResult,

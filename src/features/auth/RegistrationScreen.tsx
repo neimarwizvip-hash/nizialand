@@ -1,32 +1,64 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Calendar, GraduationCap, Shield, ArrowRight, KeyRound, Sparkles, AlertCircle } from 'lucide-react';
+import { User, Calendar, GraduationCap, Shield, ArrowRight, KeyRound, Sparkles, AlertCircle, Compass } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
-import { TeamId } from '../../types';
+import { TeamId, isGuestPlayer } from '../../types';
 import { audioService } from '../../services/audio';
 import { fireConfetti } from '../../components/ui/ConfettiEffect';
 import { AvatarSelector } from '../../components/ui/AvatarSelector';
-import { SkinTone } from '../../components/ui/PlayerAvatar';
+import { AVATAR_CATALOG, PlayerAvatar, SkinTone } from '../../components/ui/PlayerAvatar';
 import { nameModerationService } from '../../services/nameModeration';
+import { GRADE_LABELS, SCHOOL_GRADES, SchoolGrade } from '../../data/level0Content';
+
+// Visitante escolhe entre os 4 heróis iniciais.
+const GUEST_AVATARS = AVATAR_CATALOG.filter(a => a.category === 'hero' && a.unlockLevel === 0).slice(0, 4);
 
 export const RegistrationScreen: React.FC = () => {
   const navigate = useNavigate();
-  const { register, loginWithCode } = useGame();
+  const { register, loginWithCode, startGuest, currentPlayer } = useGame();
+  const guestPlaying = isGuestPlayer(currentPlayer) ? currentPlayer : null;
 
-  const [mode, setMode] = useState<'new' | 'code'>('new');
-  
-  // New player form state
-  const [name, setName] = useState('');
+  const [mode, setMode] = useState<'new' | 'code' | 'guest'>('new');
+
+  // New player form state (um visitante que vem se cadastrar já chega com nome e avatar)
+  const [name, setName] = useState(guestPlaying?.name ?? '');
   const [age, setAge] = useState<number>(13);
   const [className, setClassName] = useState<string>('804');
   const [team, setTeam] = useState<TeamId>('blue');
-  const [selectedAvatar, setSelectedAvatar] = useState<string>('hero-boy-hoodie');
+  const [selectedAvatar, setSelectedAvatar] = useState<string>(guestPlaying?.avatar ?? 'hero-boy-hoodie');
   const [skinTone, setSkinTone] = useState<SkinTone>('light');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   // Existing player code state
   const [accessCode, setAccessCode] = useState('');
   const [codeError, setCodeError] = useState<string | null>(null);
+
+  // Visitor state
+  const [guestName, setGuestName] = useState('');
+  const [guestGrade, setGuestGrade] = useState<SchoolGrade | null>(null);
+  const [guestAvatar, setGuestAvatar] = useState<string>(GUEST_AVATARS[0]?.id ?? 'hero-boy-hoodie');
+  const [guestError, setGuestError] = useState<string | null>(null);
+
+  const handleGuestSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setGuestError(null);
+
+    const valResult = nameModerationService.validate(guestName);
+    if (!valResult.isValid) {
+      setGuestError(valResult.errorMessage || 'Por favor, digite um apelido válido.');
+      audioService.playWrong();
+      return;
+    }
+    if (!guestGrade) {
+      setGuestError('Escolha a sua série para começar.');
+      audioService.playWrong();
+      return;
+    }
+
+    audioService.playChime();
+    startGuest({ name: valResult.sanitizedName, grade: guestGrade, avatar: guestAvatar });
+    navigate('/missions');
+  };
 
   const handleSelectTeam = (chosenTeam: TeamId) => {
     audioService.playClick();
@@ -148,6 +180,11 @@ export const RegistrationScreen: React.FC = () => {
         {/* --- FORM 1: NEW PLAYER REGISTRATION --- */}
         {mode === 'new' ? (
           <form onSubmit={handleNewPlayerSubmit} className="space-y-3">
+            {guestPlaying && (
+              <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold">
+                Você está jogando como visitante. Ao fazer seu cadastro definitivo, seus pontos e missões vão junto.
+              </div>
+            )}
             {errorMsg && (
               <div className="p-2.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2 font-semibold animate-fadeIn">
                 <AlertCircle className="w-4 h-4 flex-shrink-0" />
@@ -297,6 +334,93 @@ export const RegistrationScreen: React.FC = () => {
               <ArrowRight className="w-5 h-5 stroke-[3]" />
             </button>
           </form>
+        ) : mode === 'guest' ? (
+          /* --- FORM 3: VISITOR (sem código, fora do ranking) --- */
+          <form onSubmit={handleGuestSubmit} className="space-y-3">
+            {guestError && (
+              <div className="p-2.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2 font-semibold animate-fadeIn">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <span>{guestError}</span>
+              </div>
+            )}
+
+            <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-slate-700 text-xs">
+              <p className="font-bold mb-0.5 text-slate-900">Experimentar como visitante</p>
+              <p className="text-[11px] text-slate-500">
+                Jogue sem código. Visitantes não aparecem no ranking. Se gostar, faça o cadastro definitivo e seus pontos vão junto.
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                <User className="w-3.5 h-3.5 text-emerald-600" />
+                APELIDO
+              </label>
+              <input
+                type="text"
+                value={guestName}
+                onChange={(e) => setGuestName(e.target.value)}
+                placeholder="Como quer ser chamado?"
+                required
+                maxLength={30}
+                className="w-full px-3 py-2 rounded-xl border-2 border-slate-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 outline-none text-slate-900 font-bold placeholder-slate-400 text-sm transition-all"
+              />
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                <GraduationCap className="w-3.5 h-3.5 text-emerald-600" />
+                SÉRIE
+              </label>
+              <div className="grid grid-cols-4 gap-1.5">
+                {SCHOOL_GRADES.map(g => (
+                  <button
+                    key={g}
+                    type="button"
+                    onClick={() => { audioService.playClick(); setGuestGrade(g); }}
+                    className={`py-2 rounded-xl border-2 font-bold text-xs transition-all ${
+                      guestGrade === g
+                        ? 'bg-emerald-600 border-emerald-600 text-white shadow-sm'
+                        : 'bg-white border-slate-300 text-slate-700 hover:border-emerald-400'
+                    }`}
+                  >
+                    {GRADE_LABELS[g]}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">
+                ESCOLHA SEU HERÓI
+              </label>
+              <div className="grid grid-cols-4 gap-1.5">
+                {GUEST_AVATARS.map(a => (
+                  <button
+                    key={a.id}
+                    type="button"
+                    onClick={() => { audioService.playClick(); setGuestAvatar(a.id); }}
+                    className={`p-1.5 rounded-xl border-2 flex flex-col items-center gap-1 transition-all ${
+                      guestAvatar === a.id
+                        ? 'bg-emerald-50 border-emerald-600 ring-2 ring-emerald-300'
+                        : 'bg-white border-slate-200 hover:border-emerald-300 opacity-80'
+                    }`}
+                  >
+                    <PlayerAvatar avatarId={a.id} size="md" alt={a.name} />
+                    <span className="text-[10px] font-bold text-slate-700">{a.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full mt-2 py-3 px-4 rounded-xl bg-gradient-to-b from-green-400 via-emerald-500 to-green-600 hover:from-green-300 hover:to-emerald-500 text-white font-bungee text-base sm:text-lg tracking-wider shadow-[0_4px_0_#065f46,0_10px_20px_rgba(16,185,129,0.3)] active:translate-y-1 active:shadow-[0_1px_0_#065f46] border-2 border-emerald-300 flex items-center justify-center gap-2 transition-all cursor-pointer"
+            >
+              <span>JOGAR COMO VISITANTE</span>
+              <ArrowRight className="w-5 h-5 stroke-[3]" />
+            </button>
+          </form>
         ) : (
           /* --- FORM 2: LOGIN WITH EXISTING PLAYER CODE --- */
           <form onSubmit={handleCodeSubmit} className="space-y-3.5">
@@ -337,6 +461,17 @@ export const RegistrationScreen: React.FC = () => {
               <ArrowRight className="w-5 h-5 stroke-[3]" />
             </button>
           </form>
+        )}
+
+        {!guestPlaying && mode !== 'guest' && (
+          <button
+            type="button"
+            onClick={() => { audioService.playClick(); setMode('guest'); }}
+            className="w-full mt-3 py-2 px-3 rounded-xl border-2 border-dashed border-emerald-400 bg-emerald-50/70 hover:bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center gap-1.5 transition-all"
+          >
+            <Compass className="w-4 h-4" />
+            Experimentar como visitante
+          </button>
         )}
 
         {/* Footer info note */}

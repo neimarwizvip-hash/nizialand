@@ -160,7 +160,8 @@ export const AdminPanel: React.FC = () => {
   const questionStats = QUIZ_QUESTIONS.map(q => {
     let answered = 0;
     let errors = 0;
-    Object.values(allQuizResults).forEach(res => {
+    // Visitantes ficam fora das estatísticas da turma.
+    Object.entries(allQuizResults).filter(([id]) => !id.startsWith('guest_')).forEach(([, res]) => {
       const att = res.attempts?.[q.id];
       if (att) {
         answered++;

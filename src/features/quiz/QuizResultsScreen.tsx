@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Trophy, Star, CheckCircle2, Shield, ArrowRight, BookOpen, Layers } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { audioService } from '../../services/audio';
 import { fireConfetti } from '../../components/ui/ConfettiEffect';
 import { GameHeader } from '../../components/layout/GameHeader';
+import { isGuestPlayer } from '../../types';
 
 export const QuizResultsScreen: React.FC = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ export const QuizResultsScreen: React.FC = () => {
   }
 
   const isBlue = currentPlayer.team === 'blue';
+  const isGuest = isGuestPlayer(currentPlayer);
 
   return (
     <div className="min-h-screen game-sky text-slate-900 flex flex-col">
@@ -80,7 +82,21 @@ export const QuizResultsScreen: React.FC = () => {
               <span className="text-[11px] font-semibold text-slate-500">questions mastered</span>
             </div>
 
-            {/* Team Contribution */}
+            {/* Team Contribution (visitante não pontua para as equipes) */}
+            {isGuest ? (
+              <div className="col-span-2 sm:col-span-1 p-4 rounded-2xl border bg-emerald-50 border-emerald-400/60">
+                <span className="text-xs font-extrabold uppercase text-slate-500">Team Points</span>
+                <p className="text-[12px] font-semibold text-slate-600 mt-1">
+                  Pontos de visitante não contam para as equipes.
+                </p>
+                <Link
+                  to="/register"
+                  className="inline-block mt-2 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-heading font-black transition-colors"
+                >
+                  Fazer meu cadastro definitivo
+                </Link>
+              </div>
+            ) : (
             <div className={`col-span-2 sm:col-span-1 p-4 rounded-2xl border ${
               isBlue ? 'bg-blue-100/80 border-blue-500/60' : 'bg-purple-100/80 border-purple-500/60'
             }`}>
@@ -95,6 +111,7 @@ export const QuizResultsScreen: React.FC = () => {
                 Added to {isBlue ? 'BLUE TEAM' : 'PURPLE TEAM'}
               </span>
             </div>
+            )}
           </div>
 
           {/* Progress Tracker */}

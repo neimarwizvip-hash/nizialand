@@ -45,6 +45,11 @@ export function generatePlayerCode(className: string): string {
   return `NSL-${className}-${randomPart}`;
 }
 
+// Resultados de visitante nunca vão para o Supabase.
+function isGuestId(playerId: string): boolean {
+  return playerId.startsWith('guest_');
+}
+
 class StorageService {
   // --- PLAYER SESSION & REGISTRATION ---
 
@@ -119,6 +124,52 @@ class StorageService {
     this.logAudit('PLAYER_REGISTERED', `Player ${newPlayer.name} (${newPlayer.playerCode}) joined ${newPlayer.team.toUpperCase()} TEAM.`);
 
     return newPlayer;
+  }
+
+  // Visitante: joga sem código. Fica só como jogador atual — não entra na
+  // lista de alunos, no ranking nem no Supabase.
+  public startGuest(data: {
+    name: string;
+    grade: string;
+    avatar: string;
+    team?: 'blue' | 'purple';
+  }): PlayerProfile {
+    const name = data.name.trim();
+    const guest: PlayerProfile = {
+      id: 'guest_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
+      playerCode: '',
+      name,
+      displayName: name,
+      age: 0,
+      className: `${data.grade}º ano`,
+      team: data.team || 'blue',
+      avatar: data.avatar,
+      skinTone: 'light',
+      level: 0,
+      kind: 'guest',
+      createdAt: new Date().toISOString(),
+      lastLoginAt: new Date().toISOString()
+    };
+    this.setStoredCurrentPlayer(guest);
+    return guest;
+  }
+
+  // Leva os resultados do visitante para o aluno recém-cadastrado e apaga os do visitante.
+  public async convertGuest(guestId: string, newPlayerId: string): Promise<void> {
+    const quiz = this.getQuizResult(guestId);
+    const flashcards = this.getFlashcardResult(guestId);
+    if (quiz) await this.saveQuizResult(newPlayerId, quiz);
+    if (flashcards) await this.saveFlashcardResult(newPlayerId, flashcards);
+
+    const quizAll = this.getAllQuizResults();
+    delete quizAll[guestId];
+    localStorage.setItem(STORAGE_KEYS.QUIZ_RESULTS, JSON.stringify(quizAll));
+
+    const fcAll = this.getAllFlashcardResults();
+    delete fcAll[guestId];
+    localStorage.setItem(STORAGE_KEYS.FLASHCARD_RESULTS, JSON.stringify(fcAll));
+
+    this.logAudit('GUEST_CONVERTED', `Visitor ${guestId} registered as ${newPlayerId}; results kept.`);
   }
 
   public async loginWithCode(code: string): Promise<PlayerProfile | null> {
@@ -197,7 +248,7 @@ class StorageService {
     allQuizResults[playerId] = result;
     localStorage.setItem(STORAGE_KEYS.QUIZ_RESULTS, JSON.stringify(allQuizResults));
 
-    if (isSupabaseConfigured && supabase) {
+    if (isSupabaseConfigured && supabase && !isGuestId(playerId)) {
       try {
         await supabase.from('quiz_results').upsert([{
           player_id: playerId,
@@ -238,7 +289,7 @@ class StorageService {
     allFcResults[playerId] = result;
     localStorage.setItem(STORAGE_KEYS.FLASHCARD_RESULTS, JSON.stringify(allFcResults));
 
-    if (isSupabaseConfigured && supabase) {
+    if (isSupabaseConfigured && supabase && !isGuestId(playerId)) {
       try {
         await supabase.from('flashcard_results').upsert([{
           player_id: playerId,
