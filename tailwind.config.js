@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {
+      // "wide": desktop ou celular deitado (paisagem baixa) — usa o layout de tela inteira sem rolagem
+      screens: {
+        wide: { raw: '(min-width: 1024px), (orientation: landscape) and (max-height: 600px)' },
+      },
       colors: {
         'nisia-blue': {
           DEFAULT: '#2563eb',

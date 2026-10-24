@@ -13,6 +13,7 @@ import { FinalResultsScreen } from './features/results/FinalResultsScreen';
 import { PhaseStoryGate } from './components/video/PhaseStoryGate';
 import { StartupVideoScreen } from './components/video/StartupVideoScreen';
 import { keepFullscreen } from './services/fullscreen';
+import { RotateDeviceOverlay } from './components/ui/RotateDeviceOverlay';
 import { audioService, MusicTrack } from './services/audio';
 
 // Telas pesadas ou menos usadas ficam fora do pacote principal (baixadas quando abertas).
@@ -50,7 +51,12 @@ export const App: React.FC = () => {
   useEffect(() => keepFullscreen(), []);
 
   if (!startupVideoFinished) {
-    return <StartupVideoScreen onComplete={() => setStartupVideoFinished(true)} />;
+    return (
+      <>
+        <StartupVideoScreen onComplete={() => setStartupVideoFinished(true)} />
+        <RotateDeviceOverlay />
+      </>
+    );
   }
 
   return (
@@ -102,6 +108,7 @@ export const App: React.FC = () => {
           </Suspense>
         </ScreenTransitionLoader>
       </BrowserRouter>
+      <RotateDeviceOverlay />
     </GameProvider>
   );
 };

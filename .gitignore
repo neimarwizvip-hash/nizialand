@@ -11,3 +11,8 @@ Thumbs.db
 *.log
 
 /*.mp4
+.env.*
+!.env.example
+playwright-report/
+test-results/
+coverage/

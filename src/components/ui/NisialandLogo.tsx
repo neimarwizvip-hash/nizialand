@@ -8,13 +8,13 @@ type LogoSize = 'sm' | 'md' | 'lg';
 const IMG_SIZE: Record<LogoSize, string> = {
   sm: 'h-8 sm:h-10',
   md: 'h-14 sm:h-16',
-  lg: 'h-[18vw] max-h-40 lg:h-[clamp(5rem,15vw,11rem)] lg:max-h-none',
+  lg: 'h-[18vw] max-h-40 wide:h-[clamp(5rem,15vw,11rem)] wide:max-h-none',
 };
 
 const TEXT_SIZE: Record<LogoSize, string> = {
   sm: 'text-lg sm:text-xl',
   md: 'text-2xl sm:text-3xl',
-  lg: 'text-[8vw] lg:text-[clamp(2rem,5vw,4.5rem)]',
+  lg: 'text-[8vw] wide:text-[clamp(2rem,5vw,4.5rem)]',
 };
 
 export const NisialandLogo: React.FC<{ size?: LogoSize; className?: string }> = ({ size = 'md', className = '' }) => {

@@ -6,6 +6,26 @@ type FsDocument = Document & {
 type FsElement = HTMLElement & {
   webkitRequestFullscreen?: () => Promise<void> | void;
 };
+type OrientacaoTravavel = ScreenOrientation & { lock?: (o: string) => Promise<void> };
+
+// Celular/tablet: tela de toque ou largura menor que 1024.
+export const isMobileLike = (): boolean => {
+  try {
+    return window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 1024;
+  } catch {
+    return window.innerWidth < 1024;
+  }
+};
+
+// Trava em paisagem (Android em tela cheia). iPhone não trava: lá vale o aviso "Gire o celular".
+const lockLandscape = async (): Promise<void> => {
+  try {
+    const o = screen.orientation as OrientacaoTravavel | undefined;
+    if (o?.lock) await o.lock('landscape');
+  } catch {
+    // navegador recusou; o aviso de girar cobre esse caso
+  }
+};
 
 export const isFullscreen = (): boolean => {
   const d = document as FsDocument;
@@ -20,7 +40,9 @@ export const enterFullscreen = async (): Promise<void> => {
     else if (el.webkitRequestFullscreen) await el.webkitRequestFullscreen();
   } catch {
     // navegador recusou (ex.: iPhone sem suporte); o jogo segue normal
+    return;
   }
+  if (isMobileLike()) await lockLandscape();
 };
 
 export const exitFullscreen = async (): Promise<void> => {
@@ -53,15 +75,23 @@ export const onFullscreenChange = (cb: () => void): (() => void) => {
 // Mantém o jogo em tela cheia: se o navegador sair dela (troca de tela, alerta etc.),
 // o próximo toque/tecla do aluno volta para a tela cheia. Só para de fazer isso
 // quando o aluno sai de propósito pelo botão de tela cheia.
+// No celular é diferente: só o primeiro toque liga a tela cheia (e trava em paisagem);
+// se o aluno sair dela, não forçamos de novo — fica só o botão.
 let userOptedOut = false;
 export const setFullscreenOptOut = (value: boolean): void => {
   userOptedOut = value;
 };
 
 export const keepFullscreen = (): (() => void) => {
+  const mobile = isMobileLike();
+  let jaTentou = false;
   const onGesture = (e: Event) => {
     if (userOptedOut || isFullscreen()) return;
     if (e instanceof KeyboardEvent && (e.key === 'Escape' || e.key === 'F11')) return;
+    if (mobile) {
+      if (jaTentou) return;
+      jaTentou = true;
+    }
     void enterFullscreen();
   };
   document.addEventListener('click', onGesture, true);
