@@ -4,7 +4,8 @@
 
 import type { SchoolGrade } from '../data/level0Content';
 
-export type Mechanic = 'quiz' | 'flashcards';
+// Nível 1: listen (ouvir e ligar), order (montar frase), dialogue (diálogo), explore (explorar a escola).
+export type Mechanic = 'quiz' | 'flashcards' | 'listen' | 'order' | 'dialogue' | 'explore';
 
 export type LevelMode = '2D';
 
@@ -19,6 +20,8 @@ export interface Activity {
   phrase: string;
   path: string;
   color: ActivityColor;
+  // Dica curta no cartão (ex.: o que o Zé apronta).
+  hint?: string;
 }
 
 // Cada nível tem UMA missão, com o mesmo número do nível (Nível 0 = Missão 0).
@@ -28,6 +31,8 @@ export interface Mission {
   number: number;
   title: string;
   activities: Activity[];
+  // true: libera uma atividade por vez, na ordem (Nível 1).
+  sequential?: boolean;
 }
 
 export interface Level {

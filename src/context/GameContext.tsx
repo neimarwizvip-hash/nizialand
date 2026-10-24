@@ -6,6 +6,7 @@ import { getPlayerGrade, setPlayerGrade } from '../services/grade';
 import { gameEvents } from '../core/events';
 import type { ActivityResult } from '../core/types';
 import { LEVEL0 } from '../content/level0';
+import { LEVEL1 } from '../content/level1';
 import { fromFlashcardResult, fromQuizResult, level0Results } from '../engines/pedagogy/adapters';
 import { getMissionProgress } from '../engines/progression/progress';
 import type { SchoolGrade } from '../data/level0Content';
@@ -21,6 +22,11 @@ interface GameContextType {
   saveQuizResult: (result: QuizResult) => Promise<void>;
   flashcardResult: FlashcardResult | null;
   saveFlashcardResult: (result: FlashcardResult) => Promise<void>;
+  // Nível 1 em diante: melhor resultado por activityId.
+  activityResults: Record<string, ActivityResult>;
+  saveActivityResult: (result: ActivityResult) => void;
+  // Missão 0 concluída = Nível 1 liberado.
+  level0Completed: boolean;
   totalScore: number;
   playerLevel: number;
   missionsCompletedCount: number;
@@ -37,6 +43,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [currentPlayer, setCurrentPlayer] = useState<PlayerProfile | null>(() => storageService.getStoredCurrentPlayer());
   const [quizResult, setQuizResult] = useState<QuizResult | null>(null);
   const [flashcardResult, setFlashcardResult] = useState<FlashcardResult | null>(null);
+  const [activityResults, setActivityResults] = useState<Record<string, ActivityResult>>({});
   const [isSoundOn, setIsSoundOn] = useState<boolean>(true);
   const [isMusicOn, setIsMusicOn] = useState<boolean>(() => audioService.isMusicOn());
 
@@ -47,7 +54,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const fcRes = storageService.getFlashcardResult(currentPlayer.id);
       setQuizResult(qRes);
       setFlashcardResult(fcRes);
+      setActivityResults(storageService.getActivityResults(currentPlayer.id));
     } else {
+      setActivityResults({});
       setQuizResult(null);
       setFlashcardResult(null);
     }
@@ -96,6 +105,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCurrentPlayer(null);
     setQuizResult(null);
     setFlashcardResult(null);
+    setActivityResults({});
   };
 
   // Avisa o resto do jogo (eventos tipados) depois que um resultado é salvo.
@@ -125,6 +135,19 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     emitProgress(currentPlayer, fromFlashcardResult(result, getPlayerGrade(currentPlayer)), quizResult, result);
   };
 
+  const saveActivityResult = (result: ActivityResult) => {
+    if (!currentPlayer) return;
+    const wasCompleted = getMissionProgress(LEVEL1, activityResults, true).isCompleted;
+    storageService.saveActivityResult(currentPlayer.id, result);
+    const next = storageService.getActivityResults(currentPlayer.id);
+    setActivityResults(next);
+    gameEvents.emit('activity.completed', { playerId: currentPlayer.id, result });
+    if (getMissionProgress(LEVEL1, next, true).isCompleted && !wasCompleted) {
+      gameEvents.emit('mission.completed', { playerId: currentPlayer.id, levelId: LEVEL1.id, missionId: LEVEL1.mission.id, result });
+      gameEvents.emit('level.completed', { playerId: currentPlayer.id, levelId: LEVEL1.id });
+    }
+  };
+
   const toggleSound = () => {
     const next = !isSoundOn;
     setIsSoundOn(next);
@@ -137,9 +160,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     audioService.setMusicMuted(!next);
   };
 
-  const totalScore = (quizResult?.totalScore || 0) + (flashcardResult?.totalScore || 0);
+  const activityTotal = Object.values(activityResults).reduce((t, r) => t + (r.score || 0), 0);
+  const totalScore = (quizResult?.totalScore || 0) + (flashcardResult?.totalScore || 0) + activityTotal;
+  const level0Completed = getMissionProgress(LEVEL0, level0Results(quizResult, flashcardResult, null), true).isCompleted;
   const playerLevel = calculatePlayerLevel(totalScore);
-  const missionsCompletedCount = (quizResult?.completed ? 1 : 0) + (flashcardResult?.completed ? 1 : 0);
+  const missionsCompletedCount = (quizResult?.completed ? 1 : 0) + (flashcardResult?.completed ? 1 : 0)
+    + Object.values(activityResults).filter(r => r.completed).length;
 
   return (
     <GameContext.Provider
@@ -154,6 +180,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         saveQuizResult,
         flashcardResult,
         saveFlashcardResult,
+        activityResults,
+        saveActivityResult,
+        level0Completed,
         totalScore,
         playerLevel,
         missionsCompletedCount,

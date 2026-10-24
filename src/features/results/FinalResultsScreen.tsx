@@ -25,7 +25,7 @@ import { GRADE_LABELS, GRADE_QUIZ_THEME } from '../../data/level0Content';
 
 export const FinalResultsScreen: React.FC = () => {
   const navigate = useNavigate();
-  const { currentPlayer, quizResult, flashcardResult, totalScore } = useGame();
+  const { currentPlayer, quizResult, flashcardResult, totalScore, level0Completed } = useGame();
   const [playerRank, setPlayerRank] = useState<number | null>(null);
 
   useEffect(() => {
@@ -231,6 +231,20 @@ export const FinalResultsScreen: React.FC = () => {
               <span>VIEW LEADERBOARD</span>
               <ArrowRight className="w-5 h-5 stroke-[3]" />
             </button>
+
+            {level0Completed && (
+              <button
+                type="button"
+                onClick={() => {
+                  audioService.playClick();
+                  navigate('/nivel1');
+                }}
+                className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-gradient-to-r from-emerald-400 to-emerald-500 text-white border-2 border-emerald-700 shadow-[0_4px_0_0_#065f46] active:translate-y-1 active:shadow-[0_1px_0_0_#065f46] font-heading font-black text-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
+              >
+                <span>Ir para o Nível 1</span>
+                <ArrowRight className="w-5 h-5 stroke-[3]" />
+              </button>
+            )}
 
             <button
               type="button"

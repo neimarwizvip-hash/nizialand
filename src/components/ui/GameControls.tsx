@@ -18,7 +18,7 @@ const Switch: React.FC<{ label: string; ariaLabel: string; on: boolean; onToggle
     className="flex items-center gap-1.5 px-2 py-1 rounded-xl hover:bg-sky-50 transition-colors"
   >
     {icon}
-    <span className="text-[11px] sm:text-xs font-heading font-black text-blue-900 uppercase">{label}</span>
+    <span className="text-[11px] sm:text-xs font-heading font-black text-blue-900 uppercase short:sr-only">{label}</span>
     <span
       className={`relative inline-flex items-center w-12 h-6 rounded-full border-2 transition-colors ${
         on ? 'bg-emerald-500 border-emerald-700' : 'bg-slate-300 border-slate-400'
@@ -55,7 +55,7 @@ export const GameControls: React.FC<{ className?: string; showFreeTraining?: boo
           className="flex items-center gap-1.5 px-2 py-1 rounded-xl hover:bg-sky-50 transition-colors"
         >
           <Gamepad2 className="w-4 h-4 text-purple-600" />
-          <span className="text-[11px] sm:text-xs font-heading font-black text-blue-900 uppercase">Treino livre</span>
+          <span className="text-[11px] sm:text-xs font-heading font-black text-blue-900 uppercase short:sr-only">Treino livre</span>
         </button>
       )}
       <button
@@ -64,7 +64,7 @@ export const GameControls: React.FC<{ className?: string; showFreeTraining?: boo
         className="flex items-center gap-1.5 px-2 py-1 rounded-xl hover:bg-sky-50 transition-colors"
       >
         <Trophy className="w-4 h-4 text-amber-500" />
-        <span className="text-[11px] sm:text-xs font-heading font-black text-blue-900 uppercase">Ranking</span>
+        <span className="text-[11px] sm:text-xs font-heading font-black text-blue-900 uppercase short:sr-only">Ranking</span>
       </button>
       <Switch
         label="Som"

@@ -9,6 +9,8 @@ export default {
       // "wide": desktop ou celular deitado (paisagem baixa) — usa o layout de tela inteira sem rolagem
       screens: {
         wide: { raw: '(min-width: 1024px), (orientation: landscape) and (max-height: 600px)' },
+        // "short": celular deitado (altura baixa) — cabeçalho e telas compactos para caber sem rolar
+        short: { raw: '(max-height: 480px)' },
       },
       colors: {
         'nisia-blue': {

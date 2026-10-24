@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Shield, CheckCircle2, Lock, Play, GraduationCap, LogOut } from 'lucide-react';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Shield, CheckCircle2, Lock, Play, GraduationCap, LogOut, ArrowRight, Ear, Puzzle, MessagesSquare, MapPinned } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { audioService } from '../../services/audio';
 import { getPlayerGrade, setPlayerGrade } from '../../services/grade';
 import { GRADE_FLASHCARD_THEME, GRADE_LABELS, GRADE_QUIZ_THEME, SCHOOL_GRADES, SchoolGrade } from '../../data/level0Content';
 import { LEVEL0 } from '../../content/level0';
+import { LEVEL1 } from '../../content/level1';
 import { level0Results } from '../../engines/pedagogy/adapters';
 import { getMissionProgress, ActivityProgress } from '../../engines/progression/progress';
 import type { ActivityColor, Mechanic } from '../../core/types';
@@ -55,10 +56,16 @@ const FlashcardArt: React.FC = () => (
 
 const ART: Partial<Record<Mechanic, React.FC>> = { quiz: QuizArt, flashcards: FlashcardArt };
 
+// Atividades sem desenho próprio (Nível 1) usam um ícone grande.
+const ICON_ART: Partial<Record<Mechanic, React.FC<{ className?: string }>>> = {
+  listen: Ear, order: Puzzle, dialogue: MessagesSquare, explore: MapPinned,
+};
+
 const ActivityCard: React.FC<{ item: ActivityProgress; hint?: string; onPlay: () => void }> = ({ item, hint, onPlay }) => {
   const { activity, state, result } = item;
   const style = COLOR_STYLES[activity.color];
   const Art = ART[activity.mechanic];
+  const Icon = ICON_ART[activity.mechanic];
   const done = state === 'completed';
   const locked = state === 'locked';
 
@@ -66,7 +73,7 @@ const ActivityCard: React.FC<{ item: ActivityProgress; hint?: string; onPlay: ()
     <article
       data-activity={activity.id}
       data-state={state}
-      className={`relative flex flex-col items-center text-center rounded-3xl border-[3px] p-4 sm:p-5 shadow-[0_6px_0_0_rgba(15,23,42,0.12)] ${style.card} ${locked ? 'opacity-60' : ''}`}
+      className={`relative flex flex-col items-center text-center rounded-3xl border-[3px] p-4 sm:p-5 short:p-2 shadow-[0_6px_0_0_rgba(15,23,42,0.12)] ${style.card} ${locked ? 'opacity-60' : ''}`}
     >
       {done && (
         <span className="absolute top-3 right-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500 text-white text-[11px] font-black">
@@ -80,17 +87,17 @@ const ActivityCard: React.FC<{ item: ActivityProgress; hint?: string; onPlay: ()
           BLOQUEADA
         </span>
       )}
-      <div className={`w-full h-28 sm:h-32 rounded-2xl flex items-center justify-center mb-3 ${style.art}`}>
-        {Art ? <Art /> : null}
+      <div className={`w-full h-28 sm:h-32 short:h-10 rounded-2xl flex items-center justify-center mb-3 short:mb-1 ${style.art}`}>
+        {Art ? <Art /> : Icon ? <Icon className="w-16 h-16 sm:w-20 sm:h-20 short:w-8 short:h-8 text-slate-700" /> : null}
       </div>
-      <h3 className="font-bungee text-2xl text-slate-900">{activity.name}</h3>
-      <p className="mt-1 font-heading font-black text-blue-900 text-sm sm:text-base">{activity.phrase}</p>
-      {hint && <p className="mt-1 text-xs text-slate-600 leading-snug">{hint}</p>}
+      <h3 className="font-bungee text-2xl short:text-sm short:leading-tight text-slate-900">{activity.name}</h3>
+      <p className="mt-1 font-heading font-black text-blue-900 text-sm sm:text-base short:hidden leading-tight">{activity.phrase}</p>
+      {hint && <p className="mt-1 text-xs text-slate-600 leading-snug short:hidden">{hint}</p>}
       <button
         type="button"
         disabled={locked}
         onClick={onPlay}
-        className={`mt-4 w-full max-w-[14rem] inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-b border-[3px] font-bungee text-lg tracking-wider active:translate-y-1 active:shadow-none transition-all disabled:cursor-not-allowed ${style.button}`}
+        className={`mt-4 short:mt-1 w-full max-w-[14rem] inline-flex items-center justify-center gap-2 px-6 py-3 short:px-1 short:py-1 short:whitespace-nowrap rounded-2xl bg-gradient-to-b border-[3px] font-bungee text-lg short:text-xs tracking-wider active:translate-y-1 active:shadow-none transition-all disabled:cursor-not-allowed ${style.button}`}
       >
         <Play className="w-5 h-5 fill-current" />
         {done ? 'JOGAR DE NOVO' : 'JOGAR'}
@@ -100,24 +107,30 @@ const ActivityCard: React.FC<{ item: ActivityProgress; hint?: string; onPlay: ()
 };
 
 // Missão do nível (cada nível tem uma missão com o mesmo número). Os cartões vêm dos dados da missão.
-// A introdução da história (historia_nivel0.mp4) toca antes desta tela pelo PhaseStoryGate (App.tsx).
-export const MissionBriefingScreen: React.FC = () => {
+// A introdução da história (historia_nivel<N>.mp4) toca antes desta tela pelo PhaseStoryGate (App.tsx).
+// level 0 = /missions; level 1 = /nivel1 (liberado quando a Missão 0 termina).
+export const MissionBriefingScreen: React.FC<{ level?: 0 | 1 }> = ({ level = 0 }) => {
   const navigate = useNavigate();
-  const { currentPlayer, quizResult, flashcardResult, logout } = useGame();
+  const { currentPlayer, quizResult, flashcardResult, activityResults, level0Completed, logout } = useGame();
   const [grade, setGrade] = useState<SchoolGrade | null>(() => getPlayerGrade(currentPlayer));
   const [choosingGrade, setChoosingGrade] = useState<boolean>(false);
 
   if (!currentPlayer) return null; // redirect handled by <RequirePlayer>
+  if (level === 1 && !level0Completed) return <Navigate to="/missions" replace />;
 
-  const mission = LEVEL0.mission;
-  const progress = getMissionProgress(LEVEL0, level0Results(quizResult, flashcardResult, grade), grade !== null);
+  const levelData = level === 1 ? LEVEL1 : LEVEL0;
+  const mission = levelData.mission;
+  const progress = level === 1
+    ? getMissionProgress(LEVEL1, activityResults, grade !== null)
+    : getMissionProgress(LEVEL0, level0Results(quizResult, flashcardResult, grade), grade !== null);
   const isBlue = currentPlayer.team === 'blue';
   const showGradeChooser = grade === null || choosingGrade;
   const count = progress.activities.length;
-  const gridCols = count >= 4 ? 'sm:grid-cols-2 lg:grid-cols-4' : count >= 2 ? 'sm:grid-cols-2' : '';
+  const gridCols = count >= 4 ? 'sm:grid-cols-2 lg:grid-cols-4 short:grid-cols-4' : count >= 2 ? 'sm:grid-cols-2' : '';
 
-  const hintFor = (mechanic: Mechanic): string | undefined => {
+  const hintFor = (mechanic: Mechanic, hint?: string): string | undefined => {
     if (!grade) return 'Escolha sua série para liberar.';
+    if (level === 1) return hint;
     if (mechanic === 'quiz') return GRADE_QUIZ_THEME[grade];
     if (mechanic === 'flashcards') return GRADE_FLASHCARD_THEME[grade];
     return undefined;
@@ -139,23 +152,23 @@ export const MissionBriefingScreen: React.FC = () => {
   return (
     <div className="min-h-screen game-sky text-slate-900 flex flex-col">
       {/* Barra superior */}
-      <header className="w-full px-3 sm:px-5 py-2 flex flex-wrap items-center justify-between gap-2 bg-white/80 backdrop-blur border-b-2 border-sky-200">
+      <header className="w-full px-3 sm:px-5 py-2 short:py-1 flex flex-wrap short:flex-nowrap items-center justify-between gap-2 bg-white/80 backdrop-blur border-b-2 border-sky-200">
         <div className="flex items-center gap-2">
-          <Link to="/" aria-label="Início" className="bg-gradient-to-b from-amber-300 to-amber-500 border-[3px] border-amber-600 rounded-2xl px-2 py-1 shadow-[0_4px_0_0_#b45309]">
+          <Link to="/" aria-label="Início" className="bg-gradient-to-b from-amber-300 to-amber-500 border-[3px] border-amber-600 rounded-2xl px-2 py-1 short:py-0 shadow-[0_4px_0_0_#b45309] short:scale-75 short:origin-left">
             <NisialandLogo size="sm" />
           </Link>
-          <LevelBadge level={LEVEL0.number} />
+          <LevelBadge level={levelData.number} />
         </div>
         <div className="flex items-center gap-2">
-          <GameControls />
+          <GameControls className="short:flex-nowrap short:py-0.5 short:shadow-none" />
           <FullscreenButton />
         </div>
       </header>
 
-      <main className="flex-1 w-full max-w-6xl mx-auto px-4 py-5 md:py-8 flex flex-col">
+      <main className="flex-1 w-full max-w-6xl mx-auto px-4 py-5 md:py-8 short:py-1 flex flex-col">
         {/* Jogador */}
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-5">
-          <div className="inline-flex items-center gap-2 bg-white/90 border-2 border-sky-200 rounded-2xl px-3 py-1.5">
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-5 short:mb-1">
+          <div className="inline-flex items-center gap-2 bg-white/90 border-2 border-sky-200 rounded-2xl px-3 py-1.5 short:py-0.5">
             <PlayerAvatar avatarId={currentPlayer.avatar} skinTone={currentPlayer.skinTone} size="sm" className="border-2 border-amber-400" />
             <div className="text-left leading-tight">
               <p className="font-heading font-black text-sm">
@@ -163,12 +176,12 @@ export const MissionBriefingScreen: React.FC = () => {
                 <span className="text-amber-600 uppercase">{currentPlayer.displayName}!</span>
               </p>
               {isGuestPlayer(currentPlayer) ? (
-                <p className="text-[11px] font-semibold text-slate-500">
+                <p className="text-[11px] font-semibold text-slate-500 short:hidden">
                   Visitante ·{' '}
                   <Link to="/register" className="text-emerald-700 font-bold hover:underline">Fazer meu cadastro definitivo</Link>
                 </p>
               ) : (
-                <p className="text-[11px] font-semibold text-slate-500">
+                <p className="text-[11px] font-semibold text-slate-500 short:hidden">
                   Código: <span className="text-amber-700 font-mono">{currentPlayer.playerCode}</span>
                 </p>
               )}
@@ -190,7 +203,7 @@ export const MissionBriefingScreen: React.FC = () => {
           </div>
 
           <div
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-2xl border-2"
+            className="inline-flex items-center gap-2 px-3 py-1.5 short:py-0.5 rounded-2xl border-2"
             style={{
               backgroundColor: isBlue ? 'rgba(219, 234, 254, 0.95)' : 'rgba(243, 232, 255, 0.95)',
               borderColor: isBlue ? '#3b82f6' : '#a855f7',
@@ -203,7 +216,7 @@ export const MissionBriefingScreen: React.FC = () => {
           </div>
 
           {grade && !choosingGrade && (
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-2xl border-2 border-amber-400 bg-amber-50">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 short:py-0.5 rounded-2xl border-2 border-amber-400 bg-amber-50">
               <GraduationCap className="w-5 h-5 text-amber-600" />
               <span className="font-bungee text-xs sm:text-sm text-amber-700">{GRADE_LABELS[grade]}</span>
               <button
@@ -228,7 +241,7 @@ export const MissionBriefingScreen: React.FC = () => {
             <p className="font-heading font-black text-blue-800 text-lg">
               {grade ? 'Trocar de série' : 'Em que série você está?'}
             </p>
-            <p className="text-sm text-slate-600 mb-3">As perguntas do Nível 0 mudam de acordo com a sua série.</p>
+            <p className="text-sm text-slate-600 mb-3">As perguntas do Nível {levelData.number} mudam de acordo com a sua série.</p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 max-w-xl mx-auto">
               {SCHOOL_GRADES.map((g) => (
                 <button
@@ -258,41 +271,63 @@ export const MissionBriefingScreen: React.FC = () => {
         )}
 
         {/* Título da missão */}
-        <div className="text-center mb-6 animate-rise-in">
+        <div className="text-center mb-6 short:mb-2 animate-rise-in">
           <div className="flex items-center justify-center gap-3">
+            {level === 1 && (
+              <img src="/assets/ze_cartinha.png" alt="Zé" className="h-14 md:h-20 short:h-8 w-auto object-contain" onError={e => { e.currentTarget.style.display = 'none'; }} />
+            )}
             <span className="h-[3px] w-10 sm:w-24 bg-blue-800/70 rounded-full" />
-            <h1 className="font-bungee text-3xl md:text-5xl text-blue-900">MISSÃO {mission.number}</h1>
+            <h1 className="font-bungee text-3xl md:text-5xl short:text-xl text-blue-900">MISSÃO {mission.number}</h1>
             <span className="h-[3px] w-10 sm:w-24 bg-blue-800/70 rounded-full" />
           </div>
-          <p className="mt-2 text-xl md:text-3xl font-heading font-black text-amber-600 leading-snug">{mission.title}</p>
-          <p className="mt-2 text-sm md:text-base text-slate-700 max-w-2xl mx-auto">
+          <p className="mt-2 short:mt-0 text-xl md:text-3xl short:text-base font-heading font-black text-amber-600 leading-snug">{mission.title}</p>
+          <p className="mt-2 text-sm md:text-base text-slate-700 max-w-2xl mx-auto short:hidden">
             Complete as atividades e ganhe pontos para você, sua turma e sua equipe!
           </p>
-          <p className="mt-2 text-xs font-bold uppercase tracking-wider text-slate-500">
+          <p className="mt-2 short:mt-0 text-xs font-bold uppercase tracking-wider text-slate-500">
             {progress.completedCount} / {progress.total} atividades feitas
           </p>
         </div>
 
         {/* Atividades da missão */}
-        <div className={`grid grid-cols-1 ${gridCols} gap-4 md:gap-6 w-full max-w-4xl mx-auto ${count >= 4 ? 'lg:max-w-none' : ''}`}>
+        <div className={`grid grid-cols-1 ${gridCols} gap-4 md:gap-6 short:gap-2 w-full max-w-4xl mx-auto ${count >= 4 ? 'lg:max-w-none short:max-w-none' : ''}`}>
           {progress.activities.map((item) => (
             <ActivityCard
               key={item.activity.id}
               item={item}
-              hint={hintFor(item.activity.mechanic)}
+              hint={hintFor(item.activity.mechanic, item.activity.hint)}
               onPlay={() => goTo(item.activity.path)}
             />
           ))}
         </div>
 
-        {progress.isCompleted && (
-          <div className="mt-6 text-center">
+        {progress.isCompleted && level === 0 && (
+          <div className="mt-6 short:mt-2 flex flex-wrap items-center justify-center gap-3">
             <button
               type="button"
               onClick={() => goTo('/results/final')}
               className="px-8 py-3 rounded-2xl bg-gradient-to-b from-emerald-400 to-emerald-600 border-[3px] border-emerald-800 text-white font-bungee text-lg shadow-[0_5px_0_0_#065f46] active:translate-y-1 active:shadow-none"
             >
               MISSÃO COMPLETA! VER RESULTADO
+            </button>
+            <button
+              type="button"
+              onClick={() => goTo('/nivel1')}
+              className="inline-flex items-center gap-2 px-8 py-3 rounded-2xl bg-gradient-to-b from-amber-300 to-amber-500 border-[3px] border-amber-600 text-slate-950 font-bungee text-lg shadow-[0_5px_0_0_#b45309] active:translate-y-1 active:shadow-none"
+            >
+              IR PARA O NÍVEL 1 <ArrowRight className="w-5 h-5" />
+            </button>
+          </div>
+        )}
+        {progress.isCompleted && level === 1 && (
+          <div className="mt-6 text-center">
+            <p className="font-bungee text-xl text-emerald-700">MISSÃO 1 COMPLETA!</p>
+            <button
+              type="button"
+              onClick={() => goTo('/missions')}
+              className="mt-3 px-8 py-3 rounded-2xl bg-white border-[3px] border-sky-300 text-blue-800 font-bungee text-lg shadow-[0_5px_0_0_#7dd3fc] active:translate-y-1 active:shadow-none"
+            >
+              VOLTAR AO NÍVEL 0
             </button>
           </div>
         )}

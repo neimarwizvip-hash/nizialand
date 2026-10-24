@@ -4,7 +4,8 @@
 import { backendConfig } from '../config/backend';
 import type { PlayerProfile } from '../types';
 
-export type Atividade = 'quiz' | 'flashcards';
+// Nível 0 usa 'quiz'/'flashcards'; níveis novos mandam o id da atividade (ex.: 'nivel1-ouvir').
+export type Atividade = 'quiz' | 'flashcards' | (string & {});
 
 export interface PlanilhaFalha {
   ok: false;
@@ -28,7 +29,7 @@ export interface JogadorRanking {
   className: string;
   team: string;
   avatar: string;
-  porAtividade?: { quiz?: number; flashcards?: number };
+  porAtividade?: { quiz?: number; flashcards?: number } & Record<string, number | undefined>;
   totalScore?: number;
   completedAt?: string | null;
 }

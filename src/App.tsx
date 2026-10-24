@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { GameProvider } from './context/GameContext';
+import { GameProvider, useGame } from './context/GameContext';
 import { ScreenTransitionLoader, ScreenLoadingFallback } from './components/layout/ScreenTransitionLoader';
 import { RequirePlayer } from './components/layout/RequirePlayer';
 import { StartScreen } from './features/start/StartScreen';
@@ -11,6 +11,7 @@ import { QuizResultsScreen } from './features/quiz/QuizResultsScreen';
 import { FlashcardScreen } from './features/flashcards/FlashcardScreen';
 import { FinalResultsScreen } from './features/results/FinalResultsScreen';
 import { PhaseStoryGate } from './components/video/PhaseStoryGate';
+import { HqReuniaoGate } from './components/video/HqReuniaoGate';
 import { StartupVideoScreen } from './components/video/StartupVideoScreen';
 import { keepFullscreen } from './services/fullscreen';
 import { RotateDeviceOverlay } from './components/ui/RotateDeviceOverlay';
@@ -21,6 +22,10 @@ const Level0Screen = lazy(() => import('./features/level0/Level0Screen').then(m 
 const ArcadeLevel0Screen = lazy(() => import('./features/level0/ArcadeLevel0Screen').then(m => ({ default: m.ArcadeLevel0Screen })));
 const OrientationScreen = lazy(() => import('./features/orientation/OrientationScreen').then(m => ({ default: m.OrientationScreen })));
 const LeaderboardScreen = lazy(() => import('./features/leaderboard/LeaderboardScreen').then(m => ({ default: m.LeaderboardScreen })));
+const ListenScreen = lazy(() => import('./features/level1/ListenScreen'));
+const OrderScreen = lazy(() => import('./features/level1/OrderScreen'));
+const DialogueScreen = lazy(() => import('./features/level1/DialogueScreen'));
+const ExploreScreen = lazy(() => import('./features/level1/ExploreScreen'));
 const AdminPanel = lazy(() => import('./features/admin/AdminPanel').then(m => ({ default: m.AdminPanel })));
 
 // Trilha de cada tela. Telas fora da lista (história, orientação, admin) mantêm a trilha atual.
@@ -32,8 +37,19 @@ const ROUTE_TRACKS: Record<string, MusicTrack> = {
   '/quiz': 'desafio',
   '/flashcards': 'desafio',
   '/level0': 'desafio',
+  '/nivel1': 'mapa',
+  '/nivel1/ouvir': 'desafio',
+  '/nivel1/montar': 'desafio',
+  '/nivel1/dialogo': 'desafio',
+  '/nivel1/explorar': 'desafio',
 };
 const VICTORY_ROUTES = ['/quiz/results', '/results/final'];
+
+// Atividades do Nível 1 só abrem depois da Missão 0 completa.
+const RequireLevel1: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { level0Completed } = useGame();
+  return level0Completed ? <>{children}</> : <Navigate to="/missions" replace />;
+};
 
 const RouteMusic: React.FC = () => {
   const { pathname } = useLocation();
@@ -83,6 +99,13 @@ export const App: React.FC = () => {
 
             {/* Tela 3: Mission Briefing */}
             <Route path="/missions" element={<RequirePlayer><PhaseStoryGate story="nivel0"><MissionBriefingScreen /></PhaseStoryGate></RequirePlayer>} />
+
+            {/* Nível 1: liberado quando a Missão 0 termina (guarda dentro de RequireLevel1) */}
+            <Route path="/nivel1" element={<RequirePlayer><HqReuniaoGate><MissionBriefingScreen level={1} /></HqReuniaoGate></RequirePlayer>} />
+            <Route path="/nivel1/ouvir" element={<RequirePlayer><RequireLevel1><ListenScreen /></RequireLevel1></RequirePlayer>} />
+            <Route path="/nivel1/montar" element={<RequirePlayer><RequireLevel1><OrderScreen /></RequireLevel1></RequirePlayer>} />
+            <Route path="/nivel1/dialogo" element={<RequirePlayer><RequireLevel1><DialogueScreen /></RequireLevel1></RequirePlayer>} />
+            <Route path="/nivel1/explorar" element={<RequirePlayer><RequireLevel1><ExploreScreen /></RequireLevel1></RequirePlayer>} />
 
             {/* Tela 4: Mission 1 Quiz */}
             <Route path="/quiz" element={<RequirePlayer><QuizScreen /></RequirePlayer>} />

@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NISIALAND Nível 2 em 3D</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Outfit:wght@500;700;800;900&display=swap">
+<style>
+/* Layout: tela cheia de jogo, cena 3D por trás e painéis do HUD presos às bordas. Visual único (céu claro), como o resto do jogo. */
+:root {
+  --sky: #7dd3fc;
+  --ink: #0f172a;
+  --navy: #1e3a8a;
+  --blue: #2563eb;
+  --gold: #f59e0b;
+  --gold-dark: #b45309;
+  --panel: rgba(255,255,255,0.9);
+  --muted: #475569;
+  --display: "Bungee", "Outfit", system-ui, sans-serif;
+  --body: "Outfit", system-ui, sans-serif;
+  color-scheme: light;
+}
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--sky); color: var(--ink); font-family: var(--body); overflow: hidden; touch-action: none; -webkit-user-select: none; user-select: none; }
+#cena { position: fixed; inset: 0; display: block; width: 100%; height: 100%; }
+
+.hud-top { position: fixed; top: 0; left: 0; right: 0; z-index: 5; display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
+  padding-top: calc(8px + env(safe-area-inset-top, 0px)); padding-left: max(12px, env(safe-area-inset-left, 0px)); padding-right: max(12px, env(safe-area-inset-right, 0px)); pointer-events: none; }
+.hud-top > * { pointer-events: auto; }
+.marca { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.logo { display: flex; align-items: center; padding: 2px 8px; border-radius: 14px; border: 3px solid #d97706; background: linear-gradient(180deg, #fcd34d, var(--gold)); box-shadow: 0 3px 0 0 var(--gold-dark); }
+.logo img { height: 30px; width: auto; display: block; }
+.selo { padding: 5px 10px; border-radius: 12px; border: 2px solid var(--navy); background: linear-gradient(180deg, #3b82f6, #1d4ed8); box-shadow: 0 3px 0 0 var(--navy); color: #fff; font-weight: 900; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+.objetivo { padding: 6px 12px; border-radius: 14px; border: 2px solid #bae6fd; background: var(--panel); font-weight: 800; font-size: 14px; color: var(--navy); max-width: 46vw; }
+.objetivo small { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.botoes { display: flex; gap: 6px; }
+.icone { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 12px; border: 2px solid #7dd3fc; background: #fff; color: #1e40af; cursor: pointer; }
+.icone[aria-pressed="true"] { background: #dbeafe; border-color: var(--blue); }
+.icone:focus-visible, .btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+.joy { position: fixed; z-index: 5; left: calc(18px + env(safe-area-inset-left, 0px)); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); width: 128px; height: 128px; border-radius: 50%;
+  background: rgba(255,255,255,0.35); border: 3px solid rgba(255,255,255,0.85); box-shadow: 0 4px 0 rgba(15,23,42,0.15); touch-action: none; }
+.joy-bola { position: absolute; left: 50%; top: 50%; width: 56px; height: 56px; margin: -28px 0 0 -28px; border-radius: 50%; background: linear-gradient(180deg, #fcd34d, var(--gold)); border: 3px solid var(--gold-dark); }
+.dica { position: fixed; z-index: 4; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); padding: 6px 12px; border-radius: 999px; background: rgba(15,23,42,0.6); color: #fff; font-size: 13px; font-weight: 700; white-space: nowrap; pointer-events: none; }
+
+.acao { position: fixed; z-index: 6; right: calc(18px + env(safe-area-inset-right, 0px)); bottom: calc(22px + env(safe-area-inset-bottom, 0px)); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 0 22px; border-radius: 16px; border: 3px solid var(--navy); background: linear-gradient(180deg, #3b82f6, var(--blue)); box-shadow: 0 5px 0 0 var(--navy); color: #fff; font-family: var(--display); font-size: 17px; cursor: pointer; }
+.btn:active { transform: translateY(3px); box-shadow: 0 2px 0 0 var(--navy); }
+.btn.ouro { border-color: var(--gold-dark); background: linear-gradient(180deg, #fcd34d, var(--gold)); box-shadow: 0 5px 0 0 var(--gold-dark); color: var(--ink); }
+.btn.claro { border-color: #94a3b8; background: #fff; box-shadow: 0 5px 0 0 #94a3b8; color: var(--navy); }
+
+.balao { position: fixed; z-index: 4; left: 0; top: 0; will-change: transform; max-width: 240px; padding: 8px 12px; border-radius: 18px; background: #fff; border: 3px solid var(--gold); box-shadow: 0 4px 0 0 var(--gold); font-weight: 800; font-size: 14px; line-height: 1.25; color: var(--ink); pointer-events: none; }
+.balao b { display: block; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-dark); }
+
+.modal { position: fixed; inset: 0; z-index: 10; display: flex; align-items: center; justify-content: center; background: rgba(15,23,42,0.55); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.cartao { width: min(440px, 100%); max-height: 92%; overflow: auto; box-sizing: border-box; padding: 18px 20px; border-radius: 26px; border: 3px solid #fcd34d; background: linear-gradient(180deg, #fffbeb, #fff 60%); box-shadow: 0 6px 0 0 var(--gold); text-align: center; }
+.cartao .etapa { font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.cartao h2 { margin: 6px 0 0; font-family: var(--display); font-weight: 400; font-size: 24px; color: var(--navy); text-wrap: balance; }
+.cartao p { margin: 8px 0 0; font-size: 15px; line-height: 1.4; color: #334155; }
+.cartao .frase { font-weight: 900; color: var(--navy); }
+.cartao .linha { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+.avatares { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+.avatares button { border-radius: 16px; border: 3px solid #bae6fd; background: #f0f9ff; padding: 6px 4px 2px; cursor: pointer; }
+.avatares button[aria-pressed="true"] { border-color: var(--gold); background: #fef3c7; }
+.avatares img { height: 110px; width: auto; display: block; margin: 0 auto; }
+
+.girar { position: fixed; inset: 0; z-index: 20; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: var(--sky); color: var(--navy); font-family: var(--display); font-size: 20px; text-align: center; padding: 24px; }
+@media (orientation: portrait) and (max-width: 760px) { .girar { display: flex; } }
+@media (max-height: 430px) { .logo img { height: 24px; } .objetivo { font-size: 12px; padding: 4px 10px; } .joy { width: 112px; height: 112px; } .dica { display: none; } }
+@media (prefers-reduced-motion: reduce) { .btn:active { transform: none; } }
+</style>
+
+</head>
+<body>
+<canvas id="cena" aria-label="Pátio da escola em 3D"></canvas>
+
+<div class="hud-top">
+  <div class="marca">
+    <span class="logo"><img id="logo" alt="NISIALAND"></span>
+    <span class="selo">Nível 2 · Missão 2</span>
+    <div class="objetivo" id="objetivo" aria-live="polite"><small>0 / 6 atividades</small>Vá até o Diretor Márcio</div>
+  </div>
+  <div class="botoes">
+    <button class="icone" id="bt-personagem" type="button" aria-label="Trocar personagem">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="4"></circle><path d="M5 21v-2a7 7 0 0 1 14 0v2"></path></svg>
+    </button>
+    <button class="icone" id="bt-som" type="button" aria-label="Voz do Zé" aria-pressed="false">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M19 5a10 10 0 0 1 0 14"></path></svg>
+    </button>
+    <button class="icone" id="bt-tela" type="button" aria-label="Tela cheia">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M21 8V5a2 2 0 0 0-2-2h-3"></path><path d="M3 16v3a2 2 0 0 0 2 2h3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path></svg>
+    </button>
+  </div>
+</div>
+
+<div class="joy" id="joy" aria-hidden="true"><div class="joy-bola" id="joy-bola"></div></div>
+<div class="dica" id="dica">Setas ou W A S D para andar · arraste a tela para girar a câmera</div>
+<div class="acao" id="acao" hidden><button class="btn ouro" id="bt-jogar" type="button">JOGAR</button></div>
+<div class="balao" id="balao" hidden><b>Zé Cartinha</b><span id="balao-texto"></span></div>
+
+<div class="modal" id="modal-atividade" hidden>
+  <div class="cartao" role="dialog" aria-modal="true" aria-labelledby="at-titulo">
+    <div class="etapa" id="at-etapa">Atividade 1 de 6</div>
+    <h2 id="at-titulo">Ditado do Márcio</h2>
+    <p class="frase" id="at-frase">Ouça e soletre a palavra!</p>
+    <p>Neste protótipo a atividade ainda não abre. Toque em Concluir para ver a próxima ser liberada no pátio.</p>
+    <div class="linha">
+      <button class="btn claro" id="at-voltar" type="button">Voltar</button>
+      <button class="btn" id="at-concluir" type="button">Concluir</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-inicio">
+  <div class="cartao" role="dialog" aria-modal="true" aria-labelledby="in-titulo">
+    <div class="etapa">Protótipo do Nível 2</div>
+    <h2 id="in-titulo">Escolha quem vai andar pela escola</h2>
+    <div class="avatares" id="avatares"></div>
+    <div class="linha"><button class="btn ouro" id="in-comecar" type="button">COMEÇAR</button></div>
+  </div>
+</div>
+
+<div class="modal" id="modal-fim" hidden>
+  <div class="cartao" role="dialog" aria-modal="true" aria-labelledby="fim-titulo">
+    <div class="etapa">6 / 6 atividades</div>
+    <h2 id="fim-titulo">Missão 2 completa!</h2>
+    <p>Você venceu o duelo de bafo e o Zé Cartinha ficou sem cartas.</p>
+    <div class="linha"><button class="btn ouro" id="fim-denovo" type="button">JOGAR DE NOVO</button></div>
+  </div>
+</div>
+
+<div class="girar" aria-live="polite">
+  <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"></rect><path d="M2 12a10 10 0 0 0 4 8"></path><path d="M2 20h4v-4"></path></svg>
+  Gire o celular para jogar deitado
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const IMGS = {"marcio": {"uri": "/assets/diretor_marcio_hd.png", "w": 1024, "h": 1536, "crop": [0.1963, 0.0137, 0.7939, 0.9909]}, "vania": {"uri": "/assets/coordenadora_vania.png", "w": 348, "h": 862, "crop": [0.0776, 0.0104, 0.9224, 0.9896]}, "leia": {"uri": "/assets/orientadora_leia.png", "w": 385, "h": 853, "crop": [0.0675, 0.0317, 0.9299, 0.9848]}, "ze": {"uri": "/assets/ze_cartinha.png", "w": 471, "h": 640, "crop": [0.1783, 0.0063, 0.8705, 0.9953]}, "logo": {"uri": "/assets/nisialand_logo_oficial.png", "w": 910, "h": 360, "crop": [0.0143, 0.0389, 0.9429, 0.9306]}, "student_boy_tshirt": {"uri": "/assets/student_boy_tshirt.png", "w": 768, "h": 1024, "crop": [0.2773, 0.0088, 0.7826, 0.9854]}, "student_girl_ponytail": {"uri": "/assets/student_girl_ponytail.png", "w": 768, "h": 1024, "crop": [0.2604, 0.0068, 0.7786, 0.9854]}, "student_boy_hoodie": {"uri": "/assets/student_boy_hoodie.png", "w": 768, "h": 1024, "crop": [0.2643, 0.0068, 0.8034, 0.9883]}, "student_girl_curly": {"uri": "/assets/student_girl_curly.png", "w": 768, "h": 1024, "crop": [0.2578, 0.0039, 0.7839, 0.9873]}};
+
+// ---------- Atividades da Missão 2 (liberadas em sequência) ----------
+const ATIVIDADES = [
+  { id: 'ditado',  nome: 'Ditado do Márcio',        frase: 'Ouça e soletre a palavra!',            alvo: 'Vá até o Diretor Márcio',          pos: [-10, -6] },
+  { id: 'caca',    nome: 'Caça-palavras no pátio',  frase: 'Encontre as palavras em inglês!',      alvo: 'Vá até o quadro do caça-palavras', pos: [12, -4] },
+  { id: 'mural',   nome: 'O mural da Vânia',        frase: 'Leia o aviso: verdadeiro ou falso?',   alvo: 'Vá até a Coordenadora Vânia',      pos: [-13, 7] },
+  { id: 'bilhete', nome: 'Complete o bilhete',      frase: 'Escolha a palavra que falta!',         alvo: 'Vá até a Orientadora Leia',        pos: [11, 9] },
+  { id: 'relogio', nome: 'Corrida contra o relógio', frase: 'Acerte o máximo em 60 segundos!',     alvo: 'Vá até o relógio do pátio',        pos: [0, 4] },
+  { id: 'duelo',   nome: 'Duelo de bafo com o Zé',  frase: 'Acerte e vire as cartas do Zé!',       alvo: 'Desafio final: enfrente o Zé',     pos: [0, -10] },
+];
+const FALAS_ZE = [ // provisórias
+  'Ei, psiu! Bora jogar um bafo? Hehehe!',
+  'Larga essa missão e vem jogar comigo! Hahaha!',
+  'Olha minha carta! Olha aqui! Hehehe!',
+  'Ninguém passa pelo Zé! Hahahaha!',
+];
+const AVATARES = ['student_boy_tshirt', 'student_girl_ponytail', 'student_boy_hoodie', 'student_girl_curly'];
+
+let feitas = 0, avatarEscolhido = AVATARES[0], vozLigada = false;
+try { const a = localStorage.getItem('n2-avatar'); if (AVATARES.includes(a)) avatarEscolhido = a; } catch (e) {}
+
+document.getElementById('logo').src = IMGS.logo.uri;
+
+// ---------- Cena ----------
+const canvas = document.getElementById('cena');
+// Resolução adaptativa: começa leve e só sobe se o computador aguentar 60 quadros por segundo.
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
+const RES_MAX = Math.min(window.devicePixelRatio || 1, 1.25), RES_MIN = 0.55;
+let res = Math.min(1, RES_MAX);
+renderer.setPixelRatio(res);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x8fd3ff);
+scene.fog = new THREE.Fog(0xbfe6ff, 45, 95);
+const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 200);
+
+scene.add(new THREE.HemisphereLight(0xe0f2fe, 0x9a7b5f, 0.85));
+const sol = new THREE.DirectionalLight(0xfff4d6, 0.75);
+sol.position.set(-20, 30, 18);
+scene.add(sol);
+
+const loader = new THREE.TextureLoader();
+function canvasTex(w, h, desenhar, repeat) {
+  const c = document.createElement('canvas'); c.width = w; c.height = h;
+  desenhar(c.getContext('2d'), w, h);
+  const t = new THREE.CanvasTexture(c);
+  if (repeat) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(repeat[0], repeat[1]); }
+  t.anisotropy = 4;
+  return t;
+}
+// Um material por cor, reaproveitado por todos os objetos daquela cor.
+const materiais = {};
+const lambert = (cor, extra) => extra
+  ? new THREE.MeshLambertMaterial(Object.assign({ color: cor }, extra))
+  : (materiais[cor] || (materiais[cor] = new THREE.MeshLambertMaterial({ color: cor })));
+function caixa(w, h, d, mat, x, y, z) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+  m.position.set(x, y, z); scene.add(m); return m;
+}
+
+// Piso de tijolinho, como o pátio da fachada oficial.
+const piso = canvasTex(256, 256, (g, w, h) => {
+  const cores = ['#c98a6b', '#d9a582', '#b8735a', '#e3c3a2', '#cf9677'];
+  for (let y = 0; y < 8; y++) for (let x = 0; x < 4; x++) {
+    g.fillStyle = cores[(x * 3 + y * 7) % cores.length];
+    const off = (y % 2) * 32;
+    g.fillRect(x * 64 + off - 64, y * 32, 62, 30); g.fillRect(x * 64 + off, y * 32, 62, 30);
+  }
+}, [14, 14]);
+const chao = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), lambert(0xffffff, { map: piso }));
+chao.rotation.x = -Math.PI / 2; scene.add(chao);
+const grama = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), lambert(0x7cc463));
+grama.rotation.x = -Math.PI / 2; grama.position.y = -0.02; scene.add(grama);
+
+// ---------- Escola (prédio branco e azul, torre ao fundo) ----------
+const branco = lambert(0xf5f3ee), azul = lambert(0x3b82d6), azulEsc = lambert(0x1e40af), bege = lambert(0xe7dfcf);
+const ZF = -17; // frente do prédio
+caixa(40, 9, 8, branco, 0, 4.5, ZF - 4);
+caixa(12, 11, 9, azul, 0, 5.5, ZF - 3.5);
+caixa(7, 7, 7.6, azul, -19, 3.5, ZF - 4);
+caixa(7, 7, 7.6, azul, 19, 3.5, ZF - 4);
+caixa(3.2, 22, 3.2, bege, 3.5, 11, ZF - 9);
+caixa(12.6, 0.5, 9.6, azulEsc, 0, 11.2, ZF - 3.5);
+
+const placa = canvasTex(1024, 300, (g, w, h) => {
+  g.fillStyle = '#2f74c9'; g.fillRect(0, 0, w, h);
+  g.fillStyle = '#ffffff'; g.textAlign = 'center'; g.font = '800 64px Outfit, sans-serif';
+  g.fillText('ESCOLA MUNICIPAL', w / 2, 90); g.font = '900 84px Outfit, sans-serif';
+  g.fillText('NÍSIA VILELA', w / 2, 180); g.fillText('FERNANDES', w / 2, 270);
+});
+const placaM = new THREE.Mesh(new THREE.PlaneGeometry(10, 2.9), new THREE.MeshBasicMaterial({ map: placa }));
+placaM.position.set(0, 8.6, ZF + 1.01); scene.add(placaM);
+
+const janelaTex = canvasTex(256, 128, (g, w, h) => {
+  g.fillStyle = '#1e3a8a'; g.fillRect(0, 0, w, h);
+  g.strokeStyle = '#e2e8f0'; g.lineWidth = 6;
+  for (let x = 0; x <= w; x += 32) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, h); g.stroke(); }
+  g.strokeRect(3, 3, w - 6, h - 6);
+});
+function janela(x, y, z, w) {
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w || 3.2, 1.6), new THREE.MeshBasicMaterial({ map: janelaTex }));
+  m.position.set(x, y, z); scene.add(m);
+}
+[-15, -10, 10, 15].forEach(x => { janela(x, 3, ZF + 0.01); janela(x, 6.6, ZF + 0.01); });
+janela(-3, 5.4, ZF + 1.01, 3.6); janela(3, 5.4, ZF + 1.01, 3.6);
+const porta = new THREE.Mesh(new THREE.PlaneGeometry(4.4, 3.4), new THREE.MeshBasicMaterial({ color: 0x5eb1e6 }));
+porta.position.set(0, 1.7, ZF + 1.01); scene.add(porta);
+
+function bandeira(x, desenho) {
+  const t = canvasTex(128, 256, (g, w, h) => {
+    g.fillStyle = '#1e3a8a'; g.fillRect(0, 0, w, h);
+    g.beginPath(); g.moveTo(0, h); g.lineTo(w / 2, h - 30); g.lineTo(w, h); g.fillStyle = '#f5f3ee'; g.fill();
+    g.strokeStyle = '#fbbf24'; g.fillStyle = '#fbbf24'; g.lineWidth = 7; desenho(g, w, h);
+  });
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(1.8, 3.6), new THREE.MeshBasicMaterial({ map: t }));
+  m.position.set(x, 6, ZF + 0.02); scene.add(m);
+}
+bandeira(-8, (g) => { g.beginPath(); g.arc(64, 100, 26, 0, Math.PI * 2); g.stroke(); g.fillRect(52, 130, 24, 16); });
+bandeira(8, (g) => { g.beginPath(); g.moveTo(20, 100); g.lineTo(64, 78); g.lineTo(108, 100); g.lineTo(64, 122); g.closePath(); g.stroke(); g.beginPath(); g.moveTo(40, 112); g.lineTo(40, 136); g.quadraticCurveTo(64, 152, 88, 136); g.lineTo(88, 112); g.stroke(); });
+
+// ---------- Grade azul, árvores, palmeiras, bancos ----------
+const grade = lambert(0x2563eb);
+const barra = new THREE.BoxGeometry(0.08, 1.6, 0.08);
+const posts = [];
+function cerca(x1, z1, x2, z2) {
+  const len = Math.hypot(x2 - x1, z2 - z1), n = Math.floor(len / 0.35);
+  const inst = new THREE.InstancedMesh(barra, grade, n);
+  const m = new THREE.Matrix4();
+  for (let i = 0; i < n; i++) { const t = i / n; m.makeTranslation(x1 + (x2 - x1) * t, 0.8, z1 + (z2 - z1) * t); inst.setMatrixAt(i, m); }
+  scene.add(inst);
+  const ang = Math.atan2(z2 - z1, x2 - x1);
+  const topo = caixa(len, 0.1, 0.1, grade, (x1 + x2) / 2, 1.6, (z1 + z2) / 2); topo.rotation.y = -ang;
+  [[x1, z1], [x2, z2]].forEach(([x, z]) => caixa(0.5, 1.9, 0.5, azul, x, 0.95, z));
+}
+cerca(-22, 22, -3, 22); cerca(3, 22, 22, 22); cerca(-22, -13, -22, 22); cerca(22, -13, 22, 22);
+
+const obstaculos = []; // [x, z, raio]
+// Árvores e palmeiras desenhadas em lote (uma chamada para todos os troncos, outra para todas as copas...).
+const arvores = [], palmeiras = [];
+function arvore(x, z, s) { s = s || 1; arvores.push([x, z, s]); obstaculos.push([x, z, 0.8 * s]); }
+function palmeira(x, z) { palmeiras.push([x, z]); obstaculos.push([x, z, 0.6]); }
+arvore(-18, 16, 1.2); arvore(18, 15, 1.1); arvore(-19, -2); arvore(19, 2, 1.2);
+palmeira(-16, -11); palmeira(16, -11); palmeira(-26, -15); palmeira(26, -14);
+[[-34, 4], [34, 0], [-30, 26], [30, 28], [0, 34], [-12, 32], [14, 31]].forEach(([x, z]) => arvore(x, z, 1.4));
+(function construirArvores() {
+  const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), p = new THREE.Vector3(), sc = new THREE.Vector3();
+  const COPA = [[0, 3.6, 0, 1.8], [0.9, 3.2, 0.3, 1.3], [-0.8, 3.3, -0.4, 1.4], [0.2, 4.4, -0.2, 1.2]];
+  const troncos = new THREE.InstancedMesh(new THREE.BoxGeometry(0.5, 3, 0.5), lambert(0x8b5a3c), arvores.length);
+  const copas = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1, 1), lambert(0x3f9d4a), arvores.length * COPA.length);
+  arvores.forEach(([x, z, s], i) => {
+    troncos.setMatrixAt(i, m4.compose(p.set(x, 1.5 * s, z), q.identity(), sc.set(s, s, s)));
+    COPA.forEach(([dx, dy, dz, r], j) => copas.setMatrixAt(i * COPA.length + j, m4.compose(p.set(x + dx * s, dy * s, z + dz * s), q.identity(), sc.set(r * s, r * s, r * s))));
+  });
+  const caules = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.18, 0.28, 6, 8), lambert(0x9c7a54), palmeiras.length);
+  const folhas = new THREE.InstancedMesh(new THREE.ConeGeometry(0.45, 3.2, 4), lambert(0x4caf50), palmeiras.length * 7);
+  palmeiras.forEach(([x, z], i) => {
+    caules.setMatrixAt(i, m4.compose(p.set(x, 3, z), q.setFromEuler(e.set(0, 0, 0.06)), sc.set(1, 1, 1)));
+    for (let k = 0; k < 7; k++) {
+      const a = (k / 7) * Math.PI * 2;
+      folhas.setMatrixAt(i * 7 + k, m4.compose(p.set(x + Math.cos(a) * 1.3 + 0.36, 5.8, z + Math.sin(a) * 1.3), q.setFromEuler(e.set(Math.sin(a) * 1.2, 0, -Math.cos(a) * 1.2)), sc.set(1, 1, 1)));
+    }
+  });
+  scene.add(troncos, copas, caules, folhas);
+})();
+
+function banco(x, z, rot) {
+  const g = new THREE.Group();
+  const madeira = lambert(0xc08a5b);
+  const assento = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.12, 0.6), madeira); assento.position.y = 0.5; g.add(assento);
+  const enc = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.5, 0.1), madeira); enc.position.set(0, 0.8, -0.28); g.add(enc);
+  [-1, 1].forEach(s => { const p = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.5, 0.5), lambert(0x64748b)); p.position.set(s * 1.05, 0.25, 0); g.add(p); });
+  g.position.set(x, 0, z); g.rotation.y = rot || 0; scene.add(g); obstaculos.push([x, z, 1.1]);
+}
+banco(-19, 10, Math.PI / 2); banco(19, -4, -Math.PI / 2);
+function vaso(x, z) {
+  caixa(0.9, 0.7, 0.9, lambert(0xe5d3b3), x, 0.35, z);
+  const b = new THREE.Mesh(new THREE.IcosahedronGeometry(0.7, 1), lambert(0x4d9e45)); b.position.set(x, 1.1, z); scene.add(b);
+  obstaculos.push([x, z, 0.7]);
+}
+vaso(-4.5, -14.5); vaso(4.5, -14.5); vaso(-4, 20.5); vaso(4, 20.5);
+
+// ---------- Personagens: arte oficial em "cartaz" que sempre olha para a câmera ----------
+const sombraTex = canvasTex(64, 64, (g) => {
+  const r = g.createRadialGradient(32, 32, 2, 32, 32, 30);
+  r.addColorStop(0, 'rgba(15,23,42,0.45)'); r.addColorStop(1, 'rgba(15,23,42,0)'); g.fillStyle = r; g.fillRect(0, 0, 64, 64);
+});
+function personagem(chave, altura) {
+  const info = IMGS[chave];
+  const tex = loader.load(info.uri); tex.anisotropy = 4;
+  const c = info.crop || [0, 0, 1, 1]; // recorte da área desenhada (esquerda, topo, direita, base)
+  tex.repeat.set(c[2] - c[0], c[3] - c[1]); tex.offset.set(c[0], 1 - c[3]);
+  const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, alphaTest: 0.05 });
+  const s = new THREE.Sprite(mat);
+  s.center.set(0.5, 0);
+  s.scale.set(altura * (c[2] - c[0]) * info.w / ((c[3] - c[1]) * info.h), altura, 1);
+  const g = new THREE.Group(); g.add(s);
+  const sombra = new THREE.Mesh(new THREE.PlaneGeometry(altura * 0.55, altura * 0.3), new THREE.MeshBasicMaterial({ map: sombraTex, transparent: true, depthWrite: false }));
+  sombra.rotation.x = -Math.PI / 2; sombra.position.y = 0.02; g.add(sombra);
+  g.userData.sprite = s; scene.add(g); return g;
+}
+
+// Objetos das estações que não são personagens
+function quadroCaca(x, z) {
+  const t = canvasTex(256, 256, (g, w, h) => {
+    g.fillStyle = '#ffffff'; g.fillRect(0, 0, w, h); g.strokeStyle = '#047857'; g.lineWidth = 10; g.strokeRect(5, 5, w - 10, h - 10);
+    const L = 'CATXPENQDOGWMBUS'; g.fillStyle = '#065f46'; g.font = '900 40px Outfit, sans-serif'; g.textAlign = 'center';
+    for (let i = 0; i < 16; i++) g.fillText(L[i], 40 + (i % 4) * 58, 64 + Math.floor(i / 4) * 58);
+    g.strokeStyle = '#10b981'; g.lineWidth = 6; g.strokeRect(14, 26, 170, 50); g.strokeRect(14, 142, 170, 50);
+  });
+  const p = new THREE.Mesh(new THREE.PlaneGeometry(2.2, 2.2), new THREE.MeshBasicMaterial({ map: t }));
+  p.position.set(x, 2.1, z); p.rotation.y = -0.6; scene.add(p);
+  [-0.9, 0.9].forEach(d => caixa(0.12, 3.2, 0.12, lambert(0x065f46), x + d * Math.cos(0.6), 1.6, z + d * Math.sin(0.6)));
+  obstaculos.push([x, z, 1.0]);
+}
+function mural(x, z) {
+  const t = canvasTex(256, 192, (g, w, h) => {
+    g.fillStyle = '#c4a073'; g.fillRect(0, 0, w, h);
+    [['#ffffff', 16, 16], ['#fde68a', 136, 24], ['#bfdbfe', 30, 100], ['#fbcfe8', 140, 106]].forEach(([c, px, py]) => {
+      g.fillStyle = c; g.fillRect(px, py, 96, 66); g.fillStyle = '#7e22ce'; g.fillRect(px + 10, py + 12, 60, 8); g.fillStyle = '#c4b5fd'; g.fillRect(px + 10, py + 30, 76, 6); g.fillRect(px + 10, py + 44, 66, 6);
+      g.fillStyle = '#ef4444'; g.beginPath(); g.arc(px + 48, py + 4, 5, 0, 7); g.fill();
+    });
+  });
+  const p = new THREE.Mesh(new THREE.PlaneGeometry(2.8, 2.1), new THREE.MeshBasicMaterial({ map: t }));
+  p.position.set(x - 1.4, 2.1, z - 0.4); p.rotation.y = 0.7; scene.add(p);
+  obstaculos.push([x - 1.4, z - 0.4, 0.9]);
+}
+function relogio(x, z) {
+  caixa(0.25, 3.4, 0.25, lambert(0x334155), x, 1.7, z);
+  const t = canvasTex(128, 128, (g) => {
+    g.fillStyle = '#ffffff'; g.beginPath(); g.arc(64, 64, 60, 0, 7); g.fill(); g.strokeStyle = '#c2410c'; g.lineWidth = 8; g.stroke();
+    g.strokeStyle = '#0f172a'; g.lineWidth = 7; g.lineCap = 'round'; g.beginPath(); g.moveTo(64, 64); g.lineTo(64, 24); g.moveTo(64, 64); g.lineTo(90, 76); g.stroke();
+  });
+  const f = new THREE.Mesh(new THREE.CircleGeometry(0.75, 32), new THREE.MeshBasicMaterial({ map: t, side: THREE.DoubleSide }));
+  f.position.set(x, 3.6, z); scene.add(f); f.userData.gira = true;
+  obstaculos.push([x, z, 0.5]);
+  return f;
+}
+
+const estacoes = ATIVIDADES.map((a, i) => ({ ...a, i }));
+const npc = {};
+npc.marcio = personagem('marcio', 1.9); npc.marcio.position.set(-10, 0, -6.6);
+quadroCaca(12.6, -4.6);
+mural(-13, 7); npc.vania = personagem('vania', 1.75); npc.vania.position.set(-12.6, 0, 7.4);
+npc.leia = personagem('leia', 1.72); npc.leia.position.set(11.4, 0, 9.2);
+const relogioFace = relogio(0, 3.4);
+npc.ze = personagem('ze', 1.6); npc.ze.position.set(0, 0, -10.6);
+[npc.marcio, npc.vania, npc.leia, npc.ze].forEach(n => obstaculos.push([n.position.x, n.position.z, 0.5]));
+
+// Anel de cada estação + seta sobre a estação liberada
+const aneis = estacoes.map(e => {
+  const m = new THREE.Mesh(new THREE.RingGeometry(1.25, 1.6, 40), new THREE.MeshBasicMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.8, side: THREE.DoubleSide }));
+  m.rotation.x = -Math.PI / 2; m.position.set(e.pos[0], 0.03, e.pos[1]); scene.add(m); return m;
+});
+const seta = new THREE.Mesh(new THREE.ConeGeometry(0.4, 0.8, 4), new THREE.MeshBasicMaterial({ color: 0xf59e0b }));
+seta.rotation.x = Math.PI; scene.add(seta);
+
+// ---------- Jogador ----------
+let jogador = null;
+function criarJogador() {
+  const pos = jogador ? jogador.position.clone() : new THREE.Vector3(0, 0, 18);
+  if (jogador) scene.remove(jogador);
+  jogador = personagem(avatarEscolhido, 1.55);
+  jogador.position.copy(pos);
+}
+criarJogador();
+
+// ---------- Controles ----------
+let yaw = 0; // câmera atrás do jogador, olhando para a escola
+const teclas = {};
+addEventListener('keydown', e => { teclas[e.key.toLowerCase()] = true; });
+addEventListener('keyup', e => { teclas[e.key.toLowerCase()] = false; });
+
+const joy = document.getElementById('joy'), bola = document.getElementById('joy-bola');
+let joyId = null, joyV = { x: 0, y: 0 };
+function moverJoy(e) {
+  const r = joy.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  let dx = e.clientX - cx, dy = e.clientY - cy; const max = r.width / 2 - 14, d = Math.hypot(dx, dy);
+  if (d > max) { dx *= max / d; dy *= max / d; }
+  bola.style.transform = `translate(${dx}px, ${dy}px)`; joyV = { x: dx / max, y: dy / max };
+}
+joy.addEventListener('pointerdown', e => { joyId = e.pointerId; joy.setPointerCapture(e.pointerId); moverJoy(e); esconderDica(); });
+joy.addEventListener('pointermove', e => { if (e.pointerId === joyId) moverJoy(e); });
+const soltar = e => { if (e.pointerId === joyId) { joyId = null; joyV = { x: 0, y: 0 }; bola.style.transform = ''; } };
+joy.addEventListener('pointerup', soltar); joy.addEventListener('pointercancel', soltar);
+
+let arrasto = null;
+canvas.addEventListener('pointerdown', e => { arrasto = { id: e.pointerId, x: e.clientX }; canvas.setPointerCapture(e.pointerId); });
+canvas.addEventListener('pointermove', e => { if (arrasto && e.pointerId === arrasto.id) { yaw -= (e.clientX - arrasto.x) * 0.006; arrasto.x = e.clientX; } });
+canvas.addEventListener('pointerup', () => { arrasto = null; });
+canvas.addEventListener('pointercancel', () => { arrasto = null; });
+
+const dica = document.getElementById('dica');
+function esconderDica() { dica.hidden = true; }
+if (matchMedia('(pointer: coarse)').matches) dica.textContent = 'Use o círculo para andar · arraste a tela para girar';
+
+// ---------- Interface ----------
+const acao = document.getElementById('acao'), btJogar = document.getElementById('bt-jogar');
+const objetivo = document.getElementById('objetivo');
+const modalAt = document.getElementById('modal-atividade'), modalFim = document.getElementById('modal-fim'), modalInicio = document.getElementById('modal-inicio');
+let pausado = true;
+
+function atualizarObjetivo() {
+  const a = ATIVIDADES[feitas];
+  objetivo.innerHTML = '';
+  const s = document.createElement('small'); s.textContent = `${feitas} / 6 atividades`; objetivo.appendChild(s);
+  objetivo.appendChild(document.createTextNode(a ? a.alvo : 'Missão completa!'));
+  aneis.forEach((m, i) => m.material.color.set(i < feitas ? 0x10b981 : i === feitas ? 0xf59e0b : 0x94a3b8));
+}
+btJogar.addEventListener('click', () => {
+  const a = ATIVIDADES[feitas]; if (!a) return;
+  document.getElementById('at-etapa').textContent = `Atividade ${feitas + 1} de 6`;
+  document.getElementById('at-titulo').textContent = a.nome;
+  document.getElementById('at-frase').textContent = a.frase;
+  modalAt.hidden = false; pausado = true; document.getElementById('at-concluir').focus();
+});
+document.getElementById('at-voltar').addEventListener('click', () => { modalAt.hidden = true; pausado = false; });
+document.getElementById('at-concluir').addEventListener('click', () => {
+  modalAt.hidden = true; feitas++; atualizarObjetivo();
+  if (feitas >= ATIVIDADES.length) { modalFim.hidden = false; return; }
+  pausado = false;
+});
+document.getElementById('fim-denovo').addEventListener('click', () => {
+  feitas = 0; atualizarObjetivo(); modalFim.hidden = true; jogador.position.set(0, 0, 18); yaw = 0; pausado = false;
+});
+
+function montarAvatares() {
+  const box = document.getElementById('avatares'); box.innerHTML = '';
+  AVATARES.forEach(k => {
+    const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-pressed', String(k === avatarEscolhido));
+    b.setAttribute('aria-label', 'Escolher este personagem');
+    const im = document.createElement('img'); im.src = IMGS[k].uri; im.alt = ''; b.appendChild(im);
+    b.addEventListener('click', () => { avatarEscolhido = k; try { localStorage.setItem('n2-avatar', k); } catch (e) {} montarAvatares(); });
+    box.appendChild(b);
+  });
+}
+montarAvatares();
+document.getElementById('in-comecar').addEventListener('click', () => { criarJogador(); modalInicio.hidden = true; pausado = false; });
+document.getElementById('bt-personagem').addEventListener('click', () => { modalInicio.hidden = false; pausado = true; montarAvatares(); });
+document.getElementById('bt-tela').addEventListener('click', async () => {
+  try {
+    if (!document.fullscreenElement) { await document.documentElement.requestFullscreen(); try { await screen.orientation.lock('landscape'); } catch (e) {} }
+    else await document.exitFullscreen();
+  } catch (e) {}
+});
+const btSom = document.getElementById('bt-som');
+btSom.addEventListener('click', () => { vozLigada = !vozLigada; btSom.setAttribute('aria-pressed', String(vozLigada)); if (!vozLigada && window.speechSynthesis) speechSynthesis.cancel(); });
+
+// Zé provoca quando o jogador chega perto
+const balao = document.getElementById('balao'), balaoTexto = document.getElementById('balao-texto');
+let falaIdx = 0, falaT = 0;
+function falarZe(texto) {
+  if (!vozLigada || !window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(texto); u.lang = 'pt-BR'; u.pitch = 1.5; u.rate = 1.1;
+  speechSynthesis.speak(u);
+}
+
+// ---------- Laço do jogo ----------
+const relogioJogo = new THREE.Clock();
+const tmp = new THREE.Vector3();
+function redimensionar() {
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+}
+addEventListener("resize", redimensionar); redimensionar();
+camera.position.set(0, 3.2, 24.2); camera.lookAt(0, 1.3, 18);
+atualizarObjetivo();
+renderer.compile(scene, camera); // prepara tudo antes de começar, para não engasgar no primeiro passo
+
+// A página só mexe nos botões e no balão quando algo muda (evita recalcular a tela a cada quadro).
+let acaoVisivel = false, acaoTexto = '', balaoVisivel = false;
+function mostrarAcao(v, texto) {
+  if (v !== acaoVisivel) { acao.hidden = !v; acaoVisivel = v; }
+  if (texto && texto !== acaoTexto) { btJogar.textContent = texto; acaoTexto = texto; }
+}
+function mostrarBalao(v) { if (v !== balaoVisivel) { balao.hidden = !v; balaoVisivel = v; } }
+
+const vel = new THREE.Vector2(0, 0); // velocidade suavizada do jogador
+let medT = 0, medQ = 0, folga = 0;
+function loop() {
+  requestAnimationFrame(loop);
+  const bruto = relogioJogo.getDelta(), dt = Math.min(bruto, 0.05), t = relogioJogo.elapsedTime;
+
+  // Resolução adaptativa: abaixa se ficar lento, sobe devagar se sobrar fôlego
+  medT += bruto; medQ++;
+  if (medT >= 1) {
+    const fps = medQ / medT;
+    if (fps < 48 && res > RES_MIN) { res = Math.max(RES_MIN, res - 0.15); renderer.setPixelRatio(res); redimensionar(); folga = 0; }
+    else if (fps > 58 && res < RES_MAX && ++folga >= 3) { res = Math.min(RES_MAX, res + 0.1); renderer.setPixelRatio(res); redimensionar(); folga = 0; }
+    medT = 0; medQ = 0;
+  }
+
+  let mx = joyV.x, mz = joyV.y;
+  if (teclas['arrowleft'] || teclas['a']) mx -= 1;
+  if (teclas['arrowright'] || teclas['d']) mx += 1;
+  if (teclas['arrowup'] || teclas['w']) mz -= 1;
+  if (teclas['arrowdown'] || teclas['s']) mz += 1;
+  const mag = Math.min(1, Math.hypot(mx, mz));
+  const sprite = jogador.userData.sprite;
+
+  // Velocidade desejada (em relação à câmera), alcançada com aceleração suave
+  let alvoX = 0, alvoZ = 0;
+  if (!pausado && mag > 0.08) {
+    esconderDica();
+    const ang = Math.atan2(mx, mz) + yaw;
+    alvoX = Math.sin(ang) * 5.2 * mag; alvoZ = Math.cos(ang) * 5.2 * mag;
+  }
+  const k = 1 - Math.exp(-dt * 12);
+  vel.x += (alvoX - vel.x) * k; vel.y += (alvoZ - vel.y) * k;
+  const rapidez = vel.length();
+  if (rapidez > 0.02) {
+    let nx = jogador.position.x + vel.x * dt, nz = jogador.position.z + vel.y * dt;
+    nx = Math.max(-21, Math.min(21, nx)); nz = Math.max(-15.2, Math.min(21, nz));
+    for (let i = 0; i < obstaculos.length; i++) {
+      const o = obstaculos[i], dx = nx - o[0], dz = nz - o[1], d = Math.hypot(dx, dz), min = o[2] + 0.35;
+      if (d < min && d > 0.0001) { nx = o[0] + dx / d * min; nz = o[1] + dz / d * min; }
+    }
+    jogador.position.x = nx; jogador.position.z = nz;
+    sprite.position.y = Math.abs(Math.sin(t * 11)) * 0.06 * Math.min(1, rapidez / 3);
+  } else sprite.position.y *= 0.8;
+
+  // Câmera em terceira pessoa, com seguimento suave que não depende da velocidade do computador
+  const dist = 6.2, alt = 3.2;
+  tmp.set(jogador.position.x + Math.sin(yaw) * dist, alt, jogador.position.z + Math.cos(yaw) * dist);
+  camera.position.lerp(tmp, 1 - Math.exp(-dt * 10));
+  camera.lookAt(jogador.position.x, 1.3, jogador.position.z);
+
+  // Estação liberada: seta pulando e botão JOGAR quando perto
+  const atual = ATIVIDADES[feitas];
+  if (atual) {
+    seta.visible = true;
+    seta.position.set(atual.pos[0], 3.3 + Math.sin(t * 3) * 0.2, atual.pos[1]);
+    seta.rotation.y = t * 1.5;
+    aneis[feitas].material.opacity = 0.6 + Math.sin(t * 5) * 0.3;
+    const perto = Math.hypot(jogador.position.x - atual.pos[0], jogador.position.z - atual.pos[1]) < 2.6;
+    mostrarAcao(perto && !pausado, perto ? 'JOGAR: ' + atual.nome : '');
+  } else { seta.visible = false; mostrarAcao(false); }
+
+  // Zé: balão com provocações quando o jogador está a menos de 7 m
+  const dZe = jogador.position.distanceTo(npc.ze.position);
+  if (dZe < 7 && !pausado) {
+    falaT -= dt;
+    if (falaT <= 0) { falaIdx = (falaIdx + 1) % FALAS_ZE.length; balaoTexto.textContent = FALAS_ZE[falaIdx]; falaT = 2.6; falarZe(FALAS_ZE[falaIdx]); }
+    tmp.set(npc.ze.position.x, 1.9, npc.ze.position.z).project(camera);
+    if (tmp.z < 1) {
+      mostrarBalao(true);
+      balao.style.transform = `translate3d(${((tmp.x + 1) / 2 * innerWidth).toFixed(1)}px, ${((1 - tmp.y) / 2 * innerHeight).toFixed(1)}px, 0) translate(-50%, -100%)`;
+    } else mostrarBalao(false);
+  } else { mostrarBalao(false); falaT = 0; }
+
+  relogioFace.lookAt(camera.position.x, 3.6, camera.position.z);
+  renderer.render(scene, camera);
+}
+loop();
+</script>
+
+</body>
+</html>

@@ -27,12 +27,15 @@ export function getMissionProgress(
   unlocked: boolean
 ): MissionProgress {
   const { mission } = level;
+  // Missão sequencial: só a primeira atividade não concluída fica disponível.
+  let openSlot = true;
   const activities = mission.activities.map<ActivityProgress>(activity => {
     const result = results[activity.id] ?? null;
     let state: ActivityState;
     if (result?.completed) state = 'completed';
-    else if (unlocked) state = 'available';
+    else if (unlocked && (!mission.sequential || openSlot)) state = 'available';
     else state = 'locked';
+    if (mission.sequential && state !== 'completed') openSlot = false;
     return { activity, state, result };
   });
 

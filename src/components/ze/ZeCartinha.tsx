@@ -18,7 +18,7 @@ export const ZeCartinha: React.FC<ZeCartinhaProps> = ({ visible, message, action
 
   return (
     <div
-      className="fixed right-2 sm:right-4 bottom-4 sm:bottom-8 z-40 flex items-end gap-2 max-w-[calc(100vw-1rem)] animate-ze-slide-in"
+      className="fixed right-2 sm:right-4 bottom-4 sm:bottom-8 z-40 flex items-end gap-2 max-w-[calc(100vw-1rem)]"
       role="dialog"
       aria-live="polite"
       aria-label="Zé Cartinha"
@@ -44,7 +44,7 @@ export const ZeCartinha: React.FC<ZeCartinhaProps> = ({ visible, message, action
           src="/assets/ze_cartinha.png"
           alt="Zé Cartinha"
           onError={() => setImgOk(false)}
-          className={`w-24 sm:w-36 h-auto drop-shadow-xl select-none pointer-events-none transition-all duration-700 ${imageClassName}`}
+          className={`${imageClassName || 'w-24 sm:w-36'} h-auto drop-shadow-xl select-none pointer-events-none transition-all duration-700`}
           draggable={false}
         />
       )}

@@ -3,18 +3,21 @@ import React, { useState } from 'react';
 // Logo oficial NISIALAND (PNG transparente). Não redesenhar: se a imagem faltar, mostra só um texto simples de reserva.
 export const LOGO_SRC = '/assets/nisialand_logo_oficial.png';
 
-type LogoSize = 'sm' | 'md' | 'lg';
+type LogoSize = 'sm' | 'md' | 'lg' | 'xl';
 
 const IMG_SIZE: Record<LogoSize, string> = {
   sm: 'h-8 sm:h-10',
   md: 'h-14 sm:h-16',
   lg: 'h-[18vw] max-h-40 wide:h-[clamp(5rem,15vw,11rem)] wide:max-h-none',
+  // xl = lg +20% (tela de início); no celular deitado limita pela altura para não cobrir o nome da escola
+  xl: 'h-[21.6vw] max-h-48 wide:h-[min(18vw,32dvh,13.2rem)] wide:max-h-none',
 };
 
 const TEXT_SIZE: Record<LogoSize, string> = {
   sm: 'text-lg sm:text-xl',
   md: 'text-2xl sm:text-3xl',
   lg: 'text-[8vw] wide:text-[clamp(2rem,5vw,4.5rem)]',
+  xl: 'text-[9.6vw] wide:text-[clamp(2.4rem,6vw,5.4rem)]',
 };
 
 export const NisialandLogo: React.FC<{ size?: LogoSize; className?: string }> = ({ size = 'md', className = '' }) => {

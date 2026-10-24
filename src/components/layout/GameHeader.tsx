@@ -16,7 +16,7 @@ export const GameHeader: React.FC = () => {
   return (
     <header className="relative sm:sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b-2 border-sky-200 shadow-[0_3px_0_0_rgba(125,211,252,0.6)]">
       {/* Top Institutional Line */}
-      <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-cyan-900 px-4 py-1.5 border-b border-blue-400/30 flex items-center justify-between text-xs text-blue-100 flex-wrap gap-2">
+      <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-cyan-900 px-4 py-1.5 border-b border-blue-400/30 flex items-center justify-between text-xs text-blue-100 flex-wrap gap-2 short:hidden">
         <div className="flex items-center gap-2">
           <img
             src="/assets/caxias_header_logo.jpg"
@@ -45,10 +45,10 @@ export const GameHeader: React.FC = () => {
       </div>
 
       {/* Main HUD Bar */}
-      <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-3 flex-wrap">
+      <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-3 flex-wrap short:py-1 short:px-3 short:gap-2 short:flex-nowrap">
         {/* Game Logo & Motto */}
         <Link to="/" className="flex items-center gap-2 group">
-          <div className="bg-gradient-to-b from-amber-400 to-amber-600 text-slate-950 font-heading font-black text-xl sm:text-2xl px-3 py-1 rounded-xl border-2 border-amber-600 shadow-[0_4px_0_0_#b45309] group-hover:-translate-y-0.5 transition-transform">
+          <div className="bg-gradient-to-b from-amber-400 to-amber-600 text-slate-950 font-heading font-black text-xl sm:text-2xl px-3 py-1 rounded-xl border-2 border-amber-600 shadow-[0_4px_0_0_#b45309] short:text-base short:px-2 short:py-0 short:shadow-[0_2px_0_0_#b45309] group-hover:-translate-y-0.5 transition-transform">
             NISIALAND
           </div>
           <span className="hidden md:inline-block text-xs font-heading font-bold text-amber-600 tracking-widest uppercase">
@@ -58,17 +58,17 @@ export const GameHeader: React.FC = () => {
 
         {/* Player Profile & Stats (When logged in) */}
         {currentPlayer ? (
-          <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
+          <div className="flex items-center gap-3 sm:gap-4 flex-wrap short:flex-nowrap short:gap-2 min-w-0">
             {/* Player Card */}
-            <div className="flex items-center gap-2 bg-sky-50/80 px-3 py-1.5 rounded-2xl border border-sky-200 shadow-sm">
+            <div className="flex items-center gap-2 bg-sky-50/80 px-3 py-1.5 rounded-2xl border border-sky-200 shadow-sm short:py-0.5 short:px-2 min-w-0">
               <PlayerAvatar
                 avatarId={currentPlayer.avatar}
                 skinTone={currentPlayer.skinTone}
                 size="sm"
                 className="border-2 border-amber-400"
               />
-              <div className="leading-tight">
-                <div className="font-heading font-black text-sm text-slate-700 flex items-center gap-1.5">
+              <div className="leading-tight min-w-0">
+                <div className="font-heading font-black text-sm text-slate-700 flex items-center gap-1.5 short:text-xs whitespace-nowrap">
                   {currentPlayer.displayName}
                   <span
                     className="text-[9px] font-heading font-black px-1.5 py-0.5 bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 rounded-md shadow-xs"
@@ -81,14 +81,14 @@ export const GameHeader: React.FC = () => {
                   </span>
                 </div>
                 {isGuestPlayer(currentPlayer) ? (
-                  <div className="text-[11px] font-semibold text-slate-500">
+                  <div className="text-[11px] font-semibold text-slate-500 short:hidden">
                     Visitante ·{' '}
                     <Link to="/register" className="text-emerald-700 font-bold hover:underline">
                       Fazer meu cadastro definitivo
                     </Link>
                   </div>
                 ) : (
-                  <div className="text-[11px] font-semibold text-slate-500">
+                  <div className="text-[11px] font-semibold text-slate-500 short:hidden">
                     Code: <span className="text-amber-700 font-mono">{currentPlayer.playerCode}</span>
                   </div>
                 )}
@@ -98,7 +98,7 @@ export const GameHeader: React.FC = () => {
             {/* Team Shield */}
             {team && (
               <div
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-2xl border-2 font-heading font-black text-xs text-slate-900 shadow-sm ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-2xl border-2 font-heading font-black text-xs text-slate-900 shadow-sm short:py-0.5 short:px-2 ${
                   team.id === 'blue'
                     ? 'bg-blue-100 border-blue-500 shadow-[0_3px_0_0_#1d4ed8]'
                     : 'bg-purple-100 border-purple-500 shadow-[0_3px_0_0_#7e22ce]'
@@ -111,7 +111,7 @@ export const GameHeader: React.FC = () => {
             )}
 
             {/* Total Points */}
-            <div className="flex items-center gap-1.5 bg-amber-50 px-3 py-1.5 rounded-2xl border-2 border-amber-300 shadow-[0_3px_0_0_#f59e0b] text-amber-600 font-heading font-black text-sm">
+            <div className="flex items-center gap-1.5 bg-amber-50 px-3 py-1.5 rounded-2xl border-2 border-amber-300 shadow-[0_3px_0_0_#f59e0b] text-amber-600 font-heading font-black text-sm short:py-0.5 short:px-2 short:text-xs">
               <span>🪙</span>
               <span>{totalScore}</span>
               <span className="text-[10px] text-amber-700 font-bold uppercase hidden sm:inline">XP</span>
@@ -133,7 +133,7 @@ export const GameHeader: React.FC = () => {
           {/* SFX Toggle */}
           <button
             onClick={toggleSound}
-            className={`p-2 rounded-xl border-2 transition-all active:translate-y-0.5 ${
+            className={`p-2 short:p-1.5 rounded-xl border-2 transition-all active:translate-y-0.5 ${
               isSoundOn
                 ? 'bg-white text-amber-600 border-sky-300 shadow-[0_3px_0_0_#7dd3fc] hover:bg-sky-50'
                 : 'bg-sky-50/40 text-slate-500 border-sky-200'
@@ -147,7 +147,7 @@ export const GameHeader: React.FC = () => {
           {/* BGM Toggle */}
           <button
             onClick={toggleMusic}
-            className={`p-2 rounded-xl border-2 transition-all active:translate-y-0.5 flex items-center gap-1 ${
+            className={`p-2 short:p-1.5 rounded-xl border-2 transition-all active:translate-y-0.5 flex items-center gap-1 ${
               isMusicOn
                 ? 'bg-purple-100 text-purple-700 border-purple-500 shadow-[0_3px_0_0_#7e22ce]'
                 : 'bg-sky-50/40 text-slate-500 border-sky-200'

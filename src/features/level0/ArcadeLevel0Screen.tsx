@@ -275,9 +275,9 @@ export const ArcadeLevel0Screen: React.FC = () => {
     <div className="relative min-h-screen overflow-hidden bg-sky-200 text-slate-900">
       <ArcadeBackdrop hue={gradeInfo?.gradient} />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 py-5 sm:py-8">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 py-5 sm:py-8 short:py-1.5">
         {/* Barra superior */}
-        <div className="flex items-center justify-between gap-3 mb-5">
+        <div className="flex items-center justify-between gap-3 mb-5 short:mb-1">
           <button
             onClick={() => {
               soundEffects.buttonClick();
@@ -303,23 +303,23 @@ export const ArcadeLevel0Screen: React.FC = () => {
 
         {stage === 'grade' && (
           <section className="animate-rise-in">
-            <h2 className="text-center font-heading font-black text-2xl sm:text-4xl mb-1 game-title">Escolha sua série</h2>
-            <p className="text-center text-sky-900 font-semibold mb-6 text-sm sm:text-base">Cada série tem seus próprios desafios. Choose your level, player!</p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+            <h2 className="text-center font-heading font-black text-2xl sm:text-4xl short:text-lg mb-1 short:mb-1 game-title">Escolha sua série</h2>
+            <p className="text-center text-sky-900 font-semibold mb-6 text-sm sm:text-base short:hidden">Cada série tem seus próprios desafios. Choose your level, player!</p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 short:grid-cols-5 gap-3 sm:gap-4 short:gap-2">
               {GRADES.map((g, i) => (
                 <button
                   key={g.id}
                   onClick={() => pickGrade(g.id)}
                   style={{ animationDelay: `${i * 80}ms` }}
                   className={`animate-rise-in group relative overflow-hidden rounded-3xl p-1 bg-gradient-to-br ${g.gradient} shadow-[0_6px_0_0_rgba(15,23,42,0.25)] hover:-translate-y-1 active:translate-y-1 active:shadow-[0_2px_0_0_rgba(15,23,42,0.25)] transition-transform ${
-                    i === GRADES.length - 1 ? 'col-span-2 sm:col-span-1' : ''
+                    i === GRADES.length - 1 ? 'col-span-2 sm:col-span-1 short:col-span-1' : ''
                   }`}
                 >
-                  <div className="rounded-[20px] bg-white/10 group-hover:bg-white/0 text-white [text-shadow:0_2px_4px_rgba(0,0,0,0.25)] transition px-3 py-5 sm:py-7 h-full flex flex-col items-center">
-                    <span className="text-4xl sm:text-5xl mb-2 group-hover:animate-bounce">{g.emoji}</span>
-                    <span className="font-[Bungee] text-3xl sm:text-4xl">{g.short}</span>
+                  <div className="rounded-[20px] bg-white/10 group-hover:bg-white/0 text-white [text-shadow:0_2px_4px_rgba(0,0,0,0.25)] transition px-3 py-5 sm:py-7 short:px-1 short:py-2 h-full flex flex-col items-center">
+                    <span className="text-4xl sm:text-5xl short:text-2xl mb-2 short:mb-0 group-hover:animate-bounce">{g.emoji}</span>
+                    <span className="font-[Bungee] text-3xl sm:text-4xl short:text-2xl">{g.short}</span>
                     <span className="font-heading font-black text-sm sm:text-base mt-1">{g.label}</span>
-                    <span className="mt-2 text-[10px] tracking-[0.25em] uppercase text-white/90 font-black">{g.tagline}</span>
+                    <span className="mt-2 text-[10px] tracking-[0.25em] uppercase text-white/90 font-black short:hidden">{g.tagline}</span>
                   </div>
                 </button>
               ))}
@@ -330,13 +330,13 @@ export const ArcadeLevel0Screen: React.FC = () => {
                 soundEffects.buttonClick();
                 navigate('/historia');
               }}
-              className="mt-8 w-full group flex items-center gap-4 rounded-3xl border-2 border-amber-300 bg-gradient-to-r from-amber-50 via-white to-sky-50 shadow-[0_6px_0_0_#f59e0b] p-4 sm:p-5 text-left hover:border-amber-400 hover:-translate-y-0.5 active:translate-y-1 active:shadow-[0_2px_0_0_#f59e0b] transition"
+              className="mt-8 short:mt-3 w-full group flex items-center gap-4 rounded-3xl border-2 border-amber-300 bg-gradient-to-r from-amber-50 via-white to-sky-50 shadow-[0_6px_0_0_#f59e0b] p-4 sm:p-5 short:p-2 text-left hover:border-amber-400 hover:-translate-y-0.5 active:translate-y-1 active:shadow-[0_2px_0_0_#f59e0b] transition"
             >
-              <img src="/assets/nisialand_institutional_characters.jpg" alt="" className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-amber-300/70" />
+              <img src="/assets/nisialand_institutional_characters.jpg" alt="" className="w-16 h-16 sm:w-20 sm:h-20 short:w-10 short:h-10 rounded-2xl object-cover border-2 border-amber-300/70" />
               <div className="flex-1">
                 <div className="text-[10px] tracking-[0.25em] text-amber-600 font-black">MODO HISTÓRIA</div>
-                <div className="font-heading font-black text-lg sm:text-xl">Missões NISIALAND: Turmas 601 a 909</div>
-                <div className="text-xs sm:text-sm text-slate-600">HQ com o Diretor Márcio, cadastro na equipe, Missão 1 (comparativos) e Missão 2 (flashcards) com ranking.</div>
+                <div className="font-heading font-black text-lg sm:text-xl short:text-sm">Missões NISIALAND: Turmas 601 a 909</div>
+                <div className="text-xs sm:text-sm text-slate-600 short:hidden">HQ com o Diretor Márcio, cadastro na equipe, Missão 1 (comparativos) e Missão 2 (flashcards) com ranking.</div>
               </div>
               <BookOpen className="w-7 h-7 text-amber-500 group-hover:translate-x-1 transition" />
             </button>
@@ -345,22 +345,22 @@ export const ArcadeLevel0Screen: React.FC = () => {
 
         {stage === 'topics' && gradeInfo && (
           <section className="animate-rise-in">
-            <div className="flex items-center justify-center gap-3 mb-1">
-              <span className={`px-3 py-1 rounded-full bg-gradient-to-r ${gradeInfo.gradient} font-black text-sm`}>
+            <div className="flex items-center justify-center gap-3 mb-1 short:mb-0">
+              <span className={`px-3 py-1 short:py-0 rounded-full bg-gradient-to-r ${gradeInfo.gradient} font-black text-sm short:text-xs`}>
                 {gradeInfo.emoji} {gradeInfo.label}
               </span>
             </div>
-            <h2 className="text-center font-heading font-black text-2xl sm:text-4xl mb-1 game-title">Escolha até 2 tópicos</h2>
-            <p className="text-center text-sky-900 font-semibold mb-6 text-sm sm:text-base">
+            <h2 className="text-center font-heading font-black text-2xl sm:text-4xl short:text-lg mb-1 short:mb-1 game-title">Escolha até 2 tópicos</h2>
+            <p className="text-center text-sky-900 font-semibold mb-6 text-sm sm:text-base short:hidden">
               Misture dois assuntos para uma partida mais desafiadora.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 short:gap-2">
               {gradeTopics.map((t, i) => (
                 <TopicCard key={t.id} topic={t} delay={i * 70} selected={topics.includes(t.id)} order={topics.indexOf(t.id)} onClick={() => toggleTopic(t.id)} />
               ))}
             </div>
 
-            <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 game-panel p-4">
+            <div className="mt-6 short:mt-2 flex flex-col sm:flex-row items-center justify-between gap-4 game-panel p-4 short:py-1.5">
               <div className="text-sm text-slate-700 font-semibold text-center sm:text-left">
                 <div className="flex items-center gap-4 justify-center sm:justify-start">
                   <span className="flex items-center gap-1"><Heart className="w-4 h-4 text-rose-500 fill-rose-500" /> 3 vidas</span>
@@ -374,7 +374,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
               <button
                 disabled={topics.length === 0}
                 onClick={startRound}
-                className="btn-shine relative overflow-hidden flex items-center gap-2 px-8 py-4 rounded-full font-heading font-black text-xl tracking-widest uppercase text-slate-950 bg-gradient-to-b from-amber-300 to-amber-500 border-4 border-amber-600 shadow-[0_6px_0_0_#b45309] active:translate-y-1 active:shadow-[0_2px_0_0_#b45309] transition disabled:opacity-40 disabled:active:translate-y-0 disabled:cursor-not-allowed"
+                className="btn-shine relative overflow-hidden flex items-center gap-2 px-8 py-4 short:py-1.5 rounded-full font-heading font-black text-xl short:text-base tracking-widest uppercase text-slate-950 bg-gradient-to-b from-amber-300 to-amber-500 border-4 border-amber-600 shadow-[0_6px_0_0_#b45309] active:translate-y-1 active:shadow-[0_2px_0_0_#b45309] transition disabled:opacity-40 disabled:active:translate-y-0 disabled:cursor-not-allowed"
               >
                 <Play className="w-6 h-6 fill-slate-950" /> Jogar
               </button>
@@ -394,7 +394,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
         {stage === 'play' && current && (
           <section>
             {/* HUD */}
-            <div className="flex items-center justify-between gap-3 mb-3">
+            <div className="flex items-center justify-between gap-3 mb-3 short:mb-1">
               <div className="flex items-center gap-1" aria-label={`${lives} vidas`}>
                 {Array.from({ length: MAX_LIVES }).map((_, i) => (
                   <Heart
@@ -410,7 +410,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
             </div>
 
             {/* Progresso */}
-            <div className="flex gap-1 mb-4">
+            <div className="flex gap-1 mb-4 short:mb-1.5">
               {round.map((_, i) => {
                 const entry = log[i];
                 return (
@@ -424,17 +424,17 @@ export const ArcadeLevel0Screen: React.FC = () => {
               })}
             </div>
 
-            <div className="relative grid lg:grid-cols-[1fr_auto] gap-4 items-start">
+            <div className="relative grid lg:grid-cols-[1fr_auto] gap-4 short:gap-2 short:grid-cols-[1fr_auto] items-start">
               {/* Cartão da pergunta */}
-              <div key={current.id} className="animate-rise-in [animation-duration:0.45s] game-panel text-slate-900 p-5 sm:p-7">
-                <div className="flex items-center justify-between gap-2 mb-3 flex-wrap">
+              <div key={current.id} className="animate-rise-in [animation-duration:0.45s] game-panel text-slate-900 p-5 sm:p-7 short:px-4 short:py-2">
+                <div className="flex items-center justify-between gap-2 mb-3 short:mb-0.5 flex-wrap">
                   <span className="text-xs font-black tracking-widest uppercase text-slate-500">
                     Question {index + 1}/{round.length} · {gradeTopics.find((t) => t.id === current.topic)?.title}
                   </span>
                   <div className="flex gap-2">
                     <button
                       onClick={() => speechService.speak(current.prompt.replace(/_+/g, 'blank'), 'en-US')}
-                      className="p-2 rounded-xl bg-slate-100 hover:bg-cyan-100 text-cyan-700 transition"
+                      className="p-2 short:p-1 rounded-xl bg-slate-100 hover:bg-cyan-100 text-cyan-700 transition"
                       title="Ouvir em inglês"
                     >
                       <Volume2 className="w-4 h-4" />
@@ -442,7 +442,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
                     {current.promptPt && (
                       <button
                         onClick={() => setShowPt((v) => !v)}
-                        className={`p-2 rounded-xl transition ${showPt ? 'bg-amber-200 text-amber-800' : 'bg-slate-100 hover:bg-amber-100 text-amber-700'}`}
+                        className={`p-2 short:p-1 rounded-xl transition ${showPt ? 'bg-amber-200 text-amber-800' : 'bg-slate-100 hover:bg-amber-100 text-amber-700'}`}
                         title="Ver em português"
                       >
                         <Languages className="w-4 h-4" />
@@ -450,17 +450,17 @@ export const ArcadeLevel0Screen: React.FC = () => {
                     )}
                   </div>
                 </div>
-                <h3 className="font-heading font-black text-xl sm:text-3xl leading-snug">{current.prompt}</h3>
+                <h3 className="font-heading font-black text-xl sm:text-3xl short:text-xl leading-snug">{current.prompt}</h3>
                 {showPt && current.promptPt && <p className="mt-2 text-slate-500 font-semibold">{current.promptPt}</p>}
               </div>
 
               {/* Relógio e poderes */}
-              <div className="flex lg:flex-col items-center justify-center gap-3">
+              <div className="flex lg:flex-col short:grid short:grid-rows-2 short:grid-flow-col items-center justify-center gap-3 short:gap-1">
                 <TimerRing seconds={timeLeft} total={QUESTION_TIME} />
                 <button
                   onClick={use5050}
                   disabled={used5050 || revealed}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 border-2 border-purple-300/50 font-black text-sm disabled:opacity-30 disabled:cursor-not-allowed transition"
+                  className="flex items-center gap-1.5 px-3 py-2 short:py-1 rounded-xl bg-purple-600 hover:bg-purple-500 border-2 border-purple-300/50 font-black text-sm disabled:opacity-30 disabled:cursor-not-allowed transition"
                   title="Elimina duas alternativas erradas (1 vez por partida)"
                 >
                   <Scissors className="w-4 h-4" /> 50/50
@@ -468,7 +468,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
                 <button
                   onClick={useExtraTime}
                   disabled={usedTime || revealed}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 border-2 border-cyan-300/50 font-black text-sm disabled:opacity-30 disabled:cursor-not-allowed transition"
+                  className="flex items-center gap-1.5 px-3 py-2 short:py-1 rounded-xl bg-cyan-600 hover:bg-cyan-500 border-2 border-cyan-300/50 font-black text-sm disabled:opacity-30 disabled:cursor-not-allowed transition"
                   title="Ganhe 10 segundos (1 vez por partida)"
                 >
                   <Zap className="w-4 h-4" /> +10s
@@ -488,7 +488,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
             </div>
 
             {/* Alternativas */}
-            <div className="grid sm:grid-cols-2 gap-3 mt-5">
+            <div className="grid sm:grid-cols-2 gap-3 mt-5 short:mt-2 short:gap-2">
               {current.shuffled.map((opt, i) => {
                 const style = OPTION_STYLES[i % OPTION_STYLES.length];
                 const isCorrect = i === current.correctIndex;
@@ -506,11 +506,11 @@ export const ArcadeLevel0Screen: React.FC = () => {
                     onClick={() => handleAnswer(i)}
                     disabled={revealed || isHidden}
                     style={{ animationDelay: `${i * 60}ms` }}
-                    className={`${revealed ? '' : 'animate-rise-in'} relative flex items-center gap-3 rounded-2xl px-4 py-4 sm:py-5 text-left bg-gradient-to-b ${style.bg} ${style.shadow} text-white font-heading font-black text-base sm:text-lg transition-all active:translate-y-1 active:shadow-none hover:brightness-110 disabled:cursor-default ${state} ${
+                    className={`${revealed ? '' : 'animate-rise-in'} relative flex items-center gap-3 rounded-2xl px-4 py-4 sm:py-5 short:py-1.5 text-left bg-gradient-to-b ${style.bg} ${style.shadow} text-white font-heading font-black text-base sm:text-lg transition-all active:translate-y-1 active:shadow-none hover:brightness-110 disabled:cursor-default ${state} ${
                       isHidden ? 'invisible' : ''
                     }`}
                   >
-                    <span className="flex-shrink-0 w-9 h-9 rounded-xl bg-black/25 flex items-center justify-center text-lg">{style.shape}</span>
+                    <span className="flex-shrink-0 w-9 h-9 short:w-7 short:h-7 rounded-xl bg-black/25 flex items-center justify-center text-lg">{style.shape}</span>
                     <span className="flex-1">{opt}</span>
                     {revealed && isCorrect && <Check className="w-7 h-7 flex-shrink-0" />}
                     {revealed && isChosen && !isCorrect && <X className="w-7 h-7 flex-shrink-0" />}
@@ -521,7 +521,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
 
             {/* Explicação */}
             {revealed && (
-              <div className="animate-rise-in [animation-duration:0.4s] mt-5 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 game-panel !rounded-2xl p-4">
+              <div className="animate-rise-in [animation-duration:0.4s] mt-5 short:mt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 game-panel !rounded-2xl p-4 short:py-1.5">
                 <div className="flex-1">
                   <div className={`font-black text-sm tracking-widest ${log[log.length - 1]?.correct ? 'text-emerald-600' : 'text-rose-600'}`}>
                     {log[log.length - 1]?.correct ? 'CORRECT! 🎉' : chosen === null ? 'TEMPO ESGOTADO ⏰' : 'NOT QUITE… 💡'}
@@ -538,7 +538,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
                 <button
                   onClick={goNext}
                   autoFocus
-                  className="px-6 py-3 rounded-2xl bg-gradient-to-b from-amber-300 to-amber-500 text-slate-950 font-heading font-black uppercase tracking-wider border-2 border-amber-600 shadow-[0_6px_0_0_#b45309] active:translate-y-1 active:shadow-[0_2px_0_0_#b45309] transition"
+                  className="px-6 py-3 short:py-1.5 rounded-2xl bg-gradient-to-b from-amber-300 to-amber-500 text-slate-950 font-heading font-black uppercase tracking-wider border-2 border-amber-600 shadow-[0_6px_0_0_#b45309] active:translate-y-1 active:shadow-[0_2px_0_0_#b45309] transition"
                 >
                   {lives <= 0 ? 'Ver resultado' : index >= round.length - 1 ? 'Finalizar' : 'Próxima ▶'}
                 </button>
@@ -624,15 +624,15 @@ const TopicCard: React.FC<{ topic: TopicInfo; selected: boolean; order: number; 
     <button
       onClick={onClick}
       style={{ animationDelay: `${delay}ms` }}
-      className={`animate-rise-in relative flex items-center gap-4 rounded-3xl p-4 text-left border-2 backdrop-blur-md transition-all active:scale-95 ${
+      className={`animate-rise-in relative flex items-center gap-4 short:gap-2 rounded-3xl p-4 short:px-3 short:py-1.5 text-left border-2 backdrop-blur-md transition-all active:scale-95 ${
         selected ? 'bg-amber-50 border-amber-400 shadow-[0_6px_0_rgba(217,119,6,0.35)] scale-[1.02]' : 'bg-white/85 border-white shadow-[0_6px_0_rgba(2,132,199,0.18)] hover:border-sky-300 hover:-translate-y-0.5'
       }`}
     >
-      <span className="text-4xl">{topic.emoji}</span>
+      <span className="text-4xl short:text-2xl">{topic.emoji}</span>
       <div className="flex-1">
-        <div className="font-heading font-black text-lg leading-tight text-sky-950">{topic.title}</div>
-        <div className="text-sm text-slate-600">{topic.titlePt}</div>
-        <div className="text-[11px] text-slate-500 mt-0.5">{count} questões</div>
+        <div className="font-heading font-black text-lg short:text-base leading-tight text-sky-950">{topic.title}</div>
+        <div className="text-sm short:text-xs text-slate-600 short:truncate">{topic.titlePt}</div>
+        <div className="text-[11px] text-slate-500 mt-0.5 short:hidden">{count} questões</div>
       </div>
       <span className={`w-9 h-9 rounded-full flex items-center justify-center font-black border-2 ${selected ? 'bg-amber-400 text-slate-950 border-amber-200' : 'border-slate-300 text-transparent'}`}>
         {selected ? order + 1 : '·'}
@@ -647,7 +647,7 @@ const TimerRing: React.FC<{ seconds: number; total: number }> = ({ seconds, tota
   const pct = Math.max(0, Math.min(1, seconds / total));
   const color = seconds <= 5 ? '#e11d48' : seconds <= 10 ? '#f59e0b' : '#0284c7';
   return (
-    <div className={`relative w-20 h-20 rounded-full shadow-lg ${seconds <= 5 ? 'animate-pulse' : ''}`} aria-label={`${seconds} segundos`}>
+    <div className={`relative w-20 h-20 short:w-14 short:h-14 short:row-span-2 rounded-full shadow-lg ${seconds <= 5 ? 'animate-pulse' : ''}`} aria-label={`${seconds} segundos`}>
       <svg viewBox="0 0 72 72" className="w-full h-full -rotate-90">
         <circle cx="36" cy="36" r={r} stroke="rgba(2,132,199,0.15)" strokeWidth="7" fill="#ffffff" />
         <circle

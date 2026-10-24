@@ -7,6 +7,7 @@ import {
   TeamRankingComparison,
   TeacherAuditLog
 } from '../types';
+import type { ActivityResult } from '../core/types';
 import { planilha, type Atividade, type ResultadoRemoto, type JogadorRanking } from './planilha';
 
 // Fila do que ainda não chegou na planilha (sem internet, tempo esgotado...).
@@ -70,6 +71,8 @@ const STORAGE_KEYS = {
   PLAYERS_LIST: 'nisialand_players_db',
   QUIZ_RESULTS: 'nisialand_quiz_results',
   FLASHCARD_RESULTS: 'nisialand_flashcard_results',
+  // Nível 1 em diante: { [playerId]: { [activityId]: ActivityResult } } (melhor resultado de cada).
+  ACTIVITY_RESULTS: 'nisialand_activity_results',
   AUDIT_LOGS: 'nisialand_audit_logs',
   COMPETITION_STATUS: 'nisialand_competition_status'
 };
@@ -79,6 +82,7 @@ const LEGACY_STORAGE_KEYS = {
   PLAYERS_LIST: 'nizialand_players_db',
   QUIZ_RESULTS: 'nizialand_quiz_results',
   FLASHCARD_RESULTS: 'nizialand_flashcard_results',
+  ACTIVITY_RESULTS: 'nizialand_activity_results',
   AUDIT_LOGS: 'nizialand_audit_logs',
   COMPETITION_STATUS: 'nizialand_competition_status'
 };
@@ -333,6 +337,10 @@ class StorageService {
     const flashcards = this.getFlashcardResult(guestId);
     if (quiz) await this.saveQuizResult(newPlayerId, quiz);
     if (flashcards) await this.saveFlashcardResult(newPlayerId, flashcards);
+    Object.values(this.getActivityResults(guestId)).forEach(r => this.saveActivityResult(newPlayerId, r));
+    const actAll = this.getAllActivityResults();
+    delete actAll[guestId];
+    gravarJson(STORAGE_KEYS.ACTIVITY_RESULTS, actAll);
 
     const quizAll = this.getAllQuizResults();
     delete quizAll[guestId];
@@ -438,6 +446,35 @@ class StorageService {
     } catch {
       return {};
     }
+  }
+
+  // --- NÍVEL 1 EM DIANTE: ATIVIDADES GENÉRICAS ---
+
+  // Guarda o melhor resultado de cada atividade e manda para a fila da planilha (atividade = id).
+  public saveActivityResult(playerId: string, result: ActivityResult): void {
+    const all = this.getAllActivityResults();
+    const mine = all[playerId] ?? {};
+    const prev = mine[result.activityId];
+    if (prev && prev.completed && prev.score >= result.score) return;
+    mine[result.activityId] = result;
+    all[playerId] = mine;
+    gravarJson(STORAGE_KEYS.ACTIVITY_RESULTS, all);
+    const stars = result.maxScore > 0 ? Math.round((result.score / result.maxScore) * 3) : 0;
+    this.enviarResultado(playerId, result.activityId, result.score, result.correctCount, stars, result);
+    this.logAudit('ACTIVITY_COMPLETED', `Player ${playerId} completed ${result.activityId} with ${result.score} pts.`);
+  }
+
+  public getActivityResults(playerId: string): Record<string, ActivityResult> {
+    return this.getAllActivityResults()[playerId] ?? {};
+  }
+
+  public getAllActivityResults(): Record<string, Record<string, ActivityResult>> {
+    return lerJson(STORAGE_KEYS.ACTIVITY_RESULTS, {});
+  }
+
+  // Soma dos pontos das atividades genéricas (Nível 1...).
+  public getActivityTotal(playerId: string): number {
+    return Object.values(this.getActivityResults(playerId)).reduce((t, r) => t + (r.score || 0), 0);
   }
 
   // --- LEADERBOARD & RANKING COMPUTATIONS ---
@@ -585,7 +622,8 @@ class StorageService {
   private entradaDaPlanilha(j: JogadorRanking): LeaderboardPlayerEntry {
     const quiz = Number(j.porAtividade?.quiz) || 0;
     const fc = Number(j.porAtividade?.flashcards) || 0;
-    const total = quiz + fc || Number(j.totalScore) || 0;
+    const soma = Object.values(j.porAtividade ?? {}).reduce<number>((t, v) => t + (Number(v) || 0), 0);
+    const total = Math.max(soma, Number(j.totalScore) || 0);
     return {
       rank: 0,
       playerId: String(j.playerId ?? ''),
@@ -608,14 +646,15 @@ class StorageService {
     if (cur && !isGuestId(cur.id) && cur.kind !== 'guest') {
       const quiz = this.getQuizResult(cur.id)?.totalScore ?? 0;
       const fc = this.getFlashcardResult(cur.id)?.totalScore ?? 0;
+      const extra = this.getActivityTotal(cur.id);
       const remoto = this.idRemoto(cur.id);
       const e = copia.find(x => x.playerId === remoto || x.playerId === cur.id);
       if (e) {
         e.quizScore = Math.max(e.quizScore, quiz);
         e.flashcardScore = Math.max(e.flashcardScore, fc);
-        e.totalScore = Math.max(e.totalScore, e.quizScore + e.flashcardScore);
+        e.totalScore = Math.max(e.totalScore, quiz + fc + extra);
         e.medal = medalha(e.totalScore);
-      } else if (quiz + fc > 0) {
+      } else if (quiz + fc + extra > 0) {
         copia.push({
           rank: 0,
           playerId: cur.id,
@@ -625,9 +664,9 @@ class StorageService {
           avatar: cur.avatar,
           quizScore: quiz,
           flashcardScore: fc,
-          totalScore: quiz + fc,
+          totalScore: quiz + fc + extra,
           completedAt: this.getFlashcardResult(cur.id)?.completedAt || this.getQuizResult(cur.id)?.completedAt || cur.createdAt,
-          medal: medalha(quiz + fc),
+          medal: medalha(quiz + fc + extra),
         });
       }
     }
@@ -646,7 +685,7 @@ class StorageService {
       const fcRes = fcResults[p.id];
       const qScore = qRes ? qRes.totalScore : 0;
       const fcScore = fcRes ? fcRes.totalScore : 0;
-      const total = qScore + fcScore;
+      const total = qScore + fcScore + this.getActivityTotal(p.id);
 
       let medal: 'bronze' | 'silver' | 'gold' = 'bronze';
       if (total >= 1300) medal = 'gold';

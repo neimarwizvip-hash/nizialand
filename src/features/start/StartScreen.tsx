@@ -32,34 +32,46 @@ export const StartScreen: React.FC = () => {
       <div className="relative z-10 w-full wide:h-full flex flex-col gap-3 wide:gap-0 px-4 py-4 wide:p-0">
         {/* Arte oficial */}
         <figure className="order-2 wide:order-none relative w-full aspect-video wide:aspect-auto wide:absolute wide:inset-0 rounded-[1.5rem] wide:rounded-none overflow-hidden border-4 wide:border-0 border-white shadow-[0_8px_0_0_#7dd3fc] wide:shadow-none bg-sky-200 animate-rise-in">
-          {/* Fachada sem personagens + logo e personagens oficiais por cima (sem o Mané Zoeira) */}
+          {/* Fachada sem personagens + logo e personagens oficiais por cima */}
           <img
             src="/assets/nisialand_school_facade_clean.jpg"
             alt="Escola Municipal Nísia Vilela Fernandes"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <NisialandLogo size="lg" className="absolute top-[3%] left-1/2 -translate-x-1/2" />
-          {/* Equipe da escola à esquerda (abaixo do logo) e o Zé Cartinha ao lado; a direita fica livre para o JOGAR */}
+          {/* Dois adultos de cada lado e as duas crianças no centro, abaixo do nome da escola.
+              No celular deitado o painel da direita ocupa o canto: a Rosana sai e a Leia chega para perto das crianças */}
           <img
             src="/assets/diretor_marcio_hd.png"
             alt="Diretor Márcio"
-            className="absolute bottom-0 left-[-2%] h-[70%] w-auto object-contain drop-shadow-[0_6px_10px_rgba(15,23,42,0.35)]"
+            className="absolute bottom-0 left-[-4%] h-[70%] w-auto object-contain drop-shadow-[0_6px_10px_rgba(15,23,42,0.35)]"
           />
           <img
             src="/assets/coordenadora_vania.png"
             alt="Coordenadora Vânia"
-            className="absolute bottom-0 left-[20%] h-[64%] w-auto object-contain drop-shadow-[0_6px_10px_rgba(15,23,42,0.35)]"
-          />
-          <img
-            src="/assets/orientadora_leia.png"
-            alt="Orientadora Leia"
-            className="absolute bottom-0 left-[34%] h-[62%] w-auto object-contain drop-shadow-[0_6px_10px_rgba(15,23,42,0.35)]"
+            className="absolute bottom-0 left-[15%] h-[64%] w-auto object-contain drop-shadow-[0_6px_10px_rgba(15,23,42,0.35)]"
           />
           <img
             src="/assets/ze_cartinha.png"
             alt="Zé Cartinha"
-            className="absolute bottom-0 left-[51%] h-[50%] w-auto object-contain drop-shadow-[0_6px_10px_rgba(15,23,42,0.35)]"
+            className="absolute bottom-0 right-[48%] h-[47%] w-auto object-contain drop-shadow-[0_6px_10px_rgba(15,23,42,0.35)]"
           />
+          <img
+            src="/assets/mane_zoeira.png"
+            alt="Mané Zoeira"
+            className="absolute bottom-0 left-[48%] h-[47%] w-auto object-contain drop-shadow-[0_6px_10px_rgba(15,23,42,0.35)]"
+          />
+          <img
+            src="/assets/orientadora_leia.png"
+            alt="Orientadora Leia"
+            className="absolute bottom-0 right-[15%] short:right-[22%] h-[62%] short:h-[56%] w-auto object-contain drop-shadow-[0_6px_10px_rgba(15,23,42,0.35)]"
+          />
+          <img
+            src="/assets/rosana.png"
+            alt="Rosana"
+            className="absolute bottom-0 right-[-3%] short:hidden h-[64%] w-auto object-contain drop-shadow-[0_6px_10px_rgba(15,23,42,0.35)]"
+          />
+          {/* Logo 20% maior, em primeiro plano */}
+          <NisialandLogo size="xl" className="absolute z-20 top-[3%] left-1/2 -translate-x-1/2" />
         </figure>
 
         {/* Selo de nível + tela cheia (canto superior direito) */}
@@ -77,12 +89,12 @@ export const StartScreen: React.FC = () => {
         </div>
 
         {/* JOGAR + acesso por código (área livre à direita do logo) */}
-        <section className="order-3 wide:order-none w-full max-w-md mx-auto wide:mx-0 wide:max-w-none flex flex-col items-center gap-2 wide:absolute wide:top-[13%] wide:right-[1.5%] wide:w-[20%] animate-rise-in [animation-delay:200ms]">
+        <section className="order-3 wide:order-none w-full max-w-md mx-auto wide:mx-0 wide:max-w-none flex flex-col items-center gap-2 wide:absolute wide:top-[13%] short:top-[12.5%] wide:right-[1.5%] wide:w-[20%] animate-rise-in [animation-delay:200ms]">
           <div className="relative w-full">
             <span className="glow-ring absolute inset-0 rounded-full border-4 border-amber-300 pointer-events-none" />
             <button
               onClick={handleStartLevel0}
-              className="btn-shine overflow-hidden group relative flex items-center justify-center w-full px-6 wide:px-3 py-4 xl:py-5 text-2xl xl:text-3xl font-heading font-black tracking-widest uppercase text-slate-950 bg-gradient-to-b from-amber-300 via-amber-400 to-amber-500 rounded-full border-4 border-amber-600 shadow-[0_6px_0_0_#b45309] hover:from-amber-200 hover:to-amber-400 transition-all duration-150 active:translate-y-1 active:shadow-[0_2px_0_0_#b45309]"
+              className="btn-shine overflow-hidden group relative flex items-center justify-center w-full px-6 wide:px-3 py-4 short:py-2 xl:py-5 text-2xl short:text-xl xl:text-3xl font-heading font-black tracking-widest uppercase text-slate-950 bg-gradient-to-b from-amber-300 via-amber-400 to-amber-500 rounded-full border-4 border-amber-600 shadow-[0_6px_0_0_#b45309] hover:from-amber-200 hover:to-amber-400 transition-all duration-150 active:translate-y-1 active:shadow-[0_2px_0_0_#b45309]"
               aria-label="Iniciar NISIALAND Nível 0"
             >
               <span className="flex items-center gap-2 xl:gap-3 drop-shadow-sm">
@@ -94,7 +106,7 @@ export const StartScreen: React.FC = () => {
 
           <button
             onClick={handleGoToLogin}
-            className="mt-1 flex items-center justify-center gap-1.5 px-3 py-1.5 bg-white/90 text-blue-800 font-heading font-black text-[11px] xl:text-xs uppercase rounded-xl border-2 border-sky-200 shadow-[0_3px_0_0_#bae6fd] hover:bg-white transition-colors"
+            className="mt-1 short:mt-0 flex items-center justify-center gap-1.5 px-3 py-1.5 bg-white/90 text-blue-800 font-heading font-black text-[11px] xl:text-xs uppercase rounded-xl border-2 border-sky-200 shadow-[0_3px_0_0_#bae6fd] hover:bg-white transition-colors"
           >
             <KeyRound className="w-3.5 h-3.5 text-amber-500" />
             <span>Já tenho código</span>
@@ -115,8 +127,9 @@ export const StartScreen: React.FC = () => {
           )}
         </section>
 
-        {/* Barra inferior direita: Treino livre, Ranking, Som e Música */}
-        <GameControls className="order-4 wide:order-none w-full max-w-md mx-auto wide:w-auto wide:max-w-none wide:mx-0 wide:flex-nowrap wide:absolute wide:bottom-[3%] wide:right-[1.5%] animate-rise-in [animation-delay:320ms]" />
+        {/* Treino livre, Ranking, Som e Música: no computador abaixo do "Como jogar" (não cobre os personagens);
+            no celular deitado (sem espaço ao lado do logo) fica no canto inferior direito */}
+        <GameControls className="order-4 wide:order-none w-full max-w-md mx-auto wide:w-auto wide:max-w-none wide:mx-0 wide:flex-nowrap wide:absolute wide:top-[9%] wide:left-[1.5%] short:top-auto short:left-auto short:bottom-[1%] short:right-[1.5%] short:w-[20%] short:flex-wrap short:justify-center animate-rise-in [animation-delay:320ms]" />
       </div>
 
       {/* A introdução da história (historia_nivel0.mp4) toca ao entrar na Missão 0 (PhaseStoryGate em /missions). */}
