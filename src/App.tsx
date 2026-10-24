@@ -100,8 +100,8 @@ export const App: React.FC = () => {
             {/* Tela 3: Mission Briefing */}
             <Route path="/missions" element={<RequirePlayer><PhaseStoryGate story="nivel0"><MissionBriefingScreen /></PhaseStoryGate></RequirePlayer>} />
 
-            {/* Nível 1: liberado quando a Missão 0 termina (guarda dentro de RequireLevel1) */}
-            <Route path="/nivel1" element={<RequirePlayer><HqReuniaoGate><MissionBriefingScreen level={1} /></HqReuniaoGate></RequirePlayer>} />
+            {/* Nível 1: liberado quando a Missão 0 termina; a HQ só toca depois da guarda */}
+            <Route path="/nivel1" element={<RequirePlayer><RequireLevel1><HqReuniaoGate><MissionBriefingScreen level={1} /></HqReuniaoGate></RequireLevel1></RequirePlayer>} />
             <Route path="/nivel1/ouvir" element={<RequirePlayer><RequireLevel1><ListenScreen /></RequireLevel1></RequirePlayer>} />
             <Route path="/nivel1/montar" element={<RequirePlayer><RequireLevel1><OrderScreen /></RequireLevel1></RequirePlayer>} />
             <Route path="/nivel1/dialogo" element={<RequirePlayer><RequireLevel1><DialogueScreen /></RequireLevel1></RequirePlayer>} />
