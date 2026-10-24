@@ -35,21 +35,35 @@ export const QuizScreen: React.FC = () => {
   // Real quiz start time
   const startedAtRef = useRef<string>(new Date().toISOString());
   // O desafio só começa depois da entrada do Zé Cartinha.
-  const [startCountdown, setStartCountdown] = useState<number>(3);
-  const quizIsStarting = startCountdown > 0;
+  const [zeIntroPhase, setZeIntroPhase] = useState<'challenge' | 'grow' | 'card' | 'dismissed'>('challenge');
+  const [zeIntroSeconds, setZeIntroSeconds] = useState<number>(5);
+  const quizIsStarting = zeIntroPhase !== 'dismissed';
+  const introCardVisible = zeIntroPhase === 'card';
 
   useEffect(() => {
-    if (!quizIsStarting) {
+    if (zeIntroPhase === 'dismissed') {
       startedAtRef.current = new Date().toISOString();
       return;
     }
 
-    const timer = window.setTimeout(() => {
-      setStartCountdown((seconds) => Math.max(0, seconds - 1));
-    }, 1000);
+    if (zeIntroPhase === 'grow') {
+      const timer = window.setTimeout(() => setZeIntroPhase('card'), 850);
+      return () => window.clearTimeout(timer);
+    }
 
-    return () => window.clearTimeout(timer);
-  }, [quizIsStarting, startCountdown]);
+    if (zeIntroPhase === 'challenge') {
+      const timer = window.setTimeout(() => {
+        if (zeIntroSeconds <= 0) setZeIntroPhase('grow');
+        else setZeIntroSeconds((seconds) => seconds - 1);
+      }, 1000);
+      return () => window.clearTimeout(timer);
+    }
+  }, [zeIntroPhase, zeIntroSeconds]);
+
+  const handleDismissIntroZe = () => {
+    audioService.playClick();
+    setZeIntroPhase('dismissed');
+  };
 
   // Duck music volume on quiz mount for concentration, restore on unmount
   useEffect(() => {
@@ -97,6 +111,7 @@ export const QuizScreen: React.FC = () => {
   // Powerups (educational helpers)
   const [fiftyFiftyLeft, setFiftyFiftyLeft] = useState<number>(2);
   const [eliminatedIndices, setEliminatedIndices] = useState<number[]>([]);
+  const [questionSecondsLeft, setQuestionSecondsLeft] = useState<number>(30);
 
   const currentQ = sessionQuestions[currentIndex] || sessionQuestions[0];
   const isBlue = currentPlayer.team === 'blue';
@@ -222,6 +237,47 @@ export const QuizScreen: React.FC = () => {
     }
   };
 
+  const handleQuestionTimeout = () => {
+    if (isQuestionResolved) return;
+    audioService.playWrong();
+    streakRef.current = 0;
+    setShowTryAgain(false);
+    setShakeIndex(null);
+    setIsQuestionResolved(true);
+    setAttemptsRecord(prev => ({
+      ...prev,
+      [currentQ.id]: {
+        questionId: currentQ.id,
+        attemptsCount: attemptsUsed,
+        selectedOptionIndex: -1,
+        isCorrect: false,
+        pointsEarned: 0,
+        answeredAt: new Date().toISOString()
+      }
+    }));
+  };
+
+  useEffect(() => {
+    if (!quizIsStarting) setQuestionSecondsLeft(30);
+  }, [currentIndex, quizIsStarting]);
+
+  useEffect(() => {
+    if (quizIsStarting || isQuestionResolved) return;
+
+    const timer = window.setInterval(() => {
+      setQuestionSecondsLeft((seconds) => {
+        if (seconds <= 1) {
+          window.clearInterval(timer);
+          handleQuestionTimeout();
+          return 0;
+        }
+        return seconds - 1;
+      });
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, [currentIndex, isQuestionResolved, quizIsStarting]);
+
   // Advance to next question or complete quiz
   const handleNextQuestion = async () => {
     audioService.playClick();
@@ -290,6 +346,18 @@ export const QuizScreen: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-2.5">
+                <div
+                  role="timer"
+                  aria-label={`Tempo para responder: ${questionSecondsLeft} segundos`}
+                  className={`px-3 py-1 rounded-full border font-heading font-black text-xs sm:text-sm shadow-sm ${
+                    questionSecondsLeft <= 10
+                      ? 'bg-red-100 border-red-500 text-red-700 animate-pulse'
+                      : 'bg-white/90 border-sky-300 text-cyan-800'
+                  }`}
+                >
+                  {quizIsStarting ? 'AGUARDE' : `⏱ ${questionSecondsLeft}s`}
+                </div>
+
                 {/* Score capsule */}
                 <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/80 text-amber-700 font-heading font-black text-xs sm:text-sm shadow-sm">
                   <Award className="w-4 h-4 text-amber-600" />
@@ -570,10 +638,38 @@ export const QuizScreen: React.FC = () => {
 
       <ZeCartinha
         visible={quizIsStarting || zeVisible}
-        message={quizIsStarting ? `Preparado? O desafio começa em ${startCountdown}...` : 'Ei! Bora jogar bafo? 🃏'}
-        actionLabel={quizIsStarting ? undefined : 'Agora não, Zé!'}
-        onAction={quizIsStarting ? undefined : handleDismissZe}
+        message={quizIsStarting
+          ? zeIntroPhase === 'grow'
+            ? 'Você demorou... minha carta vai atrapalhar!'
+            : `Bora jogar bafo? Feche em ${zeIntroSeconds}s para começar o quiz!`
+          : 'Ei! Bora jogar bafo? 🃏'}
+        actionLabel={quizIsStarting && zeIntroPhase !== 'card' ? 'Agora não, Zé!' : zeVisible ? 'Agora não, Zé!' : undefined}
+        onAction={quizIsStarting && zeIntroPhase !== 'card' ? handleDismissIntroZe : zeVisible ? handleDismissZe : undefined}
+        imageClassName={zeIntroPhase === 'grow' ? 'w-48 sm:w-72 animate-pulse' : ''}
       />
+
+      {introCardVisible && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Carta lançada pelo Zé Cartinha"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/65 backdrop-blur-sm px-5"
+        >
+          <div className="w-full max-w-sm rounded-[2rem] border-4 border-amber-400 bg-gradient-to-br from-white via-amber-50 to-orange-100 p-6 text-center shadow-[0_12px_0_0_#92400e] animate-rise-in">
+            <div className="mx-auto mb-3 flex h-20 w-16 items-center justify-center rounded-xl border-4 border-red-600 bg-white text-4xl shadow-lg">🃏</div>
+            <p className="font-heading text-xs font-black uppercase tracking-[0.2em] text-amber-700">Carta do Zé Cartinha</p>
+            <h2 className="mt-2 font-heading text-2xl font-black text-slate-900">Ei! Agora eu atrapalhei!</h2>
+            <p className="mt-2 text-sm font-bold text-slate-700">Feche minha carta para liberar o quiz e iniciar o tempo da pergunta.</p>
+            <button
+              type="button"
+              onClick={handleDismissIntroZe}
+              className="mt-5 w-full rounded-2xl border-2 border-blue-900 bg-gradient-to-b from-blue-500 to-blue-700 px-4 py-3 font-heading text-sm font-black uppercase text-white shadow-[0_4px_0_0_#1e3a8a] active:translate-y-1 active:shadow-[0_1px_0_0_#1e3a8a]"
+            >
+              Fechar carta e iniciar
+            </button>
+          </div>
+        </div>
+      )}
 
       {zeToast && (
         <div

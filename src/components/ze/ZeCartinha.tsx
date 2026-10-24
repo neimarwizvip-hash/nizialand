@@ -8,9 +8,10 @@ interface ZeCartinhaProps {
   message: string;
   actionLabel?: string;
   onAction?: () => void;
+  imageClassName?: string;
 }
 
-export const ZeCartinha: React.FC<ZeCartinhaProps> = ({ visible, message, actionLabel, onAction }) => {
+export const ZeCartinha: React.FC<ZeCartinhaProps> = ({ visible, message, actionLabel, onAction, imageClassName = '' }) => {
   const [imgOk, setImgOk] = useState<boolean>(true);
 
   if (!visible) return null;
@@ -43,7 +44,7 @@ export const ZeCartinha: React.FC<ZeCartinhaProps> = ({ visible, message, action
           src="/assets/ze_cartinha.png"
           alt="Zé Cartinha"
           onError={() => setImgOk(false)}
-          className="w-24 sm:w-36 h-auto drop-shadow-xl select-none pointer-events-none"
+          className={`w-24 sm:w-36 h-auto drop-shadow-xl select-none pointer-events-none transition-all duration-700 ${imageClassName}`}
           draggable={false}
         />
       )}
