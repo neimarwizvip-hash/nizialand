@@ -7,6 +7,7 @@ import { getPlayerGrade, setPlayerGrade } from '../../services/grade';
 import { GRADE_FLASHCARD_THEME, GRADE_LABELS, GRADE_QUIZ_THEME, SCHOOL_GRADES, SchoolGrade } from '../../data/level0Content';
 import { LEVEL0 } from '../../content/level0';
 import { LEVEL1 } from '../../content/level1';
+import { LEVEL2 } from '../../data/level2Content';
 import { level0Results } from '../../engines/pedagogy/adapters';
 import { getMissionProgress, ActivityProgress } from '../../engines/progression/progress';
 import type { ActivityColor, Mechanic } from '../../core/types';
@@ -59,6 +60,7 @@ const ART: Partial<Record<Mechanic, React.FC>> = { quiz: QuizArt, flashcards: Fl
 // Atividades sem desenho próprio (Nível 1) usam um ícone grande.
 const ICON_ART: Partial<Record<Mechanic, React.FC<{ className?: string }>>> = {
   listen: Ear, order: Puzzle, dialogue: MessagesSquare, explore: MapPinned,
+  dictation: Ear, wordsearch: Puzzle, truefalse: CheckCircle2, gapfill: MessagesSquare, timed: MapPinned, duel: Shield,
 };
 
 const ActivityCard: React.FC<{ item: ActivityProgress; hint?: string; onPlay: () => void }> = ({ item, hint, onPlay }) => {
@@ -109,20 +111,24 @@ const ActivityCard: React.FC<{ item: ActivityProgress; hint?: string; onPlay: ()
 // Missão do nível (cada nível tem uma missão com o mesmo número). Os cartões vêm dos dados da missão.
 // A introdução da história (historia_nivel<N>.mp4) toca antes desta tela pelo PhaseStoryGate (App.tsx).
 // level 0 = /missions; level 1 = /nivel1 (liberado quando a Missão 0 termina).
-export const MissionBriefingScreen: React.FC<{ level?: 0 | 1 }> = ({ level = 0 }) => {
+export const MissionBriefingScreen: React.FC<{ level?: 0 | 1 | 2 }> = ({ level = 0 }) => {
   const navigate = useNavigate();
-  const { currentPlayer, quizResult, flashcardResult, activityResults, level0Completed, logout } = useGame();
+  const { currentPlayer, quizResult, flashcardResult, activityResults, level0Completed, level1Completed, progressLoaded, logout } = useGame();
   const [grade, setGrade] = useState<SchoolGrade | null>(() => getPlayerGrade(currentPlayer));
   const [choosingGrade, setChoosingGrade] = useState<boolean>(false);
 
-  if (!currentPlayer) return null; // redirect handled by <RequirePlayer>
+  if (!currentPlayer || !progressLoaded) return null; // redirect handled by <RequirePlayer>
   if (level === 1 && !level0Completed) return <Navigate to="/missions" replace />;
+  if (level === 2 && !level1Completed) return <Navigate to="/nivel1" replace />;
 
-  const levelData = level === 1 ? LEVEL1 : LEVEL0;
+  const levelData = level === 2 ? LEVEL2 : level === 1 ? LEVEL1 : LEVEL0;
   const mission = levelData.mission;
-  const progress = level === 1
-    ? getMissionProgress(LEVEL1, activityResults, grade !== null)
-    : getMissionProgress(LEVEL0, level0Results(quizResult, flashcardResult, grade), grade !== null);
+  const level2Results = Object.fromEntries(LEVEL2.mission.activities.map(a => [a.id, activityResults[a.id] ?? null]));
+  const progress = level === 2
+    ? getMissionProgress(LEVEL2, level2Results, grade !== null)
+    : level === 1
+      ? getMissionProgress(LEVEL1, activityResults, grade !== null)
+      : getMissionProgress(LEVEL0, level0Results(quizResult, flashcardResult, grade), grade !== null);
   const isBlue = currentPlayer.team === 'blue';
   const showGradeChooser = grade === null || choosingGrade;
   const count = progress.activities.length;
@@ -130,7 +136,7 @@ export const MissionBriefingScreen: React.FC<{ level?: 0 | 1 }> = ({ level = 0 }
 
   const hintFor = (mechanic: Mechanic, hint?: string): string | undefined => {
     if (!grade) return 'Escolha sua série para liberar.';
-    if (level === 1) return hint;
+    if (level >= 1) return hint;
     if (mechanic === 'quiz') return GRADE_QUIZ_THEME[grade];
     if (mechanic === 'flashcards') return GRADE_FLASHCARD_THEME[grade];
     return undefined;
@@ -273,7 +279,7 @@ export const MissionBriefingScreen: React.FC<{ level?: 0 | 1 }> = ({ level = 0 }
         {/* Título da missão */}
         <div className="text-center mb-6 short:mb-2 animate-rise-in">
           <div className="flex items-center justify-center gap-3">
-            {level === 1 && (
+            {level >= 1 && (
               <img src="/assets/ze_cartinha.png" alt="Zé" className="h-14 md:h-20 short:h-8 w-auto object-contain" onError={e => { e.currentTarget.style.display = 'none'; }} />
             )}
             <span className="h-[3px] w-10 sm:w-24 bg-blue-800/70 rounded-full" />
@@ -320,15 +326,28 @@ export const MissionBriefingScreen: React.FC<{ level?: 0 | 1 }> = ({ level = 0 }
           </div>
         )}
         {progress.isCompleted && level === 1 && (
-          <div className="mt-6 text-center">
-            <p className="font-bungee text-xl text-emerald-700">MISSÃO 1 COMPLETA!</p>
+          <div className="mt-6 text-center flex flex-wrap justify-center gap-3">
+            <p className="w-full font-bungee text-xl text-emerald-700">MISSÃO 1 COMPLETA!</p>
             <button
               type="button"
               onClick={() => goTo('/missions')}
-              className="mt-3 px-8 py-3 rounded-2xl bg-white border-[3px] border-sky-300 text-blue-800 font-bungee text-lg shadow-[0_5px_0_0_#7dd3fc] active:translate-y-1 active:shadow-none"
+              className="px-8 py-3 rounded-2xl bg-white border-[3px] border-sky-300 text-blue-800 font-bungee text-lg shadow-[0_5px_0_0_#7dd3fc] active:translate-y-1 active:shadow-none"
             >
               VOLTAR AO NÍVEL 0
             </button>
+            <button
+              type="button"
+              onClick={() => goTo('/nivel2')}
+              className="px-8 py-3 rounded-2xl bg-gradient-to-b from-amber-300 to-amber-500 border-[3px] border-amber-600 text-slate-950 font-bungee text-lg shadow-[0_5px_0_0_#b45309] active:translate-y-1 active:shadow-none"
+            >
+              IR PARA O NÍVEL 2 <ArrowRight className="inline w-5 h-5" />
+            </button>
+          </div>
+        )}
+        {progress.isCompleted && level === 2 && (
+          <div className="mt-6 text-center">
+            <p className="font-bungee text-xl text-emerald-700">MISSÃO 2 COMPLETA!</p>
+            <button type="button" onClick={() => goTo('/nivel1')} className="mt-3 px-8 py-3 rounded-2xl bg-white border-[3px] border-sky-300 text-blue-800 font-bungee text-lg shadow-[0_5px_0_0_#7dd3fc] active:translate-y-1 active:shadow-none">VOLTAR AO NÍVEL 1</button>
           </div>
         )}
       </main>

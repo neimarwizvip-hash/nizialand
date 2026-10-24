@@ -7,6 +7,8 @@ import { audioService } from '../../services/audio';
 const seenKey = (story: string) => `nisialand_story_seen_${story}`;
 // Vídeo que falhou ao carregar (ainda não existe): a fase abre direto e some o "Rever história".
 const missingKey = (story: string) => `nisialand_story_missing_${story}`;
+// Histórias que já têm vídeo em public/assets/historia_<story>.mp4. As outras passam direto.
+const AVAILABLE_STORIES = ['nivel0'];
 const readFlag = (key: string) => {
   try {
     return sessionStorage.getItem(key) === '1';
@@ -24,8 +26,8 @@ const writeFlag = (key: string) => {
 
 export const PhaseStoryGate: React.FC<{ story: string; children: React.ReactNode }> = ({ story, children }) => {
   const ref = useRef<HTMLVideoElement | null>(null);
-  const [playing, setPlaying] = useState<boolean>(() => !readFlag(seenKey(story)));
-  const [missing, setMissing] = useState<boolean>(() => readFlag(missingKey(story)));
+  const [playing, setPlaying] = useState<boolean>(() => AVAILABLE_STORIES.includes(story) && !readFlag(seenKey(story)));
+  const [missing, setMissing] = useState<boolean>(() => !AVAILABLE_STORIES.includes(story) || readFlag(missingKey(story)));
   const [muted, setMuted] = useState(false);
 
   // A trilha do jogo pausa enquanto a história toca (sem mudar a escolha do aluno)

@@ -61,16 +61,12 @@ export const ScreenTransitionLoader: React.FC<ScreenTransitionLoaderProps> = ({ 
         {children}
       </div>
 
-      <div
-        className={`fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none transition-opacity duration-200 ${
-          isTransitioning ? 'opacity-100' : 'opacity-0'
-        }`}
-        role="status"
-        aria-live="polite"
-        aria-hidden={!isTransitioning}
-      >
-        <LoadingPill />
-      </div>
+      {/* Só existe durante a troca: escondido com opacity-0 ele ficava no DOM e parecia "travado". */}
+      {isTransitioning && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none" role="status" aria-live="polite">
+          <LoadingPill />
+        </div>
+      )}
     </>
   );
 };

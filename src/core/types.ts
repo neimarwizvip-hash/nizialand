@@ -5,7 +5,9 @@
 import type { SchoolGrade } from '../data/level0Content';
 
 // Nível 1: listen (ouvir e ligar), order (montar frase), dialogue (diálogo), explore (explorar a escola).
-export type Mechanic = 'quiz' | 'flashcards' | 'listen' | 'order' | 'dialogue' | 'explore';
+// Nível 2: dictation (ditado), wordsearch (caça-palavras), truefalse (mural), gapfill (bilhete), timed (relógio), duel (bafo).
+export type Mechanic = 'quiz' | 'flashcards' | 'listen' | 'order' | 'dialogue' | 'explore'
+  | 'dictation' | 'wordsearch' | 'truefalse' | 'gapfill' | 'timed' | 'duel';
 
 export type LevelMode = '2D';
 

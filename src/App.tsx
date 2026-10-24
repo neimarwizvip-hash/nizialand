@@ -16,6 +16,7 @@ import { StartupVideoScreen } from './components/video/StartupVideoScreen';
 import { keepFullscreen } from './services/fullscreen';
 import { RotateDeviceOverlay } from './components/ui/RotateDeviceOverlay';
 import { audioService, MusicTrack } from './services/audio';
+import PatioScreen from './features/level2/PatioScreen';
 
 // Telas pesadas ou menos usadas ficam fora do pacote principal (baixadas quando abertas).
 const Level0Screen = lazy(() => import('./features/level0/Level0Screen').then(m => ({ default: m.Level0Screen })));
@@ -42,13 +43,22 @@ const ROUTE_TRACKS: Record<string, MusicTrack> = {
   '/nivel1/montar': 'desafio',
   '/nivel1/dialogo': 'desafio',
   '/nivel1/explorar': 'desafio',
+  '/nivel2': 'mapa',
+  '/nivel2/patio': 'mapa',
 };
 const VICTORY_ROUTES = ['/quiz/results', '/results/final'];
 
 // Atividades do Nível 1 só abrem depois da Missão 0 completa.
 const RequireLevel1: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { level0Completed } = useGame();
+  const { level0Completed, progressLoaded } = useGame();
+  if (!progressLoaded) return null;
   return level0Completed ? <>{children}</> : <Navigate to="/missions" replace />;
+};
+
+export const RequireLevel2: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { level1Completed, progressLoaded } = useGame();
+  if (!progressLoaded) return null;
+  return level1Completed ? <>{children}</> : <Navigate to="/nivel1" replace />;
 };
 
 const RouteMusic: React.FC = () => {
@@ -106,6 +116,10 @@ export const App: React.FC = () => {
             <Route path="/nivel1/montar" element={<RequirePlayer><RequireLevel1><OrderScreen /></RequireLevel1></RequirePlayer>} />
             <Route path="/nivel1/dialogo" element={<RequirePlayer><RequireLevel1><DialogueScreen /></RequireLevel1></RequirePlayer>} />
             <Route path="/nivel1/explorar" element={<RequirePlayer><RequireLevel1><ExploreScreen /></RequireLevel1></RequirePlayer>} />
+
+            {/* Nível 2: pátio e respeito à autoridade */}
+            <Route path="/nivel2" element={<RequirePlayer><RequireLevel2><PhaseStoryGate story="nivel2"><MissionBriefingScreen level={2} /></PhaseStoryGate></RequireLevel2></RequirePlayer>} />
+            <Route path="/nivel2/patio" element={<RequirePlayer><RequireLevel2><PatioScreen /></RequireLevel2></RequirePlayer>} />
 
             {/* Tela 4: Mission 1 Quiz */}
             <Route path="/quiz" element={<RequirePlayer><QuizScreen /></RequirePlayer>} />

@@ -7,6 +7,7 @@ import { gameEvents } from '../core/events';
 import type { ActivityResult } from '../core/types';
 import { LEVEL0 } from '../content/level0';
 import { LEVEL1 } from '../content/level1';
+import { LEVEL2 } from '../data/level2Content';
 import { fromFlashcardResult, fromQuizResult, level0Results } from '../engines/pedagogy/adapters';
 import { getMissionProgress } from '../engines/progression/progress';
 import type { SchoolGrade } from '../data/level0Content';
@@ -27,6 +28,10 @@ interface GameContextType {
   saveActivityResult: (result: ActivityResult) => void;
   // Missão 0 concluída = Nível 1 liberado.
   level0Completed: boolean;
+  level1Completed: boolean;
+  level2Completed: boolean;
+  // false enquanto o progresso do aluno atual ainda não foi lido (guardas não decidem antes disso).
+  progressLoaded: boolean;
   totalScore: number;
   playerLevel: number;
   missionsCompletedCount: number;
@@ -41,9 +46,13 @@ const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentPlayer, setCurrentPlayer] = useState<PlayerProfile | null>(() => storageService.getStoredCurrentPlayer());
-  const [quizResult, setQuizResult] = useState<QuizResult | null>(null);
-  const [flashcardResult, setFlashcardResult] = useState<FlashcardResult | null>(null);
-  const [activityResults, setActivityResults] = useState<Record<string, ActivityResult>>({});
+  // O progresso já nasce lido do armazenamento (leitura síncrona): abrir/recarregar /nivel2
+  // direto não pode ver resultados vazios no 1º render e mandar o aluno de volta.
+  const [quizResult, setQuizResult] = useState<QuizResult | null>(() => (currentPlayer ? storageService.getQuizResult(currentPlayer.id) : null));
+  const [flashcardResult, setFlashcardResult] = useState<FlashcardResult | null>(() => (currentPlayer ? storageService.getFlashcardResult(currentPlayer.id) : null));
+  const [activityResults, setActivityResults] = useState<Record<string, ActivityResult>>(() => (currentPlayer ? storageService.getActivityResults(currentPlayer.id) : {}));
+  // De qual aluno é o progresso carregado; os guardas de nível esperam bater com o aluno atual.
+  const [loadedFor, setLoadedFor] = useState<string | null>(() => currentPlayer?.id ?? null);
   const [isSoundOn, setIsSoundOn] = useState<boolean>(true);
   const [isMusicOn, setIsMusicOn] = useState<boolean>(() => audioService.isMusicOn());
 
@@ -55,7 +64,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setQuizResult(qRes);
       setFlashcardResult(fcRes);
       setActivityResults(storageService.getActivityResults(currentPlayer.id));
+      setLoadedFor(currentPlayer.id);
     } else {
+      setLoadedFor(null);
       setActivityResults({});
       setQuizResult(null);
       setFlashcardResult(null);
@@ -163,6 +174,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const activityTotal = Object.values(activityResults).reduce((t, r) => t + (r.score || 0), 0);
   const totalScore = (quizResult?.totalScore || 0) + (flashcardResult?.totalScore || 0) + activityTotal;
   const level0Completed = getMissionProgress(LEVEL0, level0Results(quizResult, flashcardResult, null), true).isCompleted;
+  const level1Completed = getMissionProgress(LEVEL1, activityResults, true).isCompleted;
+  const level2Results = Object.fromEntries(LEVEL2.mission.activities.map(a => [a.id, activityResults[a.id] ?? null]));
+  const level2Completed = getMissionProgress(LEVEL2, level2Results, true).isCompleted;
   const playerLevel = calculatePlayerLevel(totalScore);
   const missionsCompletedCount = (quizResult?.completed ? 1 : 0) + (flashcardResult?.completed ? 1 : 0)
     + Object.values(activityResults).filter(r => r.completed).length;
@@ -183,6 +197,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         activityResults,
         saveActivityResult,
         level0Completed,
+        level1Completed,
+        level2Completed,
+        progressLoaded: !currentPlayer || loadedFor === currentPlayer.id,
         totalScore,
         playerLevel,
         missionsCompletedCount,
