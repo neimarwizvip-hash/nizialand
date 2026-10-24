@@ -34,6 +34,22 @@ export const QuizScreen: React.FC = () => {
 
   // Real quiz start time
   const startedAtRef = useRef<string>(new Date().toISOString());
+  // O desafio só começa depois da entrada do Zé Cartinha.
+  const [startCountdown, setStartCountdown] = useState<number>(3);
+  const quizIsStarting = startCountdown > 0;
+
+  useEffect(() => {
+    if (!quizIsStarting) {
+      startedAtRef.current = new Date().toISOString();
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setStartCountdown((seconds) => Math.max(0, seconds - 1));
+    }, 1000);
+
+    return () => window.clearTimeout(timer);
+  }, [quizIsStarting, startCountdown]);
 
   // Duck music volume on quiz mount for concentration, restore on unmount
   useEffect(() => {
@@ -95,6 +111,7 @@ export const QuizScreen: React.FC = () => {
     clearZeTimers();
     setZeVisible(false);
     setZeBonusArmed(false);
+    if (quizIsStarting) return clearZeTimers;
     if (zeQuestions.includes(currentIndex)) {
       zeTimersRef.current.push(window.setTimeout(() => {
         zeShownAtRef.current = Date.now();
@@ -103,7 +120,7 @@ export const QuizScreen: React.FC = () => {
       }, 1200));
     }
     return clearZeTimers;
-  }, [currentIndex, zeQuestions]);
+  }, [currentIndex, quizIsStarting, zeQuestions]);
 
   const handleDismissZe = () => {
     audioService.playClick();
@@ -120,7 +137,7 @@ export const QuizScreen: React.FC = () => {
 
   // 50/50 Powerup
   const handleUseFiftyFifty = () => {
-    if (fiftyFiftyLeft <= 0 || isQuestionResolved || attemptsUsed > 0) return;
+    if (quizIsStarting || fiftyFiftyLeft <= 0 || isQuestionResolved || attemptsUsed > 0) return;
     audioService.playPowerup();
     setFiftyFiftyLeft(prev => prev - 1);
 
@@ -137,7 +154,7 @@ export const QuizScreen: React.FC = () => {
 
   // Option selection
   const handleSelectOption = (index: number) => {
-    if (zeVisible || isQuestionResolved || shakeIndex !== null || eliminatedIndices.includes(index)) return;
+    if (quizIsStarting || zeVisible || isQuestionResolved || shakeIndex !== null || eliminatedIndices.includes(index)) return;
 
     const opt = currentQ.optionsQuad[index];
     const newAttemptCount = attemptsUsed + 1;
@@ -312,8 +329,9 @@ export const QuizScreen: React.FC = () => {
               <button
                 type="button"
                 onClick={handlePronounce}
+                disabled={quizIsStarting}
                 title="Ouvir frase em inglês"
-                className="px-3 py-1.5 rounded-xl bg-blue-600/30 hover:bg-blue-600/50 text-cyan-700 border border-cyan-400 text-xs font-heading font-bold flex items-center gap-1.5 transition-all shadow-sm active:scale-95"
+                className={`px-3 py-1.5 rounded-xl border text-xs font-heading font-bold flex items-center gap-1.5 transition-all shadow-sm ${quizIsStarting ? 'bg-white/95 border-sky-200 text-slate-500 cursor-not-allowed opacity-40' : 'bg-blue-600/30 hover:bg-blue-600/50 text-cyan-700 border-cyan-400 active:scale-95'}`}
               >
                 <Volume2 className="w-3.5 h-3.5 text-cyan-700" />
                 <span>Listen</span>
@@ -323,10 +341,10 @@ export const QuizScreen: React.FC = () => {
               <button
                 type="button"
                 onClick={handleUseFiftyFifty}
-                disabled={fiftyFiftyLeft <= 0 || isQuestionResolved || attemptsUsed > 0}
+                disabled={quizIsStarting || fiftyFiftyLeft <= 0 || isQuestionResolved || attemptsUsed > 0}
                 title="Eliminar 2 respostas erradas"
                 className={`px-3 py-1.5 rounded-xl border text-xs font-heading font-bold flex items-center gap-1.5 transition-all ${
-                  fiftyFiftyLeft > 0 && !isQuestionResolved && attemptsUsed === 0
+                  !quizIsStarting && fiftyFiftyLeft > 0 && !isQuestionResolved && attemptsUsed === 0
                     ? 'bg-amber-500/20 border-amber-400 text-amber-700 hover:bg-amber-500/30 shadow-sm active:scale-95'
                     : 'bg-white/95 border-sky-200 text-slate-500 cursor-not-allowed opacity-40'
                 }`}
@@ -338,12 +356,14 @@ export const QuizScreen: React.FC = () => {
               {/* Hint button (Purple Neon) */}
               <button
                 type="button"
+                disabled={quizIsStarting}
                 onClick={() => {
+                  if (quizIsStarting) return;
                   audioService.playClick();
                   setShowHint(!showHint);
                 }}
                 title="Dica gramatical"
-                className="px-3 py-1.5 rounded-xl bg-purple-600/30 hover:bg-purple-600/50 text-purple-800 border border-purple-400 text-xs font-heading font-bold flex items-center gap-1.5 transition-all shadow-sm active:scale-95"
+                className={`px-3 py-1.5 rounded-xl border text-xs font-heading font-bold flex items-center gap-1.5 transition-all shadow-sm ${quizIsStarting ? 'bg-white/95 border-sky-200 text-slate-500 cursor-not-allowed opacity-40' : 'bg-purple-600/30 hover:bg-purple-600/50 text-purple-800 border-purple-400 active:scale-95'}`}
               >
                 <HelpCircle className="w-3.5 h-3.5 text-purple-700" />
                 <span>Hint</span>
@@ -488,7 +508,7 @@ export const QuizScreen: React.FC = () => {
                 <button
                   key={idx}
                   type="button"
-                  disabled={isQuestionResolved || isEliminated}
+                  disabled={quizIsStarting || isQuestionResolved || isEliminated}
                   onClick={() => handleSelectOption(idx)}
                   className={`relative p-3.5 sm:p-4 rounded-2xl border-2 font-heading font-bold text-left transition-all duration-200 flex items-center gap-3.5 cursor-pointer transform active:scale-98 ${btnBorder} ${btnBg} ${textColor}`}
                 >
@@ -549,10 +569,10 @@ export const QuizScreen: React.FC = () => {
       </main>
 
       <ZeCartinha
-        visible={zeVisible}
-        message="Ei! Bora jogar bafo? 🃏"
-        actionLabel="Agora não, Zé!"
-        onAction={handleDismissZe}
+        visible={quizIsStarting || zeVisible}
+        message={quizIsStarting ? `Preparado? O desafio começa em ${startCountdown}...` : 'Ei! Bora jogar bafo? 🃏'}
+        actionLabel={quizIsStarting ? undefined : 'Agora não, Zé!'}
+        onAction={quizIsStarting ? undefined : handleDismissZe}
       />
 
       {zeToast && (
