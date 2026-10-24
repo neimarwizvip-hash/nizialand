@@ -18,7 +18,8 @@ import {
   Flag,
   UserCheck,
   UserX,
-  BookOpen
+  BookOpen,
+  Trash2
 } from 'lucide-react';
 import { storageService } from '../../services/storage';
 import { 
@@ -33,12 +34,32 @@ import { audioService } from '../../services/audio';
 import { PlayerAvatar } from '../../components/ui/PlayerAvatar';
 import { nameModerationService, ReportedNameRecord } from '../../services/nameModeration';
 import { QuestionBankManager } from './QuestionBankManager';
+import { planilha } from '../../services/planilha';
+import { converterListaProfessor } from './listaProfessor';
+
+// Token do professor (vale 6 h na planilha): só no sessionStorage, some ao fechar a aba.
+const TOKEN_PROF = 'nisialand_prof_token';
+function lerToken(): string | null {
+  try {
+    return sessionStorage.getItem(TOKEN_PROF);
+  } catch {
+    return null;
+  }
+}
+function guardarToken(token: string | null) {
+  try {
+    if (token) sessionStorage.setItem(TOKEN_PROF, token);
+    else sessionStorage.removeItem(TOKEN_PROF);
+  } catch {
+    /* sem sessionStorage: segue sem lembrar */
+  }
+}
 
 export const AdminPanel: React.FC = () => {
   const navigate = useNavigate();
 
   // Authentication State
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => !!lerToken());
   const [passcode, setPasscode] = useState<string>('');
   const [loginError, setLoginError] = useState<string | null>(null);
 
@@ -51,16 +72,35 @@ export const AdminPanel: React.FC = () => {
   const [filterClass, setFilterClass] = useState<string>('all');
   const [activeTab, setActiveTab] = useState<'roster' | 'analytics' | 'moderation' | 'audit' | 'questions'>('roster');
 
-  // Load Data
+  const [semConexao, setSemConexao] = useState<boolean>(false);
+  const [entrando, setEntrando] = useState<boolean>(false);
+
+  // Load Data (lista de alunos vem da planilha, com o token do professor)
   const refreshData = async () => {
-    const allPlayers = storageService.getAllPlayers();
-    const board = await storageService.getLeaderboard();
     const logs = storageService.getAuditLogs();
     const allReports = nameModerationService.getReports();
-    setPlayers(allPlayers);
-    setLeaderboard(board);
     setAuditLogs(logs);
     setReports(allReports);
+
+    const token = lerToken();
+    if (!token) {
+      setIsAuthenticated(false);
+      return;
+    }
+    const r = await planilha.profListar(token);
+    if (r.ok) {
+      const lista = converterListaProfessor(r);
+      setPlayers(lista.players);
+      setLeaderboard(lista.leaderboard);
+      setSemConexao(false);
+    } else if (r.rede) {
+      setSemConexao(true);
+    } else {
+      // Token vencido ou recusado: volta para a entrada.
+      guardarToken(null);
+      setIsAuthenticated(false);
+      setLoginError('Sessão encerrada. Entre novamente.');
+    }
   };
 
   const handleResolveReport = (reportId: string, status: 'resolved' | 'dismissed') => {
@@ -86,15 +126,21 @@ export const AdminPanel: React.FC = () => {
     }
   }, [isAuthenticated]);
 
-  // Handle Passcode Submit
-  const handleLogin = (e: React.FormEvent) => {
+  // Handle Passcode Submit (a senha é conferida pela planilha; aqui fica só o token da sessão)
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (passcode.trim().toLowerCase() === 'prof804') {
+    if (entrando || !passcode.trim()) return;
+    setEntrando(true);
+    const r = await planilha.profEntrar(passcode.trim());
+    setEntrando(false);
+    if (r.ok && r.token) {
+      guardarToken(String(r.token));
+      setPasscode('');
       setIsAuthenticated(true);
       setLoginError(null);
       audioService.playChime();
     } else {
-      setLoginError('Senha incorreta.');
+      setLoginError(!r.ok && r.rede ? 'Sem conexão com a planilha' : 'Senha incorreta.');
       audioService.playWrong();
     }
   };
@@ -107,9 +153,34 @@ export const AdminPanel: React.FC = () => {
     if (!confirmReset) return;
 
     audioService.playClick();
+    const r = await planilha.profZerarResultados(lerToken() ?? '', playerId);
+    if (!r.ok) {
+      alert(r.rede ? 'Sem conexão com a planilha' : 'Não foi possível redefinir agora. Entre de novo no painel.');
+      if (!r.rede) await refreshData();
+      return;
+    }
     await storageService.resetPlayerProgress(playerId);
     await refreshData();
     alert(`Progresso de ${playerName} redefinido com sucesso!`);
+  };
+
+  // Apagar aluno da planilha
+  const handleDeletePlayer = async (playerId: string, playerName: string) => {
+    const confirmar = window.confirm(
+      `Tem certeza que deseja APAGAR ${playerName}? O aluno e os pontos dele saem da planilha e não dá para desfazer.`
+    );
+    if (!confirmar) return;
+
+    audioService.playClick();
+    const r = await planilha.profApagarJogador(lerToken() ?? '', playerId);
+    if (!r.ok) {
+      alert(r.rede ? 'Sem conexão com a planilha' : 'Não foi possível apagar agora. Entre de novo no painel.');
+      if (!r.rede) await refreshData();
+      return;
+    }
+    storageService.logAudit('PLAYER_DELETED', `Aluno apagado da planilha: ${playerName}`);
+    await refreshData();
+    alert(`${playerName} foi apagado.`);
   };
 
   // Export CSV
@@ -219,9 +290,10 @@ export const AdminPanel: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bungee text-sm shadow-lg border border-blue-400 cursor-pointer transition-all"
+              disabled={entrando}
+              className="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bungee text-sm shadow-lg border border-blue-400 cursor-pointer transition-all disabled:opacity-60 disabled:cursor-wait"
             >
-              ACESSAR PAINEL
+              {entrando ? 'ENTRANDO...' : 'ACESSAR PAINEL'}
             </button>
           </form>
 
@@ -285,13 +357,18 @@ export const AdminPanel: React.FC = () => {
 
       {/* Main Container */}
       <main className="flex-1 w-full max-w-6xl mx-auto px-4 py-6 space-y-6">
+        {semConexao && (
+          <div className="p-3 bg-red-950/60 border border-red-500 rounded-xl text-xs text-red-200 font-bold">
+            Sem conexão com a planilha
+          </div>
+        )}
         
         {/* Metric Cards Overview */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
             <span className="text-[11px] uppercase font-bold text-slate-400">Total de Alunos</span>
             <div className="text-2xl font-bungee text-white mt-1">{leaderboard.length}</div>
-            <span className="text-[10px] text-slate-500">Turmas 801 - 804</span>
+            <span className="text-[10px] text-slate-500">Turmas 601 - 909</span>
           </div>
 
           <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
@@ -417,10 +494,9 @@ export const AdminPanel: React.FC = () => {
                   className="bg-slate-950 border border-slate-700 text-xs text-white rounded-xl px-3 py-2 outline-none cursor-pointer"
                 >
                   <option value="all">Todas as Turmas</option>
-                  <option value="804">Turma 804</option>
-                  <option value="801">Turma 801</option>
-                  <option value="802">Turma 802</option>
-                  <option value="803">Turma 803</option>
+                  {[...new Set(players.map(p => p.className))].sort().map(cls => (
+                    <option key={cls} value={cls}>Turma {cls}</option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -483,6 +559,14 @@ export const AdminPanel: React.FC = () => {
                             className="p-1.5 rounded-lg bg-slate-800 hover:bg-amber-600/30 text-amber-400 border border-slate-700 hover:border-amber-500 transition-all cursor-pointer"
                           >
                             <RotateCcw className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeletePlayer(p.playerId, p.displayName)}
+                            title="Apagar este aluno da planilha"
+                            className="ml-1.5 p-1.5 rounded-lg bg-slate-800 hover:bg-red-600/30 text-red-400 border border-slate-700 hover:border-red-500 transition-all cursor-pointer"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </td>
                       </tr>

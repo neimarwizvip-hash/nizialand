@@ -63,7 +63,7 @@ export const PhaseStoryGate: React.FC<{ story: string; children: React.ReactNode
   }
 
   return (
-    <div className="fixed inset-0 z-[70] bg-black flex items-center justify-center" role="dialog" aria-label="História da fase">
+    <div className="fixed inset-0 z-[70] bg-black flex items-center justify-center pointer-events-auto" role="dialog" aria-label="História da fase">
       <video
         ref={ref}
         src={`/assets/historia_${story}.mp4`}

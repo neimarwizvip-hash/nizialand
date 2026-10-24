@@ -8,7 +8,7 @@
 
 | Categoria | Quantidade de Arquivos | Estado de Integração | Observações |
 |---|---:|---|---|
-| **Vídeos Cinematográficos** | 1 | IMPLEMENTADO / TESTADO | Vídeo oficial de abertura gerado no Google Flow (`nisialand_intro.mp4`) |
+| **Vídeos Cinematográficos** | 1 | IMPLEMENTADO / TESTADO | Introdução da história do Nível 0 (`historia_nivel0.mp4`, toca ao entrar na Missão 0). A abertura antiga foi tirada do jogo e guardada no backup. |
 | **Trilha Sonora Oficial (Cleyton Kauffman)** | 6 | IMPLEMENTADO / TESTADO | Tema *Superhero* (CC0) com versões Intro, Loop e Variações OGG/MP3 |
 | **Avatares dos 4 Heróis Oficiais** | 4 | IMPLEMENTADO / TESTADO | Renders 3D corpo inteiro 768x1024 com transparência RGBA |
 | **Avatares de Apoio / Painéis / Turma** | 16 | IMPLEMENTADO / TESTADO | Retratos de estudantes e personagens curriculares |
@@ -63,7 +63,6 @@
 | `nisialand_hero.jpg` | `/assets/nisialand_hero.jpg` | Arte do Jogo | JPG (Transp: Não) | 1024x576 (535.7 KB) | Composição de interface gamificada [Navegação geral] | IMPLEMENTADO / TESTADO |
 | `nisialand_inclusive_students.png` | `/assets/nisialand_inclusive_students.png` | Arte do Jogo | PNG (Transp: Não) | 1024x682 (925.3 KB) | Composição de interface gamificada [Navegação geral] | IMPLEMENTADO / TESTADO |
 | `nisialand_institutional_characters.jpg` | `/assets/nisialand_institutional_characters.jpg` | Arte do Jogo | JPG (Transp: Não) | 1024x682 (481.5 KB) | Composição de interface gamificada [Navegação geral] | IMPLEMENTADO / TESTADO |
-| `nisialand_intro.mp4` | `/assets/nisialand_intro.mp4` | Vídeo Cinematográfico | MP4 (Transp: Não) | 1920x1080 (16:9) (26248.1 KB) | Abertura imersiva do jogo (Modal / Hero Intro) [StartScreen / Abertura] | IMPLEMENTADO / TESTADO |
 | `nisialand_registration_bg.jpg` | `/assets/nisialand_registration_bg.jpg` | Arte do Jogo | JPG (Transp: Não) | 1024x576 (535.7 KB) | Composição de interface gamificada [Navegação geral] | IMPLEMENTADO / TESTADO |
 | `nisialand_school_facade_clean.jpg` | `/assets/nisialand_school_facade_clean.jpg` | Cenário / Fundo 3D | JPG (Transp: Não) | 1024x576 (491.9 KB) | Imersão nos ambientes reais gamificados da escola [Telas de Aventura / Quiz / Flashcards / Nível 0] | IMPLEMENTADO / TESTADO |
 | `nizialand_hero.jpg` | `/assets/nizialand_hero.jpg` | Arte do Jogo | JPG (Transp: Não) | 1024x576 (504.1 KB) | Composição de interface gamificada [Navegação geral] | IMPLEMENTADO / TESTADO |

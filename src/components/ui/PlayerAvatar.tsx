@@ -94,7 +94,7 @@ const sizeClasses = {
   '2xl': 'w-32 h-32'
 };
 
-const skinToneFilter: Record<SkinTone, string> = {
+export const skinToneFilter: Record<SkinTone, string> = {
   light: 'none',
   warm: 'sepia(0.2) saturate(1.15) contrast(1.02)',
   medium: 'sepia(0.35) saturate(1.2) brightness(0.92) contrast(1.05)',

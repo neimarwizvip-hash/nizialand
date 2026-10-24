@@ -6,6 +6,8 @@ import { audioService } from '../../services/audio';
 import { fireConfetti } from '../../components/ui/ConfettiEffect';
 import { GameHeader } from '../../components/layout/GameHeader';
 import { isGuestPlayer } from '../../types';
+import { getPlayerGrade } from '../../services/grade';
+import { GRADE_LABELS, GRADE_QUIZ_THEME } from '../../data/level0Content';
 
 export const QuizResultsScreen: React.FC = () => {
   const navigate = useNavigate();
@@ -23,6 +25,9 @@ export const QuizResultsScreen: React.FC = () => {
 
   const isBlue = currentPlayer.team === 'blue';
   const isGuest = isGuestPlayer(currentPlayer);
+  // Mesma série e tema da tela do Quiz.
+  const grade = getPlayerGrade(currentPlayer) ?? '8';
+  const quizTitle = `${GRADE_LABELS[grade]} · ${GRADE_QUIZ_THEME[grade]}`;
 
   return (
     <div className="min-h-screen game-sky text-slate-900 flex flex-col">
@@ -42,7 +47,7 @@ export const QuizResultsScreen: React.FC = () => {
             MISSION 1 COMPLETE!
           </h1>
           <p className="text-slate-600 text-sm md:text-base font-semibold mt-2">
-            Awesome work, {currentPlayer.displayName}! You mastered English Comparative Adjectives!
+            Awesome work, {currentPlayer.displayName}! You mastered {quizTitle}!
           </p>
 
           {/* Star Rating */}

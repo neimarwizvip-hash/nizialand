@@ -1,52 +1,54 @@
-// Estado das missões de um nível, derivado só dos resultados salvos.
+// Estado da missão de um nível, derivado só dos resultados salvos.
 // Não grava nada: quem guarda os resultados continua sendo o storageService.
 
-import type { ActivityResult, Level, Mission, MissionState } from '../../core/types';
+import type { Activity, ActivityResult, ActivityState, Level, Mission } from '../../core/types';
 
-export interface MissionProgress {
-  mission: Mission;
-  state: MissionState;
+export interface ActivityProgress {
+  activity: Activity;
+  state: ActivityState;
   result: ActivityResult | null;
 }
 
-export interface LevelProgress {
+export interface MissionProgress {
   levelId: string;
-  missions: MissionProgress[];
+  mission: Mission;
+  activities: ActivityProgress[];
   completedCount: number;
   total: number;
+  // A missão (e o nível) termina quando todas as atividades forem concluídas.
   isCompleted: boolean;
 }
 
-// results: resultados por missionId (ausente = ainda não jogada).
+// results: resultados por activityId (ausente = ainda não jogada).
 // unlocked: false enquanto o jogador não escolheu a série.
-export function getLevelProgress(
+export function getMissionProgress(
   level: Level,
   results: Record<string, ActivityResult | null | undefined>,
   unlocked: boolean
-): LevelProgress {
-  const isDone = (missionId: string) => !!results[missionId]?.completed;
-
-  const missions = level.missions.map<MissionProgress>(mission => {
-    const result = results[mission.id] ?? null;
-    let state: MissionState;
-    if (isDone(mission.id)) state = 'completed';
-    else if (unlocked && mission.requires.every(isDone)) state = 'available';
+): MissionProgress {
+  const { mission } = level;
+  const activities = mission.activities.map<ActivityProgress>(activity => {
+    const result = results[activity.id] ?? null;
+    let state: ActivityState;
+    if (result?.completed) state = 'completed';
+    else if (unlocked) state = 'available';
     else state = 'locked';
-    return { mission, state, result };
+    return { activity, state, result };
   });
 
-  const completedCount = missions.filter(m => m.state === 'completed').length;
+  const completedCount = activities.filter(a => a.state === 'completed').length;
   return {
     levelId: level.id,
-    missions,
+    mission,
+    activities,
     completedCount,
-    total: missions.length,
-    isCompleted: missions.length > 0 && completedCount === missions.length,
+    total: activities.length,
+    isCompleted: activities.length > 0 && completedCount === activities.length,
   };
 }
 
-// Próxima missão a jogar: a primeira disponível na ordem, ou null se acabou.
-export function getNextMission(progress: LevelProgress): Mission | null {
-  const next = progress.missions.find(m => m.state === 'available');
-  return next ? next.mission : null;
+// Próxima atividade a jogar: a primeira disponível na ordem, ou null se acabou.
+export function getNextActivity(progress: MissionProgress): Activity | null {
+  const next = progress.activities.find(a => a.state === 'available');
+  return next ? next.activity : null;
 }

@@ -2,7 +2,7 @@ import { PlayerProfile } from '../types';
 import { SchoolGrade, SCHOOL_GRADES } from '../data/level0Content';
 
 // Série do aluno no Nível 0.
-// 1) escolha salva pelo aluno no mapa; 2) turma (801–804 → 8º); 3) nenhuma → o mapa pede a escolha.
+// 1) escolha salva pelo aluno no mapa; 2) turma (1º dígito: 603 → 6º, 801 → 8º); 3) nenhuma → o mapa pede a escolha.
 const GRADE_KEY = 'nisialand_grade_v1';
 
 function readChoices(): Record<string, SchoolGrade> {

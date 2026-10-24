@@ -1,0 +1,15 @@
+{
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/package-lock.json": true,
+    "**/*.mp4": true,
+    "app.js": true,
+    "style.css": true,
+    "index.legacy.html": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/dist/**": true
+  }
+}

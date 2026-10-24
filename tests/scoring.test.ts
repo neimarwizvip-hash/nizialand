@@ -10,8 +10,8 @@ describe('NISIALAND Educational Game — Core Rules & Integrity', () => {
       const code1 = generatePlayerCode('804');
       const code2 = generatePlayerCode('804');
       
-      expect(code1).toMatch(/^NSL-804-[A-Z0-9]{3}$/);
-      expect(code2).toMatch(/^NSL-804-[A-Z0-9]{3}$/);
+      expect(code1).toMatch(/^NSL-804-[A-Z0-9]{4}$/);
+      expect(code2).toMatch(/^NSL-804-[A-Z0-9]{4}$/);
       expect(code1).not.toBe(code2);
     });
   });

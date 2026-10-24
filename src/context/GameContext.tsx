@@ -7,7 +7,7 @@ import { gameEvents } from '../core/events';
 import type { ActivityResult } from '../core/types';
 import { LEVEL0 } from '../content/level0';
 import { fromFlashcardResult, fromQuizResult, level0Results } from '../engines/pedagogy/adapters';
-import { getLevelProgress } from '../engines/progression/progress';
+import { getMissionProgress } from '../engines/progression/progress';
 import type { SchoolGrade } from '../data/level0Content';
 
 interface GameContextType {
@@ -57,6 +57,11 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     refreshUserData();
   }, [currentPlayer]);
 
+  // Reenvia para a planilha o que ficou na fila (ao abrir e quando a internet volta).
+  useEffect(() => {
+    storageService.iniciarSincronizacao();
+  }, []);
+
   const register = async (data: { name: string; age: number; className: string; team: TeamId; avatar?: string; skinTone?: 'light' | 'medium' | 'dark' | 'warm' }) => {
     // Visitante fazendo o cadastro definitivo: leva pontos e série para o novo aluno.
     const guest = isGuestPlayer(currentPlayer) ? currentPlayer : null;
@@ -96,13 +101,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Avisa o resto do jogo (eventos tipados) depois que um resultado é salvo.
   const emitProgress = (player: PlayerProfile, result: ActivityResult, nextQuiz: QuizResult | null, nextFlashcards: FlashcardResult | null) => {
     const grade = result.grade;
-    const wasCompleted = getLevelProgress(LEVEL0, level0Results(quizResult, flashcardResult, grade), true).isCompleted;
+    const wasCompleted = getMissionProgress(LEVEL0, level0Results(quizResult, flashcardResult, grade), true).isCompleted;
     gameEvents.emit('activity.completed', { playerId: player.id, result });
-    if (result.completed) {
-      gameEvents.emit('mission.completed', { playerId: player.id, levelId: LEVEL0.id, missionId: result.missionId, result });
-    }
-    const isCompleted = getLevelProgress(LEVEL0, level0Results(nextQuiz, nextFlashcards, grade), true).isCompleted;
+    // A missão termina quando todas as atividades estão concluídas; cada nível tem uma missão só.
+    const isCompleted = getMissionProgress(LEVEL0, level0Results(nextQuiz, nextFlashcards, grade), true).isCompleted;
     if (isCompleted && !wasCompleted) {
+      gameEvents.emit('mission.completed', { playerId: player.id, levelId: LEVEL0.id, missionId: LEVEL0.mission.id, result });
       gameEvents.emit('level.completed', { playerId: player.id, levelId: LEVEL0.id });
     }
   };

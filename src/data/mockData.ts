@@ -25,7 +25,10 @@ export const TEAMS_CONFIG: Record<'blue' | 'purple', TeamInfo> = {
   }
 };
 
-export const AVAILABLE_CLASSES = ['801', '802', '803', '804'];
+// Turmas da escola: 601–609, 701–709, 801–809, 901–909 (a série vem do 1º dígito, ver services/grade.ts).
+export const AVAILABLE_CLASSES = ['6', '7', '8', '9'].flatMap(serie =>
+  Array.from({ length: 9 }, (_, i) => `${serie}0${i + 1}`)
+);
 
 export const AVAILABLE_AVATARS = [
   { id: 'mateus', name: 'Mateus', img: '/assets/avatar_mateus.jpg', team: 'blue' },
@@ -120,7 +123,6 @@ export const INITIAL_LEADERBOARD: LeaderboardPlayerEntry[] = [
 ];
 
 export const TEACHER_CREDENTIALS = {
-  accessCode: 'prof804',
   teacherName: 'Prof. Neimar Oliveira',
   schoolName: 'Escola Municipal Nísia Vilela Fernandes'
 };

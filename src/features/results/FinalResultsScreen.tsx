@@ -20,6 +20,8 @@ import { fireConfetti } from '../../components/ui/ConfettiEffect';
 import { storageService } from '../../services/storage';
 import { GameHeader } from '../../components/layout/GameHeader';
 import { isGuestPlayer } from '../../types';
+import { getPlayerGrade } from '../../services/grade';
+import { GRADE_LABELS, GRADE_QUIZ_THEME } from '../../data/level0Content';
 
 export const FinalResultsScreen: React.FC = () => {
   const navigate = useNavigate();
@@ -45,6 +47,9 @@ export const FinalResultsScreen: React.FC = () => {
 
   if (!currentPlayer) return null; // redirect handled by <RequirePlayer>
   const isGuest = isGuestPlayer(currentPlayer);
+  // Mesma série e tema da tela do Quiz.
+  const grade = getPlayerGrade(currentPlayer) ?? '8';
+  const quizTitle = `${GRADE_LABELS[grade]} · ${GRADE_QUIZ_THEME[grade]}`;
 
   const qScore = quizResult?.totalScore || 0;
   const fcScore = flashcardResult?.totalScore || 0;
@@ -143,7 +148,7 @@ export const FinalResultsScreen: React.FC = () => {
               <div className="text-2xl font-bungee text-blue-600">
                 {qScore} <span className="text-xs text-slate-500 font-sans">/ 1,000 XP</span>
               </div>
-              <span className="text-[11px] text-slate-500 mt-1">Comparative Adjectives</span>
+              <span className="text-[11px] text-slate-500 mt-1">{quizTitle}</span>
             </div>
 
             {/* Flashcard Mission */}

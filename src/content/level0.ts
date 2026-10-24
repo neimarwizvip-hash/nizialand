@@ -1,29 +1,39 @@
 // Conteúdo do Nível 0: a primeira aventura contra o Zé Cartinha.
 // As perguntas e cartas por série continuam em src/data/level0Content.ts.
 
-import type { Level, Mission } from '../core/types';
+import type { Activity, Level, Mission } from '../core/types';
 
-export const LEVEL0_MISSION_QUIZ: Mission = {
-  id: 'nivel0-missao1',
-  order: 1,
-  title: 'Enfrentar as distrações do Zé Cartinha',
-  activity: { id: 'nivel0-quiz', mechanic: 'quiz', path: '/quiz' },
-  requires: [],
+export const LEVEL0_QUIZ: Activity = {
+  id: 'nivel0-quiz',
+  mechanic: 'quiz',
+  name: 'Quiz',
+  phrase: 'Responda e ganhe pontos!',
+  path: '/quiz',
+  color: 'yellow',
 };
 
-// A missão 2 não depende da 1: as duas ficam liberadas assim que a série é escolhida.
-export const LEVEL0_MISSION_FLASHCARDS: Mission = {
-  id: 'nivel0-missao2',
-  order: 2,
-  title: 'Recuperar a atenção e enfrentar o desafio das cartas',
-  activity: { id: 'nivel0-flashcards', mechanic: 'flashcards', path: '/flashcards' },
-  requires: [],
+export const LEVEL0_FLASHCARDS: Activity = {
+  id: 'nivel0-flashcards',
+  mechanic: 'flashcards',
+  name: 'Flashcards',
+  phrase: 'Teste sua memória e acumule pontos!',
+  path: '/flashcards',
+  color: 'purple',
+};
+
+// As duas atividades ficam liberadas assim que a série é escolhida.
+export const LEVEL0_MISSION: Mission = {
+  id: 'nivel0-missao0',
+  number: 0,
+  title: 'Desvie das distrações do Zé Cartinha',
+  activities: [LEVEL0_QUIZ, LEVEL0_FLASHCARDS],
 };
 
 export const LEVEL0: Level = {
   id: 'nivel0',
+  number: 0,
   title: 'A primeira aventura',
   story: 'nivel0',
   mode: '2D',
-  missions: [LEVEL0_MISSION_QUIZ, LEVEL0_MISSION_FLASHCARDS],
+  mission: LEVEL0_MISSION,
 };

@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(npx vitest run:*)",
+      "Bash(npx tsc --noEmit:*)",
+      "Bash(npm test:*)"
+    ],
+    "deny": [
+      "Read(./node_modules/**)",
+      "Read(./dist/**)",
+      "Read(./package-lock.json)",
+      "Read(./app.js)",
+      "Read(./style.css)",
+      "Read(./index.legacy.html)",
+      "Read(./**/*.mp4)",
+      "Read(./**/*.mp3)",
+      "Read(./**/*.ogg)",
+      "Read(./**/*.zip)"
+    ]
+  }
+}

@@ -335,7 +335,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
               <img src="/assets/nisialand_institutional_characters.jpg" alt="" className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-amber-300/70" />
               <div className="flex-1">
                 <div className="text-[10px] tracking-[0.25em] text-amber-600 font-black">MODO HISTÓRIA</div>
-                <div className="font-heading font-black text-lg sm:text-xl">Missões NISIALAND: Turmas 801 a 804</div>
+                <div className="font-heading font-black text-lg sm:text-xl">Missões NISIALAND: Turmas 601 a 909</div>
                 <div className="text-xs sm:text-sm text-slate-600">HQ com o Diretor Márcio, cadastro na equipe, Missão 1 (comparativos) e Missão 2 (flashcards) com ranking.</div>
               </div>
               <BookOpen className="w-7 h-7 text-amber-500 group-hover:translate-x-1 transition" />

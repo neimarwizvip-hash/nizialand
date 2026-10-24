@@ -69,6 +69,7 @@ export const LeaderboardScreen: React.FC = () => {
   const [reportingPlayer, setReportingPlayer] = useState<{ id: string; name: string } | null>(null);
   const [reportReason, setReportReason] = useState<string>('Nome inadequado para ambiente escolar');
   const [reportSuccess, setReportSuccess] = useState<boolean>(false);
+  const [rankingLocal, setRankingLocal] = useState<boolean>(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -78,6 +79,7 @@ export const LeaderboardScreen: React.FC = () => {
       setPlayersList(players);
       setClassList(classes);
       setTeamComparison(teams);
+      setRankingLocal(storageService.rankingSource === 'local');
     };
     loadData();
   }, []);
@@ -93,6 +95,9 @@ export const LeaderboardScreen: React.FC = () => {
     if (selectedTeam !== 'all' && p.team !== selectedTeam) return false;
     return true;
   });
+
+  // Só as turmas que têm jogadores no ranking.
+  const classOptions = [...new Set(playersList.map(p => p.className))].sort();
 
   return (
     <div className="min-h-screen game-sky text-slate-900 flex flex-col justify-between">
@@ -113,6 +118,11 @@ export const LeaderboardScreen: React.FC = () => {
           <p className="text-xs sm:text-sm text-slate-600 mt-1 font-semibold">
             Official English Adventure Standings & Team Clash
           </p>
+          {rankingLocal && (
+            <p className="text-[11px] text-slate-500 mt-1 font-semibold">
+              Sem conexão: mostrando só os pontos salvos neste computador.
+            </p>
+          )}
         </div>
 
         {/* 3 Main Tabs: Players, Classes, Teams */}
@@ -176,10 +186,9 @@ export const LeaderboardScreen: React.FC = () => {
                   className="bg-white/95 border border-sky-200 text-slate-900 rounded-xl px-3 py-1.5 text-xs font-bold outline-none cursor-pointer"
                 >
                   <option value="all">All Classes</option>
-                  <option value="804">Turma 804</option>
-                  <option value="801">Turma 801</option>
-                  <option value="802">Turma 802</option>
-                  <option value="803">Turma 803</option>
+                  {classOptions.map(cls => (
+                    <option key={cls} value={cls}>Turma {cls}</option>
+                  ))}
                 </select>
 
                 {/* Team Filter */}
