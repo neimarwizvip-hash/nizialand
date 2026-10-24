@@ -46,7 +46,7 @@ describe('NISIALAND Educational Game — Core Rules & Integrity', () => {
 
     it('shuffles quiz options so correct answers are not predictable at option A', () => {
       const session = getRandomizedQuizSession();
-      expect(session.length).toBe(10);
+      expect(session.length).toBe(5);
 
       // Verify every question still has exactly 1 correct option with matching text
       session.forEach((q) => {

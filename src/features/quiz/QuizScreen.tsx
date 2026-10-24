@@ -294,13 +294,14 @@ export const QuizScreen: React.FC = () => {
       // Quiz Complete!
       const totalScore = accumulatedScore;
       let stars = 1;
-      if (totalScore >= 900) stars = 3;
-      else if (totalScore >= 600) stars = 2;
+      if (totalScore >= sessionQuestions.length * 90) stars = 3;
+      else if (totalScore >= sessionQuestions.length * 60) stars = 2;
 
       const result: QuizResult = {
         completed: true,
         totalScore,
         correctCount: correctAnswersCount,
+        questionCount: sessionQuestions.length,
         stars,
         startedAt: startedAtRef.current,
         completedAt: new Date().toISOString(),

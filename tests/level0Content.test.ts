@@ -1,13 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { SCHOOL_GRADES, getQuizSession, getFlashcardSet, cardFact } from '../src/data/level0Content';
+import { SCHOOL_GRADES, QUIZ_SESSION_SIZE, getQuizSession, getFlashcardSet, cardFact } from '../src/data/level0Content';
 import { gradeFromClassName } from '../src/services/grade';
 
 describe('Level 0 content per grade', () => {
   for (const grade of SCHOOL_GRADES) {
     describe(`${grade}º ano`, () => {
-      it('quiz session has 10 questions with exactly one correct option each', () => {
+      it('quiz session has five randomized questions with exactly one correct option each', () => {
         const session = getQuizSession(grade);
-        expect(session).toHaveLength(10);
+        expect(session).toHaveLength(QUIZ_SESSION_SIZE);
         for (const q of session) {
           expect(q.sentence.length).toBeGreaterThan(0);
           expect(q.optionsQuad.length).toBeGreaterThanOrEqual(2);

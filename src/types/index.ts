@@ -82,8 +82,9 @@ export interface QuizQuestionAttempt {
 
 export interface QuizResult {
   completed: boolean;
-  totalScore: number; // Max 1000
-  correctCount: number; // Out of 10
+  totalScore: number;
+  correctCount: number;
+  questionCount?: number;
   stars: number; // 1 to 3 stars
   startedAt: string;
   completedAt: string;

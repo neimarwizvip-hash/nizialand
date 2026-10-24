@@ -257,16 +257,12 @@ export function shuffleArray<T>(array: T[]): T[] {
  * 2. Options (A, B, C, D) for each question are shuffled so option A is never predictable.
  * 3. Correct answer mapping (isCorrect: true) is strictly maintained.
  */
-export function getRandomizedQuizSession(): QuizQuestion[] {
+export function getRandomizedQuizSession(count = 5): QuizQuestion[] {
   const letters = ['A', 'B', 'C', 'D'];
 
-  const act1 = QUIZ_QUESTIONS.filter(q => q.activity === 1);
-  const act2 = QUIZ_QUESTIONS.filter(q => q.activity === 2);
-
-  const shuffledAct1 = shuffleArray(act1);
-  const shuffledAct2 = shuffleArray(act2);
-
-  return [...shuffledAct1, ...shuffledAct2].map(q => {
+  // Cada acesso seleciona parte do banco sem preservar a ordem original
+  // nem a separação por atividade.
+  return shuffleArray(QUIZ_QUESTIONS).slice(0, count).map(q => {
     const shuffledQuad = shuffleArray(q.optionsQuad).map((opt, idx) => ({
       ...opt,
       letter: letters[idx] || opt.letter

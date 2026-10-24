@@ -28,6 +28,7 @@ export const QuizResultsScreen: React.FC = () => {
   // Mesma série e tema da tela do Quiz.
   const grade = getPlayerGrade(currentPlayer) ?? '8';
   const quizTitle = `${GRADE_LABELS[grade]} · ${GRADE_QUIZ_THEME[grade]}`;
+  const questionCount = quizResult.questionCount ?? 10;
 
   return (
     <div className="min-h-screen game-sky text-slate-900 flex flex-col">
@@ -74,7 +75,7 @@ export const QuizResultsScreen: React.FC = () => {
               <div className="text-2xl md:text-3xl font-bungee text-amber-600 mt-1">
                 {quizResult.totalScore}
               </div>
-              <span className="text-[11px] font-semibold text-slate-500">out of 1,000 pts</span>
+              <span className="text-[11px] font-semibold text-slate-500">out of {questionCount * 100} base pts</span>
             </div>
 
             {/* Correct Answers */}
@@ -82,7 +83,7 @@ export const QuizResultsScreen: React.FC = () => {
               <span className="text-xs font-extrabold uppercase text-slate-500">Correct Answers</span>
               <div className="text-2xl md:text-3xl font-bungee text-emerald-600 mt-1 flex items-center justify-center gap-1">
                 <CheckCircle2 className="w-6 h-6" />
-                <span>{quizResult.correctCount}/10</span>
+                <span>{quizResult.correctCount}/{questionCount}</span>
               </div>
               <span className="text-[11px] font-semibold text-slate-500">questions mastered</span>
             </div>

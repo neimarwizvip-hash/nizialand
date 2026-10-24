@@ -31,10 +31,11 @@ export const GRADE_FLASHCARD_THEME: Record<SchoolGrade, string> = {
 };
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E'];
+export const QUIZ_SESSION_SIZE = 5;
 
 export function getQuizSession(grade: SchoolGrade): QuizQuestion[] {
-  if (grade === '8') return getRandomizedQuizSession();
-  const round = buildRound(topicsForGrade(grade).map((t) => t.id), 10);
+  if (grade === '8') return getRandomizedQuizSession(QUIZ_SESSION_SIZE);
+  const round = buildRound(topicsForGrade(grade).map((t) => t.id), QUIZ_SESSION_SIZE);
   return round.map((q, index) => {
     const options = q.shuffled.map((text, i) => ({
       letter: LETTERS[i],
