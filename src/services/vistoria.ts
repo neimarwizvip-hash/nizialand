@@ -1,6 +1,7 @@
 // Modo vistoria (só no `npm run dev`): o professor abre qualquer nível/atividade direto, sem salvar nada.
 // No build de produção import.meta.env.DEV é false: a rota some e o modo nunca liga.
 import type { PlayerProfile } from '../types';
+import type { MissionProgress } from '../engines/progression/progress';
 
 const KEY = 'nisialand_vistoria';
 
@@ -35,3 +36,9 @@ export const VISTORIA_PLAYER: PlayerProfile = {
   createdAt: '',
   lastLoginAt: '',
 };
+
+// Na vistoria nenhuma atividade fica bloqueada (missões sequenciais abrem fora da ordem).
+export function unlockForVistoria(progress: MissionProgress, on: boolean): MissionProgress {
+  if (!on) return progress;
+  return { ...progress, activities: progress.activities.map(a => (a.state === 'locked' ? { ...a, state: 'available' } : a)) };
+}

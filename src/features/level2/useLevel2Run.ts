@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { Activity } from '../../core/types';
+import type { Activity, ActivityResult } from '../../core/types';
 import type { SchoolGrade } from '../../data/level0Content';
 import { useGame } from '../../context/GameContext';
 import { audioService } from '../../services/audio';
@@ -21,10 +21,12 @@ export interface Level2RunOptions {
   instant?: boolean;
   // Encerra antes do total (duelo: alguém ficou sem cartas).
   endWhen?: (outcomes: Level2Outcome[]) => boolean;
+  // Monta o resultado salvo (o Nível 3 reaproveita o andamento com a missão dele).
+  buildResult?: (activity: Activity, grade: SchoolGrade | null, outcomes: Level2Outcome[], startedAt: string) => ActivityResult;
 }
 
 // Andamento comum do Nível 2: uma tentativa por item, 20 s, errou = mostra a certa por 1,5 s e avança sozinho.
-export function useLevel2Run({ activity, grade, total, itemSeconds = LEVEL2_ITEM_SECONDS, runSeconds = null, instant = false, endWhen }: Level2RunOptions) {
+export function useLevel2Run({ activity, grade, total, itemSeconds = LEVEL2_ITEM_SECONDS, runSeconds = null, instant = false, endWhen, buildResult = buildLevel2Result }: Level2RunOptions) {
   const { saveActivityResult } = useGame();
   const startedAt = useRef(new Date().toISOString());
   const [index, setIndex] = useState(0);
@@ -51,9 +53,9 @@ export function useLevel2Run({ activity, grade, total, itemSeconds = LEVEL2_ITEM
     setFinished(true);
     if (!saved.current) {
       saved.current = true;
-      saveActivityResult(buildLevel2Result(activity, grade, list, startedAt.current));
+      saveActivityResult(buildResult(activity, grade, list, startedAt.current));
     }
-  }, [activity, grade, saveActivityResult]);
+  }, [activity, grade, saveActivityResult, buildResult]);
 
   const record = useCallback((correct: boolean, fb: Exclude<Level2Feedback, null>) => {
     if (finished) return;

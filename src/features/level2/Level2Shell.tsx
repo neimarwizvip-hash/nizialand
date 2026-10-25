@@ -40,12 +40,16 @@ interface Level2ShellProps {
   finishedNote?: string;
   onExit: () => void;
   onReplay?: () => void;
+  // Nível 3 reaproveita a moldura: outro botão de saída, outro fundo e outro teto de pontos.
+  exitLabel?: string;
+  background?: string;
+  maxScore?: number;
   children: React.ReactNode;
   overlay?: React.ReactNode;
 }
 
 export const Level2Shell: React.FC<Level2ShellProps> = ({
-  activity, progressLabel, clock, score, feedback, finished, correctCount, totalItems, revealText, afterText, finishedNote, onExit, onReplay, children, overlay,
+  activity, progressLabel, clock, score, feedback, finished, correctCount, totalItems, revealText, afterText, finishedNote, onExit, onReplay, exitLabel = 'Voltar ao pátio', background = '/assets/nisialand_hallway_bg.jpg', maxScore, children, overlay,
 }) => {
   const accent = ACCENT[activity.color] ?? ACCENT.blue;
 
@@ -64,7 +68,7 @@ export const Level2Shell: React.FC<Level2ShellProps> = ({
   return (
     <div className="relative min-h-screen game-sky text-slate-900 flex flex-col overflow-x-hidden">
       <div className="fixed inset-0 z-0 pointer-events-none">
-        <img src="/assets/nisialand_hallway_bg.jpg" alt="" className="w-full h-full object-cover brightness-[0.88]" />
+        <img src={background} alt="" className="w-full h-full object-cover brightness-[0.88]" />
         <div className="absolute inset-0 bg-white/60" />
       </div>
       <div className="relative z-10"><GameHeader /></div>
@@ -75,7 +79,7 @@ export const Level2Shell: React.FC<Level2ShellProps> = ({
             <Trophy className="w-12 h-12 short:w-8 short:h-8 mx-auto text-amber-500" />
             <h1 className="font-heading font-black text-2xl sm:text-3xl short:text-xl mt-2">{activity.name}</h1>
             {finishedNote && <p className="font-heading font-black text-lg text-violet-700 mt-1">{finishedNote}</p>}
-            <p className="font-heading font-black text-4xl short:text-2xl text-blue-700 mt-3 short:mt-1">{score} <span className="text-lg text-slate-500">/ {level2MaxScore(totalItems)} pts</span></p>
+            <p className="font-heading font-black text-4xl short:text-2xl text-blue-700 mt-3 short:mt-1">{score} <span className="text-lg text-slate-500">/ {maxScore ?? level2MaxScore(totalItems)} pts</span></p>
             <p className="text-sm font-bold text-slate-600 mt-1">{correctCount} de {totalItems} certas</p>
             <div className="mt-5 short:mt-2 flex justify-center gap-3 flex-wrap">
               {onReplay && (
@@ -92,7 +96,7 @@ export const Level2Shell: React.FC<Level2ShellProps> = ({
                 onClick={onExit}
                 className="px-8 py-3 short:py-2 rounded-full bg-gradient-to-r from-amber-400 to-yellow-400 border-2 border-amber-600 shadow-[0_5px_0_0_#b45309] font-heading font-black uppercase text-sm active:translate-y-1"
               >
-                Voltar ao pátio
+                {exitLabel}
               </button>
             </div>
           </div>

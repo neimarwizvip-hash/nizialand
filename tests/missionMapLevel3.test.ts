@@ -33,16 +33,16 @@ describe('Nível 3', () => {
   it('possui conteúdo para as quatro séries', () => {
     for (const grade of ['6', '7', '8', '9'] as const) {
       expect(LEVEL3_CONTENT[grade].review.length).toBeGreaterThan(0);
-      expect(LEVEL3_CONTENT[grade].arrange.length).toBeGreaterThan(0);
+      expect(LEVEL3_CONTENT[grade].arrange.place.length).toBeGreaterThan(0);
       expect(LEVEL3_CONTENT[grade].board.length).toBeGreaterThan(0);
       expect(LEVEL3_CONTENT[grade].who.length).toBeGreaterThan(0);
       expect(LEVEL3_CONTENT[grade].memory.length).toBeGreaterThan(0);
-      expect(LEVEL3_CONTENT[grade].maze.length).toBeGreaterThan(0);
+      expect(LEVEL3_CONTENT[grade].maze.words.length).toBeGreaterThan(0);
     }
   });
 
   it('gera resultado compatível com o progresso comum', () => {
-    const result = buildLevel3Result(LEVEL3.mission.activities[0], '8', 100, 1, LEVEL3_CONTENT['8'].arrange[0]);
+    const result = buildLevel3Result(LEVEL3.mission.activities[0], '8', [{ points: 100, correct: true }], '2026-10-25T00:00:00.000Z');
     expect(result).toMatchObject({ activityId: 'nivel3-arrume', missionId: 'nivel3-missao3', score: 100, completed: true });
   });
 });

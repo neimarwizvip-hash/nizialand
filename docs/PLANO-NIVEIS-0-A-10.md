@@ -24,8 +24,8 @@ O gráfico do jogo fica mais rico a cada etapa: 2D nos Níveis 0 e 1, 3D simples
 | 0 | Desvie das distrações do Zé Cartinha | Conhecer o jogo e a escola (nível de teste) | 2D, telas | 2 | Pronto |
 | 1 | As regras da escola | Regras da escola | 2D, telas | 4 | Pronto |
 | 2 | Respeito à autoridade | Respeitar direção, coordenação e orientação | 3D simples, pátio | 6 | Em construção |
-| 3 | Convivência em sala | Conviver bem em sala de aula | 3D, corredores e salas | 6 | Planejado |
-| 4 | Trabalho em equipe | Participar em grupo e cumprir tarefas | 3D, escola toda | 6 | Planejado |
+| 3 | Convivência em sala | Conviver bem em sala de aula | Corredor 3D e salas 2D | 6 | Jogável, em validação de dispositivos e conteúdo |
+| 4 | Trabalho em equipe | Participar em grupo e cumprir tarefas | Corredor 3D e mapa 2D da escola | 6 | Protótipo jogável, cenário e conteúdo ainda em evolução |
 | 5 | Minhas escolhas | Refletir sobre as próprias decisões | 3D robusto, avatar que conversa | 7 | Planejado |
 | 6 | Consequências | Ver o efeito das decisões nos outros | 3D robusto | 7 | Proposta para completar a lacuna |
 | 7 | Projeto: aprender a se organizar | Organizar material, rotina, aula, grupo e estudo | 3D robusto | 8 | Planejado |

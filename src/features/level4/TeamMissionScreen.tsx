@@ -1,12 +1,99 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, Check, Lock, Users } from 'lucide-react';
+import React, { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowLeft, Box, Check, Lock, MapPinned, Trophy, Users } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useGame } from '../../context/GameContext';
 import { getPlayerGrade } from '../../services/grade';
 import { LEVEL4 } from '../../content/level4';
-import { TeamTroublemakers } from './TeamTroublemakers';
-import { LEVEL4_CONTENT, Level4Question } from '../../data/level4Content';
-import { buildLevel4Result } from './level4Rules';
+import { LEVEL4_CONTENT } from '../../data/level4Content';
 import { getMissionProgress } from '../../engines/progression/progress';
-export const TeamMissionScreen: React.FC = () => { const { currentPlayer, activityResults, saveActivityResult } = useGame(); const navigate = useNavigate(); const [params, setParams] = useSearchParams(); const grade = getPlayerGrade(currentPlayer) ?? '8'; const progress = useMemo(() => getMissionProgress(LEVEL4, activityResults, true), [activityResults]); const requested = params.get('atividade'); const selected = LEVEL4.mission.activities.find(a => a.id === requested) ?? null; const entry = progress.activities.find(a => a.activity.id === selected?.id); const [done, setDone] = useState(false); const [choice, setChoice] = useState<number | null>(null); useEffect(() => { setDone(false); setChoice(null); if (requested && (!selected || entry?.state === 'locked')) setParams({}, { replace: true }); }, [requested, selected, entry?.state, setParams]); const content = LEVEL4_CONTENT[grade]; const questions: Record<string, Level4Question[]> = { 'nivel4-pistas': content.pistas, 'nivel4-direcoes': content.direcoes, 'nivel4-papeis': content.papeis, 'nivel4-mensagem': content.mensagem, 'nivel4-revezamento': content.revezamento, 'nivel4-revisao': content.revisao }; const question = selected ? questions[selected.id][0] : null; const answer = (i: number) => { if (!selected || !question || done) return; setChoice(i); saveActivityResult(buildLevel4Result(selected, grade, i === question.answer ? 100 : 0, i === question.answer ? 1 : 0, question)); setDone(true); }; if (selected && entry?.state !== 'locked' && question) return <div className="min-h-screen game-sky p-4 sm:p-8"><div className="max-w-3xl mx-auto"><TeamTroublemakers activityId={selected.id} /><button onClick={() => setParams({})} className="mb-4 px-4 py-2 rounded-xl bg-white border-2 border-sky-300 font-black flex items-center gap-2"><ArrowLeft className="w-4 h-4"/> Equipe</button><div className="game-panel p-6 sm:p-8"><p className="text-xs font-black tracking-widest text-orange-700">NÍVEL 4 · TRABALHO EM EQUIPE</p><h1 className="font-bungee text-2xl sm:text-4xl text-blue-900 mt-2">{selected.name}</h1><p className="font-bold text-slate-600 mt-3">{question.prompt}</p><div className="mt-3 flex flex-wrap gap-2 text-xs font-black"><span className="px-2 py-1 rounded-full bg-blue-100 text-blue-800">Habilidade: {question.skill}</span><span className="px-2 py-1 rounded-full bg-amber-100 text-amber-800">Foco: {question.languageFocus}</span></div><div className="grid gap-3 mt-6">{question.options.map((option, i) => <button key={option} disabled={done} onClick={() => answer(i)} className={`text-left p-4 rounded-2xl border-2 font-heading font-black ${done && i === question.answer ? 'bg-emerald-100 border-emerald-500' : done && i === choice ? 'bg-red-100 border-red-500' : 'bg-white border-slate-300 hover:border-orange-500'}`}>{option}</button>)}</div>{done && <div className="mt-5 rounded-2xl bg-orange-50 border-2 border-orange-200 p-4"><p className="font-black">{choice === question.answer ? 'Resposta correta! +100 pontos.' : 'Veja a resposta correta.'}</p><p className="text-sm text-slate-600 mt-1">{question.explanation}</p><button onClick={() => setParams({})} className="mt-3 px-5 py-2 rounded-xl bg-amber-400 border-2 border-amber-700 font-black">Voltar à equipe</button></div>}</div></div></div>; return <div className="min-h-screen game-sky p-4 sm:p-8"><div className="max-w-6xl mx-auto"><header className="flex items-center justify-between mb-6"><div><p className="text-xs font-black tracking-widest text-orange-700">NISIALAND · NÍVEL 4</p><h1 className="font-bungee text-3xl sm:text-5xl text-blue-900">TRABALHO EM EQUIPE</h1><p className="font-bold text-slate-600">Projeto coletivo · {grade}º ano</p><p className="text-sm text-slate-500 mt-2">{content.curriculum.theme} · {content.curriculum.progression}</p></div><button onClick={() => navigate('/mapa')} className="px-4 py-2 rounded-xl bg-white border-2 border-sky-300 font-black">Mapa</button></header><TeamTroublemakers /><div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">{progress.activities.map(({ activity, state, result }) => <button key={activity.id} disabled={state === 'locked'} onClick={() => setParams({ atividade: activity.id })} className={`text-left game-panel p-5 transition ${state === 'locked' ? 'opacity-50 grayscale' : 'hover:-translate-y-1'}`}><Users className="w-10 h-10 text-orange-600"/><h2 className="font-bungee text-xl text-blue-900 mt-3">{activity.name}</h2><p className="text-sm font-bold text-slate-600 mt-2">{activity.phrase}</p><span className="inline-flex items-center gap-1 mt-4 text-xs font-black">{state === 'locked' ? <><Lock className="w-4 h-4"/> BLOQUEADA</> : result?.completed ? <><Check className="w-4 h-4 text-emerald-600"/> CONCLUÍDA · {result.score} PTS</> : 'ABRIR ATIVIDADE'}</span></button>)}</div></div></div>; };
+import { unlockForVistoria } from '../../services/vistoria';
+import { PlayerAvatar } from '../../components/ui/PlayerAvatar';
+import { TeamTroublemakers } from '../../features/level4/TeamTroublemakers';
+import { Level4Activities } from '../../features/level4/Level4Activities';
+import type { CorridorDoor } from '../level3/Corridor3D';
+
+const SchoolCorridor3D = lazy(() => import('../level3/Corridor3D'));
+const LEVEL4_MODE_KEY = 'nisialand_nivel4_modo';
+function readMode(): '3d' | 'simples' {
+  try { return localStorage.getItem(LEVEL4_MODE_KEY) === 'simples' ? 'simples' : '3d'; } catch { return '3d'; }
+}
+
+const PLACES = ['Biblioteca', 'Corredor', 'Sala de grupo', 'Mural', 'Quadra', 'Revisão'] as const;
+
+export const TeamMissionScreen: React.FC = () => {
+  const { currentPlayer, activityResults, saveActivityResult, vistoria } = useGame();
+  const navigate = useNavigate();
+  const [params, setParams] = useSearchParams();
+  const [mode, setMode] = useState<'3d' | 'simples'>(readMode);
+  const lastDoor = useRef<string | null>(null);
+  const grade = getPlayerGrade(currentPlayer) ?? '8';
+  const progress = useMemo(() => unlockForVistoria(getMissionProgress(LEVEL4, activityResults, true), vistoria), [activityResults, vistoria]);
+  const requested = params.get('atividade');
+  const selected = LEVEL4.mission.activities.find(a => a.id === requested) ?? null;
+  const entry = progress.activities.find(a => a.activity.id === selected?.id);
+  const open = !!selected && !!entry && entry.state !== 'locked';
+  useEffect(() => {
+    if (requested && !open) setParams({}, { replace: true });
+  }, [requested, open, setParams]);
+
+  const total = progress.activities.reduce((sum, item) => sum + (item.result?.score ?? 0), 0);
+  const doors: CorridorDoor[] = progress.activities.map(({ activity, state, result }, index) => ({
+    id: activity.id, label: PLACES[index], name: activity.name,
+    state: state === 'locked' ? 'locked' : result ? 'done' : 'open',
+  }));
+  const switchMode = (next: '3d' | 'simples') => {
+    setMode(next);
+    try { localStorage.setItem(LEVEL4_MODE_KEY, next); } catch { /* mantém o modo nesta visita */ }
+  };
+  const enter = (id: string) => { lastDoor.current = id; setParams({ atividade: id }); };
+  const activityView = open && selected ? <Level4Activities key={selected.id} activity={selected} grade={grade} onExit={() => setParams({})} onSave={saveActivityResult} /> : null;
+
+  if (mode === '3d') return <>
+    <div className={open ? 'hidden' : 'fixed inset-0'}>
+      <Suspense fallback={<div className="fixed inset-0 game-sky flex items-center justify-center font-black text-blue-900">Abrindo a escola…</div>}>
+        <SchoolCorridor3D doors={doors} paused={open} startAt={lastDoor.current} avatarId={currentPlayer?.avatar} avatarSkinTone={currentPlayer?.skinTone} level={4} heading="MISSÃO PELA ESCOLA" simpleLabel="Mapa simples" onEnter={enter} onExit={() => navigate('/mapa')} onSimpleMode={() => switchMode('simples')} />
+      </Suspense>
+    </div>
+    {progress.isCompleted && !open && <div role="status" className="fixed z-30 top-16 left-1/2 -translate-x-1/2 w-[min(92vw,520px)] game-panel p-3 border-amber-400 font-black text-blue-900">Nível 4 concluído! Equipe reunida · {total} pontos.</div>}
+    {activityView && <div className="fixed inset-0 z-40 overflow-y-auto">{activityView}</div>}
+  </>;
+
+  if (activityView) return activityView;
+
+  return (
+    <main className="min-h-screen game-sky p-3 sm:p-8">
+      <div className="max-w-6xl mx-auto">
+        <header className="flex flex-wrap items-start justify-between gap-3 mb-4">
+          <div>
+            <p className="text-xs font-black tracking-widest text-orange-700">NISIALAND · NÍVEL 4</p>
+            <h1 className="font-bungee text-3xl sm:text-5xl text-blue-900">TRABALHO EM EQUIPE</h1>
+            <p className="font-bold text-slate-600">Missão pela escola · {grade}º ano</p>
+            <p className="text-sm text-slate-500 mt-1">{LEVEL4_CONTENT[grade].curriculum.theme} · {LEVEL4_CONTENT[grade].curriculum.progression}</p>
+          </div>
+          <div className="flex gap-2"><button type="button" onClick={() => switchMode('3d')} className="px-4 py-2 rounded-xl bg-white border-2 border-sky-300 font-black inline-flex items-center gap-2"><Box size={18} /> Escola 3D</button><button type="button" onClick={() => navigate('/mapa')} className="px-4 py-2 rounded-xl bg-white border-2 border-sky-300 font-black inline-flex items-center gap-2"><ArrowLeft size={18} /> Mapa geral</button></div>
+        </header>
+        {progress.isCompleted && <div role="status" className="game-panel p-4 mb-4 border-amber-400 flex items-center gap-3"><Trophy className="text-amber-500" size={34} /><p className="font-heading font-black text-blue-900">Nível 4 concluído! Equipe reunida · {total} pontos.</p></div>}
+        <TeamTroublemakers />
+        <section aria-label="Mapa da escola" className="game-panel p-4 sm:p-6">
+          <div className="flex items-center gap-3 mb-4"><MapPinned className="text-blue-800" /><h2 className="font-bungee text-xl sm:text-2xl text-blue-900">MAPA DA MISSÃO</h2><span className="ml-auto text-sm font-black text-blue-700">{progress.completedCount}/6</span></div>
+          <div className="relative rounded-3xl border-4 border-sky-200 bg-gradient-to-br from-sky-100 via-amber-50 to-emerald-100 p-4 sm:p-8">
+            <div className="absolute inset-x-6 top-1/2 border-t-4 border-dashed border-sky-300 pointer-events-none" />
+            <div className="relative grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5">
+              {progress.activities.map(({ activity, state, result }, index) => (
+                <button type="button" key={activity.id} disabled={state === 'locked'} onClick={() => setParams({ atividade: activity.id })} className={`text-left rounded-2xl border-2 p-3 sm:p-5 shadow-md min-h-36 transition-transform focus-visible:outline-4 focus-visible:outline-orange-500 ${state === 'locked' ? 'bg-slate-100 border-slate-300 opacity-65' : result ? 'bg-emerald-50 border-emerald-500 hover:-translate-y-1' : 'bg-white border-orange-400 hover:-translate-y-1'}`}>
+                  <span className="flex items-center justify-between"><span className="text-xs uppercase tracking-wide font-black text-slate-500">{PLACES[index]}</span>{state === 'locked' ? <Lock size={18} /> : result ? <Check size={18} className="text-emerald-600" /> : <Users size={18} className="text-orange-600" />}</span>
+                  <strong className="block font-bungee text-lg text-blue-900 mt-3">{activity.name}</strong>
+                  <span className="block text-sm text-slate-600 mt-1">{activity.phrase}</span>
+                  <span className="block text-xs font-black mt-3 text-blue-700">{state === 'locked' ? 'BLOQUEADA' : result ? `CONCLUÍDA · ${result.score} PTS` : 'INICIAR MISSÃO'}</span>
+                </button>
+              ))}
+            </div>
+            <div className="relative mt-4 flex items-center gap-2 rounded-xl bg-white/85 border border-sky-300 w-fit px-3 py-2"><PlayerAvatar avatarId={currentPlayer?.avatar} skinTone={currentPlayer?.skinTone} size="sm" /><span className="font-black text-sm text-blue-900">Sua equipe avança pelo mapa</span></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  );
+};
+
 export default TeamMissionScreen;
