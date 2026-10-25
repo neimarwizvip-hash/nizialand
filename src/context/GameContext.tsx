@@ -69,9 +69,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loadedFor, setLoadedFor] = useState<string | null>(() => currentPlayer?.id ?? null);
   const [isSoundOn, setIsSoundOn] = useState<boolean>(true);
   const [isMusicOn, setIsMusicOn] = useState<boolean>(() => audioService.isMusicOn());
-  const [vistoria, setVistoriaState] = useState<boolean>(() => isVistoria());
+  const [vistoria, setVistoriaState] = useState<boolean>(() => import.meta.env.DEV && isVistoria());
 
   const setVistoriaMode = (on: boolean) => {
+    if (!import.meta.env.DEV) return;
     setVistoria(on);
     const next = isVistoria();
     if (next === vistoria) return;
@@ -225,7 +226,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   return (
     <GameContext.Provider
       value={{
-        currentPlayer: vistoria ? VISTORIA_PLAYER : currentPlayer,
+        currentPlayer: import.meta.env.DEV && vistoria ? VISTORIA_PLAYER : currentPlayer,
         setCurrentPlayer,
         register,
         startGuest,

@@ -6,6 +6,7 @@ Linhas aproximadas entre parênteses. Arquivos grandes: leia por trechos.
 /missions MissionBriefingScreen · /quiz QuizScreen · /quiz/results · /flashcards · /results/final ·
 /leaderboard · /admin AdminPanel ·
 /nivel1 MissionBriefingScreen level=1 (RequireLevel1) · /nivel1/ouvir · /nivel1/montar · /nivel1/dialogo · /nivel1/explorar
+/vistoria VistoriaScreen (só dev: rota fora do build)
 
 ## Telas (src/features)
 - start/StartScreen (190) abertura
@@ -17,6 +18,7 @@ Linhas aproximadas entre parênteses. Arquivos grandes: leia por trechos.
   useActivityRun (cronômetro/pontos), level1Rules.ts (20 s/item, 100/50/0, ≤1000, armadilhas)
 - flashcards/FlashcardScreen (519) · results/FinalResultsScreen (260)
 - leaderboard/LeaderboardScreen (626) · admin/AdminPanel (656) · admin/QuestionBankManager (199)
+- vistoria/VistoriaScreen (só dev) lista Nível 0-2 com botões diretos + VistoriaBadge; services/vistoria.ts (sessionStorage nisialand_vistoria)
 
 ## Componentes (src/components)
 - layout: GameHeader, RequirePlayer, ScreenTransitionLoader
