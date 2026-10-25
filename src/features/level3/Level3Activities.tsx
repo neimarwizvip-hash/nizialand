@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Volume2 } from 'lucide-react';
 import type { Activity } from '../../core/types';
 import type { SchoolGrade } from '../../data/level0Content';
@@ -8,6 +8,7 @@ import {
 import { LEVEL3_CONTENT, LEVEL3_SPOTS, LEVEL3_ZE_LINES } from '../../data/level3Content';
 import type { Level3Place, Level3Question, Level3Spot } from '../../data/level3Content';
 import { ZeCartinha } from '../../components/ze/ZeCartinha';
+import { MANE_IMG, MANE_ROOM_START, MANE_ROOM_TIP } from '../../data/level3Mane';
 import { audioService } from '../../services/audio';
 import { speechService } from '../../services/speech';
 import { useZePop } from '../level1/ActivityShell';
@@ -41,11 +42,41 @@ function useRoomZe(activity: Activity) {
     const t = setTimeout(() => showZe(LEVEL3_ZE_LINES[i] ?? '', 3500), 600);
     return () => clearTimeout(t);
   }, [i, showZe]);
-  return { zeMessage, showZe, size: ZE_ROOM_SIZES[i] };
+  return { zeMessage, showZe, size: ZE_ROOM_SIZES[i], i };
 }
 
-const ZeOverlay: React.FC<{ ze: ReturnType<typeof useRoomZe>; finished: boolean }> = ({ ze, finished }) => (
-  <ZeCartinha visible={!!ze.zeMessage && !finished} message={ze.zeMessage ?? ''} imageClassName={ze.size} />
+/** Mané Zoeira no canto esquerdo (o Zé fica no direito): ânimo na entrada e uma dica leve no 1º erro. */
+const ManeCorner: React.FC<{ i: number; finished: boolean; wrong: boolean }> = ({ i, finished, wrong }) => {
+  const [msg, setMsg] = useState<string | null>(null);
+  const tipped = useRef(false);
+  useEffect(() => {
+    const show = setTimeout(() => setMsg(m => (tipped.current ? m : MANE_ROOM_START[i] ?? null)), 1000);
+    const hide = setTimeout(() => setMsg(m => (m === MANE_ROOM_START[i] ? null : m)), 5000);
+    return () => { clearTimeout(show); clearTimeout(hide); };
+  }, [i]);
+  useEffect(() => {
+    if (!wrong || tipped.current) return;
+    tipped.current = true;
+    setMsg(MANE_ROOM_TIP[i] ?? null);
+    const t = setTimeout(() => setMsg(null), 4500);
+    return () => clearTimeout(t);
+  }, [wrong, i]);
+  if (finished) return null;
+  return (
+    <div data-testid="mane-corner" className="fixed left-2 bottom-4 z-40 pointer-events-none flex items-end gap-1">
+      <img src={MANE_IMG} alt="Mané Zoeira" className="w-12 sm:w-20 short:w-9 h-auto drop-shadow" />
+      {msg && (
+        <p className="mb-6 short:mb-3 max-w-[160px] sm:max-w-[220px] short:max-w-[150px] px-2 py-1 rounded-2xl bg-white border-2 border-emerald-500 text-[11px] sm:text-xs short:text-[10px] font-black text-emerald-800 shadow">{msg}</p>
+      )}
+    </div>
+  );
+};
+
+const ZeOverlay: React.FC<{ ze: ReturnType<typeof useRoomZe>; finished: boolean; outcomes?: { correct: boolean }[] }> = ({ ze, finished, outcomes = [] }) => (
+  <>
+    <ZeCartinha visible={!!ze.zeMessage && !finished} message={ze.zeMessage ?? ''} imageClassName={ze.size} />
+    <ManeCorner i={ze.i} finished={finished} wrong={outcomes.some(o => !o.correct)} />
+  </>
 );
 
 const QuestionCard: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -135,7 +166,7 @@ export const ArrumeActivity: React.FC<Level3ActivityProps> = ({ grade, onExit, o
       exitLabel="Voltar às salas"
       background={BG}
       maxScore={level3MaxScore(items.length)}
-      overlay={<ZeOverlay ze={ze} finished={run.finished} />}
+      overlay={<ZeOverlay ze={ze} finished={run.finished} outcomes={run.outcomes} />}
     >
       {item.kind === 'place' ? (
         <>
@@ -224,7 +255,7 @@ const McRoom: React.FC<Level3ActivityProps & { activity: Activity; items: Level3
       exitLabel="Voltar às salas"
       background={BG}
       maxScore={level3MaxScore(items.length)}
-      overlay={<ZeOverlay ze={ze} finished={run.finished} />}
+      overlay={<ZeOverlay ze={ze} finished={run.finished} outcomes={run.outcomes} />}
     >
       <div className="flex items-center gap-3 flex-wrap">
         {item.speak && <ListenButton onClick={() => speakEn(item.speak!)} />}
@@ -287,7 +318,7 @@ export const QuemActivity: React.FC<Level3ActivityProps> = ({ grade, onExit, onR
       exitLabel="Voltar às salas"
       background={BG}
       maxScore={level3MaxScore(items.length)}
-      overlay={<ZeOverlay ze={ze} finished={run.finished} />}
+      overlay={<ZeOverlay ze={ze} finished={run.finished} outcomes={run.outcomes} />}
     >
       <p className="text-xs font-black tracking-widest text-emerald-700 uppercase">Essa fala é educada?</p>
       <div className="flex items-center gap-3 flex-wrap mt-1">
@@ -353,7 +384,7 @@ export const MemoriaActivity: React.FC<Level3ActivityProps> = ({ grade, onExit, 
       exitLabel="Voltar às salas"
       background={BG}
       maxScore={level3MaxScore(pairs.length)}
-      overlay={<ZeOverlay ze={ze} finished={run.finished} />}
+      overlay={<ZeOverlay ze={ze} finished={run.finished} outcomes={run.outcomes} />}
     >
       <QuestionCard>Ache os pares: inglês e português.</QuestionCard>
       <div className="grid grid-cols-5 gap-2 short:gap-1.5 mt-3 short:mt-1.5">
@@ -445,7 +476,7 @@ export const LabirintoActivity: React.FC<Level3ActivityProps> = ({ grade, onExit
       exitLabel="Voltar às salas"
       background={BG}
       maxScore={level3MaxScore(LEVEL3_MAZE_WORDS)}
-      overlay={<ZeOverlay ze={ze} finished={run.finished} />}
+      overlay={<ZeOverlay ze={ze} finished={run.finished} outcomes={run.outcomes} />}
     >
       <QuestionCard>{maze.goal} <span className="text-sm text-slate-500">({maze.goalPt})</span></QuestionCard>
       <div className="flex gap-3 short:gap-2 items-center mt-2 short:mt-1 flex-wrap justify-center">

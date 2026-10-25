@@ -5,6 +5,7 @@ import { useGame } from '../../context/GameContext';
 import { getPlayerGrade } from '../../services/grade';
 import { LEVEL3 } from '../../content/level3';
 import { LEVEL3_CONTENT } from '../../data/level3Content';
+import { MANE_IMG, MANE_SIMPLE_LINE } from '../../data/level3Mane';
 import { getMissionProgress } from '../../engines/progression/progress';
 import { unlockForVistoria } from '../../services/vistoria';
 import { audioService } from '../../services/audio';
@@ -148,6 +149,12 @@ export const ClassroomScreen: React.FC = () => {
             <h1 className="font-bungee text-3xl sm:text-5xl short:text-2xl text-blue-900">SALAS DE AULA</h1>
             <p className="font-bold text-slate-600 short:text-xs">Convivência em sala · {grade}º ano</p>
             <p className="text-sm short:text-xs text-slate-500">{content.curriculum.theme} · {content.curriculum.progression}</p>
+          </div>
+          <div className="hidden sm:flex short:flex items-end gap-1 min-w-0" data-testid="mane-header">
+            <img src={MANE_IMG} alt="Mané Zoeira" className="w-14 short:w-9 h-auto object-contain" onError={e => { e.currentTarget.style.display = 'none'; }} />
+            <p className="max-w-[180px] short:max-w-[140px] px-2 py-1 rounded-2xl bg-white border-2 border-emerald-500 text-xs short:text-[10px] font-black text-emerald-800 shadow">
+              {MANE_SIMPLE_LINE.pt} <span className="italic text-emerald-600">{MANE_SIMPLE_LINE.en}</span>
+            </p>
           </div>
           <div className="flex gap-2 shrink-0">
             {modeButton}

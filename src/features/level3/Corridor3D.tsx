@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { ArrowLeft, DoorOpen, LayoutList, Lock } from 'lucide-react';
 import { audioService } from '../../services/audio';
 import { AVATAR_CATALOG, skinToneFilter, type SkinTone } from '../../components/ui/PlayerAvatar';
+import { MANE_CORRIDOR_LINES, MANE_IMG } from '../../data/level3Mane';
 
 // Corredor 3D do Nível 3: mesmas técnicas do protótipo public/prototipos/nivel2-3d.html
 // (PNGs oficiais como sprites virados para a câmera, instancing, materiais compartilhados,
@@ -53,6 +54,8 @@ function labelTexture(lines: string[], color: string) {
 const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarId, avatarSkinTone, level = 3, heading = 'SALAS DE AULA', simpleLabel = 'Modo simples', zeLine, onEnter, onExit, onSimpleMode }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const zeRef = useRef<HTMLDivElement>(null);
+  const maneRef = useRef<HTMLDivElement>(null);
+  const [maneIdx, setManeIdx] = useState(-1);
   const stickRef = useRef<HTMLDivElement>(null);
   const knobRef = useRef<HTMLDivElement>(null);
   const [near, setNear] = useState<CorridorDoor | null>(null);
@@ -215,6 +218,14 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
     ze.scale.set(1, 1.5, 1);
     ze.center.set(0.5, 0);
     scene.add(ze);
+    // Mané Zoeira (Nível 3): colega do aluno, espera na próxima porta aberta (teletransporta, não desliza).
+    const maneMat = track(new THREE.SpriteMaterial({ map: tex(MANE_IMG), transparent: true }));
+    const mane = new THREE.Sprite(maneMat);
+    mane.scale.set(1, 1.5, 1);
+    mane.center.set(0.5, 0);
+    mane.visible = false;
+    scene.add(mane);
+    let maneAt = -2;
 
     // Estado do jogador.
     const startIdx = Math.max(0, doors.findIndex(d => d.id === startAt));
@@ -361,6 +372,25 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
         if (visible) balloon.style.transform = `translate(${(screen.x + 1) / 2 * mount.clientWidth}px, ${(1 - screen.y) / 2 * mount.clientHeight}px) translate(-50%, -100%)`;
       }
 
+      // Mané: aparece direto na primeira porta aberta.
+      const openIdx = level === 3 ? ds.findIndex(d => d.state === 'open') : -1;
+      if (openIdx !== maneAt) {
+        maneAt = openIdx;
+        setManeIdx(openIdx);
+        mane.visible = openIdx >= 0;
+        if (openIdx >= 0) mane.position.set(doorSide(openIdx) * (HALF_W - 0.9), 0, doorZ(openIdx) + 0.8);
+      }
+      const maneBalloon = maneRef.current;
+      if (maneBalloon) {
+        let show = mane.visible && Math.abs(mane.position.z - pos.z) < 4;
+        if (show) {
+          screen.set(mane.position.x, 1.75, mane.position.z).project(camera);
+          show = screen.z < 1 && Math.abs(screen.x) < 1.1 && Math.abs(screen.y) < 1.1;
+        }
+        maneBalloon.style.display = show ? 'block' : 'none';
+        if (show) maneBalloon.style.transform = `translate(${(screen.x + 1) / 2 * mount.clientWidth}px, ${(1 - screen.y) / 2 * mount.clientHeight}px) translate(-50%, -100%)`;
+      }
+
       renderer.render(scene, camera);
 
       // DPR adaptativo: mede 1 s de quadros e ajusta a resolução.
@@ -446,6 +476,15 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
 
       <div ref={zeRef} className="absolute left-0 top-0 pointer-events-none max-w-[220px] px-3 py-2 rounded-2xl bg-white border-2 border-pink-400 text-xs font-black text-pink-700 shadow" style={{ display: 'none' }}>
         {zeLine ?? zeText}
+      </div>
+
+      <div ref={maneRef} data-testid="mane-balloon" className="absolute left-0 top-0 pointer-events-none max-w-[220px] short:max-w-[170px] px-3 py-2 short:py-1 rounded-2xl bg-white border-2 border-emerald-500 text-xs short:text-[10px] font-black text-emerald-800 shadow" style={{ display: 'none' }}>
+        {maneIdx >= 0 && MANE_CORRIDOR_LINES[maneIdx] && (
+          <>
+            <span className="block">Mané: {MANE_CORRIDOR_LINES[maneIdx].pt}</span>
+            <span className="block text-emerald-600 italic">{MANE_CORRIDOR_LINES[maneIdx].en}</span>
+          </>
+        )}
       </div>
 
       <div ref={stickRef} aria-label="Controle de movimento" className="absolute left-4 bottom-4 short:left-3 short:bottom-3 w-28 h-28 short:w-24 short:h-24 rounded-full bg-white/40 border-2 border-white/80 flex items-center justify-center touch-none">

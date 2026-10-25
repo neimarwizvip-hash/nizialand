@@ -7,6 +7,9 @@ Linhas aproximadas entre parênteses. Arquivos grandes: leia por trechos.
 /leaderboard · /admin AdminPanel ·
 /nivel1 MissionBriefingScreen level=1 (RequireLevel1) · /nivel1/ouvir · /nivel1/montar · /nivel1/dialogo · /nivel1/explorar
 /vistoria VistoriaScreen (só dev: rota fora do build)
+/mapa MissionMapScreen · /nivel2/patio PatioScreen (fluxo 2D) · /nivel2/mundo3d Level2WorldScreen (protótipo opcional)
+/nivel3 e /nivel3/salas ClassroomScreen (corredor 3D ou modo simples; ?atividade=<id> abre uma sala)
+/nivel4 TeamMissionScreen · /nivel5 ChoicesMissionScreen · /nivel6 e /nivel7 PhaseMissionScreen
 
 ## Telas (src/features)
 - start/StartScreen (190) abertura
@@ -18,7 +21,10 @@ Linhas aproximadas entre parênteses. Arquivos grandes: leia por trechos.
   useActivityRun (cronômetro/pontos), level1Rules.ts (20 s/item, 100/50/0, ≤1000, armadilhas)
 - flashcards/FlashcardScreen (519) · results/FinalResultsScreen (260)
 - leaderboard/LeaderboardScreen (626) · admin/AdminPanel (656) · admin/QuestionBankManager (199)
-- vistoria/VistoriaScreen (só dev) lista Nível 0-2 com botões diretos + VistoriaBadge; services/vistoria.ts (sessionStorage nisialand_vistoria)
+- level3/ClassroomScreen (corredor 3D com fallback simples), Corridor3D (Three.js), Level3Activities (6 salas), level3Rules (pontuação, revisão e labirinto)
+- level4/TeamMissionScreen (corredor 3D compartilhado ou mapa simples), Level4Activities (pistas, direções, papéis, frase, revezamento e revisão), level4QuestionPool, level4Rules (pontuação por etapas) · level5/ChoicesMissionScreen · levels/PhaseMissionScreen (níveis 6 e 7)
+- story/ProvisionalStoryGate + data/provisionalStories (HQ textual provisória das passagens para os Níveis 3 e 4)
+- vistoria/VistoriaScreen (só dev) lista Níveis 0-7 e o mapa, com VistoriaBadge; services/vistoria.ts (sessionStorage nisialand_vistoria); data/level3Mane.ts contém falas provisórias ainda não ligadas à interface
 
 ## Componentes (src/components)
 - layout: GameHeader, RequirePlayer, ScreenTransitionLoader
@@ -34,6 +40,7 @@ Linhas aproximadas entre parênteses. Arquivos grandes: leia por trechos.
 - data/level0Content.ts (conteúdo por série 6º-9º) · data/level1Content.ts (nível 1 por série) · data/level2Content.ts (nível 2, fonte única) · data/questionBank.ts (332, banco de questões)
 - data/quizQuestions.ts (281) · data/flashcardData.ts · data/mockData.ts (turmas, ranking inicial)
 - context/GameContext.tsx (useGame, estado do jogador)
+- content/level3.ts a level7.ts (missões) · data/level3Content.ts a level7Content.ts (conteúdo por série) · data/missionMap.ts (mapa)
 - services: audio.ts (534, trilhas e efeitos), storage.ts (522, localStorage/Supabase), fullscreen.ts,
   grade.ts (série do jogador), speech.ts (voz), nameModeration.ts, supabase.ts
 - types/index.ts (PlayerProfile, QuizQuestion, XP)
@@ -41,5 +48,6 @@ Linhas aproximadas entre parênteses. Arquivos grandes: leia por trechos.
 ## Outros
 - features/level2: level2Rules.ts (regras puras: pontos, grade 8x8, duelo, ?atividade=) · useLevel2Run.ts (cronômetro 20 s, avanço 1,5 s, corrida 60 s) · Level2Shell.tsx (moldura, tempo, feedback, vitória+confete) · Level2Activities.tsx (6 telas, LEVEL2_ACTIVITY_VIEWS) · PatioScreen.tsx (/nivel2/patio, ?atividade=, trilhas)
 - tests/*.test.ts (Vitest; tests/level1.test.ts = regras do nível 1); tests/level2.test.ts e tests/level2Fixes.test.tsx = nível 2 · supabase/schema.sql · public/assets (imagens, mp4, audio/)
+- tests/level3.test.tsx (regras, modos e conclusão do Nível 3); tests/missionMapLevel3.test.ts (mapa e conteúdo) · tests/vistoria.test.tsx (vistoria)
 - ASSET_MANIFEST.md: lista de mídia; consultar com Grep, não ler inteiro.
 - docs/PLANO-NIVEIS-0-A-10.md: plano dos Níveis 0 a 10 (proposta, 24/10/2026).

@@ -3,6 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useGame } from '../../context/GameContext';
 import { LEVEL1 } from '../../content/level1';
 import { LEVEL2 } from '../../data/level2Content';
+import { LEVEL3 } from '../../content/level3';
+import { LEVEL4 } from '../../content/level4';
+import { LEVEL5 } from '../../content/level5';
+import { LEVEL6 } from '../../content/level6';
+import { LEVEL7 } from '../../content/level7';
+import type { Level } from '../../core/types';
 
 interface Item { label: string; to: string; story?: string }
 
@@ -10,6 +16,15 @@ interface Item { label: string; to: string; story?: string }
 const STORY_NIVEL0 = 'nisialand_story_seen_nivel0';
 const STORY_NIVEL2 = 'nisialand_story_seen_nivel2';
 const STORY_HQ = 'nisialand_story_seen_hq_reuniao';
+
+// Níveis 3 a 7: tela da missão + cada atividade direto (todas liberadas na vistoria).
+const phase = (level: Level, missionPath: string) => ({
+  title: `Nível ${level.number} · ${level.title}`,
+  items: [
+    { label: 'Tela da missão', to: missionPath },
+    ...level.mission.activities.map(a => ({ label: a.name, to: a.path })),
+  ],
+});
 
 export const VISTORIA_LEVELS: { title: string; items: Item[] }[] = [
   {
@@ -34,10 +49,19 @@ export const VISTORIA_LEVELS: { title: string; items: Item[] }[] = [
     title: 'Nível 2',
     items: [
       { label: 'História + tela da missão', to: '/nivel2', story: STORY_NIVEL2 },
-      { label: 'Pátio (mundo)', to: '/nivel2/patio' },
-      { label: 'Mapa das atividades', to: '/nivel2/atividades' },
-      ...LEVEL2.mission.activities.map(a => ({ label: a.name, to: `/nivel2/atividades?atividade=${a.id}` })),
+      { label: 'Pátio', to: '/nivel2/patio' },
+      { label: 'Protótipo 3D (opcional)', to: '/nivel2/mundo3d' },
+      ...LEVEL2.mission.activities.map(a => ({ label: a.name, to: `/nivel2/patio?atividade=${a.id}` })),
     ],
+  },
+  phase(LEVEL3, '/nivel3'),
+  phase(LEVEL4, '/nivel4'),
+  phase(LEVEL5, '/nivel5'),
+  phase(LEVEL6, '/nivel6'),
+  phase(LEVEL7, '/nivel7'),
+  {
+    title: 'Mapa',
+    items: [{ label: 'Mapa das missões (0 a 10)', to: '/mapa' }],
   },
 ];
 

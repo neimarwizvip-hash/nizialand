@@ -176,8 +176,10 @@ export const App: React.FC = () => {
 
             {/* Nível 2: pátio e respeito à autoridade */}
             <Route path="/nivel2" element={<RequirePlayer><RequireLevel2><PhaseStoryGate story="nivel2"><MissionBriefingScreen level={2} /></PhaseStoryGate></RequireLevel2></RequirePlayer>} />
-            <Route path="/nivel2/patio" element={<RequirePlayer><RequireLevel2><Level2WorldScreen /></RequireLevel2></RequirePlayer>} />
-            <Route path="/nivel2/atividades" element={<RequirePlayer><RequireLevel2><PatioScreen /></RequireLevel2></RequirePlayer>} />
+            <Route path="/nivel2/patio" element={<RequirePlayer><RequireLevel2><PatioScreen /></RequireLevel2></RequirePlayer>} />
+            <Route path="/nivel2/atividades" element={<Navigate to="/nivel2/patio" replace />} />
+            {/* Protótipo 3D opcional (só pela vistoria); o fluxo do aluno é o pátio 2D. */}
+            <Route path="/nivel2/mundo3d" element={<RequirePlayer><RequireLevel2><Level2WorldScreen /></RequireLevel2></RequirePlayer>} />
 
             {/* Nível 3: convivência em sala */}
             <Route path="/nivel3" element={<RequirePlayer><RequireLevel3><ClassroomScreen /></RequireLevel3></RequirePlayer>} />

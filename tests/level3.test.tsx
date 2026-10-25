@@ -38,6 +38,7 @@ import { getMissionProgress } from '../src/engines/progression/progress';
 import { buildLevel3Result, buildReviewItems, level3MissionMaxScore, LEVEL3_MAX_SCORE, shuffleOptions } from '../src/features/level3/level3Rules';
 import { ClassroomScreen, LEVEL3_MODE_KEY, readLevel3Mode } from '../src/features/level3/ClassroomScreen';
 import { storageService } from '../src/services/storage';
+import { MANE_CORRIDOR_LINES, MANE_ROOM_START, MANE_ROOM_TIP } from '../src/data/level3Mane';
 
 const acts = LEVEL3.mission.activities;
 const done = (i: number): ActivityResult => buildLevel3Result(acts[i], '8', [{ points: 100, correct: true }], '2026-10-25T00:00:00.000Z');
@@ -112,6 +113,20 @@ describe('Nível 3: tela das salas', () => {
     tree();
     expect(screen.getByText('SALAS DE AULA')).toBeTruthy();
     expect(screen.queryByTestId('portas')).toBeNull();
+  });
+
+  it('Mané Zoeira aparece no cabeçalho do modo simples', () => {
+    localStorage.setItem(LEVEL3_MODE_KEY, 'simples');
+    tree();
+    expect(screen.getByTestId('mane-header')).toBeTruthy();
+    expect(screen.getByAltText('Mané Zoeira')).toBeTruthy();
+  });
+
+  it('falas provisórias do Mané: uma por sala', () => {
+    expect(MANE_CORRIDOR_LINES).toHaveLength(6);
+    expect(MANE_ROOM_START).toHaveLength(6);
+    expect(MANE_ROOM_TIP).toHaveLength(6);
+    MANE_CORRIDOR_LINES.forEach(l => { expect(l.pt).toBeTruthy(); expect(l.en).toBeTruthy(); });
   });
 
   it('localStorage indisponível não quebra a tela', () => {

@@ -21,7 +21,7 @@ export const Level2WorldScreen: React.FC = () => {
 
   useEffect(() => {
     if (!activityId) return;
-    navigate(`/nivel2/atividades?atividade=${encodeURIComponent(activityId)}`);
+    navigate(`/nivel2/patio?atividade=${encodeURIComponent(activityId)}`);
     setActivityId(null);
   }, [activityId, navigate]);
 
@@ -37,7 +37,7 @@ export const Level2WorldScreen: React.FC = () => {
         <button type="button" onClick={() => navigate('/nivel2')} className="rounded-xl border-2 border-sky-300 bg-white/95 px-3 py-2 font-black text-blue-900 shadow-lg">
           <ArrowLeft className="mr-1 inline h-4 w-4" /> Missão
         </button>
-        <button type="button" onClick={() => navigate('/nivel2/atividades')} className="rounded-xl border-2 border-amber-600 bg-amber-400 px-3 py-2 font-black text-slate-950 shadow-lg">
+        <button type="button" onClick={() => navigate('/nivel2/patio')} className="rounded-xl border-2 border-amber-600 bg-amber-400 px-3 py-2 font-black text-slate-950 shadow-lg">
           <BookOpen className="mr-1 inline h-4 w-4" /> Atividades de inglês
         </button>
       </div>
