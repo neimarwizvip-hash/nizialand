@@ -1,0 +1,6 @@
+import type { Activity, Level, Mission } from '../core/types';
+const R=(id:string)=>`/nivel7/organizacao?atividade=nivel7-${id}`;
+const a=(id:string,mechanic:Activity['mechanic'],name:string,phrase:string,color:Activity['color']):Activity=>({id:`nivel7-${id}`,mechanic,name,phrase,path:R(id),color});
+export const LEVEL7_ACTIVITIES=[a('material','explore','Organize o material','Arrume mochila e estojo.','blue'),a('rotina','order','Monte sua rotina','Organize horários e ações.','green'),a('aula','quiz','Prepare-se para a aula','Escolha o que levar e fazer.','orange'),a('divisao','dialogue','Divida o trabalho','Distribua tarefas no grupo.','purple'),a('estudo','order','Plano de estudo','Planeje a revisão da prova.','pink'),a('agenda','explore','Agenda inteligente','Escolha atividades e horários.','yellow'),a('cozinha','timed','Cozinha em equipe','Siga ordens em inglês contra o relógio.','blue'),a('revisao','quiz','Revisão da organização','Revise os Níveis 0 a 6.','purple')];
+export const LEVEL7_MISSION:Mission={id:'nivel7-missao7',number:7,title:'Projeto: aprender a se organizar',activities:LEVEL7_ACTIVITIES,sequential:true};
+export const LEVEL7:Level={id:'nivel7',number:7,title:'Aprender a se organizar',story:'nivel7',mode:'2D',mission:LEVEL7_MISSION};

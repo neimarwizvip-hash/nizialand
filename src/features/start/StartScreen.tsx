@@ -28,6 +28,12 @@ export const StartScreen: React.FC = () => {
     <div className="game-sky relative min-h-[100dvh] wide:h-[100dvh] wide:overflow-hidden flex flex-col items-center wide:justify-center overflow-x-hidden">
       <div className="absolute inset-0 sky-clouds pointer-events-none opacity-70" />
       <h1 className="sr-only">NISIALAND — English Adventure</h1>
+      {/* Vistoria do professor: só aparece no `npm run dev`, nunca no site publicado. */}
+      {import.meta.env.DEV && (
+        <button type="button" onClick={() => navigate('/vistoria')} className="absolute bottom-2 left-2 z-50 text-xs text-white/60 hover:text-white underline">
+          Vistoria
+        </button>
+      )}
 
       <div className="relative z-10 w-full wide:h-full flex flex-col gap-3 wide:gap-0 px-4 py-4 wide:p-0">
         {/* Arte oficial */}

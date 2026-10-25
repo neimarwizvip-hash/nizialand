@@ -1,0 +1,12 @@
+import type { Activity, Level, Mission } from '../core/types';
+const ROOM = (id: string) => `/nivel5/escolhas?atividade=${id}`;
+const activity = (id: string, mechanic: Activity['mechanic'], name: string, phrase: string, color: Activity['color'], hint: string): Activity => ({ id: `nivel5-${id}`, mechanic, name, phrase, color, hint, path: ROOM(`nivel5-${id}`) });
+export const LEVEL5_DIALOGOS = activity('dialogos', 'dialogue', 'Diálogos de escolha', 'O que você faria?', 'blue', 'Use I think and explain your choice.');
+export const LEVEL5_CAMINHOS = activity('caminhos', 'explore', 'História com caminhos', 'Escolha o próximo passo.', 'purple', 'Different choices lead to different results.');
+export const LEVEL5_SENTIMENTOS = activity('sentimentos', 'listen', 'Sentimentos em inglês', 'Relacione situação e emoção.', 'pink', 'Listen for the feeling.');
+export const LEVEL5_CONSELHO = activity('conselho', 'dialogue', 'Conselho para um colega', 'Use should and should not.', 'green', 'Give respectful advice.');
+export const LEVEL5_SE = activity('se', 'quiz', 'Jogo do “e se?”', 'Imagine uma possibilidade.', 'orange', 'Connect a condition and a result.');
+export const LEVEL5_RITMO = activity('ritmo', 'timed', 'Desafio de ritmo', 'Responda no tempo certo.', 'yellow', 'Keep the rhythm of the sentence.');
+export const LEVEL5_REVISAO = activity('revisao', 'quiz', 'Revisão das escolhas', 'Revise os Níveis 0 a 4.', 'purple', 'Review the language of the journey.');
+export const LEVEL5_MISSION: Mission = { id: 'nivel5-missao5', number: 5, title: 'Minhas escolhas', activities: [LEVEL5_DIALOGOS, LEVEL5_CAMINHOS, LEVEL5_SENTIMENTOS, LEVEL5_CONSELHO, LEVEL5_SE, LEVEL5_RITMO, LEVEL5_REVISAO], sequential: true };
+export const LEVEL5: Level = { id: 'nivel5', number: 5, title: 'Minhas escolhas', story: 'nivel5', mode: '2D', mission: LEVEL5_MISSION };

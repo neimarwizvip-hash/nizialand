@@ -1,0 +1,10 @@
+import type { Activity, Level, Mission } from '../core/types';
+const ROOM = (id: string) => `/nivel3/salas?atividade=${id}`;
+export const LEVEL3_ARRUME: Activity = { id: 'nivel3-arrume', mechanic: 'explore', name: 'Arrume a sala', phrase: 'Coloque cada objeto no lugar!', path: ROOM('nivel3-arrume'), color: 'blue', hint: 'Ouça as instruções em inglês.' };
+export const LEVEL3_LOUSA: Activity = { id: 'nivel3-lousa', mechanic: 'quiz', name: 'Quadro de quiz', phrase: 'Responda na lousa!', path: ROOM('nivel3-lousa'), color: 'yellow', hint: 'Há uma pergunta na sala.' };
+export const LEVEL3_QUEM: Activity = { id: 'nivel3-quem', mechanic: 'dialogue', name: 'Quem disse?', phrase: 'Identifique a fala educada.', path: ROOM('nivel3-quem'), color: 'green', hint: 'Respeito também aparece nas palavras.' };
+export const LEVEL3_MEMORIA: Activity = { id: 'nivel3-memoria', mechanic: 'flashcards', name: 'Memória da sala', phrase: 'Lembre os objetos da sala!', path: ROOM('nivel3-memoria'), color: 'purple', hint: 'Encontre o par certo.' };
+export const LEVEL3_LABIRINTO: Activity = { id: 'nivel3-labirinto', mechanic: 'explore', name: 'Labirinto do corredor', phrase: 'Pegue palavras certas e fuja do Zé!', path: ROOM('nivel3-labirinto'), color: 'orange', hint: 'Escolha o vocabulário correto.' };
+export const LEVEL3_REVISAO: Activity = { id: 'nivel3-revisao', mechanic: 'quiz', name: 'Sala de revisão', phrase: 'Revise os Níveis 0, 1 e 2!', path: ROOM('nivel3-revisao'), color: 'pink', hint: 'Tudo que você aprendeu volta aqui.' };
+export const LEVEL3_MISSION: Mission = { id: 'nivel3-missao3', number: 3, title: 'Convivência em sala', activities: [LEVEL3_ARRUME, LEVEL3_LOUSA, LEVEL3_QUEM, LEVEL3_MEMORIA, LEVEL3_LABIRINTO, LEVEL3_REVISAO], sequential: true };
+export const LEVEL3: Level = { id: 'nivel3', number: 3, title: 'Convivência em sala', story: 'nivel3', mode: '2D', mission: LEVEL3_MISSION };

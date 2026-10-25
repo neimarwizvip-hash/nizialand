@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Trophy, Gamepad2, Volume2, VolumeX, Music } from 'lucide-react';
+import { Trophy, Gamepad2, Volume2, VolumeX, Music, Map } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { audioService } from '../../services/audio';
 
@@ -47,6 +47,15 @@ export const GameControls: React.FC<{ className?: string; showFreeTraining?: boo
       aria-label="Controles do jogo"
       className={`flex flex-wrap items-center justify-center gap-1 sm:gap-2 bg-white/95 border-2 border-sky-200 rounded-2xl px-2 py-1.5 shadow-[0_4px_0_0_#7dd3fc] ${className}`}
     >
+      <button
+        type="button"
+        onClick={() => go('/mapa')}
+        title="Mapa das missões"
+        className="flex items-center gap-1.5 px-2 py-1 rounded-xl hover:bg-sky-50 transition-colors"
+      >
+        <Map className="w-4 h-4 text-blue-600" />
+        <span className="text-[11px] sm:text-xs font-heading font-black text-blue-900 uppercase short:sr-only">Mapa</span>
+      </button>
       {showFreeTraining && (
         <button
           type="button"

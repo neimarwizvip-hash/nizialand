@@ -8,9 +8,15 @@ import type { ActivityResult } from '../core/types';
 import { LEVEL0 } from '../content/level0';
 import { LEVEL1 } from '../content/level1';
 import { LEVEL2 } from '../data/level2Content';
+import { LEVEL3 } from '../content/level3';
+import { LEVEL4 } from '../content/level4';
+import { LEVEL5 } from '../content/level5';
+import { LEVEL6 } from '../content/level6';
+import { LEVEL7 } from '../content/level7';
 import { fromFlashcardResult, fromQuizResult, level0Results } from '../engines/pedagogy/adapters';
 import { getMissionProgress } from '../engines/progression/progress';
 import type { SchoolGrade } from '../data/level0Content';
+import { isVistoria, setVistoria, VISTORIA_PLAYER } from '../services/vistoria';
 
 interface GameContextType {
   currentPlayer: PlayerProfile | null;
@@ -30,6 +36,11 @@ interface GameContextType {
   level0Completed: boolean;
   level1Completed: boolean;
   level2Completed: boolean;
+  level3Completed: boolean;
+  level4Completed: boolean;
+  level5Completed: boolean;
+  level6Completed: boolean;
+  level7Completed: boolean;
   // false enquanto o progresso do aluno atual ainda não foi lido (guardas não decidem antes disso).
   progressLoaded: boolean;
   totalScore: number;
@@ -40,6 +51,9 @@ interface GameContextType {
   isMusicOn: boolean;
   toggleMusic: () => void;
   refreshUserData: () => void;
+  // Modo vistoria (só em dev): tudo liberado, nada é salvo.
+  vistoria: boolean;
+  setVistoriaMode: (on: boolean) => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -55,9 +69,19 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loadedFor, setLoadedFor] = useState<string | null>(() => currentPlayer?.id ?? null);
   const [isSoundOn, setIsSoundOn] = useState<boolean>(true);
   const [isMusicOn, setIsMusicOn] = useState<boolean>(() => audioService.isMusicOn());
+  const [vistoria, setVistoriaState] = useState<boolean>(() => isVistoria());
+
+  const setVistoriaMode = (on: boolean) => {
+    setVistoria(on);
+    const next = isVistoria();
+    if (next === vistoria) return;
+    setVistoriaState(next);
+    if (next) clearResults(); // entra limpo
+    else loadPlayerData(); // volta ao progresso real do aluno
+  };
 
   // Sync results on player change
-  const refreshUserData = () => {
+  const loadPlayerData = () => {
     if (currentPlayer) {
       const qRes = storageService.getQuizResult(currentPlayer.id);
       const fcRes = storageService.getFlashcardResult(currentPlayer.id);
@@ -72,6 +96,15 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setFlashcardResult(null);
     }
   };
+
+  const clearResults = () => {
+    setQuizResult(null);
+    setFlashcardResult(null);
+    setActivityResults({});
+  };
+
+  // Na vistoria os resultados vivem só na memória; fora dela, vêm do armazenamento do aluno.
+  const refreshUserData = () => (vistoria ? clearResults() : loadPlayerData());
 
   useEffect(() => {
     refreshUserData();
@@ -133,6 +166,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const saveQuizResult = async (result: QuizResult) => {
+    if (vistoria) { setQuizResult(result); return; } // só na memória
     if (!currentPlayer) return;
     await storageService.saveQuizResult(currentPlayer.id, result);
     setQuizResult(result);
@@ -140,6 +174,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const saveFlashcardResult = async (result: FlashcardResult) => {
+    if (vistoria) { setFlashcardResult(result); return; }
     if (!currentPlayer) return;
     await storageService.saveFlashcardResult(currentPlayer.id, result);
     setFlashcardResult(result);
@@ -147,6 +182,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const saveActivityResult = (result: ActivityResult) => {
+    if (vistoria) { setActivityResults(prev => ({ ...prev, [result.activityId]: result })); return; }
     if (!currentPlayer) return;
     const wasCompleted = getMissionProgress(LEVEL1, activityResults, true).isCompleted;
     storageService.saveActivityResult(currentPlayer.id, result);
@@ -177,6 +213,11 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const level1Completed = getMissionProgress(LEVEL1, activityResults, true).isCompleted;
   const level2Results = Object.fromEntries(LEVEL2.mission.activities.map(a => [a.id, activityResults[a.id] ?? null]));
   const level2Completed = getMissionProgress(LEVEL2, level2Results, true).isCompleted;
+  const level3Completed = getMissionProgress(LEVEL3, activityResults, true).isCompleted;
+  const level4Completed = getMissionProgress(LEVEL4, activityResults, true).isCompleted;
+  const level5Completed = getMissionProgress(LEVEL5, activityResults, true).isCompleted;
+  const level6Completed = getMissionProgress(LEVEL6, activityResults, true).isCompleted;
+  const level7Completed = getMissionProgress(LEVEL7, activityResults, true).isCompleted;
   const playerLevel = calculatePlayerLevel(totalScore);
   const missionsCompletedCount = (quizResult?.completed ? 1 : 0) + (flashcardResult?.completed ? 1 : 0)
     + Object.values(activityResults).filter(r => r.completed).length;
@@ -184,7 +225,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   return (
     <GameContext.Provider
       value={{
-        currentPlayer,
+        currentPlayer: vistoria ? VISTORIA_PLAYER : currentPlayer,
         setCurrentPlayer,
         register,
         startGuest,
@@ -196,10 +237,15 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         saveFlashcardResult,
         activityResults,
         saveActivityResult,
-        level0Completed,
-        level1Completed,
-        level2Completed,
-        progressLoaded: !currentPlayer || loadedFor === currentPlayer.id,
+        level0Completed: vistoria || level0Completed,
+        level1Completed: vistoria || level1Completed,
+        level2Completed: vistoria || level2Completed,
+        level3Completed: vistoria || level3Completed,
+        level4Completed: vistoria || level4Completed,
+        level5Completed: vistoria || level5Completed,
+        level6Completed: vistoria || level6Completed,
+        level7Completed: vistoria || level7Completed,
+        progressLoaded: vistoria || !currentPlayer || loadedFor === currentPlayer.id,
         totalScore,
         playerLevel,
         missionsCompletedCount,
@@ -207,7 +253,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         toggleSound,
         isMusicOn,
         toggleMusic,
-        refreshUserData
+        refreshUserData,
+        vistoria,
+        setVistoriaMode
       }}
     >
       {children}

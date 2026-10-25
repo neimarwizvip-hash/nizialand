@@ -13,13 +13,16 @@ const stationStyle = ['bg-blue-100 border-blue-500', 'bg-orange-100 border-orang
 
 // Pátio do Nível 2: mapa com as 6 estações. ?atividade=<id> abre direto (só se já estiver liberada).
 export const PatioScreen: React.FC = () => {
-  const { currentPlayer, activityResults } = useGame();
+  const { currentPlayer, activityResults, vistoria } = useGame();
   const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
   const grade = getPlayerGrade(currentPlayer) ?? '8';
   const unlocked = true; // a rota já exige o Nível 1 completo (RequireLevel2)
   const requested = params.get('atividade');
-  const selected = resolveRequestedActivity(LEVEL2, activityResults, requested, unlocked);
+  // Na vistoria (só em dev) qualquer atividade abre direto, fora da ordem.
+  const selected = vistoria
+    ? LEVEL2.mission.activities.find(a => a.id === requested) ?? null
+    : resolveRequestedActivity(LEVEL2, activityResults, requested, unlocked);
   const stations = useMemo(() => getMissionProgress(LEVEL2, activityResults, unlocked).activities, [activityResults]);
   const [runKey, setRunKey] = useState(0);
 
@@ -41,7 +44,7 @@ export const PatioScreen: React.FC = () => {
       <View
         key={`${selected.id}-${runKey}`}
         grade={grade}
-        onExit={() => setParams({})}
+        onExit={() => navigate('/nivel2/patio')}
         onReplay={() => setRunKey(k => k + 1)}
       />
     );
