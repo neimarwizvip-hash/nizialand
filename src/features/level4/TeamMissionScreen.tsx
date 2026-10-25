@@ -8,6 +8,7 @@ import { LEVEL4_CONTENT } from '../../data/level4Content';
 import { getMissionProgress } from '../../engines/progression/progress';
 import { unlockForVistoria } from '../../services/vistoria';
 import { PlayerAvatar } from '../../components/ui/PlayerAvatar';
+import { ProvisionalStoryGate } from '../../components/story/ProvisionalStoryGate';
 import { TeamTroublemakers } from '../../features/level4/TeamTroublemakers';
 import { Level4Activities } from '../../features/level4/Level4Activities';
 import type { CorridorDoor } from '../level3/Corridor3D';
@@ -48,7 +49,7 @@ export const TeamMissionScreen: React.FC = () => {
   const enter = (id: string) => { lastDoor.current = id; setParams({ atividade: id }); };
   const activityView = open && selected ? <Level4Activities key={selected.id} activity={selected} grade={grade} onExit={() => setParams({})} onSave={saveActivityResult} /> : null;
 
-  if (mode === '3d') return <>
+  if (mode === '3d') return <ProvisionalStoryGate story="nivel4" bypass={!!requested}><>
     <div className={open ? 'hidden' : 'fixed inset-0'}>
       <Suspense fallback={<div className="fixed inset-0 game-sky flex items-center justify-center font-black text-blue-900">Abrindo a escola…</div>}>
         <SchoolCorridor3D doors={doors} paused={open} startAt={lastDoor.current} avatarId={currentPlayer?.avatar} avatarSkinTone={currentPlayer?.skinTone} level={4} heading="MISSÃO PELA ESCOLA" simpleLabel="Mapa simples" onEnter={enter} onExit={() => navigate('/mapa')} onSimpleMode={() => switchMode('simples')} />
@@ -56,11 +57,12 @@ export const TeamMissionScreen: React.FC = () => {
     </div>
     {progress.isCompleted && !open && <div role="status" className="fixed z-30 top-16 left-1/2 -translate-x-1/2 w-[min(92vw,520px)] game-panel p-3 border-amber-400 font-black text-blue-900">Nível 4 concluído! Equipe reunida · {total} pontos.</div>}
     {activityView && <div className="fixed inset-0 z-40 overflow-y-auto">{activityView}</div>}
-  </>;
+  </></ProvisionalStoryGate>;
 
-  if (activityView) return activityView;
+  if (activityView) return <ProvisionalStoryGate story="nivel4" bypass>{activityView}</ProvisionalStoryGate>;
 
   return (
+    <ProvisionalStoryGate story="nivel4" bypass={!!requested}>
     <main className="min-h-screen game-sky p-3 sm:p-8">
       <div className="max-w-6xl mx-auto">
         <header className="flex flex-wrap items-start justify-between gap-3 mb-4">
@@ -93,6 +95,7 @@ export const TeamMissionScreen: React.FC = () => {
         </section>
       </div>
     </main>
+    </ProvisionalStoryGate>
   );
 };
 

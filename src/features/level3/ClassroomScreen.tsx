@@ -9,6 +9,7 @@ import { getMissionProgress } from '../../engines/progression/progress';
 import { unlockForVistoria } from '../../services/vistoria';
 import { audioService } from '../../services/audio';
 import { triggerConfetti } from '../../components/ui/ConfettiEffect';
+import { ProvisionalStoryGate } from '../../components/story/ProvisionalStoryGate';
 import { LEVEL3_ACTIVITY_VIEWS, LEVEL3_ROOM_ORDER } from './Level3Activities';
 import { level3MissionMaxScore, ZE_ROOM_SIZES } from './level3Rules';
 import type { CorridorDoor } from './Corridor3D';
@@ -106,6 +107,7 @@ export const ClassroomScreen: React.FC = () => {
 
   if (mode === '3d') {
     return (
+      <ProvisionalStoryGate story="nivel3" bypass={!!requested}>
       <>
         {/* O corredor continua montado (pausado) enquanto a sala está aberta: ao sair, o aluno volta na porta. */}
         <div className={open ? 'hidden' : 'fixed inset-0'}>
@@ -130,12 +132,14 @@ export const ClassroomScreen: React.FC = () => {
         )}
         {roomView && <div className="fixed inset-0 z-40 overflow-y-auto">{roomView}</div>}
       </>
+      </ProvisionalStoryGate>
     );
   }
 
-  if (roomView) return roomView;
+  if (roomView) return <ProvisionalStoryGate story="nivel3" bypass>{roomView}</ProvisionalStoryGate>;
 
   return (
+    <ProvisionalStoryGate story="nivel3" bypass={!!requested}>
     <div className="min-h-screen game-sky p-4 sm:p-8 short:p-2">
       <div className="max-w-6xl mx-auto">
         <header className="flex items-center justify-between gap-2 mb-6 short:mb-2">
@@ -180,6 +184,7 @@ export const ClassroomScreen: React.FC = () => {
         </div>
       </div>
     </div>
+    </ProvisionalStoryGate>
   );
 };
 

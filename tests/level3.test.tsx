@@ -16,6 +16,7 @@ vi.mock('../src/services/audio', () => ({
   audioService: { playClick: vi.fn(), playCorrect: vi.fn(), playWrong: vi.fn(), playTrack: vi.fn(), playVictory: vi.fn(), duckVolume: vi.fn(), playFlip: vi.fn(), isSoundOn: () => false },
 }));
 vi.mock('../src/components/ui/ConfettiEffect', () => ({ triggerConfetti: vi.fn() }));
+vi.mock('../src/components/story/ProvisionalStoryGate', () => ({ ProvisionalStoryGate: ({ children }: { children: React.ReactNode }) => <>{children}</> }));
 // O corredor real usa WebGL; aqui só importa o que ele recebe.
 vi.mock('../src/features/level3/Corridor3D', () => ({
   default: (p: { doors: { id: string; state: string }[]; onEnter: (id: string) => void; onSimpleMode: () => void }) => (

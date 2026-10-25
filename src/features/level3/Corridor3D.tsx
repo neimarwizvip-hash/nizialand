@@ -30,6 +30,8 @@ const HALF_W = 3;
 const NEAR = 2.4;
 const SPEED = 4.2;
 const ZE_LINES = ['Essa porta aí você não abre!', 'Hehe, aposto que você erra a próxima!', 'Corre não... a sala não foge!', 'Eu sei a resposta e não conto!'];
+const SCHOOL_SIGNS = ['LIBRARY', 'HALLWAY', 'TEAM ROOM', 'NOTICE BOARD', 'GYM', 'REVIEW'];
+const ZONE_COLORS = ['#fbbf24', '#38bdf8', '#a78bfa', '#fb7185', '#34d399', '#f472b6'];
 
 const doorZ = (i: number) => -4 - i * DOOR_GAP;
 const doorSide = (i: number) => (i % 2 === 0 ? -1 : 1);
@@ -161,6 +163,18 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
       label.position.set(s * (HALF_W - 0.5), 2.75, doorZ(i));
       labelRef.current.push(label);
       scene.add(frame, door, label);
+      if (level === 4) {
+        // Faixa no piso e placa bilingue distinguem os setores do mapa provisório.
+        const zoneMat = track(new THREE.MeshLambertMaterial({ color: ZONE_COLORS[i % ZONE_COLORS.length] }));
+        const tile = new THREE.Mesh(box, zoneMat);
+        tile.position.set(s * 1.75, 0.025, doorZ(i));
+        tile.scale.set(1.7, 0.05, 1.9);
+        const signMat = track(new THREE.SpriteMaterial({ map: track(labelTexture([SCHOOL_SIGNS[i] ?? 'SCHOOL', d.label], '#14532d')), depthWrite: false }));
+        const sign = new THREE.Sprite(signMat);
+        sign.position.set(s * (HALF_W - 0.6), 2.1, doorZ(i) + 2.35);
+        sign.scale.set(1.35, 0.42, 1);
+        scene.add(tile, sign);
+      }
     });
 
     // Usa o avatar escolhido pelo aluno, inclusive os recortes dos painéis de avatares.
