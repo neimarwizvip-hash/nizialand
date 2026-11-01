@@ -41,13 +41,16 @@ const ROUND_SIZE = 10;
 const MAX_LIVES = 3;
 const MAX_TOPICS = 2;
 
-// Cores e formas no estilo game show, uma para cada alternativa
+// Cores e formas no estilo game show, uma para cada alternativa.
+// Vermelho e verde ficam reservados para errado e certo (só aparecem depois da resposta).
 const OPTION_STYLES = [
-  { shape: '▲', key: 'A', bg: 'from-rose-500 to-rose-700', ring: 'ring-rose-300', shadow: 'shadow-[0_6px_0_#881337]' },
-  { shape: '◆', key: 'B', bg: 'from-sky-500 to-blue-700', ring: 'ring-sky-300', shadow: 'shadow-[0_6px_0_#1e3a8a]' },
-  { shape: '●', key: 'C', bg: 'from-amber-400 to-orange-600', ring: 'ring-amber-200', shadow: 'shadow-[0_6px_0_#9a3412]' },
-  { shape: '■', key: 'D', bg: 'from-emerald-500 to-green-700', ring: 'ring-emerald-300', shadow: 'shadow-[0_6px_0_#14532d]' },
+  { shape: '▲', key: 'A', bg: 'from-nisia-roxo-400 to-nisia-roxo-700', ring: 'ring-nisia-roxo-100', shadow: 'shadow-[0_6px_0_#3B1A7A]' },
+  { shape: '◆', key: 'B', bg: 'from-nisia-azul-400 to-nisia-azul-700', ring: 'ring-nisia-azul-200', shadow: 'shadow-[0_6px_0_#0C2A66]' },
+  { shape: '●', key: 'C', bg: 'from-nisia-laranja-400 to-nisia-laranja-700', ring: 'ring-nisia-laranja-100', shadow: 'shadow-[0_6px_0_#7A3A05]' },
+  { shape: '■', key: 'D', bg: 'from-nisia-madeira-clara to-nisia-madeira-escura', ring: 'ring-nisia-papel-escuro', shadow: 'shadow-[0_6px_0_#5C3A18]' },
 ];
+const COR_CERTA = 'from-nisia-verde-400 to-nisia-verde-700 shadow-[0_6px_0_#14532d]';
+const COR_ERRADA = 'from-nisia-erro to-red-800 shadow-[0_6px_0_#7F1D1D]';
 
 const RANKS = [
   { min: 0, title: 'Rookie', emoji: '🥚' },
@@ -272,7 +275,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
 
   // ─── Render ───
   return (
-    <div className="relative min-h-screen overflow-hidden bg-sky-200 text-slate-900">
+    <div className="relative min-h-screen overflow-hidden bg-nisia-azul-100 text-nisia-tinta">
       <ArcadeBackdrop hue={gradeInfo?.gradient} />
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 py-5 sm:py-8 short:py-1.5">
@@ -285,26 +288,24 @@ export const ArcadeLevel0Screen: React.FC = () => {
               else if (stage === 'grade') navigate('/');
               else setStage('topics');
             }}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/85 hover:bg-white border-2 border-white text-sky-800 shadow-md text-sm font-heading font-black uppercase tracking-wider backdrop-blur-md transition"
+            className="kit-btn kit-btn--papel kit-btn--sm"
           >
             <ChevronLeft className="w-4 h-4" />
             {stage === 'grade' ? 'Menu' : stage === 'topics' ? 'Séries' : 'Sair'}
           </button>
           <div className="text-center">
-            <div className="text-[10px] sm:text-xs tracking-[0.3em] text-sky-800 font-black">NISIALAND ARCADE</div>
-            <div className="font-[Bungee] text-xl sm:text-3xl text-amber-500 [text-shadow:0_2px_0_#fff,0_4px_10px_rgba(180,83,9,0.35)]">
-              TREINO LIVRE
-            </div>
+            <div className="text-[10px] sm:text-xs tracking-[0.3em] text-nisia-azul-700 font-black">NISIALAND ARCADE</div>
+            <h1 className="kit-titulo text-2xl sm:text-4xl short:text-xl leading-none">Treino livre</h1>
           </div>
-          <div className="px-3 py-2 rounded-xl bg-white/85 border-2 border-white text-slate-800 shadow-md text-xs sm:text-sm font-heading font-bold backdrop-blur-md max-w-[40%] truncate">
-            🎮 {playerName}
+          <div className="kit-ficha kit-ficha--papel max-w-[40%] truncate normal-case tracking-normal">
+            {playerName}
           </div>
         </div>
 
         {stage === 'grade' && (
           <section className="animate-rise-in">
-            <h2 className="text-center font-heading font-black text-2xl sm:text-4xl short:text-lg mb-1 short:mb-1 game-title">Escolha sua série</h2>
-            <p className="text-center text-sky-900 font-semibold mb-6 text-sm sm:text-base short:hidden">Cada série tem seus próprios desafios. Choose your level, player!</p>
+            <h2 className="text-center font-display text-2xl sm:text-4xl short:text-lg mb-1 short:mb-1 game-title">Escolha sua série</h2>
+            <p className="text-center text-nisia-azul-700 font-semibold mb-6 text-sm sm:text-base short:hidden">Cada série tem seus próprios desafios. Choose your level, player!</p>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 short:grid-cols-5 gap-3 sm:gap-4 short:gap-2">
               {GRADES.map((g, i) => (
                 <button
@@ -317,8 +318,8 @@ export const ArcadeLevel0Screen: React.FC = () => {
                 >
                   <div className="rounded-[20px] bg-white/10 group-hover:bg-white/0 text-white [text-shadow:0_2px_4px_rgba(0,0,0,0.25)] transition px-3 py-5 sm:py-7 short:px-1 short:py-2 h-full flex flex-col items-center">
                     <span className="text-4xl sm:text-5xl short:text-2xl mb-2 short:mb-0 group-hover:animate-bounce">{g.emoji}</span>
-                    <span className="font-[Bungee] text-3xl sm:text-4xl short:text-2xl">{g.short}</span>
-                    <span className="font-heading font-black text-sm sm:text-base mt-1">{g.label}</span>
+                    <span className="font-display text-3xl sm:text-4xl short:text-2xl">{g.short}</span>
+                    <span className="font-display text-sm sm:text-base mt-1">{g.label}</span>
                     <span className="mt-2 text-[10px] tracking-[0.25em] uppercase text-white/90 font-black short:hidden">{g.tagline}</span>
                   </div>
                 </button>
@@ -328,17 +329,17 @@ export const ArcadeLevel0Screen: React.FC = () => {
             <button
               onClick={() => {
                 soundEffects.buttonClick();
-                navigate('/historia');
+                navigate(currentPlayer ? '/mapa' : '/register');
               }}
-              className="mt-8 short:mt-3 w-full group flex items-center gap-4 rounded-3xl border-2 border-amber-300 bg-gradient-to-r from-amber-50 via-white to-sky-50 shadow-[0_6px_0_0_#f59e0b] p-4 sm:p-5 short:p-2 text-left hover:border-amber-400 hover:-translate-y-0.5 active:translate-y-1 active:shadow-[0_2px_0_0_#f59e0b] transition"
+              className="mt-8 short:mt-3 w-full group flex items-center gap-4 rounded-3xl border-2 border-nisia-sol-300 bg-gradient-to-r from-nisia-sol-100 via-white to-nisia-azul-100 shadow-[0_6px_0_0_#f59e0b] p-4 sm:p-5 short:p-2 text-left hover:border-nisia-sol-400 hover:-translate-y-0.5 active:translate-y-1 active:shadow-[0_2px_0_0_#f59e0b] transition"
             >
-              <img src="/assets/nisialand_institutional_characters.jpg" alt="" className="w-16 h-16 sm:w-20 sm:h-20 short:w-10 short:h-10 rounded-2xl object-cover border-2 border-amber-300/70" />
+              <img src="/assets/nisialand_institutional_characters.jpg" alt="" className="w-16 h-16 sm:w-20 sm:h-20 short:w-10 short:h-10 rounded-2xl object-cover border-2 border-nisia-sol-300/70" />
               <div className="flex-1">
-                <div className="text-[10px] tracking-[0.25em] text-amber-600 font-black">MODO HISTÓRIA</div>
-                <div className="font-heading font-black text-lg sm:text-xl short:text-sm">Missões NISIALAND: Turmas 601 a 909</div>
-                <div className="text-xs sm:text-sm text-slate-600 short:hidden">HQ com o Diretor Márcio, cadastro na equipe, Missão 1 (comparativos) e Missão 2 (flashcards) com ranking.</div>
+                <div className="text-[10px] tracking-[0.25em] text-nisia-laranja-700 font-black">MODO HISTÓRIA</div>
+                <div className="font-display text-lg sm:text-xl short:text-sm">As missões da escola</div>
+                <div className="text-xs sm:text-sm text-nisia-tinta-suave short:hidden">Mapa da escola com os níveis, as histórias, a sua equipe e o ranking.</div>
               </div>
-              <BookOpen className="w-7 h-7 text-amber-500 group-hover:translate-x-1 transition" />
+              <BookOpen className="w-7 h-7 text-nisia-laranja-700 group-hover:translate-x-1 transition" />
             </button>
           </section>
         )}
@@ -350,8 +351,8 @@ export const ArcadeLevel0Screen: React.FC = () => {
                 {gradeInfo.emoji} {gradeInfo.label}
               </span>
             </div>
-            <h2 className="text-center font-heading font-black text-2xl sm:text-4xl short:text-lg mb-1 short:mb-1 game-title">Escolha até 2 tópicos</h2>
-            <p className="text-center text-sky-900 font-semibold mb-6 text-sm sm:text-base short:hidden">
+            <h2 className="text-center font-display text-2xl sm:text-4xl short:text-lg mb-1 short:mb-1 game-title">Escolha até 2 tópicos</h2>
+            <p className="text-center text-nisia-azul-700 font-semibold mb-6 text-sm sm:text-base short:hidden">
               Misture dois assuntos para uma partida mais desafiadora.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 short:gap-2">
@@ -361,22 +362,22 @@ export const ArcadeLevel0Screen: React.FC = () => {
             </div>
 
             <div className="mt-6 short:mt-2 flex flex-col sm:flex-row items-center justify-between gap-4 game-panel p-4 short:py-1.5">
-              <div className="text-sm text-slate-700 font-semibold text-center sm:text-left">
+              <div className="text-sm text-nisia-tinta font-semibold text-center sm:text-left">
                 <div className="flex items-center gap-4 justify-center sm:justify-start">
-                  <span className="flex items-center gap-1"><Heart className="w-4 h-4 text-rose-500 fill-rose-500" /> 3 vidas</span>
-                  <span className="flex items-center gap-1"><Clock className="w-4 h-4 text-sky-600" /> {QUESTION_TIME}s</span>
-                  <span className="flex items-center gap-1"><Flame className="w-4 h-4 text-orange-500" /> combo até x3</span>
+                  <span className="flex items-center gap-1"><Heart className="w-4 h-4 text-nisia-erro fill-nisia-erro" /> 3 vidas</span>
+                  <span className="flex items-center gap-1"><Clock className="w-4 h-4 text-nisia-azul-700" /> {QUESTION_TIME}s</span>
+                  <span className="flex items-center gap-1"><Flame className="w-4 h-4 text-nisia-laranja-700" /> combo até x3</span>
                 </div>
                 {topics.length > 0 && getBestScore(recordKey) > 0 && (
-                  <div className="mt-1 text-amber-600 font-bold">🏆 Seu recorde nesta combinação: {getBestScore(recordKey)}</div>
+                  <div className="mt-1 text-nisia-laranja-700 font-bold">🏆 Seu recorde nesta combinação: {getBestScore(recordKey)}</div>
                 )}
               </div>
               <button
                 disabled={topics.length === 0}
                 onClick={startRound}
-                className="btn-shine relative overflow-hidden flex items-center gap-2 px-8 py-4 short:py-1.5 rounded-full font-heading font-black text-xl short:text-base tracking-widest uppercase text-slate-950 bg-gradient-to-b from-amber-300 to-amber-500 border-4 border-amber-600 shadow-[0_6px_0_0_#b45309] active:translate-y-1 active:shadow-[0_2px_0_0_#b45309] transition disabled:opacity-40 disabled:active:translate-y-0 disabled:cursor-not-allowed"
+                className="btn-shine relative overflow-hidden flex items-center gap-2 px-8 py-4 short:py-1.5 rounded-full font-display text-xl short:text-base tracking-widest uppercase text-nisia-tinta bg-gradient-to-b from-nisia-sol-300 to-nisia-sol-500 border-4 border-nisia-sol-500 shadow-[0_6px_0_0_#B36E00] active:translate-y-1 active:shadow-[0_2px_0_0_#B36E00] transition disabled:opacity-40 disabled:active:translate-y-0 disabled:cursor-not-allowed"
               >
-                <Play className="w-6 h-6 fill-slate-950" /> Jogar
+                <Play className="w-6 h-6 fill-nisia-tinta" /> Jogar
               </button>
             </div>
           </section>
@@ -384,8 +385,8 @@ export const ArcadeLevel0Screen: React.FC = () => {
 
         {stage === 'countdown' && (
           <div className="flex flex-col items-center justify-center min-h-[60vh]">
-            <div className="text-sm tracking-[0.4em] text-sky-800 font-black mb-4">GET READY, {playerName.toUpperCase()}!</div>
-            <div key={countdown} className="font-[Bungee] text-[8rem] sm:text-[12rem] leading-none animate-countdown-pop text-amber-500 [text-shadow:0_6px_0_#fff,0_12px_30px_rgba(180,83,9,0.45)]">
+            <div className="text-sm tracking-[0.4em] text-nisia-azul-700 font-black mb-4">GET READY, {playerName.toUpperCase()}!</div>
+            <div key={countdown} className="font-display text-[8rem] sm:text-[12rem] leading-none animate-countdown-pop text-nisia-laranja-700 [text-shadow:0_6px_0_#fff,0_12px_30px_rgba(180,83,9,0.45)]">
               {countdown > 0 ? countdown : 'GO!'}
             </div>
           </div>
@@ -399,14 +400,14 @@ export const ArcadeLevel0Screen: React.FC = () => {
                 {Array.from({ length: MAX_LIVES }).map((_, i) => (
                   <Heart
                     key={i}
-                    className={`w-6 h-6 sm:w-7 sm:h-7 transition-all duration-300 ${i < lives ? 'text-rose-500 fill-rose-500 drop-shadow-[0_2px_0_#fff]' : 'text-slate-400/60 scale-75'}`}
+                    className={`w-6 h-6 sm:w-7 sm:h-7 transition-all duration-300 ${i < lives ? 'text-nisia-erro fill-nisia-erro drop-shadow-[0_2px_0_#fff]' : 'text-nisia-tinta-suave/60 scale-75'}`}
                   />
                 ))}
               </div>
-              <div className={`flex items-center gap-1 px-3 py-1 rounded-full font-black text-sm transition ${streak >= 3 ? 'bg-orange-500 text-white animate-pulse shadow-md' : 'bg-white/85 text-slate-800 shadow-md'}`}>
+              <div className={`flex items-center gap-1 px-3 py-1 rounded-full font-black text-sm transition ${streak >= 3 ? 'bg-nisia-laranja-500 text-white animate-pulse shadow-md' : 'bg-white/85 text-nisia-tinta shadow-md'}`}>
                 <Flame className="w-4 h-4" /> {streak} {comboMultiplier(streak) > 1 && <span>x{comboMultiplier(streak)}</span>}
               </div>
-              <div className="font-[Bungee] text-xl sm:text-2xl text-amber-500 tabular-nums [text-shadow:0_2px_0_#fff]">{score.toString().padStart(5, '0')}</div>
+              <div className="font-display text-xl sm:text-2xl text-nisia-laranja-700 tabular-nums [text-shadow:0_2px_0_#fff]">{score.toString().padStart(5, '0')}</div>
             </div>
 
             {/* Progresso */}
@@ -417,7 +418,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
                   <div
                     key={i}
                     className={`h-2 flex-1 rounded-full transition-all ${
-                      entry ? (entry.correct ? 'bg-emerald-400' : 'bg-rose-500') : i === index ? 'bg-amber-300 animate-pulse' : 'bg-white/70'
+                      entry ? (entry.correct ? 'bg-nisia-verde-400' : 'bg-nisia-erro') : i === index ? 'bg-nisia-sol-300 animate-pulse' : 'bg-white/70'
                     }`}
                   />
                 );
@@ -426,15 +427,15 @@ export const ArcadeLevel0Screen: React.FC = () => {
 
             <div className="relative grid lg:grid-cols-[1fr_auto] gap-4 short:gap-2 short:grid-cols-[1fr_auto] items-start">
               {/* Cartão da pergunta */}
-              <div key={current.id} className="animate-rise-in [animation-duration:0.45s] game-panel text-slate-900 p-5 sm:p-7 short:px-4 short:py-2">
+              <div key={current.id} className="animate-rise-in [animation-duration:0.45s] game-panel text-nisia-tinta p-5 sm:p-7 short:px-4 short:py-2">
                 <div className="flex items-center justify-between gap-2 mb-3 short:mb-0.5 flex-wrap">
-                  <span className="text-xs font-black tracking-widest uppercase text-slate-500">
+                  <span className="text-xs font-black tracking-widest uppercase text-nisia-tinta-suave">
                     Question {index + 1}/{round.length} · {gradeTopics.find((t) => t.id === current.topic)?.title}
                   </span>
                   <div className="flex gap-2">
                     <button
                       onClick={() => speechService.speak(current.prompt.replace(/_+/g, 'blank'), 'en-US')}
-                      className="p-2 short:p-1 rounded-xl bg-slate-100 hover:bg-cyan-100 text-cyan-700 transition"
+                      className="p-2 short:p-1 rounded-xl bg-nisia-papel-escuro hover:bg-nisia-azul-100 text-nisia-azul-700 transition"
                       title="Ouvir em inglês"
                     >
                       <Volume2 className="w-4 h-4" />
@@ -442,7 +443,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
                     {current.promptPt && (
                       <button
                         onClick={() => setShowPt((v) => !v)}
-                        className={`p-2 short:p-1 rounded-xl transition ${showPt ? 'bg-amber-200 text-amber-800' : 'bg-slate-100 hover:bg-amber-100 text-amber-700'}`}
+                        className={`p-2 short:p-1 rounded-xl transition ${showPt ? 'bg-nisia-sol-100 text-nisia-laranja-700' : 'bg-nisia-papel-escuro hover:bg-nisia-sol-100 text-nisia-laranja-700'}`}
                         title="Ver em português"
                       >
                         <Languages className="w-4 h-4" />
@@ -450,8 +451,8 @@ export const ArcadeLevel0Screen: React.FC = () => {
                     )}
                   </div>
                 </div>
-                <h3 className="font-heading font-black text-xl sm:text-3xl short:text-xl leading-snug">{current.prompt}</h3>
-                {showPt && current.promptPt && <p className="mt-2 text-slate-500 font-semibold">{current.promptPt}</p>}
+                <h3 className="font-display text-xl sm:text-3xl short:text-xl leading-snug">{current.prompt}</h3>
+                {showPt && current.promptPt && <p className="mt-2 text-nisia-tinta-suave font-semibold">{current.promptPt}</p>}
               </div>
 
               {/* Relógio e poderes */}
@@ -460,7 +461,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
                 <button
                   onClick={use5050}
                   disabled={used5050 || revealed}
-                  className="flex items-center gap-1.5 px-3 py-2 short:py-1 rounded-xl bg-purple-600 hover:bg-purple-500 border-2 border-purple-300/50 font-black text-sm disabled:opacity-30 disabled:cursor-not-allowed transition"
+                  className="flex items-center gap-1.5 px-3 py-2 short:py-1 rounded-xl bg-nisia-roxo-500 hover:bg-nisia-roxo-500 border-2 border-nisia-roxo-400/50 font-black text-sm disabled:opacity-30 disabled:cursor-not-allowed transition"
                   title="Elimina duas alternativas erradas (1 vez por partida)"
                 >
                   <Scissors className="w-4 h-4" /> 50/50
@@ -468,7 +469,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
                 <button
                   onClick={useExtraTime}
                   disabled={usedTime || revealed}
-                  className="flex items-center gap-1.5 px-3 py-2 short:py-1 rounded-xl bg-cyan-600 hover:bg-cyan-500 border-2 border-cyan-300/50 font-black text-sm disabled:opacity-30 disabled:cursor-not-allowed transition"
+                  className="flex items-center gap-1.5 px-3 py-2 short:py-1 rounded-xl bg-nisia-azul-500 hover:bg-nisia-azul-500 border-2 border-nisia-azul-200/50 font-black text-sm disabled:opacity-30 disabled:cursor-not-allowed transition"
                   title="Ganhe 10 segundos (1 vez por partida)"
                 >
                   <Zap className="w-4 h-4" /> +10s
@@ -478,8 +479,8 @@ export const ArcadeLevel0Screen: React.FC = () => {
               {popup && (
                 <div
                   key={popup.id}
-                  className={`pointer-events-none absolute left-1/2 top-6 -translate-x-1/2 z-20 font-[Bungee] text-3xl sm:text-5xl whitespace-nowrap animate-score-pop ${
-                    popup.good ? 'text-emerald-500 [text-shadow:0_3px_0_#fff,0_0_20px_rgba(16,185,129,0.6)]' : 'text-rose-500 [text-shadow:0_3px_0_#fff,0_0_20px_rgba(244,63,94,0.6)]'
+                  className={`pointer-events-none absolute left-1/2 top-6 -translate-x-1/2 z-20 font-display text-3xl sm:text-5xl whitespace-nowrap animate-score-pop ${
+                    popup.good ? 'text-nisia-verde-700 [text-shadow:0_3px_0_#fff,0_0_20px_rgba(16,185,129,0.6)]' : 'text-nisia-erro [text-shadow:0_3px_0_#fff,0_0_20px_rgba(244,63,94,0.6)]'
                   }`}
                 >
                   {popup.text}
@@ -495,9 +496,10 @@ export const ArcadeLevel0Screen: React.FC = () => {
                 const isChosen = chosen === i;
                 const isHidden = hidden.includes(i);
                 let state = '';
+                let cores = `${style.bg} ${style.shadow}`;
                 if (revealed) {
-                  if (isCorrect) state = 'ring-4 ring-emerald-400 ring-offset-2 ring-offset-sky-100 scale-[1.02] brightness-110';
-                  else if (isChosen) state = 'opacity-80 animate-shake grayscale';
+                  if (isCorrect) { cores = COR_CERTA; state = 'ring-4 ring-nisia-sol-400 ring-offset-2 ring-offset-nisia-azul-100'; }
+                  else if (isChosen) { cores = COR_ERRADA; state = 'animate-shake'; }
                   else state = 'opacity-30';
                 }
                 return (
@@ -506,7 +508,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
                     onClick={() => handleAnswer(i)}
                     disabled={revealed || isHidden}
                     style={{ animationDelay: `${i * 60}ms` }}
-                    className={`${revealed ? '' : 'animate-rise-in'} relative flex items-center gap-3 rounded-2xl px-4 py-4 sm:py-5 short:py-1.5 text-left bg-gradient-to-b ${style.bg} ${style.shadow} text-white font-heading font-black text-base sm:text-lg transition-all active:translate-y-1 active:shadow-none hover:brightness-110 disabled:cursor-default ${state} ${
+                    className={`${revealed ? '' : 'animate-rise-in'} relative flex items-center gap-3 rounded-2xl px-4 py-4 sm:py-5 short:py-1.5 text-left bg-gradient-to-b ${cores} text-white font-display text-base sm:text-lg transition-all active:translate-y-1 active:shadow-none hover:brightness-110 disabled:cursor-default ${state} ${
                       isHidden ? 'invisible' : ''
                     }`}
                   >
@@ -523,13 +525,13 @@ export const ArcadeLevel0Screen: React.FC = () => {
             {revealed && (
               <div className="animate-rise-in [animation-duration:0.4s] mt-5 short:mt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 game-panel !rounded-2xl p-4 short:py-1.5">
                 <div className="flex-1">
-                  <div className={`font-black text-sm tracking-widest ${log[log.length - 1]?.correct ? 'text-emerald-600' : 'text-rose-600'}`}>
+                  <div className={`font-black text-sm tracking-widest ${log[log.length - 1]?.correct ? 'text-nisia-verde-700' : 'text-nisia-erro'}`}>
                     {log[log.length - 1]?.correct ? 'CORRECT! 🎉' : chosen === null ? 'TEMPO ESGOTADO ⏰' : 'NOT QUITE… 💡'}
                   </div>
-                  <p className="text-slate-700 text-sm sm:text-base">
+                  <p className="text-nisia-tinta text-sm sm:text-base">
                     {!log[log.length - 1]?.correct && (
                       <>
-                        Resposta certa: <strong className="text-slate-900">{current.options[0]}</strong>.{' '}
+                        Resposta certa: <strong className="text-nisia-tinta">{current.options[0]}</strong>.{' '}
                       </>
                     )}
                     {current.explanation}
@@ -538,7 +540,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
                 <button
                   onClick={goNext}
                   autoFocus
-                  className="px-6 py-3 short:py-1.5 rounded-2xl bg-gradient-to-b from-amber-300 to-amber-500 text-slate-950 font-heading font-black uppercase tracking-wider border-2 border-amber-600 shadow-[0_6px_0_0_#b45309] active:translate-y-1 active:shadow-[0_2px_0_0_#b45309] transition"
+                  className="px-6 py-3 short:py-1.5 rounded-2xl bg-gradient-to-b from-nisia-sol-300 to-nisia-sol-500 text-nisia-tinta font-display uppercase tracking-wider border-2 border-nisia-sol-500 shadow-[0_6px_0_0_#B36E00] active:translate-y-1 active:shadow-[0_2px_0_0_#B36E00] transition"
                 >
                   {lives <= 0 ? 'Ver resultado' : index >= round.length - 1 ? 'Finalizar' : 'Próxima ▶'}
                 </button>
@@ -549,7 +551,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
 
         {stage === 'result' && (
           <section className="animate-rise-in max-w-2xl mx-auto text-center">
-            <div className={`font-[Bungee] text-4xl sm:text-6xl mb-2 ${lives <= 0 ? 'text-rose-500 [text-shadow:0_4px_0_#fff]' : 'text-amber-500 [text-shadow:0_4px_0_#fff,0_8px_24px_rgba(180,83,9,0.35)]'}`}>
+            <div className={`font-display text-4xl sm:text-6xl mb-2 ${lives <= 0 ? 'text-nisia-erro [text-shadow:0_4px_0_#fff]' : 'text-nisia-laranja-700 [text-shadow:0_4px_0_#fff,0_8px_24px_rgba(180,83,9,0.35)]'}`}>
               {lives <= 0 ? 'GAME OVER' : 'STAGE CLEAR!'}
             </div>
             <div className="flex justify-center gap-2 mb-4">
@@ -564,7 +566,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
               ))}
             </div>
             {newRecord && (
-              <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-400 text-slate-950 font-black tracking-widest animate-pulse">🏆 NOVO RECORDE!</div>
+              <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-nisia-sol-400 text-nisia-tinta font-black tracking-widest animate-pulse">🏆 NOVO RECORDE!</div>
             )}
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
@@ -574,21 +576,21 @@ export const ArcadeLevel0Screen: React.FC = () => {
               <Stat label="Recorde" value={getBestScore(recordKey).toString()} />
             </div>
 
-            <div className="mb-6 rounded-3xl bg-gradient-to-r from-sky-500 to-indigo-500 text-white border-[3px] border-blue-700 shadow-[0_6px_0_0_#1e3a8a] p-4">
-              <div className="text-xs tracking-[0.3em] text-sky-100 font-black">SEU TÍTULO</div>
-              <div className="font-heading font-black text-2xl sm:text-3xl">
+            <div className="mb-6 rounded-3xl bg-gradient-to-r from-nisia-azul-500 to-nisia-azul-500 text-white border-[3px] border-nisia-azul-700 shadow-[0_6px_0_0_#0C2A66] p-4">
+              <div className="text-xs tracking-[0.3em] text-nisia-azul-100 font-black">SEU TÍTULO</div>
+              <div className="font-display text-2xl sm:text-3xl">
                 {rank.emoji} {rank.title}
               </div>
             </div>
 
             {log.some((l) => !l.correct) && (
               <div className="text-left mb-6 game-panel p-4">
-                <div className="font-heading font-black text-amber-600 mb-2">📚 Revise o que errou</div>
+                <div className="font-display text-nisia-laranja-700 mb-2">📚 Revise o que errou</div>
                 <ul className="space-y-2 text-sm">
                   {log.filter((l) => !l.correct).map((l) => (
-                    <li key={l.question.id} className="border-b border-slate-200 pb-2">
-                      <div className="text-slate-700">{l.question.prompt}</div>
-                      <div className="text-emerald-600 font-bold">✔ {l.question.options[0]}</div>
+                    <li key={l.question.id} className="border-b border-nisia-papel-linha pb-2">
+                      <div className="text-nisia-tinta">{l.question.prompt}</div>
+                      <div className="text-nisia-verde-700 font-bold">✔ {l.question.options[0]}</div>
                     </li>
                   ))}
                 </ul>
@@ -596,16 +598,16 @@ export const ArcadeLevel0Screen: React.FC = () => {
             )}
 
             <div className="flex flex-wrap justify-center gap-3">
-              <button onClick={startRound} className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-b from-amber-300 to-amber-500 text-slate-950 font-heading font-black uppercase border-2 border-amber-600 shadow-[0_6px_0_0_#b45309] active:translate-y-1 active:shadow-[0_2px_0_0_#b45309] transition">
+              <button onClick={startRound} className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-b from-nisia-sol-300 to-nisia-sol-500 text-nisia-tinta font-display uppercase border-2 border-nisia-sol-500 shadow-[0_6px_0_0_#B36E00] active:translate-y-1 active:shadow-[0_2px_0_0_#B36E00] transition">
                 <RotateCcw className="w-5 h-5" /> Jogar de novo
               </button>
-              <button onClick={() => setStage('topics')} className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-white hover:bg-sky-50 text-blue-800 border-2 border-sky-300 shadow-[0_4px_0_0_#7dd3fc] active:translate-y-1 active:shadow-[0_1px_0_0_#7dd3fc] font-heading font-black uppercase transition">
+              <button onClick={() => setStage('topics')} className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-nisia-papel hover:bg-nisia-azul-100 text-nisia-azul-700 border-2 border-nisia-azul-200 shadow-[0_4px_0_0_#7dd3fc] active:translate-y-1 active:shadow-[0_1px_0_0_#7dd3fc] font-display uppercase transition">
                 <Layers className="w-5 h-5" /> Trocar tópicos
               </button>
-              <button onClick={() => navigate('/leaderboard')} className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-white hover:bg-sky-50 text-blue-800 border-2 border-sky-300 shadow-[0_4px_0_0_#7dd3fc] active:translate-y-1 active:shadow-[0_1px_0_0_#7dd3fc] font-heading font-black uppercase transition">
+              <button onClick={() => navigate('/leaderboard')} className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-nisia-papel hover:bg-nisia-azul-100 text-nisia-azul-700 border-2 border-nisia-azul-200 shadow-[0_4px_0_0_#7dd3fc] active:translate-y-1 active:shadow-[0_1px_0_0_#7dd3fc] font-display uppercase transition">
                 <Trophy className="w-5 h-5" /> Ranking
               </button>
-              <button onClick={() => navigate('/')} className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-white hover:bg-sky-50 text-blue-800 border-2 border-sky-300 shadow-[0_4px_0_0_#7dd3fc] active:translate-y-1 active:shadow-[0_1px_0_0_#7dd3fc] font-heading font-black uppercase transition">
+              <button onClick={() => navigate('/')} className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-nisia-papel hover:bg-nisia-azul-100 text-nisia-azul-700 border-2 border-nisia-azul-200 shadow-[0_4px_0_0_#7dd3fc] active:translate-y-1 active:shadow-[0_1px_0_0_#7dd3fc] font-display uppercase transition">
                 <House className="w-5 h-5" /> Menu
               </button>
             </div>
@@ -625,16 +627,16 @@ const TopicCard: React.FC<{ topic: TopicInfo; selected: boolean; order: number; 
       onClick={onClick}
       style={{ animationDelay: `${delay}ms` }}
       className={`animate-rise-in relative flex items-center gap-4 short:gap-2 rounded-3xl p-4 short:px-3 short:py-1.5 text-left border-2 backdrop-blur-md transition-all active:scale-95 ${
-        selected ? 'bg-amber-50 border-amber-400 shadow-[0_6px_0_rgba(217,119,6,0.35)] scale-[1.02]' : 'bg-white/85 border-white shadow-[0_6px_0_rgba(2,132,199,0.18)] hover:border-sky-300 hover:-translate-y-0.5'
+        selected ? 'bg-nisia-sol-100 border-nisia-sol-400 shadow-[0_6px_0_rgba(217,119,6,0.35)] scale-[1.02]' : 'bg-white/85 border-white shadow-[0_6px_0_rgba(2,132,199,0.18)] hover:border-nisia-azul-200 hover:-translate-y-0.5'
       }`}
     >
       <span className="text-4xl short:text-2xl">{topic.emoji}</span>
       <div className="flex-1">
-        <div className="font-heading font-black text-lg short:text-base leading-tight text-sky-950">{topic.title}</div>
-        <div className="text-sm short:text-xs text-slate-600 short:truncate">{topic.titlePt}</div>
-        <div className="text-[11px] text-slate-500 mt-0.5 short:hidden">{count} questões</div>
+        <div className="font-display text-lg short:text-base leading-tight text-nisia-azul-700">{topic.title}</div>
+        <div className="text-sm short:text-xs text-nisia-tinta-suave short:truncate">{topic.titlePt}</div>
+        <div className="text-[11px] text-nisia-tinta-suave mt-0.5 short:hidden">{count} questões</div>
       </div>
-      <span className={`w-9 h-9 rounded-full flex items-center justify-center font-black border-2 ${selected ? 'bg-amber-400 text-slate-950 border-amber-200' : 'border-slate-300 text-transparent'}`}>
+      <span className={`w-9 h-9 rounded-full flex items-center justify-center font-black border-2 ${selected ? 'bg-nisia-sol-400 text-nisia-tinta border-nisia-sol-100' : 'border-nisia-papel-linha text-transparent'}`}>
         {selected ? order + 1 : '·'}
       </span>
     </button>
@@ -663,7 +665,7 @@ const TimerRing: React.FC<{ seconds: number; total: number }> = ({ seconds, tota
           style={{ transition: 'stroke-dashoffset 1s linear, stroke 0.3s' }}
         />
       </svg>
-      <span className="absolute inset-0 flex items-center justify-center font-[Bungee] text-2xl" style={{ color }}>
+      <span className="absolute inset-0 flex items-center justify-center font-display text-2xl" style={{ color }}>
         {seconds}
       </span>
     </div>
@@ -671,9 +673,9 @@ const TimerRing: React.FC<{ seconds: number; total: number }> = ({ seconds, tota
 };
 
 const Stat: React.FC<{ label: string; value: string }> = ({ label, value }) => (
-  <div className="rounded-2xl bg-white border-2 border-sky-200 shadow-[0_3px_0_0_#bae6fd] p-3">
-    <div className="text-[10px] tracking-[0.2em] uppercase text-slate-500 font-black">{label}</div>
-    <div className="font-[Bungee] text-xl sm:text-2xl text-sky-900">{value}</div>
+  <div className="rounded-2xl bg-nisia-papel border-2 border-nisia-azul-200 shadow-[0_3px_0_0_#bae6fd] p-3">
+    <div className="text-[10px] tracking-[0.2em] uppercase text-nisia-tinta-suave font-black">{label}</div>
+    <div className="font-display text-xl sm:text-2xl text-nisia-azul-700">{value}</div>
   </div>
 );
 
@@ -690,9 +692,9 @@ const ArcadeBackdrop: React.FC<{ hue?: string }> = ({ hue }) => {
   ).current;
   return (
     <div className="absolute inset-0 z-0 pointer-events-none">
-      <div className="absolute inset-0 bg-gradient-to-b from-sky-400 via-sky-200 to-sky-50" />
+      <div className="absolute inset-0 bg-gradient-to-b from-nisia-azul-400 via-nisia-azul-100 to-nisia-azul-100" />
       <img src="/assets/nisialand_school_facade_clean.jpg" alt="" className="absolute inset-x-0 bottom-0 w-full h-[55%] object-cover object-top opacity-35 [mask-image:linear-gradient(to_bottom,transparent,black_40%)]" />
-      <div className={`absolute inset-0 bg-gradient-to-br ${hue || 'from-sky-300 to-indigo-300'} opacity-15 transition-all duration-700`} />
+      <div className={`absolute inset-0 bg-gradient-to-br ${hue || 'from-nisia-azul-100 to-nisia-azul-200'} opacity-15 transition-all duration-700`} />
       <div className="sky-clouds absolute inset-x-0 top-0 h-64" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/10 to-white/50" />
       

@@ -101,7 +101,7 @@ export const QuestionBankManager: React.FC<{ onLog?: (action: string, details: s
     <div className="space-y-4">
       <div className="bg-slate-900 rounded-3xl border border-slate-800 p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div>
-          <h3 className="font-bungee text-sm text-white flex items-center gap-2">
+          <h3 className="font-display text-sm text-white flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-amber-400" /> Banco de Questões do Treino livre
           </h3>
           <p className="text-xs text-slate-400 mt-1">

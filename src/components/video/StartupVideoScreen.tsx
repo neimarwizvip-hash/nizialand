@@ -90,9 +90,9 @@ export const StartupVideoScreen: React.FC<StartupVideoScreenProps> = ({ onComple
 
   if (stage === 'loading') {
     return (
-      <main className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-5 bg-slate-950 text-center text-white" aria-live="polite">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-sky-300/30 border-t-sky-300" aria-hidden="true" />
-        <p className="font-heading text-lg font-black tracking-widest uppercase">Carregando...</p>
+      <main className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-5 bg-nisia-azul-900 text-center text-white" aria-live="polite">
+        <img src="/assets/nisialand_logo_oficial.png" alt="" className="h-20 w-auto drop-shadow-[0_4px_0_rgba(0,0,0,0.35)]" aria-hidden="true" />
+        <p className="font-display text-xl text-nisia-sol-400 tracking-wide animate-pulse">Carregando…</p>
       </main>
     );
   }
@@ -118,7 +118,7 @@ export const StartupVideoScreen: React.FC<StartupVideoScreenProps> = ({ onComple
         <button
           type="button"
           onClick={startWithSound}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-blue-700 px-7 py-4 font-heading text-lg font-black uppercase tracking-wide text-white shadow-[0_5px_0_0_#1e3a8a] transition hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+          className="kit-btn kit-btn--sol kit-btn--lg absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         >
           ▶ Iniciar com som
         </button>
@@ -126,7 +126,7 @@ export const StartupVideoScreen: React.FC<StartupVideoScreenProps> = ({ onComple
       <button
         type="button"
         onClick={complete}
-        className="absolute bottom-5 right-5 rounded-full border-2 border-white/70 bg-black/45 px-4 py-2 text-sm font-bold text-white transition hover:bg-black/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        className="kit-hud__btn absolute bottom-5 right-5"
       >
         Pular vídeo
       </button>

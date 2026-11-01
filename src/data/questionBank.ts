@@ -34,11 +34,11 @@ export interface BankQuestion {
 }
 
 export const GRADES: GradeInfo[] = [
-  { id: '6', label: '6º ano', short: '6º', emoji: '🌱', gradient: 'from-emerald-400 to-teal-600', tagline: 'Rookie' },
-  { id: '7', label: '7º ano', short: '7º', emoji: '⚡', gradient: 'from-sky-400 to-blue-600', tagline: 'Explorer' },
-  { id: '8', label: '8º ano', short: '8º', emoji: '🔥', gradient: 'from-orange-400 to-rose-600', tagline: 'Challenger' },
-  { id: '9', label: '9º ano', short: '9º', emoji: '🚀', gradient: 'from-violet-400 to-purple-700', tagline: 'Master' },
-  { id: 'EM', label: 'Ensino Médio', short: 'EM', emoji: '👑', gradient: 'from-amber-300 to-yellow-600', tagline: 'Legend' },
+  { id: '6', label: '6º ano', short: '6º', emoji: '🌱', gradient: 'from-nisia-verde-400 to-nisia-verde-500', tagline: 'Rookie' },
+  { id: '7', label: '7º ano', short: '7º', emoji: '⚡', gradient: 'from-nisia-azul-400 to-nisia-azul-500', tagline: 'Explorer' },
+  { id: '8', label: '8º ano', short: '8º', emoji: '🔥', gradient: 'from-nisia-laranja-400 to-nisia-erro', tagline: 'Challenger' },
+  { id: '9', label: '9º ano', short: '9º', emoji: '🚀', gradient: 'from-nisia-roxo-400 to-nisia-roxo-700', tagline: 'Master' },
+  { id: 'EM', label: 'Ensino Médio', short: 'EM', emoji: '👑', gradient: 'from-nisia-sol-300 to-nisia-sol-500', tagline: 'Legend' },
 ];
 
 export const TOPICS: TopicInfo[] = [

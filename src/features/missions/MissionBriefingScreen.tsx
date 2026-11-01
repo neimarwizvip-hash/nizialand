@@ -111,7 +111,7 @@ const Cartaz: React.FC<{ item: ActivityProgress; indice: number; hint?: string; 
           </span>
         )}
       </div>
-      <div className="w-full h-32 sm:h-40 short:h-10 flex items-center justify-center mb-2 short:mb-0.5 drop-shadow-[0_6px_6px_rgba(26,42,74,0.25)]">
+      <div className="w-full h-24 sm:h-28 alto:h-40 short:h-10 flex items-center justify-center mb-2 short:mb-0.5 drop-shadow-[0_6px_6px_rgba(26,42,74,0.25)]">
         {locked ? (
           <>
             <span className="hidden short:block"><Icone nome="cadeado" className="w-9 h-9 text-nisia-tinta-suave" cor="#F3E4BE" /></span>
@@ -123,7 +123,7 @@ const Cartaz: React.FC<{ item: ActivityProgress; indice: number; hint?: string; 
       </div>
       <h3 className="font-display text-2xl short:text-base leading-tight text-nisia-azul-700">{activity.name}</h3>
       <p className="mt-1 font-body font-semibold text-nisia-tinta text-base short:hidden leading-tight">{activity.phrase}</p>
-      {hint && <p className="mt-1 text-sm text-nisia-tinta-suave leading-snug short:hidden">{hint}</p>}
+      {hint && <p className="hidden alto:block mt-1 text-sm text-nisia-tinta-suave leading-snug">{hint}</p>}
       {done && (
         <div className="mt-2 short:mt-1 flex items-center gap-2">
           <Estrelas n={estrelas} />

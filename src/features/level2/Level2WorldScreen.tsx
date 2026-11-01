@@ -26,7 +26,7 @@ export const Level2WorldScreen: React.FC = () => {
   }, [activityId, navigate]);
 
   return (
-    <div className="fixed inset-0 bg-sky-300">
+    <div className="fixed inset-0 bg-nisia-azul-100">
       <iframe
         title="Pátio 3D do Nível 2"
         key={completed}
@@ -34,10 +34,10 @@ export const Level2WorldScreen: React.FC = () => {
         className="h-full w-full border-0"
       />
       <div className="fixed left-3 top-3 z-10 flex gap-2">
-        <button type="button" onClick={() => navigate('/nivel2')} className="rounded-xl border-2 border-sky-300 bg-white/95 px-3 py-2 font-black text-blue-900 shadow-lg">
+        <button type="button" onClick={() => navigate('/nivel2')} className="rounded-xl border-2 border-nisia-azul-200 bg-white/95 px-3 py-2 font-black text-nisia-azul-700 shadow-lg">
           <ArrowLeft className="mr-1 inline h-4 w-4" /> Missão
         </button>
-        <button type="button" onClick={() => navigate('/nivel2/patio')} className="rounded-xl border-2 border-amber-600 bg-amber-400 px-3 py-2 font-black text-slate-950 shadow-lg">
+        <button type="button" onClick={() => navigate('/nivel2/patio')} className="rounded-xl border-2 border-nisia-sol-500 bg-nisia-sol-400 px-3 py-2 font-black text-nisia-tinta shadow-lg">
           <BookOpen className="mr-1 inline h-4 w-4" /> Atividades de inglês
         </button>
       </div>

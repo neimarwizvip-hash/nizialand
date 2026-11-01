@@ -50,11 +50,11 @@ html, #root {
     justify-content: center;
     gap: 1.5rem;
     padding: 2rem;
-    background: #0c4a6e;
-    color: #fff;
+    background: #0C2A66 radial-gradient(circle, rgba(255, 210, 63, 0.3) 1px, transparent 1.6px) 0 0 / 16px 16px;
+    color: #FFD23F;
     text-align: center;
-    font-family: 'Outfit', sans-serif;
-    font-weight: 800;
+    font-family: 'Lilita One', 'Fredoka', sans-serif;
+    font-weight: 400;
     font-size: 1.35rem;
     line-height: 1.3;
   }
@@ -696,3 +696,15 @@ html[data-contraste='1'] .kit-cenario img { filter: contrast(0.6) brightness(0.5
   paint-order: stroke fill;
   text-shadow: 0 3px 0 #143F97, 0 6px 12px rgba(12, 42, 102, 0.35);
 }
+
+/* ===== Histórias (HQ): respiração leve do personagem, sem zoom e sem deslizar ===== */
+@keyframes hq-respira { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.012); } }
+.hq-respira { animation: hq-respira 3.2s ease-in-out infinite; transform-origin: bottom center; }
+@media (prefers-reduced-motion: reduce) { .hq-respira { animation: none; } }
+html[data-calmo] .hq-respira { animation: none; }
+
+/* ===== Cortina da troca de tela ===== */
+@keyframes cortina-abre { from { clip-path: inset(0 0 0 0); } to { clip-path: inset(0 0 0 100%); } }
+@keyframes cortina-esmaece { from { opacity: 1; } to { opacity: 0; } }
+.cortina-abre { animation: cortina-abre 0.46s cubic-bezier(0.65, 0, 0.35, 1) both; }
+.cortina-esmaece { animation: cortina-esmaece 0.2s ease-out both; }

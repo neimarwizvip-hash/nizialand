@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Volume2, VolumeX, FastForward, RotateCcw } from 'lucide-react';
+import { Icone } from '../kit/Icones';
 import { audioService } from '../../services/audio';
 
 // História narrada que abre cada fase. Toca uma vez por sessão do navegador;
@@ -60,19 +60,14 @@ export const PhaseStoryGate: React.FC<{ story: string; children: React.ReactNode
     finish();
   };
 
-  const btn =
-    'flex items-center gap-1.5 px-3 py-2 rounded-xl bg-black/55 hover:bg-black/75 text-white text-xs font-black border border-white/30 backdrop-blur';
 
   if (!playing) {
     return (
       <>
         {children}
         {!missing && (
-        <button
-          onClick={() => setPlaying(true)}
-          className="fixed bottom-4 left-4 z-40 flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/90 hover:bg-white text-slate-800 text-xs font-black border-2 border-sky-300 shadow-lg"
-        >
-          <RotateCcw className="w-4 h-4" /> Rever história
+        <button type="button" onClick={() => setPlaying(true)} className="kit-btn kit-btn--papel kit-btn--sm fixed bottom-4 left-4 z-40 short:bottom-2 short:left-2">
+          <Icone nome="jogar" className="w-4 h-4" cor="#1F5FD0" /> Rever história
         </button>
         )}
       </>
@@ -90,7 +85,7 @@ export const PhaseStoryGate: React.FC<{ story: string; children: React.ReactNode
         onError={fail}
         className="w-full h-full object-contain"
       />
-      <div className="absolute top-4 right-4 flex gap-2">
+      <div className="absolute top-3 right-3 flex gap-1.5">
         <button
           onClick={() => {
             const v = ref.current;
@@ -98,13 +93,14 @@ export const PhaseStoryGate: React.FC<{ story: string; children: React.ReactNode
             v.muted = !v.muted;
             setMuted(v.muted);
           }}
-          className={btn}
+          className="kit-hud__btn"
+          aria-pressed={!muted}
+          aria-label={muted ? 'Ligar o som do vídeo' : 'Tirar o som do vídeo'}
         >
-          {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-          {muted ? 'SOM' : 'MUDO'}
+          <Icone nome={muted ? 'som-mudo' : 'som'} className="w-5 h-5" cor={muted ? '#FFD23F' : '#0C2A66'} />
         </button>
-        <button onClick={finish} className={btn}>
-          <FastForward className="w-4 h-4" /> PULAR HISTÓRIA
+        <button type="button" onClick={finish} className="kit-hud__btn">
+          <Icone nome="seta" className="w-5 h-5" /> Pular história
         </button>
       </div>
     </div>

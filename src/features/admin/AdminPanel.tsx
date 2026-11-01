@@ -259,7 +259,7 @@ export const AdminPanel: React.FC = () => {
             <Lock className="w-8 h-8" />
           </div>
 
-          <h1 className="text-2xl font-bungee text-center text-white">
+          <h1 className="text-2xl font-display text-center text-white">
             PAINEL DO PROFESSOR
           </h1>
           <p className="text-xs text-center text-slate-400 mt-1 mb-6">
@@ -291,7 +291,7 @@ export const AdminPanel: React.FC = () => {
             <button
               type="submit"
               disabled={entrando}
-              className="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bungee text-sm shadow-lg border border-blue-400 cursor-pointer transition-all disabled:opacity-60 disabled:cursor-wait"
+              className="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-display text-sm shadow-lg border border-blue-400 cursor-pointer transition-all disabled:opacity-60 disabled:cursor-wait"
             >
               {entrando ? 'ENTRANDO...' : 'ACESSAR PAINEL'}
             </button>
@@ -324,7 +324,7 @@ export const AdminPanel: React.FC = () => {
               NV
             </div>
             <div>
-              <h2 className="font-bungee text-sm sm:text-base text-white">
+              <h2 className="font-display text-sm sm:text-base text-white">
                 PAINEL PEDAGÓGICO • NISIALAND
               </h2>
               <p className="text-[11px] text-slate-400">
@@ -367,13 +367,13 @@ export const AdminPanel: React.FC = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
             <span className="text-[11px] uppercase font-bold text-slate-400">Total de Alunos</span>
-            <div className="text-2xl font-bungee text-white mt-1">{leaderboard.length}</div>
+            <div className="text-2xl font-display text-white mt-1">{leaderboard.length}</div>
             <span className="text-[10px] text-slate-500">Turmas 601 - 909</span>
           </div>
 
           <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
             <span className="text-[11px] uppercase font-bold text-slate-400">Blue Team</span>
-            <div className="text-2xl font-bungee text-blue-400 mt-1">
+            <div className="text-2xl font-display text-blue-400 mt-1">
               {leaderboard.filter(p => p.team === 'blue').length}
             </div>
             <span className="text-[10px] text-slate-500">participantes</span>
@@ -381,7 +381,7 @@ export const AdminPanel: React.FC = () => {
 
           <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
             <span className="text-[11px] uppercase font-bold text-slate-400">Purple Team</span>
-            <div className="text-2xl font-bungee text-purple-400 mt-1">
+            <div className="text-2xl font-display text-purple-400 mt-1">
               {leaderboard.filter(p => p.team === 'purple').length}
             </div>
             <span className="text-[10px] text-slate-500">participantes</span>
@@ -389,7 +389,7 @@ export const AdminPanel: React.FC = () => {
 
           <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
             <span className="text-[11px] uppercase font-bold text-slate-400">Média Geral</span>
-            <div className="text-2xl font-bungee text-amber-400 mt-1">
+            <div className="text-2xl font-display text-amber-400 mt-1">
               {leaderboard.length > 0 
                 ? Math.round(leaderboard.reduce((acc, curr) => acc + curr.totalScore, 0) / leaderboard.length)
                 : 0}
@@ -548,7 +548,7 @@ export const AdminPanel: React.FC = () => {
                         <td className="py-3 px-2 text-center font-mono text-slate-300">
                           {p.flashcardScore}
                         </td>
-                        <td className="py-3 px-2 text-right font-bungee text-amber-400">
+                        <td className="py-3 px-2 text-right font-display text-amber-400">
                           {p.totalScore}
                         </td>
                         <td className="py-3 px-3 text-center">
@@ -605,7 +605,7 @@ export const AdminPanel: React.FC = () => {
                     </span>
                   </div>
 
-                  <p className="font-bungee text-sm text-white mb-2">
+                  <p className="font-display text-sm text-white mb-2">
                     "{q.sentence}"
                   </p>
 
@@ -705,7 +705,7 @@ export const AdminPanel: React.FC = () => {
         {activeTab === 'audit' && (
           <div className="space-y-4">
             <div className="bg-slate-900 rounded-3xl border border-slate-800 p-4">
-              <h3 className="font-bungee text-sm text-white mb-3">Trilha de Auditoria Institucional</h3>
+              <h3 className="font-display text-sm text-white mb-3">Trilha de Auditoria Institucional</h3>
               <div className="space-y-2 max-h-96 overflow-y-auto divide-y divide-slate-800/60 text-xs">
                 {auditLogs.map((log) => (
                   <div key={log.id} className="pt-2 flex items-start justify-between gap-4">
