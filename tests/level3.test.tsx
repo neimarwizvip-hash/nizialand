@@ -16,6 +16,9 @@ vi.mock('../src/services/audio', () => ({
   audioService: { playClick: vi.fn(), playCorrect: vi.fn(), playWrong: vi.fn(), playTrack: vi.fn(), playVictory: vi.fn(), duckVolume: vi.fn(), playFlip: vi.fn(), isSoundOn: () => false },
 }));
 vi.mock('../src/components/ui/ConfettiEffect', () => ({ triggerConfetti: vi.fn() }));
+// Os testes do corredor rodam com o 3D liberado; o caso desligado é coberto em 'corredor 3D desligado'.
+const corredor = vi.hoisted(() => ({ CORREDOR_3D_LIBERADO: true }));
+vi.mock('../src/config/corredor3d', () => corredor);
 vi.mock('../src/components/story/ProvisionalStoryGate', () => ({ ProvisionalStoryGate: ({ children }: { children: React.ReactNode }) => <>{children}</> }));
 // O corredor real usa WebGL; aqui só importa o que ele recebe.
 vi.mock('../src/features/level3/Corridor3D', () => ({
@@ -127,6 +130,18 @@ describe('Nível 3: tela das salas', () => {
     expect(MANE_ROOM_START).toHaveLength(6);
     expect(MANE_ROOM_TIP).toHaveLength(6);
     MANE_CORRIDOR_LINES.forEach(l => { expect(l.pt).toBeTruthy(); expect(l.en).toBeTruthy(); });
+  });
+
+  it('corredor 3D desligado: abre o quadro e esconde o botão do 3D', () => {
+    corredor.CORREDOR_3D_LIBERADO = false;
+    try {
+      tree();
+      expect(screen.getByText('SALAS DE AULA')).toBeTruthy();
+      expect(screen.queryByTestId('portas')).toBeNull();
+      expect(screen.queryByText('Corredor 3D')).toBeNull();
+    } finally {
+      corredor.CORREDOR_3D_LIBERADO = true;
+    }
   });
 
   it('localStorage indisponível não quebra a tela', () => {

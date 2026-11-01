@@ -10,6 +10,7 @@ import { ProvisionalStoryGate } from '../../components/story/ProvisionalStoryGat
 import { TeamTroublemakers } from '../../features/level4/TeamTroublemakers';
 import { Level4Activities } from '../../features/level4/Level4Activities';
 import type { CorridorDoor } from '../level3/Corridor3D';
+import { CORREDOR_3D_LIBERADO } from '../../config/corredor3d';
 import { audioService } from '../../services/audio';
 import { BotaoJogo, Cenario, Hud, Icone } from '../../components/kit';
 import type { NomeIcone } from '../../components/kit';
@@ -29,7 +30,7 @@ export const TeamMissionScreen: React.FC = () => {
   const { currentPlayer, activityResults, saveActivityResult, vistoria } = useGame();
   const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
-  const [mode, setMode] = useState<'3d' | 'simples'>(readMode);
+  const [mode, setMode] = useState<'3d' | 'simples'>(() => (CORREDOR_3D_LIBERADO ? readMode() : 'simples'));
   const lastDoor = useRef<string | null>(null);
   const grade = getPlayerGrade(currentPlayer) ?? '8';
   const progress = useMemo(() => unlockForVistoria(getMissionProgress(LEVEL4, activityResults, true), vistoria), [activityResults, vistoria]);
@@ -99,7 +100,7 @@ export const TeamMissionScreen: React.FC = () => {
         extraCabecalho={<TeamTroublemakers />}
         onAbrir={id => setParams({ atividade: id })}
         acoes={<>
-          <BotaoJogo cor="azul" tamanho="sm" onClick={() => { audioService.playClick(); switchMode('3d'); }}><Icone nome="escola" className="w-5 h-5" /> Escola 3D</BotaoJogo>
+          {CORREDOR_3D_LIBERADO && <BotaoJogo cor="azul" tamanho="sm" onClick={() => { audioService.playClick(); switchMode('3d'); }}><Icone nome="escola" className="w-5 h-5" /> Escola 3D</BotaoJogo>}
           <BotaoJogo cor="papel" tamanho="sm" onClick={() => { audioService.playClick(); navigate('/mapa'); }}><Icone nome="mapa" className="w-5 h-5" cor="#1F5FD0" /> Mapa</BotaoJogo>
         </>}
       />

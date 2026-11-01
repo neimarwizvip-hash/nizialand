@@ -32,7 +32,7 @@ export const ROTEIRO: Record<number, RoteiroNivel> = {
         { pt: 'Bem-vindo à NISIALAND, {nome}! Sua primeira missão é desviar das distrações do Zé Cartinha. Mostre que você consegue se concentrar.', en: 'Welcome to NISIALAND! Stay focused!' },
         { pt: 'Lembre-se, {nome}: o Zé vai tentar atrapalhar. Respire fundo, leia com calma e responda.', en: 'Take a deep breath and answer.' },
       ],
-      meio: [{ pt: 'Metade feita, {nome}! Falta {proxima}. Vamos terminar bem.', en: 'Halfway there! Keep going.' }],
+      meio: [{ pt: 'Metade feita, {nome}! Agora vem: {proxima}. Vamos terminar bem.', en: 'Halfway there! Keep going.' }],
       concluido: [{ pt: 'Missão zero completa, {nome}! Você passou pelo Zé Cartinha. A escola inteira está orgulhosa.', en: 'Mission complete! Well done!' }],
       certo: [{ pt: 'Isso! Resposta certa.', en: 'Correct!' }, { pt: 'Muito bem, {nome}.', en: 'Very good!' }],
       errado: [{ pt: 'Calma. Leia de novo e tente outra vez.', en: 'Read it again and try once more.' }],

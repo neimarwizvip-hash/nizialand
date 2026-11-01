@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useGame } from '../../context/GameContext';
 import { audioService } from '../../services/audio';
@@ -151,6 +151,8 @@ export const MissionBriefingScreen: React.FC<{ level?: 0 | 1 | 2 }> = ({ level =
   const { currentPlayer, quizResult, flashcardResult, activityResults, level0Completed, level1Completed, progressLoaded } = useGame();
   const [grade, setGrade] = useState<SchoolGrade | null>(() => getPlayerGrade(currentPlayer));
   const [choosingGrade, setChoosingGrade] = useState<boolean>(false);
+  // Falas já sorteadas por momento (fica antes dos returns: hooks sempre na mesma ordem).
+  const falasSorteadas = useRef<Record<string, { texto: string; traducao: string }>>({});
 
   if (!currentPlayer || !progressLoaded) return null; // redirect handled by <RequirePlayer>
   if (level === 1 && !level0Completed) return <Navigate to="/missions" replace />;
@@ -193,11 +195,12 @@ export const MissionBriefingScreen: React.FC<{ level?: 0 | 1 | 2 }> = ({ level =
   // Fala do anfitrião conforme o momento (roteiro em src/data/falasAnfitrioes.ts).
   const proxima = progress.activities.find(a => a.state === 'available')?.activity.name;
   const momento: Momento = !grade ? 'semSerie' : progress.isCompleted ? 'concluido' : progress.completedCount > 0 ? 'meio' : 'apresenta';
-  const fala = useMemo(() => {
+  const chaveFala = `${level}|${momento}|${proxima ?? ''}`;
+  if (!falasSorteadas.current[chaveFala]) {
     const f = falaDoRoteiro(level, momento, { nome: currentPlayer.displayName, missao: mission.title, proxima });
-    return { texto: f.pt, traducao: f.en };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [level, momento, proxima]);
+    falasSorteadas.current[chaveFala] = { texto: f.pt, traducao: f.en };
+  }
+  const fala = falasSorteadas.current[chaveFala];
 
   return (
     <div className="relative min-h-screen text-nisia-tinta flex flex-col">

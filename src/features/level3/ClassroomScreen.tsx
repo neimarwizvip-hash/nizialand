@@ -13,6 +13,7 @@ import { ProvisionalStoryGate } from '../../components/story/ProvisionalStoryGat
 import { LEVEL3_ACTIVITY_VIEWS, LEVEL3_ROOM_ORDER } from './Level3Activities';
 import { level3MissionMaxScore, ZE_ROOM_SIZES } from './level3Rules';
 import type { CorridorDoor } from './Corridor3D';
+import { CORREDOR_3D_LIBERADO } from '../../config/corredor3d';
 import { BotaoJogo, Icone } from '../../components/kit';
 import { ConclusaoNivel, QuadroMissao } from '../levels/QuadroMissao';
 import type { ItemQuadro } from '../levels/QuadroMissao';
@@ -39,7 +40,7 @@ export const ClassroomScreen: React.FC = () => {
   const grade = getPlayerGrade(currentPlayer) ?? '8';
   const content = LEVEL3_CONTENT[grade];
   const progress = useMemo(() => unlockForVistoria(getMissionProgress(LEVEL3, activityResults, true), vistoria), [activityResults, vistoria]);
-  const [mode, setMode] = useState<Level3Mode>(readLevel3Mode);
+  const [mode, setMode] = useState<Level3Mode>(() => (CORREDOR_3D_LIBERADO ? readLevel3Mode() : 'simples'));
   const [runKey, setRunKey] = useState(0);
   const lastDoor = useRef<string | null>(null);
 
@@ -161,7 +162,7 @@ export const ClassroomScreen: React.FC = () => {
         conclusao={celebration}
         onAbrir={enter}
         acoes={<>
-          {modeButton}
+          {CORREDOR_3D_LIBERADO && modeButton}
           <BotaoJogo cor="papel" tamanho="sm" onClick={() => { audioService.playClick(); navigate('/mapa'); }}><Icone nome="mapa" className="w-5 h-5" cor="#1F5FD0" /> Mapa</BotaoJogo>
         </>}
         extraCabecalho={

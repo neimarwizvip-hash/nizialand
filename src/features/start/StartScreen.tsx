@@ -11,7 +11,7 @@ import { NisialandLogo } from '../../components/ui/NisialandLogo';
 const COMO_JOGAR: { titulo: string; texto: string; icone: NomeIcone; cor: 'sol' | 'azul' | 'verde' | 'roxo' }[] = [
   { titulo: 'Nível 0: desvie do Zé Cartinha!', texto: 'Entre com seu código, confirme sua série (6º ao 9º ano) e complete as 2 atividades. O Zé vai chamar para o bafo e embaralhar as cartas: mantenha o foco!', icone: 'controle', cor: 'sol' },
   { titulo: 'Introdução da história', texto: 'Antes da Missão 0, um vídeo curto apresenta a escola e o Zé Cartinha. Você pode pular se já assistiu.', icone: 'estrela', cor: 'verde' },
-  { titulo: 'Atividade 1: quiz', texto: 'Responda 10 perguntas de inglês da sua série, até 100 pontos cada. Dispense o Zé com "Agora não, Zé!" e acerte para ganhar +10.', icone: 'lupa', cor: 'azul' },
+  { titulo: 'Atividade 1: quiz', texto: 'Responda 5 perguntas de inglês da sua série, até 100 pontos cada. Dispense o Zé com "Agora não, Zé!" e acerte para ganhar +10.', icone: 'lupa', cor: 'azul' },
   { titulo: 'Atividade 2: flashcards', texto: 'Memorize os 8 estudantes em 30 segundos e encontre as cartas certas sem perder seus 3 corações, mesmo quando o Zé embaralhar tudo.', icone: 'carta', cor: 'roxo' },
   { titulo: 'Treino livre', texto: 'Arcade sem cadastro: escolha a série (6º ano ao Ensino Médio) e até 2 tópicos, faça combos e use os poderes 50/50 e +10s.', icone: 'jogar', cor: 'azul' },
 ];
