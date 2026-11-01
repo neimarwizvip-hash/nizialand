@@ -1,5 +1,4 @@
 import React, { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, Box, Check, LayoutList, Lock, School, Trophy } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useGame } from '../../context/GameContext';
 import { getPlayerGrade } from '../../services/grade';
@@ -14,6 +13,9 @@ import { ProvisionalStoryGate } from '../../components/story/ProvisionalStoryGat
 import { LEVEL3_ACTIVITY_VIEWS, LEVEL3_ROOM_ORDER } from './Level3Activities';
 import { level3MissionMaxScore, ZE_ROOM_SIZES } from './level3Rules';
 import type { CorridorDoor } from './Corridor3D';
+import { BotaoJogo, Icone } from '../../components/kit';
+import { ConclusaoNivel, QuadroMissao } from '../levels/QuadroMissao';
+import type { ItemQuadro } from '../levels/QuadroMissao';
 
 // O corredor 3D (three.js) só é baixado quando o aluno entra no modo 3D.
 const Corridor3D = lazy(() => import('./Corridor3D'));
@@ -86,24 +88,19 @@ export const ClassroomScreen: React.FC = () => {
   ) : null;
 
   const celebration = progress.isCompleted ? (
-    <div role="status" aria-live="polite" className="game-panel p-4 short:p-2 mb-4 short:mb-2 flex items-center gap-4 short:gap-2 border-amber-400">
-      <Trophy className="w-12 h-12 short:w-8 short:h-8 text-amber-500 shrink-0" />
-      <div className="flex-1 min-w-0">
-        <p className="font-heading font-black text-lg short:text-base text-blue-900">Nível 3 concluído! Você arrumou todas as salas.</p>
-        <p className="font-heading font-black text-2xl short:text-lg text-blue-700">{total} <span className="text-sm text-slate-500">/ {maxTotal} pts</span></p>
-      </div>
-      <img src="/assets/ze_cartinha.png" alt="Zé" className={`${zeSize} object-contain`} onError={e => { e.currentTarget.style.display = 'none'; }} />
-    </div>
+    <ConclusaoNivel
+      texto="Nível 3 concluído! Você arrumou todas as salas."
+      total={total}
+      maximo={maxTotal}
+      extra={<img src="/assets/ze_cartinha.png" alt="Zé" className={`${zeSize} object-contain`} onError={e => { e.currentTarget.style.display = 'none'; }} />}
+    />
   ) : null;
 
   const modeButton = (
-    <button
-      type="button"
-      onClick={() => switchMode(mode === '3d' ? 'simples' : '3d')}
-      className="px-3 py-2 short:py-1 rounded-xl bg-white border-2 border-sky-300 font-black text-sm flex items-center gap-2"
-    >
-      {mode === '3d' ? <><LayoutList className="w-4 h-4" /> Modo simples</> : <><Box className="w-4 h-4" /> Corredor 3D</>}
-    </button>
+    <BotaoJogo cor="azul" tamanho="sm" onClick={() => switchMode(mode === '3d' ? 'simples' : '3d')}>
+      <Icone nome={mode === '3d' ? 'livro' : 'escola'} className="w-5 h-5" />
+      {mode === '3d' ? 'Modo simples' : 'Corredor 3D'}
+    </BotaoJogo>
   );
 
   if (mode === '3d') {
@@ -112,7 +109,7 @@ export const ClassroomScreen: React.FC = () => {
       <>
         {/* O corredor continua montado (pausado) enquanto a sala está aberta: ao sair, o aluno volta na porta. */}
         <div className={open ? 'hidden' : 'fixed inset-0'}>
-          <Suspense fallback={<div className="fixed inset-0 game-sky flex items-center justify-center font-heading font-black text-blue-900">Abrindo o corredor…</div>}>
+          <Suspense fallback={<div className="fixed inset-0 bg-nisia-azul-900 flex items-center justify-center font-display text-2xl text-nisia-sol-400">Abrindo o corredor…</div>}>
             <Corridor3D
               doors={doors}
               paused={open}
@@ -139,58 +136,43 @@ export const ClassroomScreen: React.FC = () => {
 
   if (roomView) return <ProvisionalStoryGate story="nivel3" bypass>{roomView}</ProvisionalStoryGate>;
 
+  const itens: ItemQuadro[] = progress.activities.map(({ activity, state, result }, i) => ({
+    id: activity.id,
+    rotulo: ROOM_LABEL[i] ?? `Sala ${i + 1}`,
+    nome: activity.name,
+    frase: activity.hint ?? activity.phrase,
+    estado: state === 'locked' ? 'locked' : result ? 'completed' : 'available',
+    resultado: result ?? null,
+    icone: i === ROOM_LABEL.length - 1 ? 'livro' : 'cadeira',
+  }));
+
   return (
     <ProvisionalStoryGate story="nivel3" bypass={!!requested}>
-    <div className="min-h-screen game-sky p-4 sm:p-8 short:p-2">
-      <div className="max-w-6xl mx-auto">
-        <header className="flex items-center justify-between gap-2 mb-6 short:mb-2">
-          <div className="min-w-0">
-            <p className="text-xs font-black tracking-widest text-emerald-700">NISIALAND · NÍVEL 3</p>
-            <h1 className="font-bungee text-3xl sm:text-5xl short:text-2xl text-blue-900">SALAS DE AULA</h1>
-            <p className="font-bold text-slate-600 short:text-xs">Convivência em sala · {grade}º ano</p>
-            <p className="text-sm short:text-xs text-slate-500">{content.curriculum.theme} · {content.curriculum.progression}</p>
-          </div>
-          <div className="hidden sm:flex short:flex items-end gap-1 min-w-0" data-testid="mane-header">
-            <img src={MANE_IMG} alt="Mané Zoeira" className="w-14 short:w-9 h-auto object-contain" onError={e => { e.currentTarget.style.display = 'none'; }} />
-            <p className="max-w-[180px] short:max-w-[140px] px-2 py-1 rounded-2xl bg-white border-2 border-emerald-500 text-xs short:text-[10px] font-black text-emerald-800 shadow">
-              {MANE_SIMPLE_LINE.pt} <span className="italic text-emerald-600">{MANE_SIMPLE_LINE.en}</span>
+      <QuadroMissao
+        nivel={3}
+        titulo="SALAS DE AULA"
+        placa="Convivência em sala"
+        subtitulo={`${grade}º ano`}
+        descricao={`${content.curriculum.theme} · ${content.curriculum.progression}`}
+        anfitriao="rosana"
+        cenario="corredor"
+        itens={itens}
+        rotuloAbrir="Abrir sala"
+        conclusao={celebration}
+        onAbrir={enter}
+        acoes={<>
+          {modeButton}
+          <BotaoJogo cor="papel" tamanho="sm" onClick={() => { audioService.playClick(); navigate('/mapa'); }}><Icone nome="mapa" className="w-5 h-5" cor="#1F5FD0" /> Mapa</BotaoJogo>
+        </>}
+        extraCabecalho={
+          <div className="flex items-end gap-1 min-w-0 short:hidden" data-testid="mane-header">
+            <img src={MANE_IMG} alt="Mané Zoeira" className="w-14 short:w-9 h-auto object-contain drop-shadow-[0_4px_6px_rgba(12,42,102,0.4)]" onError={e => { e.currentTarget.style.display = 'none'; }} />
+            <p className="kit-balao kit-balao--esq !py-1.5 !px-3 max-w-md text-xs short:text-[10px] font-semibold">
+              {MANE_SIMPLE_LINE.pt} <span className="italic text-nisia-tinta-suave">{MANE_SIMPLE_LINE.en}</span>
             </p>
           </div>
-          <div className="flex gap-2 shrink-0">
-            {modeButton}
-            <button type="button" onClick={() => navigate('/mapa')} className="px-4 py-2 short:py-1 rounded-xl bg-white border-2 border-sky-300 font-black flex items-center gap-2">
-              <ArrowLeft className="w-4 h-4" /> Mapa
-            </button>
-          </div>
-        </header>
-        {celebration}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 short:grid-cols-3 gap-4 short:gap-2">
-          {progress.activities.map(({ activity, state, result }, i) => {
-            const locked = state === 'locked';
-            return (
-              <button
-                key={activity.id}
-                type="button"
-                disabled={locked}
-                onClick={() => enter(activity.id)}
-                className={`game-panel p-5 short:p-2 text-left transition-transform ${locked ? 'opacity-60 cursor-not-allowed' : 'hover:-translate-y-1'}`}
-              >
-                <div className="flex items-center justify-between">
-                  <School className="w-8 h-8 short:w-5 short:h-5 text-blue-700" />
-                  {locked ? <Lock className="w-5 h-5 text-slate-500" /> : result ? <Check className="w-5 h-5 text-emerald-600" /> : null}
-                </div>
-                <p className="text-xs font-black tracking-widest text-slate-500 mt-2 short:mt-1">{ROOM_LABEL[i] ?? `Sala ${i + 1}`}</p>
-                <h2 className="font-heading font-black text-xl short:text-sm text-slate-800">{activity.name}</h2>
-                <p className="text-sm short:hidden text-slate-600 mt-1">{activity.hint ?? activity.phrase}</p>
-                <p className={`mt-3 short:mt-1 text-xs font-black tracking-widest ${locked ? 'text-slate-500' : result ? 'text-emerald-700' : 'text-blue-700'}`}>
-                  {locked ? 'BLOQUEADA' : result ? `CONCLUÍDA · ${result.score} pts` : 'ABRIR SALA'}
-                </p>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    </div>
+        }
+      />
     </ProvisionalStoryGate>
   );
 };

@@ -82,11 +82,11 @@ const ListenScreen: React.FC = () => {
       overlay={<ZeCartinha visible={!!zeMessage && !run.finished} message={zeMessage ?? ''} />}
     >
       <div className="flex flex-col items-center gap-3 short:gap-1.5">
-        <p className="font-bold text-slate-700 text-sm sm:text-base text-center">Ouça e escolha a resposta certa.</p>
+        <p className="font-bold text-nisia-tinta text-sm sm:text-base text-center">Ouça e escolha a resposta certa.</p>
         <button
           type="button"
           onClick={play}
-          className="flex items-center gap-2 px-5 py-2.5 short:py-1 rounded-full bg-blue-600 border-2 border-blue-800 text-white font-heading font-black uppercase text-sm shadow-[0_4px_0_0_#1e3a8a] active:translate-y-1"
+          className="flex items-center gap-2 px-5 py-2.5 short:py-1 rounded-full bg-nisia-azul-500 border-2 border-nisia-azul-700 text-white font-display uppercase text-sm shadow-[0_4px_0_0_#0C2A66] active:translate-y-1"
         >
           <Volume2 className="w-5 h-5" /> Listen again
         </button>
@@ -102,12 +102,12 @@ const ListenScreen: React.FC = () => {
                 onClick={() => pick(opt)}
                 disabled={run.locked || isWrong}
                 aria-label={opt.text}
-                className={`rounded-2xl border-2 font-heading font-black transition-colors ${
+                className={`rounded-2xl border-2 font-display transition-colors ${
                   iconMode ? 'aspect-square sm:aspect-auto sm:h-32 short:aspect-auto short:h-20 flex items-center justify-center' : 'px-4 py-3 short:py-1.5 text-left text-sm sm:text-base'
                 } ${
-                  showRight ? 'bg-emerald-100 border-emerald-500 text-emerald-800'
-                    : isWrong ? 'bg-red-50 border-red-300 text-red-400 opacity-60'
-                    : 'bg-white border-slate-300 hover:border-blue-500 text-slate-800'
+                  showRight ? 'bg-nisia-verde-100 border-nisia-verde-500 text-nisia-verde-700'
+                    : isWrong ? 'bg-red-50 border-nisia-erro text-nisia-erro opacity-60'
+                    : 'bg-nisia-papel border-nisia-papel-linha hover:border-nisia-azul-500 text-nisia-tinta'
                 }`}
               >
                 {iconMode ? (Icon ? <Icon className="w-10 h-10 sm:w-14 sm:h-14" /> : <span className="text-3xl sm:text-5xl">{opt.text}</span>) : opt.text}

@@ -59,26 +59,26 @@ const DialogueScreen: React.FC = () => {
           <img
             src={SPEAKER_IMAGES[turn.speaker]}
             alt={turn.speaker}
-            className="w-16 h-16 sm:w-28 sm:h-28 short:w-14 short:h-14 object-contain rounded-2xl bg-emerald-50 border-2 border-emerald-500"
+            className="w-16 h-16 sm:w-28 sm:h-28 short:w-14 short:h-14 object-contain rounded-2xl bg-nisia-verde-100 border-2 border-nisia-verde-500"
           />
-          <span className="font-heading font-black text-sm text-emerald-800">{turn.speaker}</span>
+          <span className="font-display text-sm text-nisia-verde-700">{turn.speaker}</span>
         </div>
 
         <div className="flex-1 w-full flex flex-col gap-2">
           <div className="flex items-start gap-2">
-            <p className="flex-1 rounded-2xl rounded-tl-none bg-white border-2 border-emerald-500 px-4 py-2 short:py-1 font-heading font-black text-sm sm:text-lg short:text-sm text-slate-800">
+            <p className="flex-1 rounded-2xl rounded-tl-none bg-nisia-papel border-2 border-nisia-verde-500 px-4 py-2 short:py-1 font-display text-sm sm:text-lg short:text-sm text-nisia-tinta">
               “{turn.line}”
             </p>
             <button
               type="button"
               onClick={play}
               aria-label="Ouvir de novo"
-              className="p-2.5 rounded-full bg-emerald-600 border-2 border-emerald-800 text-white shadow-[0_3px_0_0_#065f46] active:translate-y-1"
+              className="p-2.5 rounded-full bg-nisia-verde-500 border-2 border-nisia-verde-700 text-white shadow-[0_3px_0_0_#22703A] active:translate-y-1"
             >
               <Volume2 className="w-5 h-5" />
             </button>
           </div>
-          <p className="font-bold text-slate-600 text-xs sm:text-sm">Escolha a melhor resposta:</p>
+          <p className="font-bold text-nisia-tinta-suave text-xs sm:text-sm">Escolha a melhor resposta:</p>
           <div className="grid gap-2 short:gap-1">
             {turn.options.map((opt, i) => {
               const isWrong = wrongPicks.includes(i);
@@ -89,10 +89,10 @@ const DialogueScreen: React.FC = () => {
                   type="button"
                   onClick={() => pick(i)}
                   disabled={run.locked || isWrong || ze.blocking}
-                  className={`rounded-2xl border-2 px-4 py-2.5 short:py-1 text-left font-heading font-black text-sm sm:text-base transition-colors disabled:cursor-not-allowed ${
-                    showRight ? 'bg-emerald-100 border-emerald-500 text-emerald-800'
-                      : isWrong ? 'bg-red-50 border-red-300 text-red-400 opacity-60'
-                      : 'bg-white border-slate-300 hover:border-emerald-500 text-slate-800'
+                  className={`rounded-2xl border-2 px-4 py-2.5 short:py-1 text-left font-display text-sm sm:text-base transition-colors disabled:cursor-not-allowed ${
+                    showRight ? 'bg-nisia-verde-100 border-nisia-verde-500 text-nisia-verde-700'
+                      : isWrong ? 'bg-red-50 border-nisia-erro text-nisia-erro opacity-60'
+                      : 'bg-nisia-papel border-nisia-papel-linha hover:border-nisia-verde-500 text-nisia-tinta'
                   }`}
                 >
                   {opt}

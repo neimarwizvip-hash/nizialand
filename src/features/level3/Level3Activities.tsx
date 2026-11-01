@@ -66,7 +66,7 @@ const ManeCorner: React.FC<{ i: number; finished: boolean; wrong: boolean }> = (
     <div data-testid="mane-corner" className="fixed left-2 bottom-4 z-40 pointer-events-none flex items-end gap-1">
       <img src={MANE_IMG} alt="Mané Zoeira" className="w-12 sm:w-20 short:w-9 h-auto drop-shadow" />
       {msg && (
-        <p className="mb-6 short:mb-3 max-w-[160px] sm:max-w-[220px] short:max-w-[150px] px-2 py-1 rounded-2xl bg-white border-2 border-emerald-500 text-[11px] sm:text-xs short:text-[10px] font-black text-emerald-800 shadow">{msg}</p>
+        <p className="mb-6 short:mb-3 max-w-[160px] sm:max-w-[220px] short:max-w-[150px] px-2 py-1 rounded-2xl bg-nisia-papel border-2 border-nisia-verde-500 text-[11px] sm:text-xs short:text-[10px] font-black text-nisia-verde-700 shadow">{msg}</p>
       )}
     </div>
   );
@@ -80,7 +80,7 @@ const ZeOverlay: React.FC<{ ze: ReturnType<typeof useRoomZe>; finished: boolean;
 );
 
 const QuestionCard: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <p className="font-heading font-black text-lg sm:text-2xl short:text-base text-slate-800 leading-snug">{children}</p>
+  <p className="font-display text-lg sm:text-2xl short:text-base text-nisia-tinta leading-snug">{children}</p>
 );
 
 const OptionGrid: React.FC<{ options: string[]; answer: number; locked: boolean; itemKey: number; onPick: (correct: boolean) => void }> = ({ options, answer, locked, itemKey, onPick }) => {
@@ -96,10 +96,10 @@ const OptionGrid: React.FC<{ options: string[]; answer: number; locked: boolean;
             type="button"
             disabled={locked}
             onClick={() => { setChosen(i); onPick(i === answer); }}
-            className={`px-4 py-3 short:py-1.5 rounded-2xl border-2 font-heading font-black text-sm sm:text-base text-left transition-colors ${
-              state === 'right' ? 'bg-emerald-100 border-emerald-500 text-emerald-800'
-                : state === 'wrong' ? 'bg-red-100 border-red-500 text-red-700'
-                  : 'bg-white border-slate-300 hover:border-blue-500 disabled:opacity-60'
+            className={`px-4 py-3 short:py-1.5 rounded-2xl border-2 font-display text-sm sm:text-base text-left transition-colors ${
+              state === 'right' ? 'bg-nisia-verde-100 border-nisia-verde-500 text-nisia-verde-700'
+                : state === 'wrong' ? 'bg-red-50 border-nisia-erro text-nisia-erro'
+                  : 'bg-nisia-papel border-nisia-papel-linha hover:border-nisia-azul-500 disabled:opacity-60'
             }`}
           >
             {opt}
@@ -114,7 +114,7 @@ const ListenButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
   <button
     type="button"
     onClick={onClick}
-    className="px-4 py-3 short:py-1.5 rounded-2xl bg-blue-600 border-2 border-blue-800 text-white font-heading font-black text-sm flex items-center gap-2"
+    className="px-4 py-3 short:py-1.5 rounded-2xl bg-nisia-azul-500 border-2 border-nisia-azul-700 text-white font-display text-sm flex items-center gap-2"
   >
     <Volume2 className="w-4 h-4" /> Ouvir
   </button>
@@ -179,11 +179,11 @@ export const ArrumeActivity: React.FC<Level3ActivityProps> = ({ grade, onExit, o
               draggable={!run.locked}
               onDragStart={e => e.dataTransfer.setData('text/plain', item.place.object)}
               aria-label={item.place.object}
-              className="text-5xl short:text-3xl cursor-grab select-none bg-amber-50 border-2 border-amber-300 rounded-2xl px-3 py-1"
+              className="text-5xl short:text-3xl cursor-grab select-none bg-nisia-sol-100 border-2 border-nisia-sol-300 rounded-2xl px-3 py-1"
             >
               {item.place.emoji}
             </span>
-            <span className="text-xs sm:text-sm font-bold text-slate-600">Arraste ou toque no lugar certo.</span>
+            <span className="text-xs sm:text-sm font-bold text-nisia-tinta-suave">Arraste ou toque no lugar certo.</span>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 short:grid-cols-6 gap-2 short:gap-1 mt-3 short:mt-1.5">
             {LEVEL3_SPOTS.map(s => {
@@ -196,10 +196,10 @@ export const ArrumeActivity: React.FC<Level3ActivityProps> = ({ grade, onExit, o
                   onClick={() => drop(s.id)}
                   onDragOver={e => e.preventDefault()}
                   onDrop={e => { e.preventDefault(); drop(s.id); }}
-                  className={`min-h-[64px] short:min-h-[44px] rounded-2xl border-2 border-dashed font-heading font-black text-xs sm:text-sm p-2 short:p-1 ${
-                    state === 'right' ? 'bg-emerald-100 border-emerald-500 text-emerald-800'
-                      : state === 'wrong' ? 'bg-red-100 border-red-500 text-red-700'
-                        : 'bg-white/80 border-slate-400 hover:border-blue-500'
+                  className={`min-h-[64px] short:min-h-[44px] rounded-2xl border-2 border-dashed font-display text-xs sm:text-sm p-2 short:p-1 ${
+                    state === 'right' ? 'bg-nisia-verde-100 border-nisia-verde-500 text-nisia-verde-700'
+                      : state === 'wrong' ? 'bg-red-50 border-nisia-erro text-nisia-erro'
+                        : 'bg-white/80 border-nisia-papel-linha hover:border-nisia-azul-500'
                   }`}
                 >
                   {state !== 'idle' && s.id === (state === 'right' ? item.place.spot : dropped) ? `${item.place.emoji} ` : ''}{s.label}
@@ -294,10 +294,10 @@ export const QuemActivity: React.FC<Level3ActivityProps> = ({ grade, onExit, onR
   const pick = (polite: boolean) => { if (run.locked) return; setChosen(polite); run.answer(polite === item.polite); };
   const btn = (polite: boolean) => {
     const state = run.locked && polite === item.polite ? 'right' : run.locked && polite === chosen ? 'wrong' : 'idle';
-    return `flex-1 px-4 py-4 short:py-2 rounded-2xl border-2 font-heading font-black text-base sm:text-lg ${
-      state === 'right' ? 'bg-emerald-100 border-emerald-500 text-emerald-800'
-        : state === 'wrong' ? 'bg-red-100 border-red-500 text-red-700'
-          : 'bg-white border-slate-300 hover:border-blue-500 disabled:opacity-60'
+    return `flex-1 px-4 py-4 short:py-2 rounded-2xl border-2 font-display text-base sm:text-lg ${
+      state === 'right' ? 'bg-nisia-verde-100 border-nisia-verde-500 text-nisia-verde-700'
+        : state === 'wrong' ? 'bg-red-50 border-nisia-erro text-nisia-erro'
+          : 'bg-nisia-papel border-nisia-papel-linha hover:border-nisia-azul-500 disabled:opacity-60'
     }`;
   };
 
@@ -320,7 +320,7 @@ export const QuemActivity: React.FC<Level3ActivityProps> = ({ grade, onExit, onR
       maxScore={level3MaxScore(items.length)}
       overlay={<ZeOverlay ze={ze} finished={run.finished} outcomes={run.outcomes} />}
     >
-      <p className="text-xs font-black tracking-widest text-emerald-700 uppercase">Essa fala é educada?</p>
+      <p className="text-xs font-black tracking-widest text-nisia-verde-700 uppercase">Essa fala é educada?</p>
       <div className="flex items-center gap-3 flex-wrap mt-1">
         <ListenButton onClick={() => speakEn(item.text)} />
         <QuestionCard>“{item.text}”</QuestionCard>
@@ -396,10 +396,10 @@ export const MemoriaActivity: React.FC<Level3ActivityProps> = ({ grade, onExit, 
               type="button"
               aria-label={up ? c.text : 'Carta virada'}
               onClick={() => flip(c)}
-              className={`h-20 sm:h-24 short:h-14 rounded-2xl border-2 font-heading font-black text-xs sm:text-sm p-1 leading-tight ${
-                matched.includes(c.pair) ? 'bg-emerald-100 border-emerald-500 text-emerald-800'
-                  : up ? (c.lang === 'en' ? 'bg-blue-50 border-blue-500 text-blue-800' : 'bg-amber-50 border-amber-500 text-amber-800')
-                    : 'bg-violet-600 border-violet-800 text-white'
+              className={`h-20 sm:h-24 short:h-14 rounded-2xl border-2 font-display text-xs sm:text-sm p-1 leading-tight ${
+                matched.includes(c.pair) ? 'bg-nisia-verde-100 border-nisia-verde-500 text-nisia-verde-700'
+                  : up ? (c.lang === 'en' ? 'bg-nisia-azul-100 border-nisia-azul-500 text-nisia-azul-700' : 'bg-nisia-sol-100 border-nisia-sol-500 text-nisia-laranja-700')
+                    : 'bg-nisia-roxo-500 border-nisia-roxo-700 text-white'
               }`}
             >
               {up ? c.text : '?'}
@@ -455,7 +455,7 @@ export const LabirintoActivity: React.FC<Level3ActivityProps> = ({ grade, onExit
   }, [move]);
 
   const pad = (dir: Dir, icon: React.ReactNode) => (
-    <button type="button" aria-label={`Mover ${dir}`} onClick={() => move(dir)} className="w-12 h-12 short:w-10 short:h-10 rounded-xl bg-orange-500 border-2 border-orange-700 text-white flex items-center justify-center active:translate-y-0.5">
+    <button type="button" aria-label={`Mover ${dir}`} onClick={() => move(dir)} className="w-12 h-12 short:w-10 short:h-10 rounded-xl bg-nisia-laranja-500 border-2 border-nisia-laranja-700 text-white flex items-center justify-center active:translate-y-0.5">
       {icon}
     </button>
   );
@@ -478,7 +478,7 @@ export const LabirintoActivity: React.FC<Level3ActivityProps> = ({ grade, onExit
       maxScore={level3MaxScore(LEVEL3_MAZE_WORDS)}
       overlay={<ZeOverlay ze={ze} finished={run.finished} outcomes={run.outcomes} />}
     >
-      <QuestionCard>{maze.goal} <span className="text-sm text-slate-500">({maze.goalPt})</span></QuestionCard>
+      <QuestionCard>{maze.goal} <span className="text-sm text-nisia-tinta-suave">({maze.goalPt})</span></QuestionCard>
       <div className="flex gap-3 short:gap-2 items-center mt-2 short:mt-1 flex-wrap justify-center">
         <div className="grid gap-1 short:gap-0.5" style={{ gridTemplateColumns: `repeat(${MAZE_COLS}, minmax(0, 1fr))` }} role="grid" aria-label="Labirinto">
           {Array.from({ length: MAZE_ROWS * MAZE_COLS }, (_, k) => {
@@ -488,8 +488,8 @@ export const LabirintoActivity: React.FC<Level3ActivityProps> = ({ grade, onExit
             return (
               <div
                 key={k}
-                className={`w-14 h-12 sm:w-20 sm:h-14 short:w-14 short:h-9 rounded-lg flex items-center justify-center text-[10px] sm:text-xs font-heading font-black text-center leading-tight ${
-                  isMazeWall(cell) ? 'bg-slate-700' : here ? 'bg-orange-200 border-2 border-orange-500' : 'bg-white/90 border border-slate-300'
+                className={`w-14 h-12 sm:w-20 sm:h-14 short:w-14 short:h-9 rounded-lg flex items-center justify-center text-[10px] sm:text-xs font-display text-center leading-tight ${
+                  isMazeWall(cell) ? 'bg-nisia-tinta' : here ? 'bg-nisia-laranja-100 border-2 border-nisia-laranja-500' : 'bg-white/90 border border-nisia-papel-linha'
                 }`}
               >
                 {here ? '🧒' : it ? it.label : ''}

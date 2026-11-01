@@ -30,3 +30,5 @@
 - Falas dos anfitrioes: roteiro PROVISORIO em src/data/falasAnfitrioes.ts (por nivel e momento; trocar pelo roteiro final do Oliveira). O balao fala em voz pt-BR e depois ingles via Web Speech, com tom por personagem; a musica abaixa durante a fala (sem musica sob narracao) e ha botao para ouvir de novo.
 
 - Fase 1 parte 2: inicio, cadastro (Secretaria), orientacao (auditorio) e ranking (Quadro de honra) no kit. Medalhas por nivel no mapa: ouro >= 90%, prata >= 70%, bronze abaixo (Nivel 0 pelas estrelas do quiz e flashcards). Placar Azul x Roxa na HUD usa a media por jogador (criterio oficial do ranking), com cache de 60 s. Falas das telas fora dos niveis em FALAS_TELAS (PROVISORIO).
+
+- Niveis 1 a 4 no kit: quadro de cartazes comum (QuadroMissao) no modo simples dos Niveis 3 e 4; atividades do Nivel 4 no mural com cenario e HUD (montados pela tela da missao, porque o teste monta a atividade fora do roteador). Cores antigas do conteudo das atividades convertidas por script para a paleta nisia. Nova tela 'alto' (altura >= 860 px) para frases extras.

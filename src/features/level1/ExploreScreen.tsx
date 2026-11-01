@@ -83,7 +83,7 @@ const ExploreScreen: React.FC = () => {
               aria-label="Algo escondido"
               style={{ left: `${t.x}%`, top: `${t.y}%` }}
               className={`absolute -translate-x-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border-2 ${
-                usedTraps.includes(i) ? 'bg-red-200/80 border-red-400 text-red-600 text-xs font-black' : 'bg-white/70 border-pink-300 text-pink-600'
+                usedTraps.includes(i) ? 'bg-nisia-erro/80 border-nisia-erro text-nisia-erro text-xs font-black' : 'bg-white/70 border-pink-300 text-pink-600'
               }`}
             >
               {usedTraps.includes(i) ? `-${TRAP_PENALTY_SECONDS}s` : <Search className="w-4 h-4" />}
@@ -101,7 +101,7 @@ const ExploreScreen: React.FC = () => {
                 aria-label={spot.place}
                 style={{ left: `${spot.x}%`, top: `${spot.y}%` }}
                 className={`absolute -translate-x-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border-2 shadow ${
-                  isFound ? 'bg-emerald-500 border-emerald-700 text-white'
+                  isFound ? 'bg-nisia-verde-500 border-nisia-verde-700 text-white'
                     : isActive ? 'bg-pink-600 border-pink-800 text-white ring-4 ring-pink-300'
                     : 'bg-white/70 border-pink-300 text-pink-600'
                 }`}
@@ -115,8 +115,8 @@ const ExploreScreen: React.FC = () => {
         <div className="flex-1 w-full flex flex-col gap-2">
           {active ? (
             <>
-              <p className="font-heading font-black text-pink-700 text-sm">{active.place}</p>
-              <p className="font-heading font-black text-slate-800 text-sm sm:text-base">{active.question}</p>
+              <p className="font-display text-pink-700 text-sm">{active.place}</p>
+              <p className="font-display text-nisia-tinta text-sm sm:text-base">{active.question}</p>
               <div className="grid gap-2">
                 {active.options.map((opt, i) => {
                   const isWrong = wrongPicks.includes(i);
@@ -127,10 +127,10 @@ const ExploreScreen: React.FC = () => {
                       type="button"
                       onClick={() => pick(i)}
                       disabled={run.locked || isWrong}
-                      className={`rounded-2xl border-2 px-3 py-2 short:py-1 text-left font-heading font-black text-sm transition-colors ${
-                        showRight ? 'bg-emerald-100 border-emerald-500 text-emerald-800'
-                          : isWrong ? 'bg-red-50 border-red-300 text-red-400 opacity-60'
-                          : 'bg-white border-slate-300 hover:border-pink-500 text-slate-800'
+                      className={`rounded-2xl border-2 px-3 py-2 short:py-1 text-left font-display text-sm transition-colors ${
+                        showRight ? 'bg-nisia-verde-100 border-nisia-verde-500 text-nisia-verde-700'
+                          : isWrong ? 'bg-red-50 border-nisia-erro text-nisia-erro opacity-60'
+                          : 'bg-nisia-papel border-nisia-papel-linha hover:border-pink-500 text-nisia-tinta'
                       }`}
                     >
                       {opt}
@@ -140,9 +140,9 @@ const ExploreScreen: React.FC = () => {
               </div>
             </>
           ) : (
-            <p className="font-bold text-slate-700 text-sm sm:text-base">
+            <p className="font-bold text-nisia-tinta text-sm sm:text-base">
               Explore o corredor: toque nas lupas para achar os lugares da escola. Cuidado com as armadilhas do Zé!
-              <span className="block mt-1 text-pink-700 font-heading font-black">{found.length} / {spots.length} lugares encontrados</span>
+              <span className="block mt-1 text-pink-700 font-display">{found.length} / {spots.length} lugares encontrados</span>
             </p>
           )}
         </div>

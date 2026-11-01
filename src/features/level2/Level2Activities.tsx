@@ -69,10 +69,10 @@ const OptionGrid: React.FC<{
             type="button"
             disabled={locked || disabled}
             onClick={() => { setChosen(i); onPick(i === answer); }}
-            className={`px-4 py-3 short:py-1.5 rounded-2xl border-2 font-heading font-black text-sm sm:text-base text-left transition-colors ${
-              state === 'right' ? 'bg-emerald-100 border-emerald-500 text-emerald-800'
-                : state === 'wrong' ? 'bg-red-100 border-red-500 text-red-700'
-                  : 'bg-white border-slate-300 hover:border-blue-500 disabled:opacity-60'
+            className={`px-4 py-3 short:py-1.5 rounded-2xl border-2 font-display text-sm sm:text-base text-left transition-colors ${
+              state === 'right' ? 'bg-nisia-verde-100 border-nisia-verde-500 text-nisia-verde-700'
+                : state === 'wrong' ? 'bg-red-50 border-nisia-erro text-nisia-erro'
+                  : 'bg-nisia-papel border-nisia-papel-linha hover:border-nisia-azul-500 disabled:opacity-60'
             }`}
           >
             {opt}
@@ -84,7 +84,7 @@ const OptionGrid: React.FC<{
 };
 
 const QuestionCard: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <p className="font-heading font-black text-lg sm:text-2xl short:text-base text-slate-800 leading-snug">{children}</p>
+  <p className="font-display text-lg sm:text-2xl short:text-base text-nisia-tinta leading-snug">{children}</p>
 );
 
 // ---------- 1. Ditado ----------
@@ -138,7 +138,7 @@ export const DitadoActivity: React.FC<Level2ActivityProps> = ({ grade, onExit })
         <button
           type="button"
           onClick={speak}
-          className="px-4 py-3 short:py-1.5 rounded-2xl bg-blue-600 border-2 border-blue-800 text-white font-heading font-black text-sm flex items-center gap-2"
+          className="px-4 py-3 short:py-1.5 rounded-2xl bg-nisia-azul-500 border-2 border-nisia-azul-700 text-white font-display text-sm flex items-center gap-2"
         >
           <Volume2 className="w-4 h-4" /> Ouvir
         </button>
@@ -150,12 +150,12 @@ export const DitadoActivity: React.FC<Level2ActivityProps> = ({ grade, onExit })
           autoComplete="off"
           autoCapitalize="off"
           spellCheck={false}
-          className="flex-1 min-w-[10rem] px-4 py-3 short:py-1.5 rounded-2xl border-2 border-slate-300 font-heading font-black text-lg short:text-base focus:border-blue-500 outline-none"
+          className="flex-1 min-w-[10rem] px-4 py-3 short:py-1.5 rounded-2xl border-2 border-nisia-papel-linha font-display text-lg short:text-base focus:border-nisia-azul-500 outline-none"
         />
         <button
           type="submit"
           disabled={run.locked || !typed.trim()}
-          className="px-6 py-3 short:py-1.5 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-400 border-2 border-amber-600 font-heading font-black uppercase text-sm disabled:opacity-50"
+          className="px-6 py-3 short:py-1.5 rounded-2xl bg-gradient-to-r from-nisia-sol-400 to-nisia-sol-400 border-2 border-nisia-sol-500 font-display uppercase text-sm disabled:opacity-50"
         >
           Confirmar
         </button>
@@ -221,7 +221,7 @@ export const CacaActivity: React.FC<Level2ActivityProps> = ({ grade, onExit }) =
       onExit={onExit}
       overlay={<ZeCartinha visible={!!zeMessage && !run.finished} message={zeMessage ?? ''} />}
     >
-      <p className="text-xs sm:text-sm font-bold text-slate-600">Toque na primeira e na última letra de cada palavra.</p>
+      <p className="text-xs sm:text-sm font-bold text-nisia-tinta-suave">Toque na primeira e na última letra de cada palavra.</p>
       <div className="mt-2 short:mt-1 flex flex-col short:flex-row sm:flex-row gap-3 items-center sm:items-start">
         <div role="grid" aria-label="Caça-palavras" className="grid grid-cols-8 gap-0.5 select-none">
           {grid.map((row, r) => row.map((letter, c) => {
@@ -234,11 +234,11 @@ export const CacaActivity: React.FC<Level2ActivityProps> = ({ grade, onExit }) =
                 data-cell={k}
                 aria-label={`Letra ${letter}, linha ${r + 1}, coluna ${c + 1}`}
                 onClick={() => pick([r, c])}
-                className={`w-8 h-8 sm:w-10 sm:h-10 short:w-6 short:h-6 rounded-md border font-heading font-black text-sm sm:text-base short:text-xs ${
-                  flashSet.has(k) ? 'bg-red-200 border-red-500'
-                    : isStart ? 'bg-blue-300 border-blue-600'
-                      : foundCells.has(k) ? 'bg-emerald-300 border-emerald-600'
-                        : 'bg-white border-slate-300'
+                className={`w-8 h-8 sm:w-10 sm:h-10 short:w-6 short:h-6 rounded-md border font-display text-sm sm:text-base short:text-xs ${
+                  flashSet.has(k) ? 'bg-nisia-erro border-nisia-erro'
+                    : isStart ? 'bg-nisia-azul-200 border-nisia-azul-500'
+                      : foundCells.has(k) ? 'bg-nisia-verde-400 border-nisia-verde-500'
+                        : 'bg-nisia-papel border-nisia-papel-linha'
                 }`}
               >
                 {letter}
@@ -250,8 +250,8 @@ export const CacaActivity: React.FC<Level2ActivityProps> = ({ grade, onExit }) =
           {words.map(w => (
             <li
               key={w}
-              className={`px-3 py-1 short:py-0 rounded-full border font-heading font-black text-sm short:text-xs ${
-                found.includes(w.toUpperCase()) ? 'bg-emerald-100 border-emerald-500 text-emerald-700 line-through' : 'bg-white border-slate-300'
+              className={`px-3 py-1 short:py-0 rounded-full border font-display text-sm short:text-xs ${
+                found.includes(w.toUpperCase()) ? 'bg-nisia-verde-100 border-nisia-verde-500 text-nisia-verde-700 line-through' : 'bg-nisia-papel border-nisia-papel-linha'
               }`}
             >
               {w.toUpperCase()}
@@ -287,11 +287,11 @@ export const MuralActivity: React.FC<Level2ActivityProps> = ({ grade, onExit }) 
       onExit={onExit}
       overlay={<ZeCartinha visible={!!zeMessage && !run.finished} message={zeMessage ?? ''} />}
     >
-      <div className="relative rounded-2xl bg-amber-50 border-4 border-amber-700/60 p-4 short:p-2 shadow-inner">
-        <p className="text-[10px] font-heading font-black tracking-widest text-amber-700 uppercase">Mural da escola</p>
+      <div className="relative rounded-2xl bg-nisia-sol-100 border-4 border-nisia-sol-700/60 p-4 short:p-2 shadow-inner">
+        <p className="text-[10px] font-display tracking-widest text-nisia-laranja-700 uppercase">Mural da escola</p>
         <QuestionCard>{item.statement}</QuestionCard>
         {covered && (
-          <div data-testid="ze-cobre" className="absolute inset-0 rounded-xl bg-amber-300/95 flex items-center justify-center font-heading font-black text-amber-900 text-lg rotate-[-2deg]">
+          <div data-testid="ze-cobre" className="absolute inset-0 rounded-xl bg-nisia-sol-300/95 flex items-center justify-center font-display text-nisia-laranja-700 text-lg rotate-[-2deg]">
             🧢 Zé está na frente do mural!
           </div>
         )}
@@ -325,8 +325,8 @@ export const BilheteActivity: React.FC<Level2ActivityProps> = ({ grade, onExit }
       onExit={onExit}
       overlay={<ZeCartinha visible={!!zeMessage && !run.finished} message={zeMessage ?? ''} />}
     >
-      <div className="relative rounded-2xl bg-yellow-50 border-2 border-yellow-400 p-4 short:p-2 rotate-[-0.5deg]">
-        <p className="text-[10px] font-heading font-black tracking-widest text-yellow-700 uppercase">Bilhete</p>
+      <div className="relative rounded-2xl bg-nisia-sol-100 border-2 border-nisia-sol-400 p-4 short:p-2 rotate-[-0.5deg]">
+        <p className="text-[10px] font-display tracking-widest text-nisia-laranja-700 uppercase">Bilhete</p>
         <QuestionCard>{item.question}</QuestionCard>
         {scribbled && (
           <svg data-testid="ze-rabisco" viewBox="0 0 200 60" preserveAspectRatio="none" className="absolute inset-0 w-full h-full pointer-events-none">
@@ -376,12 +376,12 @@ export const CorridaActivity: React.FC<Level2ActivityProps> = ({ grade, onExit, 
 // ---------- 6. Duelo de bafo ----------
 const CardRow: React.FC<{ label: string; left: number; total: number; tone: string }> = ({ label, left, total, tone }) => (
   <div className="flex items-center gap-2">
-    <span className="font-heading font-black text-xs uppercase w-12">{label}</span>
+    <span className="font-display text-xs uppercase w-12">{label}</span>
     {Array.from({ length: total }, (_, i) => (
       <span
         key={i}
         aria-label={i < left ? 'carta de pé' : 'carta virada'}
-        className={`w-8 h-11 short:w-6 short:h-8 rounded-md border-2 transition-transform duration-300 ${i < left ? tone : 'bg-slate-200 border-slate-400 rotate-180 opacity-50'}`}
+        className={`w-8 h-11 short:w-6 short:h-8 rounded-md border-2 transition-transform duration-300 ${i < left ? tone : 'bg-nisia-papel-linha border-nisia-papel-linha rotate-180 opacity-50'}`}
       />
     ))}
   </div>
@@ -427,8 +427,8 @@ export const DueloActivity: React.FC<Level2ActivityProps> = ({ grade, onExit, on
         : <ZeCartinha {...ze.zeProps} visible={ze.zeProps.visible && !run.finished} />}
     >
       <div className="flex flex-wrap gap-x-6 gap-y-1 mb-2 short:mb-1">
-        <CardRow label="Zé" left={duel.zeCards} total={total} tone="bg-amber-400 border-amber-700" />
-        <CardRow label="Você" left={duel.myCards} total={total} tone="bg-blue-500 border-blue-800" />
+        <CardRow label="Zé" left={duel.zeCards} total={total} tone="bg-nisia-sol-400 border-nisia-sol-700" />
+        <CardRow label="Você" left={duel.myCards} total={total} tone="bg-nisia-azul-500 border-nisia-azul-700" />
       </div>
       <QuestionCard>{item.question}</QuestionCard>
       <OptionGrid options={item.options} answer={item.answer} locked={run.locked} disabled={run.finished || ze.blocking} itemKey={run.index} onPick={run.answer} />

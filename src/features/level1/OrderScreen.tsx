@@ -90,22 +90,22 @@ const OrderScreen: React.FC = () => {
       overlay={<ZeCartinha visible={!!zeMessage && !run.finished} message={zeMessage ?? ''} />}
     >
       <div className="flex flex-col gap-3 short:gap-1.5">
-        <p className="font-bold text-slate-700 text-sm sm:text-base text-center">
-          Monte a frase: <span className="text-orange-700">“{item.pt}”</span>
+        <p className="font-bold text-nisia-tinta text-sm sm:text-base text-center">
+          Monte a frase: <span className="text-nisia-laranja-700">“{item.pt}”</span>
         </p>
 
         <div
           aria-label="Frase montada"
-          className="min-h-[3.25rem] rounded-2xl border-2 border-dashed border-orange-400 bg-orange-50/70 p-2 flex flex-wrap gap-2 items-center justify-center"
+          className="min-h-[3.25rem] rounded-2xl border-2 border-dashed border-nisia-laranja-400 bg-nisia-laranja-100/70 p-2 flex flex-wrap gap-2 items-center justify-center"
         >
-          {placed.length === 0 && <span className="text-xs font-bold text-slate-400">Toque nas palavras abaixo</span>}
+          {placed.length === 0 && <span className="text-xs font-bold text-nisia-tinta-suave">Toque nas palavras abaixo</span>}
           {placed.map(tile => (
             <button
               key={tile.id}
               type="button"
               onClick={() => unplace(tile)}
               disabled={run.locked}
-              className="px-3 py-1.5 rounded-xl bg-orange-500 border-2 border-orange-700 text-white font-heading font-black text-sm sm:text-base"
+              className="px-3 py-1.5 rounded-xl bg-nisia-laranja-500 border-2 border-nisia-laranja-700 text-white font-display text-sm sm:text-base"
             >
               {tile.word}
             </button>
@@ -119,7 +119,7 @@ const OrderScreen: React.FC = () => {
               type="button"
               onClick={() => place(tile)}
               disabled={run.locked}
-              className="px-3 py-1.5 rounded-xl bg-white border-2 border-slate-300 hover:border-orange-500 text-slate-800 font-heading font-black text-sm sm:text-base"
+              className="px-3 py-1.5 rounded-xl bg-nisia-papel border-2 border-nisia-papel-linha hover:border-nisia-laranja-500 text-nisia-tinta font-display text-sm sm:text-base"
             >
               {tile.word}
             </button>
@@ -131,7 +131,7 @@ const OrderScreen: React.FC = () => {
             <button
               type="button"
               onClick={reset}
-              className="px-4 py-2 rounded-full bg-white border-2 border-slate-300 font-heading font-black uppercase text-xs flex items-center gap-1"
+              className="px-4 py-2 rounded-full bg-nisia-papel border-2 border-nisia-papel-linha font-display uppercase text-xs flex items-center gap-1"
             >
               <RotateCcw className="w-4 h-4" /> Limpar
             </button>
@@ -139,7 +139,7 @@ const OrderScreen: React.FC = () => {
               type="button"
               onClick={check}
               disabled={!done}
-              className="px-6 py-2 rounded-full bg-gradient-to-r from-amber-400 to-yellow-400 border-2 border-amber-600 shadow-[0_4px_0_0_#b45309] font-heading font-black uppercase text-sm flex items-center gap-1 disabled:opacity-50 active:translate-y-1"
+              className="px-6 py-2 rounded-full bg-gradient-to-r from-nisia-sol-400 to-nisia-sol-400 border-2 border-nisia-sol-500 shadow-[0_4px_0_0_#B36E00] font-display uppercase text-sm flex items-center gap-1 disabled:opacity-50 active:translate-y-1"
             >
               <Check className="w-4 h-4" /> Check
             </button>

@@ -13,6 +13,8 @@ export default {
         short: { raw: '(max-height: 480px)' },
         // "largo": tela larga com margem sobrando ao lado do painel (personagens podem espiar sem cobrir nada)
         largo: { raw: '(min-width: 1300px) and (min-height: 600px)' },
+        // "alto": tela com altura sobrando (1080p, notebooks altos) — mostra frases extras dos cartazes
+        alto: { raw: '(min-height: 860px)' },
       },
       colors: {
         // ===== Kit visual NISIALAND (Fase 0) =====
