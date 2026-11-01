@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import type { ActivityProgress } from '../../engines/progression/progress';
 import { audioService } from '../../services/audio';
 import { Anfitriao, BotaoJogo, Cenario, Estrelas, Ficha, Fita, Hud, Icone, Painel, Titulo } from '../../components/kit';
 import type { NomeAnfitriao, NomeCenario, NomeIcone } from '../../components/kit';
 import type { Mechanic } from '../../core/types';
+import { fala as falaDoRoteiro } from '../../data/falasAnfitrioes';
 
 // Tela comum das missões dos Níveis 3 a 7 (cartazes das atividades) e da pergunta de cada atividade.
 // Conteúdo pedagógico e quantidade de itens continuam vindo dos arquivos de conteúdo (Fase 3 amplia).
@@ -55,6 +56,11 @@ export const TelaFaseMissao: React.FC<Props> = ({
 }) => {
   const host = ANFITRIAO[nivel] ?? 'marcio';
   const feitas = atividades.filter(a => a.state === 'completed').length;
+  const proxima = atividades.find(a => a.state === 'available')?.activity.name;
+  const momento = concluido ? 'concluido' : feitas > 0 ? 'meio' : 'apresenta';
+  const falaHost = useMemo(() => falaDoRoteiro(nivel, momento, { missao: titulo, proxima }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [nivel, momento, proxima]);
 
   // ----- Pergunta de uma atividade -----
   if (selecionada && item) {
@@ -125,9 +131,7 @@ export const TelaFaseMissao: React.FC<Props> = ({
         <Hud nivel={nivel} />
         <main className="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-5 py-4 short:py-0.5 grid grid-cols-1 wide:grid-cols-[13rem_1fr] short:grid-cols-[7rem_1fr] gap-4 short:gap-2 items-end">
           <div className="hidden wide:flex short:flex items-end">
-            <Anfitriao nome={host} lado="esq" altura="h-[20rem] short:h-28"
-              fala={concluido ? `Nível ${nivel} completo! Parabéns!` : `Missão ${nivel}: ${titulo}. Vamos lá!`}
-              traducao={concluido ? 'Level complete!' : "Let's go!"} />
+            <Anfitriao nome={host} lado="esq" altura="h-[20rem] short:h-28" fala={falaHost.pt} traducao={falaHost.en} />
           </div>
           <div className="flex flex-col gap-3 short:gap-1.5 pb-4 short:pb-1 min-w-0">
             <div className="flex flex-wrap items-end justify-between gap-2">

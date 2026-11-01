@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGame } from '../../context/GameContext';
 import { audioService } from '../../services/audio';
@@ -8,6 +8,7 @@ import { isGuestPlayer } from '../../types';
 import { getPlayerGrade } from '../../services/grade';
 import { GRADE_LABELS, GRADE_QUIZ_THEME } from '../../data/level0Content';
 import { Anfitriao, BotaoJogo, Cenario, Ficha, Hud, Icone, Painel, Titulo } from '../../components/kit';
+import { fala as falaDoRoteiro } from '../../data/falasAnfitrioes';
 
 // Resultado final da Missão 0 (quiz + flashcards): medalha, placar e caminho para o Nível 1.
 export const FinalResultsScreen: React.FC = () => {
@@ -28,6 +29,7 @@ export const FinalResultsScreen: React.FC = () => {
     loadRank();
   }, [currentPlayer]);
 
+  const falaMarcio = useMemo(() => falaDoRoteiro(0, 'concluido', { nome: currentPlayer?.displayName }), [currentPlayer?.displayName]);
   if (!currentPlayer) return null; // redirect handled by <RequirePlayer>
   const isGuest = isGuestPlayer(currentPlayer);
   const grade = getPlayerGrade(currentPlayer) ?? '8';
@@ -53,8 +55,7 @@ export const FinalResultsScreen: React.FC = () => {
         <main className="flex-1 w-full max-w-6xl mx-auto px-3 sm:px-5 py-4 short:py-1 grid grid-cols-1 wide:grid-cols-[14rem_1fr] short:grid-cols-1 gap-4 short:gap-2 items-end">
           <div className="hidden wide:flex short:hidden items-end">
             <Anfitriao nome="marcio" lado="esq" altura="h-[22rem] short:h-32"
-              fala={`Missão 0 completa, ${currentPlayer.displayName}! O Zé Cartinha foi embora resmungando.`}
-              traducao="Mission complete! Congratulations!" />
+              fala={falaMarcio.pt} traducao={falaMarcio.en} />
           </div>
 
           <Painel tipo="papel" liso className="p-5 sm:p-8 short:p-3 mb-4 short:mb-0.5 animate-rise-in">

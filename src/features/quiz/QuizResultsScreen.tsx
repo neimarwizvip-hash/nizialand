@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGame } from '../../context/GameContext';
 import { audioService } from '../../services/audio';
@@ -7,6 +7,7 @@ import { isGuestPlayer } from '../../types';
 import { getPlayerGrade } from '../../services/grade';
 import { GRADE_LABELS, GRADE_QUIZ_THEME } from '../../data/level0Content';
 import { Anfitriao, BotaoJogo, Cenario, Estrelas, Ficha, Fita, Hud, Icone, Painel, Titulo } from '../../components/kit';
+import { fala as falaDoRoteiro } from '../../data/falasAnfitrioes';
 
 // Resultado do Quiz (Missão 0, atividade 1): celebração com o Diretor Márcio e o placar da equipe.
 export const QuizResultsScreen: React.FC = () => {
@@ -17,6 +18,8 @@ export const QuizResultsScreen: React.FC = () => {
     audioService.playFanfare();
     fireConfetti();
   }, []);
+
+  const falaMarcio = useMemo(() => falaDoRoteiro(0, 'meio', { nome: currentPlayer?.displayName, proxima: 'os Flashcards' }), [currentPlayer?.displayName]);
 
   if (!currentPlayer || !quizResult) {
     navigate('/missions');
@@ -29,7 +32,6 @@ export const QuizResultsScreen: React.FC = () => {
   const quizTitle = `${GRADE_LABELS[grade]} · ${GRADE_QUIZ_THEME[grade]}`;
   const questionCount = quizResult.questionCount ?? 10;
   const maximo = questionCount * 100;
-  const fala = quizResult.stars === 3 ? 'Perfeito! Você dominou os comparativos.' : quizResult.stars === 2 ? 'Muito bem! Quase perfeito.' : 'Boa! Agora vamos aos flashcards.';
 
   return (
     <div className="relative min-h-screen text-nisia-tinta flex flex-col">
@@ -38,7 +40,7 @@ export const QuizResultsScreen: React.FC = () => {
         <Hud nivel={0} />
         <main className="flex-1 w-full max-w-6xl mx-auto px-3 sm:px-5 py-4 short:py-1 grid grid-cols-1 wide:grid-cols-[14rem_1fr] short:grid-cols-1 gap-4 short:gap-2 items-end">
           <div className="hidden wide:flex short:hidden items-end">
-            <Anfitriao nome="marcio" lado="esq" altura="h-[22rem] short:h-32" fala={fala} traducao={quizResult.stars === 3 ? 'Perfect!' : 'Well done!'} />
+            <Anfitriao nome="marcio" lado="esq" altura="h-[22rem] short:h-32" fala={falaMarcio.pt} traducao={falaMarcio.en} />
           </div>
 
           <Painel tipo="papel" liso className="p-5 sm:p-8 short:p-3 mb-4 short:mb-0.5 animate-rise-in">

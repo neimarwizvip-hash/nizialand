@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useGame } from '../../context/GameContext';
 import { audioService } from '../../services/audio';
@@ -12,6 +12,8 @@ import { getMissionProgress, ActivityProgress } from '../../engines/progression/
 import type { ActivityColor, Mechanic } from '../../core/types';
 import { Anfitriao, BotaoJogo, Cenario, Estrelas, Ficha, Fita, Hud, Icone, Painel, Titulo } from '../../components/kit';
 import type { NomeAnfitriao, NomeCenario, NomeIcone } from '../../components/kit';
+import { fala as falaDoRoteiro } from '../../data/falasAnfitrioes';
+import type { Momento } from '../../data/falasAnfitrioes';
 
 // ===== Arte dos cartazes =====
 // Fita colorida no alto de cada cartaz (uma cor por atividade).
@@ -188,12 +190,14 @@ export const MissionBriefingScreen: React.FC<{ level?: 0 | 1 | 2 }> = ({ level =
     navigate(path);
   };
 
-  // Fala do anfitrião conforme o momento.
-  const fala = !grade
-    ? { texto: `Olá, ${currentPlayer.displayName}! Em que série você está?`, traducao: 'Hello! What grade are you in?' }
-    : progress.isCompleted
-      ? { texto: `Missão ${mission.number} completa, ${currentPlayer.displayName}! Parabéns!`, traducao: 'Mission complete! Congratulations!' }
-      : { texto: `Sua missão: ${mission.title}. Vamos lá!`, traducao: "Your mission. Let's go!" };
+  // Fala do anfitrião conforme o momento (roteiro em src/data/falasAnfitrioes.ts).
+  const proxima = progress.activities.find(a => a.state === 'available')?.activity.name;
+  const momento: Momento = !grade ? 'semSerie' : progress.isCompleted ? 'concluido' : progress.completedCount > 0 ? 'meio' : 'apresenta';
+  const fala = useMemo(() => {
+    const f = falaDoRoteiro(level, momento, { nome: currentPlayer.displayName, missao: mission.title, proxima });
+    return { texto: f.pt, traducao: f.en };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [level, momento, proxima]);
 
   return (
     <div className="relative min-h-screen text-nisia-tinta flex flex-col">

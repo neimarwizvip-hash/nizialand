@@ -10,6 +10,7 @@ import { LEVEL2_ACTIVITY_VIEWS } from './Level2Activities';
 import { PlayerAvatar } from '../../components/ui/PlayerAvatar';
 import { Anfitriao, BotaoJogo, Cenario, Ficha, Hud, Icone, Painel, Titulo } from '../../components/kit';
 import type { NomeIcone } from '../../components/kit';
+import { fala as falaDoRoteiro } from '../../data/falasAnfitrioes';
 
 // Pátio do Nível 2: as 6 estações são placas de madeira espalhadas pelo pátio; o avatar do aluno
 // fica parado na próxima estação liberada. ?atividade=<id> abre direto (só se já estiver liberada).
@@ -35,6 +36,10 @@ export const PatioScreen: React.FC = () => {
   const [runKey, setRunKey] = useState(0);
   const proxima = stations.findIndex(s => s.state === 'available');
   const feitas = stations.filter(s => s.state === 'completed').length;
+  const momento = feitas === stations.length ? 'concluido' : feitas > 0 ? 'meio' : 'apresenta';
+  const falaVania = useMemo(() => falaDoRoteiro(2, momento, { nome: currentPlayer?.displayName, proxima: proxima >= 0 ? stations[proxima].activity.name : undefined }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [momento, proxima]);
 
   // Atividade inválida ou ainda bloqueada na URL: volta para o mapa.
   useEffect(() => {
@@ -73,8 +78,8 @@ export const PatioScreen: React.FC = () => {
               nome="vania"
               lado="esq"
               altura="h-[20rem] short:h-32"
-              fala={feitas === stations.length ? 'Pátio completo! Parabéns!' : proxima >= 0 ? `Sua próxima estação: ${stations[proxima].activity.name}.` : 'Escolha uma estação do pátio.'}
-              traducao={feitas === stations.length ? 'All stations done!' : 'Go to the next station.'}
+              fala={falaVania.pt}
+              traducao={falaVania.en}
             />
           </div>
 

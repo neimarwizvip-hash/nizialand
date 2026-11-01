@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { Hud } from './Hud';
 import { Cenario, NomeCenario } from './Cenario';
 import { BotaoJogo, Ficha, Painel, TipoPainel } from './Painel';
 import { Cronometro, Estrelas, Moedas } from './Medidores';
 import { Icone } from './Icones';
 import { Anfitriao, NomeAnfitriao } from './Anfitriao';
+import { fala as falaDoRoteiro } from '../../data/falasAnfitrioes';
 
 // Moldura comum das atividades (Níveis 1, 2 e 3): cenário + HUD + painel-objeto com a linha de
 // medidores, o corpo da atividade (children), a linha de feedback e o painel de fim com estrelas.
@@ -59,6 +60,9 @@ export const MolduraAtividade: React.FC<Props> = ({
   const cena = cenario ?? CENARIO_PADRAO[nivel] ?? 'corredor';
   const claro = painel === 'mural' || painel === 'lousa'; // texto do cabeçalho em claro sobre fundo escuro
   const estrelas = fim && fim.maximo > 0 ? Math.round((fim.pontos / fim.maximo) * 3) : 0;
+  const falaFim = useMemo(() => fim ? falaDoRoteiro(nivel, estrelas >= 1 ? 'certo' : 'errado') : null,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [!!fim, estrelas, nivel]);
 
   return (
     <div className="relative min-h-screen text-nisia-tinta flex flex-col overflow-x-hidden">
@@ -85,12 +89,7 @@ export const MolduraAtividade: React.FC<Props> = ({
                 </div>
               </div>
               <div className="hidden wide:block short:hidden">
-                <Anfitriao
-                  nome={host}
-                  lado="dir"
-                  altura="h-64"
-                  fala={estrelas === 3 ? 'Perfeito! Excellent work!' : estrelas >= 1 ? 'Muito bem! Well done!' : 'Vamos tentar de novo? Try again!'}
-                />
+                <Anfitriao nome={host} lado="dir" altura="h-64" fala={falaFim?.pt} traducao={falaFim?.en} />
               </div>
             </Painel>
           ) : (
