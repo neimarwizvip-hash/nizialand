@@ -1,4 +1,4 @@
-# Estado do projeto — 25/10/2026 (análise só de leitura, sobrescrita a cada reinício)
+# Estado do projeto — 01/11/2026 (análise só de leitura, sobrescrita a cada reinício)
 
 ## Git
 - Branch `main` = `origin/main` (e42be84). Nada à frente: o 7543d5f já está no GitHub.
@@ -12,7 +12,12 @@
   - **Novo:** `src/data/level3Mane.ts` (falas provisórias do Mané).
 - `package.json`: nenhuma alteração pendente (a mudança do three já está commitada).
 
-## Última tarefa: Mané Zoeira no Nível 3 — CONCLUÍDA (não commitada)
+## Última tarefa: Fase 0 do aprimoramento gráfico — CONCLUÍDA (não commitada)
+- Kit visual (`src/components/kit`), tokens `nisia.*`, HUD única, Missão 0/1/2, Mapa e Quiz refeitos. `tsc` OK · vitest 20 arquivos / 135 testes · build OK. Capturas em 1920/1366/812 sem rolagem.
+- Telas antigas (flashcards, ranking, resultado, Nível 1 atividades, Nível 2 pátio, 3–7) só ganharam a HUD nova; o corpo ainda é o cartão branco (Fase 1).
+- Pasta `_to_delete/` na raiz do projeto: um arquivo temporário da edição do quiz (pode apagar).
+
+## Tarefa anterior: Mané Zoeira no Nível 3 — CONCLUÍDA
 - Corredor (sprite + balão), salas (canto: início + 1 dica), cabeçalho do Modo simples; falas provisórias em `src/data/level3Mane.ts`.
 - Conferido no navegador mudo em 1920x1080 e 812x375: balões não cobrem respostas nem botões.
 

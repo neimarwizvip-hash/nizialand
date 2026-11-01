@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Bungee&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Lilita+One&family=Outfit:wght@400;500;600;700;800;900&family=Bungee&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -396,3 +396,253 @@ html, #root {
   text-shadow: 0 3px 0 #ffffff, 0 6px 0 #93c5fd;
   letter-spacing: 0.02em;
 }
+
+
+/* =====================================================================
+   KIT VISUAL NISIALAND — Fase 0 (fundação)
+   Objetos do cenário no lugar de cartões brancos: papel, lousa, mural, placa.
+   Cores: ver tailwind.config.js (theme.colors.nisia).
+   ===================================================================== */
+
+/* Texto de título de jogo: Lilita One com contorno escuro e sombra sólida */
+.kit-titulo {
+  font-family: 'Lilita One', 'Bungee', 'Outfit', sans-serif;
+  letter-spacing: 0.02em;
+  color: #FFD23F;
+  -webkit-text-stroke: 1.5px #0C2A66;
+  paint-order: stroke fill;
+  text-shadow: 0 3px 0 #143F97, 0 6px 12px rgba(12, 42, 102, 0.35);
+}
+.kit-titulo--azul {
+  color: #143F97;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 2px 0 #fff, 0 4px 0 #A9CDFF;
+}
+.kit-titulo--giz {
+  color: #F5F1E6;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.35);
+}
+
+/* Papel: folha creme com pauta fraca */
+.kit-papel {
+  background-color: #FFF6DF;
+  background-image: repeating-linear-gradient(180deg, transparent 0 27px, rgba(231, 211, 166, 0.55) 27px 28px);
+  border: 2px solid #E7D3A6;
+  border-radius: 14px;
+  box-shadow: 0 2px 0 0 #E7D3A6, 0 12px 28px -12px rgba(80, 50, 10, 0.45);
+  color: #1A2A4A;
+}
+.kit-papel--liso { background-image: none; }
+/* Fita adesiva nos cantos (para cartazes no mural) */
+.kit-fita::before, .kit-fita::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  width: 64px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  pointer-events: none;
+}
+.kit-fita::before { left: 14px; transform: rotate(-8deg); }
+.kit-fita::after { right: 14px; transform: rotate(7deg); }
+
+/* Lousa: quadro verde com moldura de madeira e calha de giz */
+.kit-lousa {
+  position: relative;
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(255,255,255,0.08), transparent 45%),
+    radial-gradient(ellipse at 80% 90%, rgba(255,255,255,0.06), transparent 45%),
+    linear-gradient(135deg, #2F6B57 0%, #234F41 100%);
+  border: 10px solid #C98A4B;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 2px #8A5A2B, inset 0 0 40px rgba(0,0,0,0.35), 0 12px 30px -10px rgba(0,0,0,0.55);
+  color: #F5F1E6;
+}
+.kit-lousa::after {
+  content: '';
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -22px;
+  height: 12px;
+  background: linear-gradient(180deg, #E0A96A, #8A5A2B);
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.35);
+}
+
+/* Mural de cortiça com moldura de madeira */
+.kit-mural {
+  position: relative;
+  background-color: #D4A26A;
+  background-image:
+    radial-gradient(circle at 12% 22%, rgba(255,255,255,0.18) 0 2px, transparent 3px),
+    radial-gradient(circle at 48% 61%, rgba(120, 70, 20, 0.22) 0 2px, transparent 3px),
+    radial-gradient(circle at 79% 33%, rgba(255,255,255,0.14) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 31% 84%, rgba(120, 70, 20, 0.2) 0 2px, transparent 3px),
+    radial-gradient(circle at 66% 12%, rgba(120, 70, 20, 0.18) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 90% 78%, rgba(255,255,255,0.16) 0 2px, transparent 3px);
+  background-size: 64px 64px, 96px 96px, 80px 80px, 112px 112px, 72px 72px, 88px 88px;
+  border: 10px solid #C98A4B;
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 2px #8A5A2B, inset 0 0 36px rgba(90, 50, 10, 0.35), 0 12px 30px -10px rgba(0,0,0,0.5);
+}
+
+/* Placa de madeira */
+.kit-placa {
+  position: relative;
+  background:
+    repeating-linear-gradient(180deg, rgba(255,255,255,0.06) 0 3px, transparent 3px 9px),
+    linear-gradient(180deg, #E0A96A 0%, #C98A4B 55%, #B07539 100%);
+  border: 3px solid #8A5A2B;
+  border-radius: 14px;
+  box-shadow: inset 0 2px 0 rgba(255,255,255,0.25), 0 6px 0 0 #8A5A2B, 0 14px 28px -12px rgba(0,0,0,0.5);
+  color: #FFF6DF;
+  text-shadow: 0 2px 0 rgba(90, 50, 10, 0.6);
+}
+.kit-placa::before, .kit-placa::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff 0, #9a9a9a 40%, #4b4b4b 100%);
+  box-shadow: 0 1px 1px rgba(0,0,0,0.5);
+}
+.kit-placa::before { left: 8px; }
+.kit-placa::after { right: 8px; }
+
+/* Botão de jogo: bisel + sombra sólida + estado pressionado */
+.kit-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: 'Lilita One', 'Bungee', sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: 16px;
+  border: 3px solid transparent;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.15s ease;
+  user-select: none;
+  min-height: 48px;
+  padding: 0.6rem 1.25rem;
+}
+.kit-btn:hover { filter: brightness(1.06); }
+.kit-btn:active, .kit-btn[data-pressed='true'] { transform: translateY(4px); box-shadow: none !important; }
+.kit-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+.kit-btn--sol { background: linear-gradient(180deg, #FFE27A 0%, #FFC000 60%, #F2A800 100%); color: #0C2A66; border-color: #D98E00; box-shadow: 0 5px 0 0 #B36E00, 0 10px 20px -8px rgba(217,142,0,0.6); }
+.kit-btn--laranja { background: linear-gradient(180deg, #F9A05A 0%, #F2811D 60%, #E0700F 100%); color: #fff; border-color: #B85A0A; box-shadow: 0 5px 0 0 #8E4406, 0 10px 20px -8px rgba(184,90,10,0.6); text-shadow: 0 1px 0 rgba(0,0,0,0.25); }
+.kit-btn--azul { background: linear-gradient(180deg, #4F86E8 0%, #1F5FD0 60%, #1A4FB0 100%); color: #fff; border-color: #143F97; box-shadow: 0 5px 0 0 #0C2A66, 0 10px 20px -8px rgba(20,63,151,0.6); text-shadow: 0 1px 0 rgba(0,0,0,0.25); }
+.kit-btn--verde { background: linear-gradient(180deg, #6CC877 0%, #3FA34D 60%, #338A41 100%); color: #fff; border-color: #22703A; box-shadow: 0 5px 0 0 #175229, 0 10px 20px -8px rgba(34,112,58,0.6); text-shadow: 0 1px 0 rgba(0,0,0,0.25); }
+.kit-btn--roxo { background: linear-gradient(180deg, #A67CF0 0%, #7B3FE4 60%, #6A32CC 100%); color: #fff; border-color: #5325A8; box-shadow: 0 5px 0 0 #3B1A7A, 0 10px 20px -8px rgba(83,37,168,0.6); text-shadow: 0 1px 0 rgba(0,0,0,0.25); }
+.kit-btn--papel { background: linear-gradient(180deg, #FFFBF0 0%, #FFF6DF 100%); color: #143F97; border-color: #E7D3A6; box-shadow: 0 5px 0 0 #D9C18D, 0 10px 20px -8px rgba(120,90,30,0.4); }
+.kit-btn--sm { min-height: 40px; padding: 0.35rem 0.85rem; font-size: 0.9rem; border-radius: 12px; }
+.kit-btn--lg { min-height: 60px; padding: 0.8rem 2rem; font-size: 1.35rem; border-radius: 20px; }
+
+/* Ficha/etiqueta pequena (número da pergunta, série, turma) */
+.kit-ficha {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  font-family: 'Lilita One', 'Bungee', sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  line-height: 1.1;
+  border: 2px solid;
+  box-shadow: 0 3px 0 0 rgba(26, 42, 74, 0.18);
+}
+.kit-ficha--sol { background: #FFD23F; color: #0C2A66; border-color: #D98E00; }
+.kit-ficha--azul { background: #1F5FD0; color: #fff; border-color: #0C2A66; }
+.kit-ficha--roxo { background: #7B3FE4; color: #fff; border-color: #3B1A7A; }
+.kit-ficha--verde { background: #3FA34D; color: #fff; border-color: #175229; }
+.kit-ficha--papel { background: #FFF6DF; color: #143F97; border-color: #E7D3A6; }
+.kit-ficha--erro { background: #E5484D; color: #fff; border-color: #9E2A2E; }
+
+/* HUD: barra única de 56 px (48 px no celular deitado) */
+.kit-hud {
+  height: 56px;
+  background: linear-gradient(180deg, rgba(12, 42, 102, 0.92) 0%, rgba(20, 63, 151, 0.92) 100%);
+  border-bottom: 3px solid #FFC000;
+  box-shadow: 0 4px 0 0 rgba(12, 42, 102, 0.35), 0 10px 24px -10px rgba(0,0,0,0.5);
+  color: #fff;
+  backdrop-filter: blur(6px);
+}
+@media (max-height: 480px) { .kit-hud { height: 48px; } }
+.kit-hud__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-width: 44px;
+  height: 40px;
+  padding: 0 0.6rem;
+  border-radius: 12px;
+  border: 2px solid rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  font-family: 'Lilita One', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: background 0.15s ease, transform 0.08s ease;
+}
+.kit-hud__btn:hover { background: rgba(255,255,255,0.2); }
+.kit-hud__btn:active { transform: translateY(2px); }
+.kit-hud__btn[aria-checked='true'] { background: #FFC000; color: #0C2A66; border-color: #D98E00; }
+@media (max-height: 480px) { .kit-hud__btn { height: 34px; min-width: 38px; padding: 0 0.45rem; } }
+
+/* Balão de fala de HQ */
+.kit-balao {
+  position: relative;
+  background: #fff;
+  color: #1A2A4A;
+  border: 3px solid #1A2A4A;
+  border-radius: 18px;
+  padding: 0.6rem 0.9rem;
+  box-shadow: 0 4px 0 0 rgba(26, 42, 74, 0.2);
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+}
+.kit-balao::before, .kit-balao::after {
+  content: '';
+  position: absolute;
+  bottom: -16px;
+  border-style: solid;
+  border-width: 16px 12px 0 0;
+}
+.kit-balao::before { border-color: #1A2A4A transparent transparent transparent; }
+.kit-balao::after { bottom: -11px; border-color: #fff transparent transparent transparent; }
+.kit-balao--esq::before { left: 22px; }
+.kit-balao--esq::after { left: 24px; }
+.kit-balao--dir::before { right: 22px; transform: scaleX(-1); }
+.kit-balao--dir::after { right: 24px; transform: scaleX(-1); }
+
+/* Anel do cronômetro: a parte restante gira com o tempo (ver Medidores.tsx) */
+.kit-cronometro--alerta { animation: wrongShake 0.5s ease-in-out infinite; }
+
+/* Cenário: imagem de fundo fixa com vinheta discreta (nunca véu branco) */
+.kit-cenario { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.kit-cenario img { width: 100%; height: 100%; object-fit: cover; }
+.kit-cenario__vinheta {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, rgba(12, 42, 102, 0.45) 0%, rgba(12, 42, 102, 0) 22%),
+    linear-gradient(0deg, rgba(12, 42, 102, 0.35) 0%, rgba(12, 42, 102, 0) 30%);
+}
+
+/* Modo calmo e alto contraste (ligados por data-attr no <html>) */
+html[data-calmo='1'] .animate-ken-burns, html[data-calmo='1'] .animate-float, html[data-calmo='1'] .particle,
+html[data-calmo='1'] .btn-shine::after, html[data-calmo='1'] .glow-ring, html[data-calmo='1'] .animate-title-drift,
+html[data-calmo='1'] .title-rays, html[data-calmo='1'] .title-sparkle, html[data-calmo='1'] .sky-clouds,
+html[data-calmo='1'] .animate-anel-pulsa, html[data-calmo='1'] .kit-cronometro--alerta { animation: none !important; }
+html[data-contraste='1'] .kit-papel { background-image: none; background-color: #fff; border-color: #1A2A4A; color: #000; }
+html[data-contraste='1'] .kit-mural { background-image: none; background-color: #5a3a14; }
+html[data-contraste='1'] .kit-cenario img { filter: contrast(0.6) brightness(0.5); }

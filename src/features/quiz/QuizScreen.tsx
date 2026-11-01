@@ -1,20 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Volume2, 
-  HelpCircle, 
-  Sparkles, 
-  ArrowRight, 
-  CheckCircle2, 
-  XCircle, 
-  Shield, 
-  BookOpen, 
-  Eye, 
-  EyeOff,
-  Flame,
-  Award,
-  Star
-} from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { READING_TEXT, shuffleArray } from '../../data/quizQuestions';
 import { getQuizSession } from '../../data/level0Content';
@@ -29,7 +14,7 @@ import {
 import { audioService } from '../../services/audio';
 import { speechService } from '../../services/speech';
 import { fireConfetti } from '../../components/ui/ConfettiEffect';
-import { GameHeader } from '../../components/layout/GameHeader';
+import { BotaoJogo, Cenario, Cronometro, Ficha, Fita, Hud, Icone, Moedas, Painel } from '../../components/kit';
 
 export const QuizScreen: React.FC = () => {
   const navigate = useNavigate();
@@ -75,7 +60,7 @@ export const QuizScreen: React.FC = () => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(null);
   const [isQuestionResolved, setIsQuestionResolved] = useState<boolean>(false);
   const [showHint, setShowHint] = useState<boolean>(false);
-  const [showReadingText, setShowReadingText] = useState<boolean>(true);
+  const [showReadingText, setShowReadingText] = useState<boolean>(() => !(typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(max-height: 480px)').matches));
   // First-miss feedback (shake + "try again" banner)
   const [shakeIndex, setShakeIndex] = useState<number | null>(null);
   const [showTryAgain, setShowTryAgain] = useState<boolean>(false);
@@ -298,326 +283,192 @@ export const QuizScreen: React.FC = () => {
     }
   };
 
+  const fracTempo = QUESTION_SECONDS > 0 ? questionSecondsLeft / QUESTION_SECONDS : 0;
+  const ultimo = currentIndex >= sessionQuestions.length - 1;
+
   return (
-    <div className="relative min-h-screen game-sky text-slate-900 flex flex-col justify-between overflow-x-hidden">
-      {/* Background: Hallway matching approved mockup */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <img
-          src="/assets/nisialand_hallway_bg.jpg"
-          alt="Corredor da Escola"
-          className="w-full h-full object-cover filter brightness-[0.88]"
-        />
-        <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px]" />
-      </div>
+    <div className="relative min-h-screen text-nisia-tinta flex flex-col overflow-x-hidden">
+      {/* Cenário: corredor da escola, sem véu branco */}
+      <Cenario nome="corredor" escurecer={0.22} />
 
-      <div className="relative z-10">
-        <GameHeader />
-      </div>
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Hud nivel={0} mostrarMoedas={false} />
 
-      <main className="relative z-10 flex-1 w-full max-w-5xl mx-auto px-3 sm:px-4 py-4 md:py-6 flex flex-col justify-center">
-        
-        {/* --- MAIN FLOATING QUIZ PANEL (Neon Cyan Glow as in Mockup) --- */}
-        <div className="w-full game-panel p-4 sm:p-7 flex flex-col justify-between my-auto animate-fadeIn">
-          
-          {/* Top Panel Bar: Question progress, Score Capsule, Team Pill */}
-          <div className="border-b border-cyan-500/30 pb-4 mb-4">
-            <div className="flex items-center justify-between gap-2 flex-wrap mb-3">
+        <main className="flex-1 w-full max-w-5xl mx-auto px-2 sm:px-4 py-3 md:py-5 short:py-1 flex flex-col justify-center">
+          {/* Mural de cortiça: a pergunta e as respostas são papéis pregados nele */}
+          <Painel tipo="mural" as="section" aria-label="Quiz" className="p-3 sm:p-5 short:p-2 flex flex-col gap-3 short:gap-1">
+
+            {/* Linha de cima: pergunta, tempo, pontos, equipe */}
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <div className="flex items-center gap-2 flex-wrap">
+                <Ficha cor="sol">Pergunta {currentIndex + 1} de {sessionQuestions.length}</Ficha>
+                <span className="hidden md:inline short:hidden text-sm font-semibold text-nisia-papel drop-shadow-[0_1px_0_rgba(90,50,10,0.8)]">{currentQ.activityTitle}</span>
+              </div>
               <div className="flex items-center gap-2">
-                <span className="px-3.5 py-1.5 rounded-full bg-blue-600/40 border border-cyan-400 text-cyan-800 font-heading font-black text-xs sm:text-sm tracking-wider uppercase shadow-game-sm">
-                  QUESTION {currentIndex + 1} OF {sessionQuestions.length}
-                </span>
-                <span className="text-xs font-bold text-slate-600 hidden md:inline">
-                  {currentQ.activityTitle}
-                </span>
+                <Cronometro segundos={questionSecondsLeft} total={QUESTION_SECONDS} alerta={QUESTION_WARNING_SECONDS} tamanho={52} className="short:!w-10 short:!h-10" />
+                <Moedas valor={accumulatedScore} compacto />
+                <Ficha cor={isBlue ? 'azul' : 'roxo'}><Icone nome="escudo" className="w-4 h-4" cor={isBlue ? '#A9CDFF' : '#EDE3FF'} /> {isBlue ? 'Azul' : 'Roxa'}</Ficha>
               </div>
+            </div>
+            <Fita frac={(currentIndex + 1) / sessionQuestions.length} rotulo="Progresso do quiz" className="short:hidden" />
 
-              <div className="flex items-center gap-2.5">
-                <div
-                  role="timer"
-                  aria-label={`Tempo para responder: ${questionSecondsLeft} segundos`}
-                  className={`px-3 py-1 rounded-full border font-heading font-black text-xs sm:text-sm shadow-sm ${
-                    questionSecondsLeft <= QUESTION_WARNING_SECONDS
-                      ? 'bg-red-100 border-red-500 text-red-700 animate-pulse'
-                      : 'bg-white/90 border-sky-300 text-cyan-800'
-                  }`}
+            {/* Instrução + apoios */}
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <p className="inline-flex items-center gap-2 font-display text-base sm:text-lg short:text-sm text-nisia-papel drop-shadow-[0_2px_0_rgba(90,50,10,0.8)]">
+                <Icone nome="livro" className="w-5 h-5" cor="#FFD23F" />
+                <span>{currentQ.instruction}</span>
+              </p>
+              <div className="flex items-center gap-2">
+                <BotaoJogo cor="azul" tamanho="sm" onClick={handlePronounce} title="Ouvir a frase em inglês">
+                  <Icone nome="som" className="w-5 h-5" cor="#FFD23F" /> Ouvir
+                </BotaoJogo>
+                <BotaoJogo
+                  cor="sol" tamanho="sm"
+                  onClick={handleUseFiftyFifty}
+                  disabled={fiftyFiftyLeft <= 0 || isQuestionResolved || attemptsUsed > 0}
+                  title="Eliminar duas respostas erradas"
                 >
-                  {`⏱ ${questionSecondsLeft}s`}
-                </div>
-
-                {/* Score capsule */}
-                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/80 text-amber-700 font-heading font-black text-xs sm:text-sm shadow-sm">
-                  <Award className="w-4 h-4 text-amber-600" />
-                  <span>{accumulatedScore} PTS</span>
-                </div>
-
-                {/* Team Pill */}
-                <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-heading font-black border shadow-sm ${
-                  isBlue 
-                    ? 'bg-blue-600/30 border-cyan-400 text-cyan-700' 
-                    : 'bg-purple-600/30 border-purple-400 text-purple-700'
-                }`}>
-                  <Shield className="w-3.5 h-3.5 fill-current" />
-                  <span>{isBlue ? 'BLUE' : 'PURPLE'}</span>
-                </div>
+                  <Icone nome="fogo" className="w-5 h-5" /> 50/50 ({fiftyFiftyLeft})
+                </BotaoJogo>
+                <BotaoJogo cor="roxo" tamanho="sm" onClick={() => { audioService.playClick(); setShowHint(!showHint); }} title="Dica de gramática" aria-pressed={showHint}>
+                  <Icone nome="dica" className="w-5 h-5" /> Dica
+                </BotaoJogo>
               </div>
             </div>
 
-            {/* Neon Glowing Progress Bar */}
-            <div className="w-full h-2.5 bg-white/90 rounded-full overflow-hidden border border-cyan-500/40 p-0.5">
-              <div 
-                className="h-full bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 rounded-full transition-all duration-300 shadow-[0_0_10px_rgba(251,191,36,0.6)]"
-                style={{ width: `${((currentIndex + 1) / sessionQuestions.length) * 100}%` }}
-              />
-            </div>
-          </div>
+            {showHint && (
+              <Painel tipo="papel" liso fita className="px-4 py-3 pt-4 short:py-2 text-sm sm:text-base animate-rise-in">
+                <span className="font-display text-nisia-roxo-700">Dica · Grammar tip: </span>{currentQ.hint}
+              </Painel>
+            )}
 
-          {/* Subheader: Instruction and Powerup Controls */}
-          <div className="flex items-center justify-between gap-2 border-b border-cyan-500/20 pb-3 mb-5 flex-wrap">
-            <p className="text-xs sm:text-sm font-heading font-extrabold uppercase tracking-wide text-cyan-800 flex items-center gap-2">
-              <BookOpen className="w-4 h-4 text-cyan-600 flex-shrink-0" />
-              <span>{currentQ.instruction}</span>
-            </p>
-
-            <div className="flex items-center gap-2">
-              {/* Listen button (Blue Neon) */}
-              <button
-                type="button"
-                onClick={handlePronounce}
-                title="Ouvir frase em inglês"
-                className="px-3 py-1.5 rounded-xl border text-xs font-heading font-bold flex items-center gap-1.5 transition-all shadow-sm bg-blue-600/30 hover:bg-blue-600/50 text-cyan-700 border-cyan-400 active:scale-95"
-              >
-                <Volume2 className="w-3.5 h-3.5 text-cyan-700" />
-                <span>Listen</span>
-              </button>
-
-              {/* 50/50 Button (Gold Neon) */}
-              <button
-                type="button"
-                onClick={handleUseFiftyFifty}
-                disabled={fiftyFiftyLeft <= 0 || isQuestionResolved || attemptsUsed > 0}
-                title="Eliminar 2 respostas erradas"
-                className={`px-3 py-1.5 rounded-xl border text-xs font-heading font-bold flex items-center gap-1.5 transition-all ${
-                  fiftyFiftyLeft > 0 && !isQuestionResolved && attemptsUsed === 0
-                    ? 'bg-amber-500/20 border-amber-400 text-amber-700 hover:bg-amber-500/30 shadow-sm active:scale-95'
-                    : 'bg-white/95 border-sky-200 text-slate-500 cursor-not-allowed opacity-40'
-                }`}
-              >
-                <Flame className="w-3.5 h-3.5 text-amber-600" />
-                <span>50/50 ({fiftyFiftyLeft})</span>
-              </button>
-
-              {/* Hint button (Purple Neon) */}
-              <button
-                type="button"
-                onClick={() => {
-                  audioService.playClick();
-                  setShowHint(!showHint);
-                }}
-                title="Dica gramatical"
-                className="px-3 py-1.5 rounded-xl border text-xs font-heading font-bold flex items-center gap-1.5 transition-all shadow-sm bg-purple-600/30 hover:bg-purple-600/50 text-purple-800 border-purple-400 active:scale-95"
-              >
-                <HelpCircle className="w-3.5 h-3.5 text-purple-700" />
-                <span>Hint</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Hint Dropdown Box */}
-          {showHint && (
-            <div className="mb-4 p-3.5 rounded-2xl bg-purple-100/80 border-2 border-purple-400 text-purple-800 text-xs sm:text-sm animate-fadeIn">
-              <strong className="text-amber-700">Grammar Tip:</strong> {currentQ.hint}
-            </div>
-          )}
-
-          {/* Activity 1: VS Battle Cards (Questions 1 to 5) */}
-          {currentQ.targetStudent1 && currentQ.targetStudent2 && (
-            <div className="mb-5 p-3 sm:p-4 rounded-2xl bg-sky-50 border-2 border-sky-200 shadow-[0_3px_0_0_#bae6fd] flex items-center justify-center gap-4 sm:gap-8 shadow-inner">
-              {/* Student 1 */}
-              <div className="flex flex-col items-center text-center">
-                <div className="relative">
-                  <div className="w-18 h-18 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-3 border-cyan-400 shadow-glow-blue bg-white/95 p-1">
-                    <img 
-                      src={`/assets/avatar_${currentQ.targetStudent1}.jpg`}
-                      alt={currentQ.targetStudent1}
-                      onError={(e) => { e.currentTarget.src = '/assets/avatar_mateus.jpg'; }}
-                      className="w-full h-full object-cover rounded-xl"
+            <div className="contents short:flex short:items-stretch short:gap-2">
+            {/* Atividade 1: duelo VS com as fotos dos alunos pregadas */}
+            {currentQ.targetStudent1 && currentQ.targetStudent2 && (
+              <div className="relative flex items-center justify-center gap-5 sm:gap-10 short:gap-3 py-1 short:py-0 short:shrink-0">
+                {[currentQ.targetStudent1, currentQ.targetStudent2].map((aluno, i) => (
+                  <figure key={aluno} className={`relative kit-papel kit-papel--liso kit-fita p-1.5 pb-2 ${i === 0 ? '-rotate-2' : 'rotate-2'}`}>
+                    <img
+                      src={`/assets/avatar_${aluno}.jpg`}
+                      alt={aluno}
+                      onError={(e) => { e.currentTarget.src = i === 0 ? '/assets/avatar_mateus.jpg' : '/assets/avatar_carlos.jpg'; }}
+                      className="w-24 h-24 sm:w-28 sm:h-28 short:w-14 short:h-14 object-cover rounded-md border border-nisia-papel-linha"
                     />
-                  </div>
-                </div>
-                <span className="mt-1.5 font-heading font-black text-xs sm:text-sm capitalize text-slate-900">
-                  {currentQ.targetStudent1}
-                </span>
+                    <figcaption className="mt-1 text-center font-display text-base short:text-sm capitalize text-nisia-tinta">{aluno}</figcaption>
+                  </figure>
+                ))}
+                <span className="absolute left-1/2 -translate-x-1/2 kit-ficha kit-ficha--sol text-lg px-3 py-1 shadow-[0_4px_0_0_#B36E00]" aria-hidden="true">VS</span>
               </div>
+            )}
 
-              {/* Glowing VS Badge in center */}
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 via-amber-500 to-yellow-500 flex items-center justify-center font-heading font-black text-sm text-slate-950 border-2 border-white shadow-[0_0_15px_rgba(251,191,36,0.7)] flex-shrink-0 animate-pulse">
-                VS
-              </div>
-
-              {/* Student 2 */}
-              <div className="flex flex-col items-center text-center">
-                <div className="relative">
-                  <div className="w-18 h-18 sm:w-24 sm:h-24 rounded-2xl overflow-hidden border-3 border-purple-400 shadow-glow-purple bg-white/95 p-1">
-                    <img 
-                      src={`/assets/avatar_${currentQ.targetStudent2}.jpg`}
-                      alt={currentQ.targetStudent2}
-                      onError={(e) => { e.currentTarget.src = '/assets/avatar_carlos.jpg'; }}
-                      className="w-full h-full object-cover rounded-xl"
-                    />
-                  </div>
+            {/* Atividade 2: texto de leitura (bilhete pregado) */}
+            {currentQ.activity === 2 && (
+              <Painel tipo="papel" fita className="px-4 py-3 pt-4 short:py-2">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="inline-flex items-center gap-2 font-display text-nisia-laranja-700">
+                    <Icone nome="livro" className="w-5 h-5" /> {READING_TEXT.title}
+                  </span>
+                  <button type="button" onClick={() => setShowReadingText(!showReadingText)} className="inline-flex items-center gap-1 text-sm font-semibold text-nisia-azul-700 underline">
+                    <Icone nome="olho" className="w-4 h-4" /> {showReadingText ? 'Esconder texto' : 'Mostrar texto'}
+                  </button>
                 </div>
-                <span className="mt-1.5 font-heading font-black text-xs sm:text-sm capitalize text-slate-900">
-                  {currentQ.targetStudent2}
-                </span>
-              </div>
+                {showReadingText && <p className="mt-2 short:mt-1 text-sm md:text-base short:text-xs leading-relaxed short:leading-snug font-medium italic">{READING_TEXT.passage}</p>}
+              </Painel>
+            )}
+
+            {/* A pergunta, em papel grande */}
+            <Painel tipo="papel" liso className="text-center px-4 py-4 short:py-2 short:flex-1 short:flex short:flex-col short:justify-center">
+              <svg viewBox="0 0 24 24" className="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 drop-shadow-[0_3px_2px_rgba(0,0,0,0.35)]" aria-hidden="true"><circle cx="12" cy="10" r="7" fill="#E5484D" /><circle cx="9.5" cy="7.5" r="2.2" fill="#fff" fillOpacity="0.7" /><path d="M12 17v5" stroke="#4a4a4a" strokeWidth="2" strokeLinecap="round" /></svg>
+              <p className="font-display text-2xl sm:text-4xl short:text-xl leading-tight text-nisia-azul-700">{currentQ.sentence}</p>
+              {currentQ.contextHint && <p className="mt-1 text-sm short:text-xs text-nisia-tinta-suave font-semibold">{currentQ.contextHint}</p>}
+            </Painel>
             </div>
-          )}
 
-          {/* Activity 2: Reading Passage Snippet (Questions 6 to 10) */}
-          {currentQ.activity === 2 && (
-            <div className="mb-5 rounded-2xl bg-sky-50 border-2 border-sky-200 shadow-[0_3px_0_0_#bae6fd] overflow-hidden">
-              <div className="px-4 py-2 bg-white/90 border-b border-cyan-500/20 flex items-center justify-between">
-                <span className="text-xs font-heading font-black uppercase tracking-wider text-amber-700 flex items-center gap-2">
-                  <BookOpen className="w-3.5 h-3.5" />
-                  {READING_TEXT.title}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setShowReadingText(!showReadingText)}
-                  className="text-xs text-slate-500 hover:text-slate-900 flex items-center gap-1 font-bold"
-                >
-                  {showReadingText ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                  <span>{showReadingText ? 'Hide text' : 'Show text'}</span>
-                </button>
-              </div>
-
-              {showReadingText && (
-                <div className="p-4 text-xs md:text-sm leading-relaxed text-slate-600 font-medium italic">
-                  {READING_TEXT.passage}
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Prompt Sentence Box (Gold Text on Dark Navy with Cyan Border) */}
-          <div className="text-center py-4 px-4 bg-white rounded-2xl border-2 border-sky-300 mb-5 shadow-[0_4px_0_0_#7dd3fc]">
-            <span className="text-xl sm:text-3xl font-heading font-black text-amber-700 tracking-wide block">
-              {currentQ.sentence}
-            </span>
-            {currentQ.contextHint && (
-              <p className="text-xs text-cyan-800/80 font-semibold mt-1">
-                Context: {currentQ.contextHint}
+            {/* Aviso de 1ª tentativa errada */}
+            {showTryAgain && !isQuestionResolved && (
+              <p role="status" aria-live="polite" className="kit-ficha kit-ficha--erro self-center text-sm normal-case tracking-normal px-4 py-1.5 animate-rise-in">
+                <Icone nome="x" className="w-5 h-5" /> Quase! Tente de novo: ainda vale 50 pontos.
               </p>
             )}
-          </div>
 
-          {/* First-miss banner */}
-          {showTryAgain && !isQuestionResolved && (
-            <div
-              role="status"
-              aria-live="polite"
-              className="mb-4 p-3 rounded-2xl bg-red-100/80 border-2 border-red-500 text-red-800 text-sm font-heading font-black flex items-center justify-center gap-2 animate-fadeIn"
-            >
-              <XCircle className="w-4 h-4 text-red-600" />
-              Not quite! Try again — you can still earn 50 PTS 💪
-            </div>
-          )}
-
-          {/* 4 Interactive Neon Option Buttons (Quad Layout as in Mockup) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4 mb-4">
-            {currentQ.optionsQuad.map((opt, idx) => {
-              const letter = String.fromCharCode(65 + idx); // A, B, C, D
-              const isEliminated = eliminatedIndices.includes(idx);
-              const isSelected = selectedOptionIndex === idx;
-
-              let btnBorder = "border-cyan-400/70 hover:border-cyan-300 hover:shadow-[0_0_15px_rgba(0,210,255,0.4)]";
-              let btnBg = "bg-white/90";
-              let textColor = "text-slate-900";
-
-              if (shakeIndex === idx) {
-                btnBorder = "border-red-500 shadow-[0_0_20px_rgba(239,68,68,0.6)] animate-shake";
-                btnBg = "bg-red-100/80";
-                textColor = "text-red-800";
-              } else if (isEliminated) {
-                btnBorder = "border-sky-200 opacity-20 cursor-not-allowed";
-                btnBg = "bg-white/95";
-              } else if (isQuestionResolved) {
-                if (opt.isCorrect) {
-                  btnBorder = "border-emerald-400 bg-emerald-100/80 text-emerald-800 shadow-[0_0_20px_rgba(16,185,129,0.5)]";
-                  btnBg = "bg-emerald-100/80";
-                } else if (isSelected && !opt.isCorrect) {
-                  btnBorder = "border-red-500 bg-red-100/80 text-red-800";
-                  btnBg = "bg-red-100/80";
-                } else {
-                  btnBorder = "border-sky-200 opacity-40";
+            {/* Quatro respostas: papéis pregados no mural */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 short:gap-1.5">
+              {currentQ.optionsQuad.map((opt, idx) => {
+                const letter = String.fromCharCode(65 + idx);
+                const isEliminated = eliminatedIndices.includes(idx);
+                const isSelected = selectedOptionIndex === idx;
+                let estado = 'bg-nisia-papel border-nisia-papel-linha hover:-translate-y-0.5 hover:shadow-[0_6px_0_0_#E7D3A6]';
+                let bolinha = 'bg-nisia-sol-400 border-nisia-sol-700 text-nisia-tinta';
+                let marca: React.ReactNode = null;
+                if (shakeIndex === idx) {
+                  estado = 'bg-red-50 border-nisia-erro animate-shake';
+                  bolinha = 'bg-nisia-erro border-red-800 text-white';
+                } else if (isEliminated) {
+                  estado = 'bg-nisia-papel-escuro border-nisia-papel-linha opacity-35 line-through';
+                } else if (isQuestionResolved) {
+                  if (opt.isCorrect) {
+                    estado = 'bg-nisia-verde-100 border-nisia-verde-500 ring-4 ring-nisia-verde-400/50';
+                    bolinha = 'bg-nisia-verde-500 border-nisia-verde-700 text-white';
+                    marca = <Icone nome="check" className="w-7 h-7 shrink-0" />;
+                  } else if (isSelected) {
+                    estado = 'bg-red-50 border-nisia-erro';
+                    bolinha = 'bg-nisia-erro border-red-800 text-white';
+                    marca = <Icone nome="x" className="w-7 h-7 shrink-0" />;
+                  } else {
+                    estado = 'bg-nisia-papel border-nisia-papel-linha opacity-50';
+                  }
+                } else if (isSelected) {
+                  estado = 'bg-nisia-sol-100 border-nisia-sol-500';
                 }
-              } else if (isSelected) {
-                btnBorder = "border-amber-400 bg-amber-100/80 text-amber-800";
-              }
-
-              return (
-                <button
-                  key={idx}
-                  type="button"
-                  disabled={zeBlocking || isQuestionResolved || isEliminated}
-                  onClick={() => handleSelectOption(idx)}
-                  className={`relative p-3.5 sm:p-4 rounded-2xl border-2 font-heading font-bold text-left transition-all duration-200 flex items-center gap-3.5 cursor-pointer transform active:scale-98 ${btnBorder} ${btnBg} ${textColor}`}
-                >
-                  {/* Round Gold Letter Badge */}
-                  <span className="w-9 h-9 rounded-full bg-white/90 border-2 border-amber-400 text-amber-600 flex items-center justify-center font-heading font-black text-sm flex-shrink-0 shadow-sm">
-                    {letter}
-                  </span>
-
-                  {/* Option Text */}
-                  <span className="text-sm sm:text-base font-extrabold flex-1">
-                    {opt.text}
-                  </span>
-
-                  {/* Feedback icon */}
-                  {isQuestionResolved && opt.isCorrect && (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                  )}
-                  {isQuestionResolved && isSelected && !opt.isCorrect && (
-                    <XCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Feedback & Continue Bar */}
-          {isQuestionResolved && (
-            <div className="pt-4 border-t border-cyan-500/30 flex flex-col sm:flex-row items-center justify-between gap-4 animate-fadeIn">
-              <div className="text-left">
-                <div className="flex items-center gap-2 mb-1">
-                  {attemptsRecord[currentQ.id]?.isCorrect ? (
-                    <span className="text-emerald-600 font-heading font-black text-sm flex items-center gap-1.5">
-                      <CheckCircle2 className="w-4 h-4" /> EXCELLENT! Resposta Correta (+{attemptsRecord[currentQ.id].pointsEarned} PTS)
-                    </span>
-                  ) : (
-                    <span className="text-red-600 font-heading font-black text-sm flex items-center gap-1.5">
-                      <XCircle className="w-4 h-4" /> Resposta Incorreta (0 PTS)
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-slate-600 max-w-xl">
-                  {currentQ.explanation}
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={handleNextQuestion}
-                className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 text-slate-950 font-heading font-black text-sm uppercase tracking-wider rounded-full border-2 border-amber-600 shadow-[0_5px_0_0_#b45309] hover:from-amber-300 hover:to-amber-200 active:translate-y-1 active:shadow-[0_1px_0_0_#b45309] transition-all flex items-center justify-center gap-2 flex-shrink-0"
-              >
-                <span>{currentIndex < sessionQuestions.length - 1 ? 'NEXT QUESTION' : 'VIEW RESULTS'}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    disabled={zeBlocking || isQuestionResolved || isEliminated}
+                    onClick={() => handleSelectOption(idx)}
+                    className={`relative text-left flex items-center gap-3 px-3.5 py-3 short:py-1 short:px-2.5 rounded-xl border-2 shadow-[0_4px_0_0_#E7D3A6] transition-all duration-150 disabled:cursor-not-allowed font-body text-nisia-tinta ${['-rotate-[0.7deg]', 'rotate-[0.6deg]', 'rotate-[0.5deg]', '-rotate-[0.6deg]'][idx]} hover:rotate-0 ${estado}`}
+                  >
+                    <svg viewBox="0 0 24 24" className="absolute -top-2.5 right-4 w-5 h-5 drop-shadow-[0_2px_2px_rgba(0,0,0,0.35)]" aria-hidden="true"><circle cx="12" cy="10" r="7" fill={isEliminated ? '#8A8A8A' : '#1F5FD0'} /><circle cx="9.5" cy="7.5" r="2.2" fill="#fff" fillOpacity="0.7" /><path d="M12 17v5" stroke="#4a4a4a" strokeWidth="2" strokeLinecap="round" /></svg>
+                    <span className={`w-10 h-10 short:w-7 short:h-7 rounded-full border-2 flex items-center justify-center font-display text-lg short:text-base shrink-0 shadow-[0_2px_0_0_rgba(26,42,74,0.25)] ${bolinha}`}>{letter}</span>
+                    <span className="text-base sm:text-lg short:text-sm font-semibold flex-1 leading-snug">{opt.text}</span>
+                    {marca}
+                  </button>
+                );
+              })}
             </div>
-          )}
 
-        </div>
-      </main>
+            {/* Resultado da pergunta + seguir */}
+            {isQuestionResolved && (
+              <Painel tipo="papel" liso className="px-4 py-3 short:py-2 flex flex-col sm:flex-row items-center justify-between gap-3 animate-rise-in">
+                <div className="text-left">
+                  {attemptsRecord[currentQ.id]?.isCorrect ? (
+                    <p className="inline-flex items-center gap-2 font-display text-lg text-nisia-verde-700">
+                      <Icone nome="check" className="w-6 h-6" /> Muito bem! Resposta certa (+{attemptsRecord[currentQ.id].pointsEarned} pts)
+                    </p>
+                  ) : (
+                    <p className="inline-flex items-center gap-2 font-display text-lg text-nisia-erro">
+                      <Icone nome="x" className="w-6 h-6" /> Resposta errada (0 pts)
+                    </p>
+                  )}
+                  <p className="mt-1 text-sm sm:text-base text-nisia-tinta max-w-xl leading-snug">{currentQ.explanation}</p>
+                </div>
+                <BotaoJogo cor="laranja" onClick={handleNextQuestion} className="w-full sm:w-auto shrink-0">
+                  {ultimo ? 'Ver resultado' : 'Próxima'} <Icone nome="seta" className="w-5 h-5" />
+                </BotaoJogo>
+              </Painel>
+            )}
+          </Painel>
+          {/* Mané Zoeira espia pela borda do mural (só em tela larga; nunca cobre respostas) */}
+          <img
+            src="/assets/mane_zoeira.png"
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            className="hidden largo:block fixed left-0 bottom-0 h-[38vh] max-h-80 w-auto object-contain object-bottom pointer-events-none select-none drop-shadow-[0_10px_12px_rgba(12,42,102,0.45)] -scale-x-100 opacity-95"
+            onError={e => { e.currentTarget.style.display = 'none'; }}
+          />
+        </main>
+      </div>
 
       <ZeCartinha
         visible={zeVisible}
@@ -628,18 +479,10 @@ export const QuizScreen: React.FC = () => {
       />
 
       {zeToast && (
-        <div
-          role="status"
-          className="fixed top-20 left-1/2 -translate-x-1/2 z-40 px-5 py-2.5 rounded-full bg-emerald-500 text-white font-heading font-black text-sm sm:text-base border-2 border-emerald-700 shadow-[0_4px_0_0_#047857] animate-rise-in"
-        >
+        <div role="status" className="fixed top-20 left-1/2 -translate-x-1/2 z-40 kit-ficha kit-ficha--verde text-base normal-case tracking-normal px-5 py-2 animate-rise-in">
           {zeToast}
         </div>
       )}
-
-      {/* Footer Branding */}
-      <footer className="relative z-10 w-full text-center py-3 text-xs text-slate-500 border-t border-sky-200 bg-white/80 backdrop-blur-sm">
-        Escola Municipal Nísia Vilela Fernandes • Duque de Caxias • Prof. Neimar Oliveira
-      </footer>
     </div>
   );
 };
