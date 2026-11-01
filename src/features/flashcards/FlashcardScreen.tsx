@@ -1,19 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Clock, 
-  Volume2, 
-  Heart, 
-  Award, 
-  Sparkles, 
-  ArrowRight, 
-  CheckCircle2, 
-  AlertCircle,
-  Shield,
-  Layers,
-  HelpCircle,
-  Flame
-} from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { shuffleArray } from '../../data/quizQuestions';
 import { cardFact, getFlashcardSet } from '../../data/level0Content';
@@ -23,7 +9,7 @@ import { FlashcardStudent, FlashcardChallenge, FlashcardRoundAttempt, FlashcardR
 import { audioService } from '../../services/audio';
 import { speechService } from '../../services/speech';
 import { fireConfetti } from '../../components/ui/ConfettiEffect';
-import { GameHeader } from '../../components/layout/GameHeader';
+import { BotaoJogo, Cenario, Cronometro, Ficha, Hud, Icone, Moedas, Painel } from '../../components/kit';
 
 type GamePhase = 'memorize' | 'challenge' | 'round_completed' | 'finished';
 
@@ -265,255 +251,130 @@ export const FlashcardScreen: React.FC = () => {
     }
   };
 
+  const Coracao: React.FC<{ cheio: boolean }> = ({ cheio }) => (
+    <svg viewBox="0 0 24 24" className={`w-6 h-6 short:w-5 short:h-5 ${cheio ? 'scale-110' : 'opacity-40'}`} aria-hidden="true">
+      <path d="M12 21s-7.5-4.6-9.5-9.2C1 8.1 3.4 4.5 7 4.5c2 0 3.6 1.2 5 3 1.4-1.8 3-3 5-3 3.6 0 6 3.6 4.5 7.3C19.5 16.4 12 21 12 21z" fill={cheio ? '#E5484D' : '#F3E4BE'} stroke="#1A2A4A" strokeWidth="2" strokeLinejoin="round" />
+    </svg>
+  );
+
   return (
-    <div className="relative min-h-screen game-sky text-slate-900 flex flex-col justify-between overflow-x-hidden">
-      {/* Background: Hallway matching approved mockup */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <img
-          src="/assets/nisialand_hallway_bg.jpg"
-          alt="Corredor da Escola"
-          className="w-full h-full object-cover filter brightness-[0.88]"
-        />
-        <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px]" />
-      </div>
+    <div className="relative min-h-screen text-nisia-tinta flex flex-col overflow-x-hidden">
+      <Cenario nome="corredor" escurecer={0.22} />
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Hud nivel={0} mostrarMoedas={false} />
 
-      <div className="relative z-10">
-        <GameHeader />
-      </div>
+        <main className="flex-1 w-full max-w-5xl mx-auto px-2 sm:px-4 py-3 md:py-5 short:py-1 flex flex-col justify-center">
+          <Painel tipo="mural" as="section" aria-label="Flashcards" className="p-3 sm:p-5 short:p-2 flex flex-col gap-3 short:gap-1">
 
-      <main className="relative z-10 flex-1 w-full max-w-5xl mx-auto px-3 sm:px-4 py-3 md:py-6 flex flex-col justify-center">
-        
-        {/* --- MAIN FLOATING FLASHCARD PANEL (Neon Cyan Glow as in Mockup) --- */}
-        <div className="w-full game-panel p-4 sm:p-6 flex flex-col justify-between my-auto animate-fadeIn">
-          
-          {/* Top Control Bar: Phase, Team, Timer, Hearts, Score */}
-          <div className="border-b border-cyan-500/30 pb-3 mb-4">
+            {/* Linha de cima: fase, equipe, tempo/corações, pontos */}
             <div className="flex items-center justify-between gap-2 flex-wrap">
-              
-              {/* Phase info pill */}
+              <div className="flex items-center gap-2 flex-wrap">
+                <Ficha cor="roxo">{phase === 'memorize' ? 'Fase 1: memorize' : `Rodada ${currentRoundIndex + 1} de ${sessionChallenges.length}`}</Ficha>
+                <Ficha cor={isBlue ? 'azul' : 'roxo'} className="hidden sm:inline-flex"><Icone nome="escudo" className="w-4 h-4" cor={isBlue ? '#A9CDFF' : '#EDE3FF'} /> {isBlue ? 'Azul' : 'Roxa'}</Ficha>
+              </div>
               <div className="flex items-center gap-2">
-                <span className="px-3.5 py-1 rounded-full bg-purple-600/40 border border-purple-400 text-purple-800 font-heading font-black text-xs sm:text-sm tracking-wider uppercase shadow-game-sm">
-                  {phase === 'memorize' ? 'PHASE 1: MEMORIZE' : `ROUND ${currentRoundIndex + 1} OF ${sessionChallenges.length}`}
-                </span>
-                
-                <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-heading font-black border shadow-sm ${
-                  isBlue ? 'bg-blue-600/30 border-cyan-400 text-cyan-700' : 'bg-purple-600/30 border-purple-400 text-purple-700'
-                }`}>
-                  <Shield className="w-3.5 h-3.5 fill-current" />
-                  <span>{isBlue ? 'BLUE' : 'PURPLE'}</span>
-                </div>
-              </div>
-
-              {/* Phase 1 Countdown or Phase 2 Hearts */}
-              {phase === 'memorize' ? (
-                <div className="flex items-center gap-2.5">
-                  <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-500/20 border-2 border-amber-400 text-amber-700 rounded-full font-heading font-black text-xs sm:text-sm shadow-sm animate-pulse">
-                    <Clock className="w-4 h-4 text-amber-600" />
-                    <span>⏱️ {countdown}s</span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleSkipTimer}
-                    className="px-3.5 py-1 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-400 hover:to-cyan-400 text-white rounded-full text-xs font-heading font-black border border-white shadow-sm transition-all transform active:scale-95"
-                  >
-                    I'm Ready! →
-                  </button>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2 bg-white/90 px-3 py-1 rounded-full border border-sky-200">
-                  <span className="text-[11px] text-slate-600 font-heading font-bold uppercase hidden sm:inline">Chances:</span>
-                  {[1, 2, 3].map((heartIndex) => (
-                    <Heart
-                      key={heartIndex}
-                      className={`w-5 h-5 transition-transform ${
-                        heartIndex <= heartsLeft
-                          ? 'text-red-500 fill-red-500 scale-110 drop-shadow-[0_0_8px_rgba(239,68,68,0.7)]'
-                          : 'text-slate-700 fill-slate-800 scale-90'
-                      }`}
-                    />
-                  ))}
-                </div>
-              )}
-
-              {/* Score tracker */}
-              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400 text-amber-700 font-heading font-black text-xs sm:text-sm shadow-sm">
-                <Award className="w-4 h-4 text-amber-600" />
-                <span>{accumulatedScore} PTS</span>
-              </div>
-
-            </div>
-          </div>
-
-          {/* Prompt Banner (Center Header) */}
-          <div className="game-panel-gold !rounded-2xl p-3.5 mb-4 text-center">
-            {phase === 'memorize' ? (
-              <div>
-                <h2 className="text-base sm:text-xl font-heading font-black text-amber-700 flex items-center justify-center gap-2">
-                  <span>🃏</span> {flashcardSet.memorizeTitle} <span>🃏</span>
-                </h2>
-                <p className="text-xs text-cyan-800 mt-1 font-medium">
-                  You have <strong className="text-amber-600">{countdown} seconds</strong> before the cards flip face-down!
-                </p>
-              </div>
-            ) : (
-              <div>
-                <div className="flex items-center justify-center gap-2 mb-1">
-                  <span className="text-xs font-heading font-black text-cyan-600 uppercase tracking-widest">
-                    {zePeek ? '👀 ESPIA RÁPIDA!' : '🎯 ATIVIDADE 2 • FIND THE RIGHT CARD:'}
+                {phase === 'memorize' ? (
+                  <>
+                    <Cronometro segundos={countdown} total={30} alerta={5} tamanho={52} className="short:!w-10 short:!h-10" />
+                    <BotaoJogo cor="azul" tamanho="sm" onClick={handleSkipTimer}>Estou pronto! <Icone nome="seta" className="w-4 h-4" /></BotaoJogo>
+                  </>
+                ) : (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-nisia-papel border-2 border-nisia-papel-linha px-2 py-1" aria-label={`${heartsLeft} chances restantes`} role="img">
+                    {[1, 2, 3].map(i => <Coracao key={i} cheio={i <= heartsLeft} />)}
                   </span>
+                )}
+                <Moedas valor={accumulatedScore} compacto />
+              </div>
+            </div>
+
+            {/* Enunciado em papel */}
+            <Painel tipo="papel" liso className="px-4 py-3 short:py-1.5 text-center">
+              {phase === 'memorize' ? (
+                <>
+                  <p className="font-display text-xl sm:text-2xl short:text-base text-nisia-azul-700 leading-tight">{flashcardSet.memorizeTitle}</p>
+                  <p className="text-sm text-nisia-tinta-suave font-semibold mt-0.5 short:hidden">Você tem <strong className="text-nisia-laranja-700">{countdown} segundos</strong> antes de as cartas virarem.</p>
+                </>
+              ) : (
+                <>
+                  <p className="inline-flex items-center gap-2 text-xs font-display uppercase tracking-widest text-nisia-tinta-suave">
+                    {zePeek ? 'Espiada rápida!' : 'Encontre a carta certa'}
+                    <button type="button" onClick={handlePronounce} className="kit-hud__btn !h-7 !min-w-0 !px-1.5 !bg-nisia-azul-500 !border-nisia-azul-700" title="Ouvir em inglês" aria-label="Ouvir em inglês"><Icone nome="som" className="w-4 h-4" /></button>
+                  </p>
+                  <p className="font-display text-xl sm:text-3xl short:text-lg text-nisia-azul-700 leading-tight">{currentChallenge?.questionEn}</p>
+                  <p className="text-sm short:text-xs text-nisia-tinta-suave italic short:hidden">({currentChallenge?.questionPt})</p>
+                </>
+              )}
+            </Painel>
+
+            {/* 8 cartas (4 × 2) */}
+            <div className={`grid grid-cols-4 short:grid-cols-8 gap-2.5 sm:gap-3.5 short:gap-1 ${zeShuffling ? 'animate-card-shuffle' : ''}`}>
+              {sessionStudents.map((student) => {
+                const isRevealed = phase === 'memorize' || zePeek || revealedCardIds.includes(student.id);
+                const isLastPicked = lastPickedStudent?.id === student.id;
+                const isCorrectMatch = currentChallenge?.validateCard(student);
+                const colorInfo = STUDENT_COLORS[student.id] || { bg: 'bg-[#bae6fd]', text: 'text-slate-900', ageBg: 'bg-amber-400 text-slate-950' };
+                let borda = 'border-nisia-papel-linha';
+                if (revealedCardIds.includes(student.id) && phase !== 'memorize') {
+                  if (isCorrectMatch) borda = 'border-nisia-verde-500 ring-4 ring-nisia-verde-400/60';
+                  else if (isLastPicked) borda = 'border-nisia-erro ring-4 ring-red-400/60';
+                }
+                const clicavel = phase === 'challenge' && !zeEventActive && !revealedCardIds.includes(student.id);
+                return (
                   <button
                     type="button"
-                    onClick={handlePronounce}
-                    className="p-1 rounded-lg bg-blue-600/30 text-cyan-700 hover:bg-blue-600/50 transition-colors"
-                    title="Ouvir desafio em inglês"
+                    key={student.id}
+                    onClick={() => handleCardClick(student)}
+                    disabled={!clicavel}
+                    aria-label={isRevealed ? `${student.name}: ${cardFact(student)}` : 'Carta virada'}
+                    className={`perspective-1000 aspect-[3/4] max-h-56 short:max-h-none w-full select-none transition-transform duration-200 focus:outline-none focus-visible:ring-4 focus-visible:ring-nisia-azul-400 rounded-xl ${clicavel ? 'cursor-pointer hover:-translate-y-1' : 'cursor-default'}`}
                   >
-                    <Volume2 className="w-3.5 h-3.5" />
+                    <span className={`block w-full h-full relative transition-transform duration-500 transform-style-preserve-3d rounded-xl ${isRevealed ? '' : 'rotate-y-180'}`}>
+                      {/* Frente: foto do estudante em papel */}
+                      <span className={`absolute inset-0 rounded-xl border-2 kit-papel kit-papel--liso backface-hidden p-1.5 short:p-1 flex flex-col items-center ${borda}`}>
+                        <span className="w-full flex items-center justify-between px-0.5">
+                          <span className="font-display text-sm short:text-[10px] text-nisia-tinta truncate">{student.name}</span>
+                          {showsAge && <span className="kit-ficha kit-ficha--sol text-[10px] short:text-[9px] px-1.5 short:px-1 py-0">{student.age}</span>}
+                        </span>
+                        <span className={`relative w-full flex-1 my-1 short:my-0.5 rounded-lg overflow-hidden ${colorInfo.bg} border border-nisia-papel-linha`}>
+                          <img src={student.img} alt="" onError={(e) => { e.currentTarget.src = `/assets/avatar_${student.id}.jpg`; }} className="w-full h-full object-cover" draggable={false} />
+                        </span>
+                        <span className={`w-full text-center font-semibold text-nisia-laranja-700 leading-tight ${showsAge ? 'text-[11px]' : 'text-[10px] short:text-[9px] line-clamp-2 short:line-clamp-1'}`}>{cardFact(student)}</span>
+                      </span>
+                      {/* Verso: carta oficial NISIALAND */}
+                      <span className="absolute inset-0 rounded-xl border-[3px] border-nisia-sol-500 backface-hidden rotate-y-180 flex flex-col items-center justify-center text-center overflow-hidden shadow-[0_4px_0_0_#B36E00]" style={{ background: 'repeating-linear-gradient(45deg, #1F5FD0 0 10px, #1A4FB0 10px 20px)' }}>
+                        <span className="absolute inset-2 rounded-lg border-2 border-nisia-sol-400/70" aria-hidden="true" />
+                        <Icone nome="carta" className="w-10 h-10 short:w-7 short:h-7 text-nisia-sol-400 drop-shadow" />
+                        <span className="font-display text-sm short:text-[9px] text-nisia-sol-400 tracking-wider mt-1 drop-shadow">NISIALAND</span>
+                        <span className="text-[10px] short:hidden text-white/90 font-semibold mt-0.5">toque para virar</span>
+                      </span>
+                    </span>
                   </button>
-                </div>
-
-                <h2 className="text-lg sm:text-2xl font-heading font-black text-amber-700">
-                  {currentChallenge?.questionEn}
-                </h2>
-                <p className="text-xs text-slate-600 mt-0.5 italic">
-                  ({currentChallenge?.questionPt})
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* 8 Flashcards Grid (4 columns x 2 rows as in Mockup) */}
-          <div className={`grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 mb-3 ${zeShuffling ? 'animate-card-shuffle' : ''}`}>
-            {sessionStudents.map((student) => {
-              const isRevealed = phase === 'memorize' || zePeek || revealedCardIds.includes(student.id);
-              const isLastPicked = lastPickedStudent?.id === student.id;
-              const isCorrectMatch = currentChallenge?.validateCard(student);
-              const colorInfo = STUDENT_COLORS[student.id] || { bg: 'bg-[#bae6fd]', text: 'text-slate-900', ageBg: 'bg-amber-400 text-slate-950' };
-
-              let borderEffect = "border-cyan-500/40 hover:border-cyan-300";
-              if (revealedCardIds.includes(student.id) && phase !== 'memorize') {
-                if (isCorrectMatch) {
-                  borderEffect = "border-emerald-400 ring-4 ring-emerald-500/50 shadow-[0_0_20px_rgba(16,185,129,0.7)]";
-                } else if (isLastPicked) {
-                  borderEffect = "border-red-500 ring-4 ring-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.7)]";
-                }
-              }
-
-              return (
-                <div
-                  key={student.id}
-                  onClick={() => handleCardClick(student)}
-                  className={`perspective-1000 aspect-[3/4] max-h-52 sm:max-h-60 cursor-pointer transition-transform duration-200 select-none ${
-                    phase === 'challenge' && !zeEventActive && !revealedCardIds.includes(student.id) ? 'hover:scale-103 active:scale-97' : ''
-                  }`}
-                >
-                  <div
-                    className={`w-full h-full relative transition-transform duration-500 transform-style-preserve-3d rounded-2xl ${
-                      isRevealed ? '' : 'rotate-y-180'
-                    }`}
-                  >
-                    {/* FRONT: Colorful Pastel Background Card */}
-                    <div
-                      className={`absolute inset-0 w-full h-full rounded-2xl border-2 bg-white/90 backface-hidden p-2 flex flex-col justify-between items-center shadow-lg ${borderEffect}`}
-                    >
-                      {/* Top Header of Card: Name and Age Badge */}
-                      <div className="w-full flex items-center justify-between px-1">
-                        <span className="font-heading font-black text-xs sm:text-sm text-slate-900 truncate">
-                          {student.name}
-                        </span>
-                        {showsAge && (
-                          <span className="px-2 py-0.5 rounded-md bg-amber-400 text-slate-950 font-heading font-black text-[10px] sm:text-xs shadow">
-                            {student.age} yrs
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Photo Container with Pastel Background */}
-                      <div className={`relative w-full flex-1 my-1.5 rounded-xl overflow-hidden ${colorInfo.bg} flex items-center justify-center p-1 border border-sky-200/60`}>
-                        <img
-                          src={student.img}
-                          alt={student.name}
-                          onError={(e) => { e.currentTarget.src = `/assets/avatar_${student.id}.jpg`; }}
-                          className="w-full h-full object-cover rounded-lg"
-                        />
-                      </div>
-
-                      {/* Footer: Name + Age + School */}
-                      <div className="w-full text-center leading-tight">
-                        <div className="text-xs font-heading font-black text-slate-900">
-                          {student.name}
-                        </div>
-                        <div className={`font-bold text-amber-700 ${showsAge ? 'text-[11px]' : 'text-[10px] sm:text-[11px] leading-snug line-clamp-3'}`}>
-                          {cardFact(student)}
-                        </div>
-                        <span className="text-[9px] text-slate-500 block truncate">
-                          Nísia Vilela Fernandes
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* BACK: NISIALAND Official Card Back */}
-                    <div
-                      className="absolute inset-0 w-full h-full rounded-2xl border-[3px] border-sky-300 bg-gradient-to-br from-blue-100 via-indigo-100 to-sky-50 backface-hidden rotate-y-180 p-2 flex flex-col items-center justify-center text-center shadow-[0_4px_0_0_#7dd3fc] hover:border-amber-300 transition-colors"
-                    >
-                      <div className="w-11 h-11 rounded-2xl bg-blue-100/80 border-2 border-cyan-400 flex items-center justify-center text-amber-700 shadow-md mb-2">
-                        <Layers className="w-6 h-6 text-cyan-700" />
-                      </div>
-                      <span className="font-heading font-black text-xs sm:text-sm text-amber-700 tracking-wider">
-                        NISIALAND
-                      </span>
-                      <span className="text-[9px] text-cyan-800 font-heading font-bold uppercase mt-1">
-                        Tap to reveal
-                      </span>
-                    </div>
-
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Feedback & Continue Bar after round */}
-          {phase === 'round_completed' && (
-            <div className="pt-3 border-t border-cyan-500/30 flex flex-col sm:flex-row items-center justify-between gap-3 animate-fadeIn">
-              <div className="text-left">
-                <div className="flex items-center gap-2 mb-0.5">
-                  {roundFeedback.type === 'correct' ? (
-                    <span className="text-emerald-600 font-heading font-black text-sm flex items-center gap-1.5">
-                      <CheckCircle2 className="w-4 h-4" /> {roundFeedback.message}
-                    </span>
-                  ) : (
-                    <span className="text-red-600 font-heading font-black text-sm flex items-center gap-1.5">
-                      <AlertCircle className="w-4 h-4" /> {roundFeedback.message}
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-slate-600 max-w-xl">
-                  {roundFeedback.detail}
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={handleNextRound}
-                className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 text-slate-950 font-heading font-black text-sm uppercase tracking-wider rounded-full border-2 border-amber-600 shadow-[0_5px_0_0_#b45309] hover:from-amber-300 hover:to-amber-200 active:translate-y-1 active:shadow-[0_1px_0_0_#b45309] transition-all flex items-center justify-center gap-2 flex-shrink-0"
-              >
-                <span>{currentRoundIndex < sessionChallenges.length - 1 ? 'NEXT ROUND →' : 'FINAL RESULTS →'}</span>
-              </button>
+                );
+              })}
             </div>
-          )}
 
-        </div>
-      </main>
+            {/* Resultado da rodada */}
+            {phase === 'round_completed' && (
+              <Painel tipo="papel" liso className="px-4 py-3 short:py-2 flex flex-col sm:flex-row items-center justify-between gap-3 animate-rise-in">
+                <div className="text-left">
+                  <p className={`inline-flex items-center gap-2 font-display text-lg short:text-base ${roundFeedback.type === 'correct' ? 'text-nisia-verde-700' : 'text-nisia-erro'}`}>
+                    <Icone nome={roundFeedback.type === 'correct' ? 'check' : 'x'} className="w-6 h-6" /> {roundFeedback.message}
+                  </p>
+                  <p className="text-sm text-nisia-tinta max-w-xl leading-snug">{roundFeedback.detail}</p>
+                </div>
+                <BotaoJogo cor="laranja" onClick={handleNextRound} className="shrink-0">
+                  {currentRoundIndex < sessionChallenges.length - 1 ? 'Próxima rodada' : 'Ver resultado'} <Icone nome="seta" className="w-5 h-5" />
+                </BotaoJogo>
+              </Painel>
+            )}
+          </Painel>
+        </main>
+      </div>
 
       <ZeCartinha
         visible={zeVisible}
         message={zePeek ? 'Espia rápida! Lembra onde cada um foi parar?' : 'Hehe! Vou embaralhar essas cartas!'}
       />
-
-      {/* Footer Branding */}
-      <footer className="relative z-10 w-full text-center py-3 text-xs text-slate-500 border-t border-sky-200 bg-white/80 backdrop-blur-sm">
-        Escola Municipal Nísia Vilela Fernandes • Duque de Caxias • Prof. Neimar Oliveira
-      </footer>
     </div>
   );
 };

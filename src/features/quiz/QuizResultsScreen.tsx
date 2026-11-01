@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Trophy, Star, CheckCircle2, Shield, ArrowRight, BookOpen, Layers } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { audioService } from '../../services/audio';
 import { fireConfetti } from '../../components/ui/ConfettiEffect';
-import { GameHeader } from '../../components/layout/GameHeader';
 import { isGuestPlayer } from '../../types';
 import { getPlayerGrade } from '../../services/grade';
 import { GRADE_LABELS, GRADE_QUIZ_THEME } from '../../data/level0Content';
+import { Anfitriao, BotaoJogo, Cenario, Estrelas, Ficha, Fita, Hud, Icone, Painel, Titulo } from '../../components/kit';
 
+// Resultado do Quiz (Missão 0, atividade 1): celebração com o Diretor Márcio e o placar da equipe.
 export const QuizResultsScreen: React.FC = () => {
   const navigate = useNavigate();
   const { currentPlayer, quizResult } = useGame();
@@ -25,142 +25,73 @@ export const QuizResultsScreen: React.FC = () => {
 
   const isBlue = currentPlayer.team === 'blue';
   const isGuest = isGuestPlayer(currentPlayer);
-  // Mesma série e tema da tela do Quiz.
   const grade = getPlayerGrade(currentPlayer) ?? '8';
   const quizTitle = `${GRADE_LABELS[grade]} · ${GRADE_QUIZ_THEME[grade]}`;
   const questionCount = quizResult.questionCount ?? 10;
+  const maximo = questionCount * 100;
+  const fala = quizResult.stars === 3 ? 'Perfeito! Você dominou os comparativos.' : quizResult.stars === 2 ? 'Muito bem! Quase perfeito.' : 'Boa! Agora vamos aos flashcards.';
 
   return (
-    <div className="min-h-screen game-sky text-slate-900 flex flex-col">
-      <GameHeader />
-
-      <main className="flex-1 w-full max-w-3xl mx-auto px-4 py-8 flex flex-col justify-center">
-        
-        {/* Celebration Container */}
-        <div className="game-panel p-6 md:p-8 text-center animate-rise-in">
-          
-          {/* Trophy Header */}
-          <div className="inline-flex p-4 rounded-full bg-amber-500/20 border-2 border-amber-400/50 text-amber-600 mb-4 shadow-[0_0_30px_rgba(245,158,11,0.3)]">
-            <Trophy className="w-14 h-14" />
+    <div className="relative min-h-screen text-nisia-tinta flex flex-col">
+      <Cenario nome="corredor" escurecer={0.22} />
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Hud nivel={0} />
+        <main className="flex-1 w-full max-w-6xl mx-auto px-3 sm:px-5 py-4 short:py-1 grid grid-cols-1 wide:grid-cols-[14rem_1fr] short:grid-cols-1 gap-4 short:gap-2 items-end">
+          <div className="hidden wide:flex short:hidden items-end">
+            <Anfitriao nome="marcio" lado="esq" altura="h-[22rem] short:h-32" fala={fala} traducao={quizResult.stars === 3 ? 'Perfect!' : 'Well done!'} />
           </div>
 
-          <h1 className="text-3xl md:text-5xl game-title">
-            MISSION 1 COMPLETE!
-          </h1>
-          <p className="text-slate-600 text-sm md:text-base font-semibold mt-2">
-            Awesome work, {currentPlayer.displayName}! You mastered {quizTitle}!
-          </p>
-
-          {/* Star Rating */}
-          <div className="flex items-center justify-center gap-3 my-6">
-            {[1, 2, 3].map((starNum) => (
-              <div 
-                key={starNum}
-                className={`p-2.5 rounded-2xl border-2 transition-transform duration-300 ${
-                  starNum <= quizResult.stars
-                    ? 'bg-amber-500/20 border-amber-400 text-amber-600 scale-110 shadow-[0_0_15px_rgba(245,158,11,0.5)]'
-                    : 'bg-sky-50/40 border-sky-200 text-slate-600 scale-90'
-                }`}
-              >
-                <Star className={`w-8 h-8 ${starNum <= quizResult.stars ? 'fill-amber-400' : 'fill-transparent'}`} />
+          <Painel tipo="papel" liso className="p-5 sm:p-8 short:p-3 mb-4 short:mb-0.5 animate-rise-in">
+            <div className="text-center">
+              <Ficha cor="verde"><Icone nome="check" className="w-4 h-4" /> Quiz concluído</Ficha>
+              <Titulo nivel={1} estilo="azul" className="text-4xl sm:text-5xl short:text-2xl mt-2 leading-none">Muito bem, {currentPlayer.displayName}!</Titulo>
+              <p className="mt-2 short:mt-0 font-semibold text-nisia-tinta-suave short:text-sm">{quizTitle}</p>
+              <div className="mt-4 short:mt-2 flex items-center justify-center">
+                <Estrelas n={quizResult.stars} tamanho="w-14 h-14 short:w-9 short:h-9" />
               </div>
-            ))}
-          </div>
-
-          {/* Stats Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 my-6">
-            {/* Score */}
-            <div className="p-4 rounded-2xl bg-sky-50 border-2 border-sky-200 shadow-[0_3px_0_0_#bae6fd]">
-              <span className="text-xs font-extrabold uppercase text-slate-500">Your Score</span>
-              <div className="text-2xl md:text-3xl font-bungee text-amber-600 mt-1">
-                {quizResult.totalScore}
-              </div>
-              <span className="text-[11px] font-semibold text-slate-500">out of {questionCount * 100} base pts</span>
             </div>
 
-            {/* Correct Answers */}
-            <div className="p-4 rounded-2xl bg-sky-50 border-2 border-sky-200 shadow-[0_3px_0_0_#bae6fd]">
-              <span className="text-xs font-extrabold uppercase text-slate-500">Correct Answers</span>
-              <div className="text-2xl md:text-3xl font-bungee text-emerald-600 mt-1 flex items-center justify-center gap-1">
-                <CheckCircle2 className="w-6 h-6" />
-                <span>{quizResult.correctCount}/{questionCount}</span>
-              </div>
-              <span className="text-[11px] font-semibold text-slate-500">questions mastered</span>
+            <div className="mt-5 short:mt-2 grid grid-cols-3 gap-3 short:gap-1.5">
+              <Painel tipo="papel" className="p-3 short:p-2 text-center">
+                <p className="text-xs uppercase tracking-wider font-display text-nisia-tinta-suave">Pontos</p>
+                <p className="font-display text-3xl short:text-xl text-nisia-sol-700 inline-flex items-center gap-1"><Icone nome="moeda" className="w-7 h-7 short:w-5 short:h-5" /> {quizResult.totalScore}</p>
+                <p className="text-xs font-semibold text-nisia-tinta-suave">de {maximo}</p>
+              </Painel>
+              <Painel tipo="papel" className="p-3 short:p-2 text-center">
+                <p className="text-xs uppercase tracking-wider font-display text-nisia-tinta-suave">Certas</p>
+                <p className="font-display text-3xl short:text-xl text-nisia-verde-700">{quizResult.correctCount}/{questionCount}</p>
+                <p className="text-xs font-semibold text-nisia-tinta-suave">perguntas</p>
+              </Painel>
+              {isGuest ? (
+                <Painel tipo="papel" className="p-3 short:p-2 text-center">
+                  <p className="text-xs uppercase tracking-wider font-display text-nisia-tinta-suave">Equipe</p>
+                  <p className="text-xs font-semibold text-nisia-tinta mt-1">Pontos de visitante não contam para as equipes.</p>
+                  <Link to="/register" className="inline-block mt-1 text-xs font-display text-nisia-azul-700 underline">Fazer meu cadastro</Link>
+                </Painel>
+              ) : (
+                <Painel tipo="papel" className={`p-3 short:p-2 text-center ${isBlue ? '!bg-nisia-azul-100' : '!bg-nisia-roxo-100'}`}>
+                  <p className="text-xs uppercase tracking-wider font-display text-nisia-tinta-suave">Para a equipe</p>
+                  <p className={`font-display text-3xl short:text-xl inline-flex items-center gap-1 ${isBlue ? 'text-nisia-azul-700' : 'text-nisia-roxo-700'}`}><Icone nome="escudo" className="w-7 h-7 short:w-5 short:h-5" cor={isBlue ? '#A9CDFF' : '#EDE3FF'} /> +{quizResult.totalScore}</p>
+                  <p className="text-xs font-semibold text-nisia-tinta-suave">{isBlue ? 'Equipe Azul' : 'Equipe Roxa'}</p>
+                </Painel>
+              )}
             </div>
 
-            {/* Team Contribution (visitante não pontua para as equipes) */}
-            {isGuest ? (
-              <div className="col-span-2 sm:col-span-1 p-4 rounded-2xl border bg-emerald-50 border-emerald-400/60">
-                <span className="text-xs font-extrabold uppercase text-slate-500">Team Points</span>
-                <p className="text-[12px] font-semibold text-slate-600 mt-1">
-                  Pontos de visitante não contam para as equipes.
-                </p>
-                <Link
-                  to="/register"
-                  className="inline-block mt-2 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-heading font-black transition-colors"
-                >
-                  Fazer meu cadastro definitivo
-                </Link>
-              </div>
-            ) : (
-            <div className={`col-span-2 sm:col-span-1 p-4 rounded-2xl border ${
-              isBlue ? 'bg-blue-100/80 border-blue-500/60' : 'bg-purple-100/80 border-purple-500/60'
-            }`}>
-              <span className="text-xs font-extrabold uppercase text-slate-500">Team Points</span>
-              <div className={`text-2xl md:text-3xl font-bungee mt-1 flex items-center justify-center gap-1.5 ${
-                isBlue ? 'text-blue-700' : 'text-purple-700'
-              }`}>
-                <Shield className="w-5 h-5 fill-current" />
-                <span>+{quizResult.totalScore}</span>
-              </div>
-              <span className="text-[11px] font-semibold text-slate-600">
-                Added to {isBlue ? 'BLUE TEAM' : 'PURPLE TEAM'}
-              </span>
+            <div className="mt-4 short:mt-1.5 flex items-center gap-3 short:hidden">
+              <span className="text-xs uppercase tracking-wider font-display text-nisia-tinta-suave whitespace-nowrap">Missão 0</span>
+              <Fita frac={0.5} className="flex-1" rotulo="Progresso da Missão 0" />
+              <span className="font-display text-nisia-tinta whitespace-nowrap">1 de 2</span>
             </div>
-            )}
-          </div>
 
-          {/* Progress Tracker */}
-          <div className="p-4 rounded-2xl bg-sky-50 border-2 border-sky-200 shadow-[0_3px_0_0_#bae6fd] mb-8 flex items-center justify-between">
-            <div className="text-left">
-              <span className="text-xs font-extrabold uppercase text-slate-500">Mission Progress</span>
-              <div className="text-base font-bungee text-amber-600">1 OF 2 MISSIONS COMPLETED (50%)</div>
+            <div className="mt-5 short:mt-1.5 flex flex-col sm:flex-row items-center justify-center gap-3 short:gap-1.5 short:[&_.kit-btn]:min-h-[34px] short:[&_.kit-btn]:text-sm short:[&_.kit-btn]:py-0.5">
+              <BotaoJogo cor="roxo" tamanho="lg" className="short:min-h-[40px] short:text-base w-full sm:w-auto" onClick={() => { audioService.playClick(); navigate('/flashcards'); }}>
+                <Icone nome="carta" className="w-6 h-6" /> Próxima: Flashcards <Icone nome="seta" className="w-5 h-5" />
+              </BotaoJogo>
+              <BotaoJogo cor="papel" className="w-full sm:w-auto short:min-h-[36px] short:text-sm" onClick={() => { audioService.playClick(); navigate('/missions'); }}>Voltar à missão</BotaoJogo>
             </div>
-            <div className="w-28 h-3 bg-white/95 rounded-full overflow-hidden border border-sky-200">
-              <div className="w-1/2 h-full bg-gradient-to-r from-amber-400 to-emerald-400" />
-            </div>
-          </div>
-
-          {/* Navigation Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button
-              type="button"
-              onClick={() => {
-                audioService.playClick();
-                navigate('/flashcards');
-              }}
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-b from-purple-500 via-indigo-600 to-purple-700 hover:from-purple-400 hover:to-indigo-500 text-white font-bungee text-lg md:text-xl tracking-wider shadow-[0_6px_0_0_#3b0764] active:translate-y-1 active:shadow-[0_2px_0_0_#3b0764] border-[3px] border-purple-900 flex items-center justify-center gap-3 transition-all cursor-pointer animate-arcade-pulse"
-            >
-              <Layers className="w-6 h-6" />
-              <span>NEXT MISSION: FLASHCARDS</span>
-              <ArrowRight className="w-6 h-6 stroke-[3]" />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                audioService.playClick();
-                navigate('/missions');
-              }}
-              className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-white hover:bg-sky-50 text-blue-800 border-2 border-sky-300 shadow-[0_4px_0_0_#7dd3fc] active:translate-y-1 active:shadow-[0_1px_0_0_#7dd3fc] font-heading font-black text-sm transition-all cursor-pointer"
-            >
-              Mission Briefing
-            </button>
-          </div>
-
-        </div>
-
-      </main>
+          </Painel>
+        </main>
+      </div>
     </div>
   );
 };

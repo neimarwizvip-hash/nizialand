@@ -12,7 +12,11 @@
   - **Novo:** `src/data/level3Mane.ts` (falas provisórias do Mané).
 - `package.json`: nenhuma alteração pendente (a mudança do three já está commitada).
 
-## Última tarefa: Fase 0 do aprimoramento gráfico — CONCLUÍDA (não commitada)
+## Última tarefa: Fase 1 (parte 1) do aprimoramento gráfico — CONCLUÍDA (não commitada)
+- Moldura comum das atividades (Níveis 1–3), tela comum dos Níveis 3–7, pátio do Nível 2 como lugar, resultados e flashcards refeitos; telas legadas herdam o kit por CSS. `tsc` OK · 135 testes · build OK.
+- Falta refazer de verdade: ranking, cadastro, orientação, treino livre, painel do professor; cenários pintados novos e poses dos anfitriões (arte).
+
+## Tarefa anterior: Fase 0 do aprimoramento gráfico — CONCLUÍDA (commit 756ec45)
 - Kit visual (`src/components/kit`), tokens `nisia.*`, HUD única, Missão 0/1/2, Mapa e Quiz refeitos. `tsc` OK · vitest 20 arquivos / 135 testes · build OK. Capturas em 1920/1366/812 sem rolagem.
 - Telas antigas (flashcards, ranking, resultado, Nível 1 atividades, Nível 2 pátio, 3–7) só ganharam a HUD nova; o corpo ainda é o cartão branco (Fase 1).
 - Pasta `_to_delete/` na raiz do projeto: um arquivo temporário da edição do quiz (pode apagar).

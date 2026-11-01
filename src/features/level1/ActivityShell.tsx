@@ -1,20 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Clock, Star, Trophy } from 'lucide-react';
 import type { Activity } from '../../core/types';
-import { GameHeader } from '../../components/layout/GameHeader';
+import { MolduraAtividade } from '../../components/kit/MolduraAtividade';
+import type { FeedbackMoldura } from '../../components/kit/MolduraAtividade';
 import { audioService } from '../../services/audio';
 import { speechService } from '../../services/speech';
-import { ITEM_WARNING_SECONDS, maxScore } from './level1Rules';
+import { ITEM_SECONDS, ITEM_WARNING_SECONDS, maxScore } from './level1Rules';
 import { ZE_LINE_MS, ZE_SIZES, isZeBlocking, zeLine, zeSizeStage } from '../quiz/zeRules';
 import type { Feedback } from './useActivityRun';
-
-const ACCENT: Record<string, string> = {
-  blue: 'bg-blue-600 border-blue-800',
-  orange: 'bg-orange-500 border-orange-700',
-  green: 'bg-emerald-600 border-emerald-800',
-  pink: 'bg-pink-500 border-pink-700',
-};
 
 /** Zé aparece com uma fala por alguns segundos (falada em pt-BR) e some. */
 export function useZePop() {
@@ -103,17 +96,17 @@ interface ShellProps {
 }
 
 const FEEDBACK_TEXT: Record<Exclude<Feedback, null>, string> = {
-  correct: 'Correct! 🎉',
-  wrong: 'Ops! Tente mais uma vez (vale 50).',
+  correct: 'Muito bem! Correct!',
+  wrong: 'Quase! Tente mais uma vez (vale 50).',
   reveal: 'Não foi dessa vez.',
   timeout: 'Tempo esgotado! 0 ponto.',
 };
+const FEEDBACK_TIPO: Record<Exclude<Feedback, null>, FeedbackMoldura['tipo']> = { correct: 'certo', wrong: 'errado', reveal: 'revelar', timeout: 'tempo' };
 
 export const ActivityShell: React.FC<ShellProps> = ({
   activity, index, total, secondsLeft, score, feedback, locked, finished, correctCount, revealText, onNext, children, overlay,
 }) => {
   const navigate = useNavigate();
-  const accent = ACCENT[activity.color] ?? ACCENT.blue;
 
   useEffect(() => {
     audioService.duckVolume(true);
@@ -121,81 +114,27 @@ export const ActivityShell: React.FC<ShellProps> = ({
   }, []);
 
   return (
-    <div className="relative min-h-screen game-sky text-slate-900 flex flex-col overflow-x-hidden">
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <img src="/assets/nisialand_hallway_bg.jpg" alt="" className="w-full h-full object-cover brightness-[0.88]" />
-        <div className="absolute inset-0 bg-white/60" />
-      </div>
-      <div className="relative z-10"><GameHeader /></div>
-
-      <main className="relative z-10 flex-1 w-full max-w-5xl mx-auto px-3 sm:px-4 py-3 short:py-1 flex flex-col justify-center">
-        {finished ? (
-          <div className="game-panel p-6 sm:p-8 short:p-3 text-center animate-fadeIn">
-            <Trophy className="w-12 h-12 mx-auto text-amber-500" />
-            <h1 className="font-heading font-black text-2xl sm:text-3xl mt-2">{activity.name}</h1>
-            <p className="font-heading font-black text-4xl text-blue-700 mt-3">{score} <span className="text-lg text-slate-500">/ {maxScore(total)} pts</span></p>
-            <p className="text-sm font-bold text-slate-600 mt-1">{correctCount} de {total} certas</p>
-            <button
-              type="button"
-              onClick={() => navigate('/nivel1')}
-              className="mt-5 px-8 py-3 rounded-full bg-gradient-to-r from-amber-400 to-yellow-400 border-2 border-amber-600 shadow-[0_5px_0_0_#b45309] font-heading font-black uppercase text-sm active:translate-y-1"
-            >
-              Voltar à missão
-            </button>
-          </div>
-        ) : (
-          <div className="game-panel p-3 sm:p-6 short:p-2 animate-fadeIn">
-            <div className="flex items-center justify-between gap-2 flex-wrap border-b border-cyan-500/30 pb-2 mb-3 short:pb-1 short:mb-2">
-              <div className="flex items-center gap-2 min-w-0">
-                <span className={`px-3 py-1 rounded-full border-2 text-white font-heading font-black text-xs uppercase ${accent}`}>
-                  {index + 1} / {total}
-                </span>
-                <span className="font-heading font-black text-sm sm:text-base truncate">{activity.name}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span
-                  role="timer"
-                  aria-label={`Tempo: ${secondsLeft} segundos`}
-                  className={`flex items-center gap-1 px-3 py-1 rounded-full border font-heading font-black text-xs sm:text-sm ${
-                    secondsLeft <= ITEM_WARNING_SECONDS ? 'bg-red-100 border-red-500 text-red-700 animate-pulse' : 'bg-white border-slate-300 text-slate-700'
-                  }`}
-                >
-                  <Clock className="w-3.5 h-3.5" /> {secondsLeft}s
-                </span>
-                <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-amber-100 border border-amber-400 font-heading font-black text-xs sm:text-sm text-amber-800">
-                  <Star className="w-3.5 h-3.5" /> {score}
-                </span>
-              </div>
-            </div>
-
-            {children}
-
-            {feedback && (
-              <div className="mt-3 short:mt-1 flex items-center justify-between gap-3 flex-wrap">
-                <p
-                  role="status"
-                  className={`font-heading font-black text-sm sm:text-base ${feedback === 'correct' ? 'text-emerald-700' : 'text-red-600'}`}
-                >
-                  {FEEDBACK_TEXT[feedback]}
-                  {(feedback === 'reveal' || feedback === 'timeout') && revealText && (
-                    <span className="block text-slate-700 font-bold text-xs sm:text-sm">Resposta: {revealText}</span>
-                  )}
-                </p>
-                {locked && (
-                  <button
-                    type="button"
-                    onClick={onNext}
-                    className="px-6 py-2.5 short:py-1.5 rounded-full bg-gradient-to-r from-amber-400 to-yellow-400 border-2 border-amber-600 shadow-[0_4px_0_0_#b45309] font-heading font-black uppercase text-sm flex items-center gap-2 active:translate-y-1"
-                  >
-                    {index + 1 < total ? 'Next' : 'Ver resultado'} <ArrowRight className="w-4 h-4" />
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
-        )}
-      </main>
-      {overlay}
-    </div>
+    <MolduraAtividade
+      nivel={1}
+      nome={activity.name}
+      progresso={`${index + 1} / ${total}`}
+      segundos={secondsLeft}
+      totalSegundos={ITEM_SECONDS}
+      alerta={ITEM_WARNING_SECONDS}
+      pontos={score}
+      feedback={feedback ? {
+        tipo: FEEDBACK_TIPO[feedback],
+        texto: FEEDBACK_TEXT[feedback],
+        resposta: (feedback === 'reveal' || feedback === 'timeout') ? revealText : undefined,
+      } : null}
+      proximo={feedback && locked ? { rotulo: index + 1 < total ? 'Próxima' : 'Ver resultado', onClick: onNext } : null}
+      fim={finished ? {
+        pontos: score, maximo: maxScore(total), certas: correctCount, total,
+        sairRotulo: 'Voltar à missão', onSair: () => navigate('/nivel1'),
+      } : null}
+      overlay={overlay}
+    >
+      {children}
+    </MolduraAtividade>
   );
 };
