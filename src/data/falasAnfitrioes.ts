@@ -144,3 +144,40 @@ export function fala(nivel: number, momento: Momento, campos: { nome?: string; m
 }
 
 export const anfitriaoDoNivel = (nivel: number): NomeAnfitriao => (ROTEIRO[nivel] ?? ROTEIRO[0]).anfitriao;
+
+// Falas das telas fora dos níveis (PROVISÓRIO): quem fala e o que diz no cadastro, no código, na visita, na orientação e no ranking.
+export type TelaComFala = 'cadastro' | 'codigo' | 'visitante' | 'orientacao' | 'orientacaoQuiz' | 'orientacaoTermo' | 'ranking' | 'rankingVazio';
+export const FALAS_TELAS: Record<TelaComFala, { anfitriao: NomeAnfitriao; falas: Fala[] }> = {
+  cadastro: { anfitriao: 'leia', falas: [
+    { pt: 'Agora é oficial! Escolha seu nome, sua turma, sua equipe e o seu avatar. Depois eu te entrego o seu código de jogador.', en: 'Choose your name, class, team and avatar!' },
+    { pt: 'Capriche no nome: ele vai aparecer no ranking da escola inteira.', en: 'Pick a good name: the whole school will see it!' },
+  ] },
+  codigo: { anfitriao: 'leia', falas: [
+    { pt: 'Já tem código? Digite aqui que eu busco seus pontos e suas missões.', en: 'Type your code and I will find your points.' },
+  ] },
+  visitante: { anfitriao: 'mane', falas: [
+    { pt: 'Quer só dar uma olhada? Entra como visitante! Mas visitante não aparece no ranking, hein.', en: 'Try it as a guest! Guests are not in the ranking.' },
+  ] },
+  orientacao: { anfitriao: 'leia', falas: [
+    { pt: 'Bem-vindo à reunião no auditório! Antes de jogar, vamos combinar as regras da nossa escola. Leia! Know the rules, learn and go further!', en: 'Know the rules, learn and go further!' },
+  ] },
+  orientacaoQuiz: { anfitriao: 'leia', falas: [
+    { pt: 'Duas perguntinhas rápidas para ver se o recado ficou claro.', en: 'Two quick questions!' },
+  ] },
+  orientacaoTermo: { anfitriao: 'leia', falas: [
+    { pt: 'Para terminar, o termo de compromisso. Leia com atenção e marque se concorda.', en: 'Read the agreement and tick if you agree.' },
+  ] },
+  ranking: { anfitriao: 'marcio', falas: [
+    { pt: 'Aqui está o quadro de honra da escola: jogadores, turmas e a disputa entre a Equipe Azul e a Equipe Roxa.', en: 'The school honor board: players, classes and teams.' },
+  ] },
+  rankingVazio: { anfitriao: 'marcio', falas: [
+    { pt: 'O quadro ainda está vazio. Jogue o Nível 0 e seja o primeiro nome aqui!', en: 'Play Level 0 and be the first name here!' },
+  ] },
+};
+
+export function falaDaTela(tela: TelaComFala, campos: { nome?: string } = {}): Fala {
+  const lista = FALAS_TELAS[tela].falas;
+  const base = lista[Math.floor(Math.random() * lista.length)] ?? lista[0];
+  const troca = (t: string) => t.replace(/\{nome\}/g, campos.nome?.trim() || 'estudante');
+  return { pt: troca(base.pt), en: troca(base.en) };
+}

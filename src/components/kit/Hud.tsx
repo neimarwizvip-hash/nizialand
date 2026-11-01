@@ -6,6 +6,7 @@ import { PlayerAvatar } from '../ui/PlayerAvatar';
 import { NisialandLogo } from '../ui/NisialandLogo';
 import { Icone } from './Icones';
 import { Moedas } from './Medidores';
+import { PlacarEquipes } from './Placar';
 import { isFullscreen, isFullscreenSupported, onFullscreenChange, setFullscreenOptOut, toggleFullscreen } from '../../services/fullscreen';
 import { audioService } from '../../services/audio';
 
@@ -34,8 +35,8 @@ const TelaCheia: React.FC = () => {
   );
 };
 
-export const Hud: React.FC<{ nivel?: number; mostrarMoedas?: boolean; mostrarMapa?: boolean; children?: React.ReactNode; className?: string }> = ({
-  nivel, mostrarMoedas = true, mostrarMapa = true, children, className = '',
+export const Hud: React.FC<{ nivel?: number; mostrarMoedas?: boolean; mostrarMapa?: boolean; mostrarPlacar?: boolean; children?: React.ReactNode; className?: string }> = ({
+  nivel, mostrarMoedas = true, mostrarMapa = true, mostrarPlacar = true, children, className = '',
 }) => {
   const { currentPlayer, totalScore, isSoundOn, toggleSound, isMusicOn, toggleMusic, logout } = useGame();
   const navigate = useNavigate();
@@ -78,6 +79,7 @@ export const Hud: React.FC<{ nivel?: number; mostrarMoedas?: boolean; mostrarMap
           </span>
         )}
         {currentPlayer && mostrarMoedas && <Moedas valor={totalScore} compacto />}
+        {currentPlayer && !isGuestPlayer(currentPlayer) && mostrarPlacar && <PlacarEquipes className="hidden lg:inline-flex short:hidden" />}
         {children}
       </div>
 

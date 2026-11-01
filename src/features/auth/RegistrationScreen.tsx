@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import {
-  User, Calendar, GraduationCap, Shield, ArrowRight, KeyRound, AlertCircle, Compass,
-  ChevronLeft, ChevronRight, Lock, Palette, Check,
-} from 'lucide-react';
+import React, { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useGame } from '../../context/GameContext';
 import { TeamId, isGuestPlayer } from '../../types';
 import { audioService, soundEffects } from '../../services/audio';
 import { fireConfetti } from '../../components/ui/ConfettiEffect';
 import { AVATAR_CATALOG, PlayerAvatar, SkinTone } from '../../components/ui/PlayerAvatar';
 import { AvatarFigure } from '../../components/ui/AvatarFigure';
-import { GameControls, LevelBadge } from '../../components/ui/GameControls';
-import { FullscreenButton } from '../../components/ui/FullscreenButton';
 import { nameModerationService } from '../../services/nameModeration';
 import { AVAILABLE_CLASSES } from '../../data/mockData';
 import { GRADE_LABELS, SCHOOL_GRADES, SchoolGrade } from '../../data/level0Content';
+import { Anfitriao, BotaoJogo, Cenario, Ficha, Hud, Icone, Painel, Titulo } from '../../components/kit';
+import { FALAS_TELAS, falaDaTela } from '../../data/falasAnfitrioes';
+
+// Cadastro (ficha de matrícula): a Leia recebe o aluno na secretaria da escola.
+// Três modos: novo jogador, código de quem já tem cadastro e visitante (fora do ranking). Lógica igual à anterior.
 
 // Visitante escolhe entre os 4 heróis iniciais.
 const GUEST_AVATARS = AVATAR_CATALOG.filter(a => a.category === 'hero' && a.unlockLevel === 0).slice(0, 4);
@@ -33,15 +32,15 @@ const SKIN_TONES: { id: SkinTone; label: string; color: string }[] = [
 
 const AGE_OPTIONS = [10, 11, 12, 13, 14, 15];
 
-const labelClass = 'block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1 flex items-center gap-1.5';
-const fieldClass =
-  'w-full px-3 py-2 rounded-xl border-2 border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none text-slate-900 font-bold text-sm bg-white transition-all';
-const yellowButton =
-  'w-full py-3 px-4 rounded-2xl bg-gradient-to-b from-yellow-300 via-amber-400 to-amber-500 hover:brightness-105 text-slate-950 font-heading font-black text-lg tracking-wider border-2 border-amber-600 shadow-[0_5px_0_0_#b45309] active:translate-y-1 active:shadow-[0_1px_0_0_#b45309] flex items-center justify-center gap-2 transition-all cursor-pointer';
+type Modo = 'new' | 'code' | 'guest';
+const TELA_DO_MODO = { new: 'cadastro', code: 'codigo', guest: 'visitante' } as const;
 
-const ErrorBox: React.FC<{ message: string }> = ({ message }) => (
-  <div className="p-2.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2 font-semibold animate-fadeIn">
-    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+const rotulo = 'flex items-center gap-1.5 font-display text-xs short:text-[11px] uppercase tracking-wider text-nisia-azul-700 mb-1';
+const campo = 'w-full px-3 py-2 short:py-1.5 rounded-xl border-2 border-nisia-papel-linha bg-white text-nisia-tinta font-body font-semibold text-sm outline-none focus:border-nisia-azul-500 focus:ring-2 focus:ring-nisia-azul-100 transition-colors';
+
+const CaixaErro: React.FC<{ message: string }> = ({ message }) => (
+  <div role="alert" className="px-3 py-2 rounded-xl bg-red-50 border-2 border-nisia-erro text-nisia-erro text-xs font-semibold flex items-center gap-2 animate-balao-in">
+    <Icone nome="x" className="w-4 h-4 shrink-0" cor="#E5484D" />
     <span>{message}</span>
   </div>
 );
@@ -51,9 +50,9 @@ export const RegistrationScreen: React.FC = () => {
   const { register, loginWithCode, startGuest, currentPlayer } = useGame();
   const guestPlaying = isGuestPlayer(currentPlayer) ? currentPlayer : null;
 
-  const [mode, setMode] = useState<'new' | 'code' | 'guest'>('new');
+  const [mode, setMode] = useState<Modo>('new');
 
-  // New player form state (um visitante que vem se cadastrar já chega com nome e avatar)
+  // Novo jogador (um visitante que vem se cadastrar já chega com nome e avatar)
   const [name, setName] = useState(guestPlaying?.name ?? '');
   const [age, setAge] = useState<number>(13);
   const [className, setClassName] = useState<string>(AVAILABLE_CLASSES[0] ?? '601');
@@ -69,11 +68,11 @@ export const RegistrationScreen: React.FC = () => {
     return idx >= 0 ? Math.floor(idx / AVATARS_PER_PAGE) : 0;
   });
 
-  // Existing player code state
+  // Código de jogador
   const [accessCode, setAccessCode] = useState('');
   const [codeError, setCodeError] = useState<string | null>(null);
 
-  // Visitor state
+  // Visitante
   const [guestName, setGuestName] = useState('');
   const [guestGrade, setGuestGrade] = useState<SchoolGrade | null>(null);
   const [guestAvatar, setGuestAvatar] = useState<string>(GUEST_AVATARS[0]?.id ?? 'hero-boy-hoodie');
@@ -86,7 +85,10 @@ export const RegistrationScreen: React.FC = () => {
   const shownLocked = (shownAvatar.unlockLevel || 0) > NEW_PLAYER_LEVEL;
   const pageAvatars = AVATAR_CATALOG.slice(avatarPage * AVATARS_PER_PAGE, (avatarPage + 1) * AVATARS_PER_PAGE);
 
-  const switchMode = (next: 'new' | 'code' | 'guest') => {
+  const fala = useMemo(() => falaDaTela(TELA_DO_MODO[mode]), [mode]);
+  const anfitriao = FALAS_TELAS[TELA_DO_MODO[mode]].anfitriao;
+
+  const switchMode = (next: Modo) => {
     audioService.playClick();
     setMode(next);
   };
@@ -136,7 +138,6 @@ export const RegistrationScreen: React.FC = () => {
     e.preventDefault();
     setErrorMsg(null);
 
-    // Validate with moderation service
     const valResult = nameModerationService.validate(name);
     if (!valResult.isValid) {
       setErrorMsg(valResult.errorMessage || 'Por favor, digite um nome válido.');
@@ -158,7 +159,7 @@ export const RegistrationScreen: React.FC = () => {
       navigate('/missions');
     } catch (err) {
       console.error(err);
-      setErrorMsg('Could not register player. Please check your browser storage.');
+      setErrorMsg('Não foi possível salvar o cadastro. Verifique o armazenamento do navegador.');
     }
   };
 
@@ -168,7 +169,7 @@ export const RegistrationScreen: React.FC = () => {
 
     const trimmedCode = accessCode.trim().toUpperCase();
     if (!trimmedCode) {
-      setCodeError('Please enter your Player Code (e.g. NSL-804-A79).');
+      setCodeError('Digite o seu código de jogador (ex.: NSL-804-A79).');
       audioService.playWrong();
       return;
     }
@@ -179,482 +180,322 @@ export const RegistrationScreen: React.FC = () => {
       navigate('/missions');
     } else {
       audioService.playWrong();
-      setCodeError('Player Code not found. Please check or register as a new player.');
+      setCodeError('Código não encontrado. Confira ou faça um novo cadastro.');
     }
   };
 
-  const backToRegistration = (
-    <button
-      type="button"
-      onClick={() => switchMode('new')}
-      className="text-xs font-bold text-blue-700 hover:text-blue-900 hover:underline"
-    >
-      ← Voltar ao cadastro
-    </button>
-  );
+  // Abas dos três modos (ficha de matrícula, código, visitante)
+  const Aba: React.FC<{ modo: Modo; icone: 'termo' | 'chave' | 'bussola'; children: React.ReactNode; oculto?: boolean }> = ({ modo, icone, children, oculto }) => {
+    if (oculto) return null;
+    const ativo = mode === modo;
+    return (
+      <button
+        type="button"
+        role="tab"
+        aria-selected={ativo}
+        onClick={() => switchMode(modo)}
+        className={`inline-flex items-center gap-1.5 whitespace-nowrap px-3 py-1.5 short:px-2 short:py-1 rounded-t-xl border-2 border-b-0 font-display text-sm short:text-xs uppercase tracking-wide transition-colors ${
+          ativo ? 'bg-nisia-papel border-nisia-madeira-escura text-nisia-azul-700 translate-y-[2px]' : 'bg-nisia-papel-escuro border-nisia-papel-linha text-nisia-tinta-suave hover:bg-nisia-papel'
+        }`}
+      >
+        <Icone nome={icone} className="w-4 h-4" cor={ativo ? '#FFD23F' : '#F3E4BE'} />
+        <span className={ativo ? '' : 'hidden sm:inline'}>{children}</span>
+      </button>
+    );
+  };
+
+  const Equipe: React.FC<{ id: TeamId }> = ({ id }) => {
+    const ativo = team === id;
+    const azul = id === 'blue';
+    return (
+      <button
+        type="button"
+        role="radio"
+        aria-checked={ativo}
+        onClick={() => handleSelectTeam(id)}
+        className={`flex items-center justify-center gap-1.5 py-2 short:py-1.5 rounded-xl border-2 font-display text-sm short:text-xs uppercase tracking-wide transition-all ${
+          ativo
+            ? azul ? 'bg-nisia-azul-500 border-nisia-azul-900 text-white shadow-[0_3px_0_0_#0C2A66]' : 'bg-nisia-roxo-500 border-nisia-roxo-700 text-white shadow-[0_3px_0_0_#5325A8]'
+            : azul ? 'bg-white border-nisia-azul-200 text-nisia-azul-700 hover:border-nisia-azul-400' : 'bg-white border-nisia-roxo-100 text-nisia-roxo-700 hover:border-nisia-roxo-400'
+        }`}
+      >
+        <Icone nome="escudo" className="w-4 h-4" cor={ativo ? '#FFFFFF' : azul ? '#1F5FD0' : '#7B3FE4'} />
+        {azul ? 'Equipe Azul' : 'Equipe Roxa'}
+      </button>
+    );
+  };
 
   return (
-    <div className="min-h-screen w-full relative flex flex-col bg-gradient-to-b from-sky-200 via-sky-100 to-white overflow-x-hidden">
-      {/* Formas suaves no fundo */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-white/60 blur-3xl" />
-        <div className="absolute top-1/3 -right-24 w-96 h-96 rounded-full bg-cyan-200/50 blur-3xl" />
-        <div className="absolute -bottom-32 left-1/4 w-[28rem] h-72 rounded-full bg-amber-100/60 blur-3xl" />
-      </div>
+    <div className="relative min-h-screen text-nisia-tinta flex flex-col overflow-x-hidden">
+      <Cenario nome="escola" escurecer={0.35} />
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Hud nivel={0} mostrarMoedas={false} mostrarMapa={false} mostrarPlacar={false} />
 
-      {/* Topo: logo à esquerda, nível e tela cheia à direita */}
-      <header className="relative z-10 flex items-center justify-between gap-2 px-4 sm:px-6 pt-3 sm:pt-4">
-        <Link to="/" className="group" aria-label="NISIALAND — início">
-          <span className="inline-block bg-gradient-to-b from-amber-400 to-amber-600 text-slate-950 font-heading font-black text-xl sm:text-2xl px-3 py-1 rounded-xl border-2 border-amber-600 shadow-[0_4px_0_0_#b45309] group-hover:-translate-y-0.5 transition-transform">
-            NISIALAND
-          </span>
-        </Link>
-        <div className="flex items-center gap-2">
-          <LevelBadge label="Level" level={0} />
-          <FullscreenButton />
-        </div>
-      </header>
-
-      <main className="relative z-10 flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-4 grid gap-4 lg:grid-cols-2 lg:items-stretch">
-        {/* --- PAINEL ESQUERDO: formulário --- */}
-        <section className="game-panel p-4 sm:p-6 animate-rise-in flex flex-col">
-          <div className="flex items-center gap-2.5 border-b-2 border-slate-100 pb-3 mb-3.5">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center shadow-md border-2 border-white text-white flex-shrink-0">
-              {mode === 'code' ? <KeyRound className="w-5 h-5" /> : mode === 'guest' ? <Compass className="w-5 h-5" /> : <User className="w-5 h-5" />}
-            </div>
-            <div className="min-w-0">
-              <h1 className="text-xl sm:text-2xl game-title tracking-wider uppercase leading-none">REGISTRATION</h1>
-              <p className="text-[11px] font-bold text-blue-700 mt-0.5">Escola Municipal Nísia Vilela Fernandes</p>
-            </div>
+        <main className="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-5 py-3 md:py-5 short:py-1 grid grid-cols-1 xl:grid-cols-[13rem_1fr] gap-3 items-start">
+          {/* Anfitriã da secretaria (só com espaço ao lado) */}
+          <aside className="hidden xl:flex short:hidden flex-col items-start self-end">
+            <Anfitriao nome={anfitriao} fala={fala.pt} traducao={fala.en} altura="h-72" />
+          </aside>
+          <div className="flex flex-col gap-3 short:gap-1 min-w-0">
+          <div className="flex items-end justify-between gap-3 px-1 short:hidden">
+            <Titulo nivel={1} className="text-4xl sm:text-5xl leading-none">Secretaria</Titulo>
+            <Ficha cor="papel" className="short:hidden">Escola Municipal Nísia Vilela Fernandes</Ficha>
           </div>
 
-          {mode === 'new' ? (
-            /* --- FORM 1: NEW PLAYER REGISTRATION --- */
-            <form onSubmit={handleNewPlayerSubmit} className="space-y-3 flex-1 flex flex-col">
-              <p className="text-sm font-bold text-slate-600">
-                Create your player and start your adventure in <span className="text-amber-600">NISIALAND</span>!
-              </p>
-
-              {guestPlaying && (
-                <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold">
-                  Você está jogando como visitante. Ao fazer seu cadastro definitivo, seus pontos e missões vão junto.
-                </div>
-              )}
-              {errorMsg && <ErrorBox message={errorMsg} />}
-
-              <div>
-                <label htmlFor="reg-name" className={labelClass}>
-                  <User className="w-3.5 h-3.5 text-blue-600" />
-                  YOUR NAME (NOME OU APELIDO)
-                </label>
-                <input
-                  id="reg-name"
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Type your name here..."
-                  required
-                  maxLength={30}
-                  className={`${fieldClass} placeholder-slate-400`}
-                />
+          <div className="grid gap-3 short:gap-2 lg:grid-cols-[1.1fr_1fr] short:grid-cols-[1fr_1fr] items-start">
+            {/* Ficha de matrícula */}
+            <section aria-label="Cadastro" className="flex flex-col">
+              <div role="tablist" aria-label="Forma de entrar" className="flex items-end gap-1 pl-3">
+                <Aba modo="new" icone="termo">Novo jogador</Aba>
+                <Aba modo="code" icone="chave">Já tenho código</Aba>
+                <Aba modo="guest" icone="bussola" oculto={!!guestPlaying}>Visitante</Aba>
               </div>
+              <Painel tipo="papel" liso className="p-4 sm:p-5 short:p-2.5 rounded-tl-none">
+                {mode === 'new' && (
+                  <form onSubmit={handleNewPlayerSubmit} className="flex flex-col gap-3 short:gap-1.5">
+                    <p className="text-sm short:hidden text-nisia-tinta-suave font-semibold">Ficha de matrícula do jogador. Capriche: o nome aparece no ranking.</p>
+                    {guestPlaying && (
+                      <div className="px-3 py-2 rounded-xl bg-nisia-verde-100 border-2 border-nisia-verde-400 text-nisia-verde-700 text-xs font-semibold">
+                        Você está jogando como visitante. Ao fazer o cadastro definitivo, seus pontos e missões vão junto.
+                      </div>
+                    )}
+                    {errorMsg && <CaixaErro message={errorMsg} />}
 
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label htmlFor="reg-age" className={labelClass}>
-                    <Calendar className="w-3.5 h-3.5 text-blue-600" />
-                    AGE
-                  </label>
-                  <select id="reg-age" value={age} onChange={(e) => setAge(Number(e.target.value))} className={`${fieldClass} cursor-pointer`}>
-                    {AGE_OPTIONS.map(n => (
-                      <option key={n} value={n}>{n} years old</option>
-                    ))}
-                    <option value={16}>16+ years old</option>
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="reg-class" className={labelClass}>
-                    <GraduationCap className="w-3.5 h-3.5 text-blue-600" />
-                    CLASS
-                  </label>
-                  <select id="reg-class" value={className} onChange={(e) => setClassName(e.target.value)} className={`${fieldClass} cursor-pointer`}>
-                    {AVAILABLE_CLASSES.map(c => (
-                      <option key={c} value={c}>Turma {c}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
+                    <div>
+                      <label htmlFor="reg-name" className={rotulo}><Icone nome="professor" className="w-4 h-4" cor="#A9CDFF" /> Nome ou apelido <span className="normal-case tracking-normal text-nisia-tinta-suave font-body">(your name)</span></label>
+                      <input id="reg-name" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Como você quer ser chamado?" required maxLength={30} className={`${campo} placeholder:text-nisia-tinta-suave/60`} />
+                    </div>
 
-              {/* Equipe: escolha compacta */}
-              <div>
-                <span className={labelClass}>
-                  <Shield className="w-3.5 h-3.5 text-blue-600" />
-                  TEAM
-                </span>
-                <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Equipe">
-                  {(['blue', 'purple'] as TeamId[]).map(t => {
-                    const active = team === t;
-                    const isBlue = t === 'blue';
-                    return (
-                      <button
-                        key={t}
-                        type="button"
-                        role="radio"
-                        aria-checked={active}
-                        onClick={() => handleSelectTeam(t)}
-                        className={`flex items-center justify-center gap-1.5 py-2 rounded-xl border-2 font-heading font-black text-xs sm:text-sm transition-all ${
-                          active
-                            ? isBlue
-                              ? 'bg-blue-600 border-blue-800 text-white shadow-[0_3px_0_0_#1e3a8a]'
-                              : 'bg-purple-600 border-purple-800 text-white shadow-[0_3px_0_0_#581c87]'
-                            : isBlue
-                              ? 'bg-white border-blue-200 text-blue-700 hover:border-blue-400'
-                              : 'bg-white border-purple-200 text-purple-700 hover:border-purple-400'
-                        }`}
-                      >
-                        <Shield className={`w-4 h-4 ${active ? 'fill-white' : ''}`} />
-                        {isBlue ? 'Equipe Azul' : 'Equipe Roxa'}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label htmlFor="reg-age" className={rotulo}><Icone nome="calendario" className="w-4 h-4" /> Idade <span className="normal-case tracking-normal text-nisia-tinta-suave font-body">(age)</span></label>
+                        <select id="reg-age" value={age} onChange={(e) => setAge(Number(e.target.value))} className={`${campo} cursor-pointer`}>
+                          {AGE_OPTIONS.map(n => <option key={n} value={n}>{n} anos</option>)}
+                          <option value={16}>16 anos ou mais</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label htmlFor="reg-class" className={rotulo}><Icone nome="livro" className="w-4 h-4" /> Turma <span className="normal-case tracking-normal text-nisia-tinta-suave font-body">(class)</span></label>
+                        <select id="reg-class" value={className} onChange={(e) => setClassName(e.target.value)} className={`${campo} cursor-pointer`}>
+                          {AVAILABLE_CLASSES.map(c => <option key={c} value={c}>Turma {c}</option>)}
+                        </select>
+                      </div>
+                    </div>
 
-              <div className="flex-1" />
+                    <div>
+                      <span className={rotulo}><Icone nome="escudo" className="w-4 h-4" cor="#A9CDFF" /> Equipe <span className="normal-case tracking-normal text-nisia-tinta-suave font-body">(team)</span></span>
+                      <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Equipe">
+                        <Equipe id="blue" />
+                        <Equipe id="purple" />
+                      </div>
+                    </div>
 
-              <button type="submit" className={yellowButton}>
-                <span>CONTINUE</span>
-                <ArrowRight className="w-5 h-5 stroke-[3]" />
-              </button>
-
-              <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 pt-1">
-                {!guestPlaying && (
-                  <button
-                    type="button"
-                    onClick={() => switchMode('guest')}
-                    className="flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-900 hover:underline"
-                  >
-                    <Compass className="w-3.5 h-3.5" />
-                    Experimentar como visitante
-                  </button>
+                    <BotaoJogo type="submit" cor="sol" className="w-full mt-1 short:min-h-[38px] short:text-sm">
+                      Continuar <Icone nome="seta" className="w-5 h-5" />
+                    </BotaoJogo>
+                    <p className="text-[11px] text-nisia-tinta-suave text-center short:hidden">Protegido para menores • sem e-mail</p>
+                  </form>
                 )}
-                <button
-                  type="button"
-                  onClick={() => switchMode('code')}
-                  className="flex items-center gap-1 text-xs font-bold text-purple-700 hover:text-purple-900 hover:underline"
-                >
-                  <KeyRound className="w-3.5 h-3.5" />
-                  Já tenho código
-                </button>
-              </div>
-            </form>
-          ) : mode === 'guest' ? (
-            /* --- FORM 3: VISITOR (sem código, fora do ranking) --- */
-            <form onSubmit={handleGuestSubmit} className="space-y-3">
-              {guestError && <ErrorBox message={guestError} />}
 
-              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-slate-700 text-xs">
-                <p className="font-bold mb-0.5 text-slate-900">Experimentar como visitante</p>
-                <p className="text-[11px] text-slate-500">
-                  Jogue sem código. Visitantes não aparecem no ranking. Se gostar, faça o cadastro definitivo e seus pontos vão junto.
-                </p>
-              </div>
+                {mode === 'guest' && (
+                  <form onSubmit={handleGuestSubmit} className="flex flex-col gap-3 short:gap-1.5">
+                    {guestError && <CaixaErro message={guestError} />}
+                    <p className="text-sm short:text-xs text-nisia-tinta-suave font-semibold">Jogue sem código. Visitantes não aparecem no ranking; se gostar, faça o cadastro e seus pontos vão junto.</p>
 
-              <div>
-                <label htmlFor="guest-name" className={labelClass}>
-                  <User className="w-3.5 h-3.5 text-emerald-600" />
-                  APELIDO
-                </label>
-                <input
-                  id="guest-name"
-                  type="text"
-                  value={guestName}
-                  onChange={(e) => setGuestName(e.target.value)}
-                  placeholder="Como quer ser chamado?"
-                  required
-                  maxLength={30}
-                  className="w-full px-3 py-2 rounded-xl border-2 border-slate-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 outline-none text-slate-900 font-bold placeholder-slate-400 text-sm transition-all"
-                />
-              </div>
+                    <div>
+                      <label htmlFor="guest-name" className={rotulo}><Icone nome="professor" className="w-4 h-4" cor="#A9CDFF" /> Apelido</label>
+                      <input id="guest-name" type="text" value={guestName} onChange={(e) => setGuestName(e.target.value)} placeholder="Como quer ser chamado?" required maxLength={30} className={`${campo} placeholder:text-nisia-tinta-suave/60`} />
+                    </div>
 
-              <div>
-                <span className={labelClass}>
-                  <GraduationCap className="w-3.5 h-3.5 text-emerald-600" />
-                  SÉRIE
-                </span>
-                <div className="grid grid-cols-4 gap-1.5">
-                  {SCHOOL_GRADES.map(g => (
-                    <button
-                      key={g}
-                      type="button"
-                      onClick={() => { audioService.playClick(); setGuestGrade(g); }}
-                      className={`py-2 rounded-xl border-2 font-bold text-xs transition-all ${
-                        guestGrade === g
-                          ? 'bg-emerald-600 border-emerald-600 text-white shadow-sm'
-                          : 'bg-white border-slate-300 text-slate-700 hover:border-emerald-400'
-                      }`}
-                    >
-                      {GRADE_LABELS[g]}
-                    </button>
-                  ))}
-                </div>
-              </div>
+                    <div>
+                      <span className={rotulo}><Icone nome="livro" className="w-4 h-4" /> Série</span>
+                      <div className="grid grid-cols-4 gap-1.5" role="radiogroup" aria-label="Série">
+                        {SCHOOL_GRADES.map(g => (
+                          <button
+                            key={g}
+                            type="button"
+                            role="radio"
+                            aria-checked={guestGrade === g}
+                            onClick={() => { audioService.playClick(); setGuestGrade(g); }}
+                            className={`py-2 short:py-1.5 rounded-xl border-2 font-display text-xs transition-all ${guestGrade === g ? 'bg-nisia-verde-500 border-nisia-verde-700 text-white shadow-[0_3px_0_0_#22703A]' : 'bg-white border-nisia-papel-linha text-nisia-tinta hover:border-nisia-verde-400'}`}
+                          >
+                            {GRADE_LABELS[g]}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
 
-              <div>
-                <span className="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">ESCOLHA SEU HERÓI</span>
-                <div className="grid grid-cols-4 gap-1.5">
-                  {GUEST_AVATARS.map(a => (
-                    <button
-                      key={a.id}
-                      type="button"
-                      onClick={() => { audioService.playClick(); setGuestAvatar(a.id); }}
-                      className={`p-1.5 rounded-xl border-2 flex flex-col items-center gap-1 transition-all ${
-                        guestAvatar === a.id
-                          ? 'bg-emerald-50 border-emerald-600 ring-2 ring-emerald-300'
-                          : 'bg-white border-slate-200 hover:border-emerald-300 opacity-80'
-                      }`}
-                    >
-                      <PlayerAvatar avatarId={a.id} size="md" alt={a.name} />
-                      <span className="text-[10px] font-bold text-slate-700 text-center leading-tight">{a.name}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
+                    <div>
+                      <span className={rotulo}><Icone nome="estrela" className="w-4 h-4" /> Escolha seu herói</span>
+                      <div className="grid grid-cols-4 gap-1.5" role="radiogroup" aria-label="Herói">
+                        {GUEST_AVATARS.map(a => (
+                          <button
+                            key={a.id}
+                            type="button"
+                            role="radio"
+                            aria-checked={guestAvatar === a.id}
+                            onClick={() => { audioService.playClick(); setGuestAvatar(a.id); }}
+                            className={`p-1.5 rounded-xl border-2 flex flex-col items-center gap-1 transition-all ${guestAvatar === a.id ? 'bg-nisia-verde-100 border-nisia-verde-500 ring-2 ring-nisia-verde-400/60' : 'bg-white border-nisia-papel-linha hover:border-nisia-verde-400 opacity-80'}`}
+                          >
+                            <PlayerAvatar avatarId={a.id} size="md" alt={a.name} />
+                            <span className="text-[10px] font-semibold text-nisia-tinta text-center leading-tight short:hidden">{a.name}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
 
-              <button
-                type="submit"
-                className="w-full mt-2 py-3 px-4 rounded-xl bg-gradient-to-b from-green-400 via-emerald-500 to-green-600 hover:from-green-300 hover:to-emerald-500 text-white font-bungee text-base sm:text-lg tracking-wider shadow-[0_4px_0_#065f46,0_10px_20px_rgba(16,185,129,0.3)] active:translate-y-1 active:shadow-[0_1px_0_#065f46] border-2 border-emerald-300 flex items-center justify-center gap-2 transition-all cursor-pointer"
-              >
-                <span>JOGAR COMO VISITANTE</span>
-                <ArrowRight className="w-5 h-5 stroke-[3]" />
-              </button>
-              <div className="text-center">{backToRegistration}</div>
-            </form>
-          ) : (
-            /* --- FORM 2: LOGIN WITH EXISTING PLAYER CODE --- */
-            <form onSubmit={handleCodeSubmit} className="space-y-3.5">
-              {codeError && <ErrorBox message={codeError} />}
-
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-xs">
-                <p className="font-bold mb-0.5 text-slate-900">Returning student?</p>
-                <p className="text-[11px] text-slate-500">
-                  Type your Player Code (e.g. <strong className="text-blue-600 font-mono">NSL-804-A79</strong>) to retrieve your scores, mission progress, and team points.
-                </p>
-              </div>
-
-              <div>
-                <label htmlFor="player-code" className="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                  <KeyRound className="w-3.5 h-3.5 text-purple-600" />
-                  ENTER YOUR PLAYER CODE
-                </label>
-                <input
-                  id="player-code"
-                  type="text"
-                  value={accessCode}
-                  onChange={(e) => setAccessCode(e.target.value.toUpperCase())}
-                  placeholder="NSL-804-..."
-                  required
-                  className="w-full px-3 py-2.5 rounded-xl border-2 border-purple-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-100 outline-none text-purple-900 font-mono font-black placeholder-slate-400 text-lg tracking-widest uppercase transition-all text-center"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-b from-purple-500 via-indigo-600 to-purple-700 hover:from-purple-400 hover:to-indigo-500 text-white font-bungee text-base sm:text-lg tracking-wider shadow-[0_4px_0_#3b0764,0_10px_20px_rgba(147,51,234,0.3)] active:translate-y-1 active:shadow-[0_1px_0_#3b0764] border-2 border-purple-300 flex items-center justify-center gap-2 transition-all cursor-pointer"
-              >
-                <span>ACCESS MY GAME</span>
-                <ArrowRight className="w-5 h-5 stroke-[3]" />
-              </button>
-              <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
-                {backToRegistration}
-                {!guestPlaying && (
-                  <button
-                    type="button"
-                    onClick={() => switchMode('guest')}
-                    className="flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-900 hover:underline"
-                  >
-                    <Compass className="w-3.5 h-3.5" />
-                    Experimentar como visitante
-                  </button>
+                    <BotaoJogo type="submit" cor="verde" className="w-full short:min-h-[38px] short:text-sm">
+                      Jogar como visitante <Icone nome="seta" className="w-5 h-5" />
+                    </BotaoJogo>
+                  </form>
                 )}
-              </div>
-            </form>
-          )}
 
-          {/* Footer info note */}
-          <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-            <span>Protected for minors • No email</span>
-            <button
-              type="button"
-              onClick={() => navigate('/')}
-              className="text-blue-600 hover:text-blue-800 font-bold hover:underline"
-            >
-              ← Back to Start
-            </button>
-          </div>
-        </section>
+                {mode === 'code' && (
+                  <form onSubmit={handleCodeSubmit} className="flex flex-col gap-3 short:gap-1.5">
+                    {codeError && <CaixaErro message={codeError} />}
+                    <p className="text-sm short:text-xs text-nisia-tinta-suave font-semibold">
+                      Digite o seu código de jogador (ex.: <strong className="font-mono text-nisia-roxo-700">NSL-804-A79</strong>) para recuperar pontos, missões e equipe.
+                    </p>
+                    <div>
+                      <label htmlFor="player-code" className={rotulo}><Icone nome="chave" className="w-4 h-4" /> Código de jogador</label>
+                      <input
+                        id="player-code"
+                        type="text"
+                        value={accessCode}
+                        onChange={(e) => setAccessCode(e.target.value.toUpperCase())}
+                        placeholder="NSL-804-..."
+                        required
+                        autoComplete="off"
+                        className={`${campo} !border-nisia-roxo-400 focus:!border-nisia-roxo-700 font-mono !text-lg tracking-widest uppercase text-center text-nisia-roxo-700`}
+                      />
+                    </div>
+                    <BotaoJogo type="submit" cor="roxo" className="w-full short:min-h-[38px] short:text-sm">
+                      Entrar no meu jogo <Icone nome="seta" className="w-5 h-5" />
+                    </BotaoJogo>
+                  </form>
+                )}
 
-        {/* --- PAINEL DIREITO: avatar --- */}
-        <section className="game-panel p-4 sm:p-6 animate-rise-in flex flex-col" aria-label="Avatar">
-          {mode === 'guest' ? (
-            <>
-              <h2 className="text-lg sm:text-xl game-title tracking-wider uppercase text-center">SEU HERÓI</h2>
-              <div className="flex-1 min-h-[14rem] h-60 sm:h-80 lg:h-auto mt-3 rounded-2xl bg-gradient-to-b from-sky-50 to-emerald-50 border-2 border-sky-100 p-3">
-                <AvatarFigure avatarId={guestAvatar} />
-              </div>
-              <p className="mt-2 text-center font-heading font-black text-slate-800">
-                {AVATAR_CATALOG.find(a => a.id === guestAvatar)?.name}
-              </p>
-            </>
-          ) : mode === 'code' ? (
-            <>
-              <h2 className="text-lg sm:text-xl game-title tracking-wider uppercase text-center">WELCOME BACK!</h2>
-              <div className="flex-1 min-h-[14rem] h-60 sm:h-80 lg:h-auto mt-3 rounded-2xl bg-gradient-to-b from-sky-50 to-purple-50 border-2 border-sky-100 p-3 flex items-center justify-center gap-2">
-                <div className="h-full w-1/2"><AvatarFigure avatarId="hero-boy-hoodie" /></div>
-                <div className="h-full w-1/2"><AvatarFigure avatarId="hero-girl-curl" /></div>
-              </div>
-              <p className="mt-2 text-center text-xs font-bold text-slate-500">Seu avatar, seus pontos e suas missões voltam com o código.</p>
-            </>
-          ) : (
-            <>
-              <h2 className="text-lg sm:text-xl game-title tracking-wider uppercase text-center">CHOOSE YOUR AVATAR</h2>
+                <div className="mt-3 short:mt-1.5 pt-2 border-t-2 border-dashed border-nisia-papel-linha flex items-center justify-between text-xs">
+                  <button type="button" onClick={() => { audioService.playClick(); navigate('/'); }} className="font-display text-nisia-azul-700 hover:underline uppercase tracking-wide">← Início</button>
+                  <button type="button" onClick={() => { audioService.playClick(); navigate('/orientation'); }} className="font-display text-nisia-tinta-suave hover:underline uppercase tracking-wide short:hidden">Rever as regras</button>
+                </div>
+              </Painel>
+            </section>
 
-              {/* Avatar em destaque, corpo inteiro */}
-              <div className="relative mt-3 h-56 sm:h-72 rounded-2xl bg-gradient-to-b from-sky-50 to-amber-50 border-2 border-sky-100 p-3">
-                <AvatarFigure
-                  avatarId={shownAvatar.id}
-                  skinTone={shownAvatar.allowsSkinTone ? skinTone : 'light'}
-                  className={shownLocked ? 'opacity-60 grayscale-[40%]' : ''}
-                />
-                {shownLocked && (
-                  <div className="absolute inset-x-0 bottom-3 flex justify-center">
-                    <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/85 text-white text-xs font-heading font-black">
-                      <Lock className="w-3.5 h-3.5" />
-                      Desbloqueia na Patente {shownAvatar.unlockLevel}
-                    </span>
+            {/* Vitrine do avatar */}
+            <Painel tipo="papel" fita as="section" aria-label="Avatar" className="p-4 sm:p-5 pt-6 short:p-2.5 short:pt-4 flex flex-col">
+              {mode === 'guest' ? (
+                <>
+                  <h2 className="font-display text-xl short:text-base text-nisia-azul-700 text-center uppercase tracking-wide">Seu herói</h2>
+                  <div className="flex-1 min-h-[12rem] h-56 sm:h-72 short:h-[9.5rem] short:min-h-0 mt-2 rounded-2xl bg-gradient-to-b from-nisia-azul-100 to-nisia-verde-100 border-2 border-nisia-papel-linha p-3">
+                    <AvatarFigure avatarId={guestAvatar} />
                   </div>
-                )}
-              </div>
+                  <p className="mt-2 text-center font-display text-nisia-tinta">{AVATAR_CATALOG.find(a => a.id === guestAvatar)?.name}</p>
+                </>
+              ) : mode === 'code' ? (
+                <>
+                  <h2 className="font-display text-xl short:text-base text-nisia-azul-700 text-center uppercase tracking-wide">Bem-vindo de volta!</h2>
+                  <div className="flex-1 min-h-[12rem] h-56 sm:h-72 short:h-[9.5rem] short:min-h-0 mt-2 rounded-2xl bg-gradient-to-b from-nisia-azul-100 to-nisia-roxo-100 border-2 border-nisia-papel-linha p-3 flex items-center justify-center gap-2">
+                    <div className="h-full w-1/2"><AvatarFigure avatarId="hero-boy-hoodie" /></div>
+                    <div className="h-full w-1/2"><AvatarFigure avatarId="hero-girl-curl" /></div>
+                  </div>
+                  <p className="mt-2 text-center text-xs font-semibold text-nisia-tinta-suave">Seu avatar, seus pontos e suas missões voltam com o código.</p>
+                </>
+              ) : (
+                <>
+                  <h2 className="font-display text-xl text-nisia-azul-700 text-center uppercase tracking-wide short:sr-only">Escolha seu avatar</h2>
 
-              <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
-                <span className="font-heading font-black text-slate-800">{shownAvatar.name}</span>
-                {shownLocked ? (
-                  <button
-                    type="button"
-                    onClick={() => { soundEffects.buttonClick(); setPreviewId(null); }}
-                    className="text-[11px] font-bold text-blue-700 hover:underline"
-                  >
-                    Voltar ao meu avatar
-                  </button>
-                ) : (
-                  <span className="flex items-center gap-1 text-[11px] font-bold text-emerald-700">
-                    <Check className="w-3.5 h-3.5" /> Escolhido
-                  </span>
-                )}
-              </div>
+                  <div className="relative mt-2 h-48 sm:h-64 short:h-[7.5rem] rounded-2xl bg-gradient-to-b from-nisia-azul-100 to-nisia-sol-100 border-2 border-nisia-papel-linha p-3 short:p-1.5">
+                    <AvatarFigure avatarId={shownAvatar.id} skinTone={shownAvatar.allowsSkinTone ? skinTone : 'light'} className={shownLocked ? 'opacity-60 grayscale-[40%]' : ''} />
+                    {shownLocked && (
+                      <div className="absolute inset-x-0 bottom-2 flex justify-center">
+                        <Ficha cor="papel" className="!bg-nisia-tinta !text-white !border-nisia-tinta"><Icone nome="cadeado" className="w-3.5 h-3.5" cor="#F3E4BE" /> Desbloqueia na Patente {shownAvatar.unlockLevel}</Ficha>
+                      </div>
+                    )}
+                  </div>
 
-              {/* Tom de pele (só nos avatares que já tinham) */}
-              {shownAvatar.allowsSkinTone && (
-                <div className="mt-2 flex flex-wrap items-center justify-center gap-1.5">
-                  <span className="text-[11px] font-heading font-bold text-amber-600 flex items-center gap-1">
-                    <Palette className="w-3.5 h-3.5" /> Tom de pele:
-                  </span>
-                  {SKIN_TONES.map(tone => (
-                    <button
-                      key={tone.id}
-                      type="button"
-                      onClick={() => { soundEffects.buttonClick(); setSkinTone(tone.id); }}
-                      title={`Tom de pele ${tone.label}`}
-                      aria-pressed={skinTone === tone.id}
-                      className={`px-2 py-0.5 rounded-lg text-[10px] font-heading font-bold border flex items-center gap-1 transition-all ${
-                        skinTone === tone.id
-                          ? 'bg-amber-400 text-slate-950 border-amber-500 scale-105'
-                          : 'bg-white border-sky-200 text-slate-600 hover:border-sky-400'
-                      }`}
-                    >
-                      <span className="w-2.5 h-2.5 rounded-full border border-black/40 inline-block" style={{ backgroundColor: tone.color }} />
-                      {tone.label}
+                  <div className="mt-1.5 flex flex-wrap items-center justify-center gap-2">
+                    <span className="font-display text-nisia-tinta">{shownAvatar.name}</span>
+                    {shownLocked ? (
+                      <button type="button" onClick={() => { soundEffects.buttonClick(); setPreviewId(null); }} className="text-[11px] font-semibold text-nisia-azul-700 hover:underline">Voltar ao meu avatar</button>
+                    ) : (
+                      <Ficha cor="verde" className="!py-0"><Icone nome="check" className="w-3.5 h-3.5" cor="#DDF5D9" /> Escolhido</Ficha>
+                    )}
+                  </div>
+
+                  {shownAvatar.allowsSkinTone && (
+                    <div className="mt-1.5 flex flex-wrap items-center justify-center gap-1.5">
+                      <span className="text-[11px] font-display uppercase tracking-wide text-nisia-laranja-700 inline-flex items-center gap-1 short:sr-only"><Icone nome="paleta" className="w-4 h-4" /> Tom de pele</span>
+                      {SKIN_TONES.map(tone => (
+                        <button
+                          key={tone.id}
+                          type="button"
+                          onClick={() => { soundEffects.buttonClick(); setSkinTone(tone.id); }}
+                          title={`Tom de pele ${tone.label}`}
+                          aria-pressed={skinTone === tone.id}
+                          className={`px-2 py-0.5 rounded-lg text-[10px] font-display border-2 flex items-center gap-1 transition-all ${skinTone === tone.id ? 'bg-nisia-sol-400 text-nisia-tinta border-nisia-sol-700 scale-105' : 'bg-white border-nisia-papel-linha text-nisia-tinta-suave hover:border-nisia-azul-400'}`}
+                        >
+                          <span className="w-2.5 h-2.5 rounded-full border border-black/40 inline-block" style={{ backgroundColor: tone.color }} />
+                          <span className="short:sr-only">{tone.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Grade paginada */}
+                  <div className="mt-2 flex items-center gap-1.5 sm:gap-2">
+                    <button type="button" onClick={() => goToPage(avatarPage - 1)} aria-label="Avatares anteriores" className="kit-btn kit-btn--papel kit-btn--sm !min-w-0 !px-2 shrink-0">
+                      <Icone nome="seta" className="w-4 h-4 rotate-180" />
                     </button>
-                  ))}
-                </div>
-              )}
-
-              {/* Grade paginada */}
-              <div className="mt-3 flex items-center gap-1.5 sm:gap-2">
-                <button
-                  type="button"
-                  onClick={() => goToPage(avatarPage - 1)}
-                  aria-label="Avatares anteriores"
-                  className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white border-2 border-sky-300 text-blue-700 flex items-center justify-center shadow-[0_3px_0_0_#7dd3fc] hover:bg-sky-50 active:translate-y-0.5 active:shadow-none"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <div className="flex-1 grid grid-cols-4 gap-1.5 sm:gap-2">
-                  {pageAvatars.map(avatar => {
-                    const locked = (avatar.unlockLevel || 0) > NEW_PLAYER_LEVEL;
-                    const isSelected = selectedAvatar === avatar.id;
-                    const isPreview = previewId === avatar.id;
-                    return (
+                    <div className="flex-1 grid grid-cols-4 short:grid-cols-8 gap-1.5 sm:gap-2 short:gap-1">
+                      {pageAvatars.map(avatar => {
+                        const locked = (avatar.unlockLevel || 0) > NEW_PLAYER_LEVEL;
+                        const isSelected = selectedAvatar === avatar.id;
+                        const isPreview = previewId === avatar.id;
+                        return (
+                          <button
+                            key={avatar.id}
+                            type="button"
+                            onClick={() => handleAvatarClick(avatar.id, locked)}
+                            title={locked ? `${avatar.name} — Desbloqueia na Patente ${avatar.unlockLevel}` : avatar.name}
+                            aria-pressed={isSelected}
+                            className={`relative aspect-square rounded-xl border-2 flex items-center justify-center transition-all ${
+                              isSelected ? 'bg-nisia-sol-100 border-nisia-sol-700 ring-2 ring-nisia-sol-400' : isPreview ? 'bg-nisia-papel-escuro border-nisia-tinta-suave' : 'bg-white border-nisia-papel-linha hover:border-nisia-azul-400'
+                            }`}
+                          >
+                            <PlayerAvatar avatarId={avatar.id} skinTone={avatar.allowsSkinTone ? skinTone : 'light'} size="lg" alt={avatar.name} className={`short:!w-9 short:!h-9 ${locked ? 'opacity-50 grayscale' : ''}`} />
+                            {locked && (
+                              <span className="absolute bottom-0.5 inset-x-0.5 flex items-center justify-center gap-0.5 rounded-md bg-nisia-tinta/85 text-white text-[9px] font-display py-0.5">
+                                <Icone nome="cadeado" className="w-2.5 h-2.5" cor="#F3E4BE" /> <span className="short:hidden">PAT {avatar.unlockLevel}</span>
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <button type="button" onClick={() => goToPage(avatarPage + 1)} aria-label="Próximos avatares" className="kit-btn kit-btn--papel kit-btn--sm !min-w-0 !px-2 shrink-0">
+                      <Icone nome="seta" className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div className="mt-1.5 flex items-center justify-center gap-1.5">
+                    {Array.from({ length: AVATAR_PAGES }, (_, i) => (
                       <button
-                        key={avatar.id}
+                        key={i}
                         type="button"
-                        onClick={() => handleAvatarClick(avatar.id, locked)}
-                        title={locked ? `${avatar.name} — Desbloqueia na Patente ${avatar.unlockLevel}` : avatar.name}
-                        aria-pressed={isSelected}
-                        className={`relative aspect-square rounded-xl border-2 flex items-center justify-center transition-all ${
-                          isSelected
-                            ? 'bg-amber-50 border-amber-500 ring-2 ring-amber-300'
-                            : isPreview
-                              ? 'bg-slate-50 border-slate-500'
-                              : 'bg-white border-sky-100 hover:border-sky-300'
-                        }`}
-                      >
-                        <PlayerAvatar
-                          avatarId={avatar.id}
-                          skinTone={avatar.allowsSkinTone ? skinTone : 'light'}
-                          size="lg"
-                          alt={avatar.name}
-                          className={locked ? 'opacity-50 grayscale' : ''}
-                        />
-                        {locked && (
-                          <span className="absolute bottom-0.5 inset-x-0.5 flex items-center justify-center gap-0.5 rounded-md bg-slate-900/80 text-white text-[9px] font-black py-0.5">
-                            <Lock className="w-2.5 h-2.5" /> PAT {avatar.unlockLevel}
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-                <button
-                  type="button"
-                  onClick={() => goToPage(avatarPage + 1)}
-                  aria-label="Próximos avatares"
-                  className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white border-2 border-sky-300 text-blue-700 flex items-center justify-center shadow-[0_3px_0_0_#7dd3fc] hover:bg-sky-50 active:translate-y-0.5 active:shadow-none"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </div>
-              <div className="mt-2 flex items-center justify-center gap-1.5">
-                {Array.from({ length: AVATAR_PAGES }, (_, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => goToPage(i)}
-                    aria-label={`Página ${i + 1} de avatares`}
-                    aria-current={i === avatarPage}
-                    className={`h-2.5 rounded-full transition-all ${i === avatarPage ? 'w-6 bg-amber-500' : 'w-2.5 bg-sky-200 hover:bg-sky-300'}`}
-                  />
-                ))}
-              </div>
-            </>
-          )}
-        </section>
-      </main>
-
-      {/* Barra inferior */}
-      <footer className="relative z-10 flex justify-center px-4 pb-4">
-        <GameControls />
-      </footer>
+                        onClick={() => goToPage(i)}
+                        aria-label={`Página ${i + 1} de avatares`}
+                        aria-current={i === avatarPage}
+                        className={`h-2.5 rounded-full border border-nisia-tinta/30 transition-all ${i === avatarPage ? 'w-6 bg-nisia-sol-500' : 'w-2.5 bg-nisia-papel-escuro hover:bg-nisia-papel-linha'}`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+            </Painel>
+          </div>
+          </div>
+        </main>
+      </div>
     </div>
   );
 };

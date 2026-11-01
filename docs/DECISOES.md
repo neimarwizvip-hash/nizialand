@@ -28,3 +28,5 @@
 - 2026-11-01 Telas ainda não refeitas (ranking, cadastro, orientação, treino livre, painel do professor) herdam o kit pelas classes legadas: `.game-sky` = fachada da escola como cenário, `.game-panel` = papel, `.game-title`/`.font-bungee` = Lilita One. Classe `.kit-placa` tem `position: relative`; quem precisa de `absolute` usa `!absolute`.
 
 - Falas dos anfitrioes: roteiro PROVISORIO em src/data/falasAnfitrioes.ts (por nivel e momento; trocar pelo roteiro final do Oliveira). O balao fala em voz pt-BR e depois ingles via Web Speech, com tom por personagem; a musica abaixa durante a fala (sem musica sob narracao) e ha botao para ouvir de novo.
+
+- Fase 1 parte 2: inicio, cadastro (Secretaria), orientacao (auditorio) e ranking (Quadro de honra) no kit. Medalhas por nivel no mapa: ouro >= 90%, prata >= 70%, bronze abaixo (Nivel 0 pelas estrelas do quiz e flashcards). Placar Azul x Roxa na HUD usa a media por jogador (criterio oficial do ranking), com cache de 60 s. Falas das telas fora dos niveis em FALAS_TELAS (PROVISORIO).

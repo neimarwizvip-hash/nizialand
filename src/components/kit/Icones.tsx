@@ -7,7 +7,8 @@ export type NomeIcone =
   | 'lupa' | 'relogio' | 'estrela' | 'moeda' | 'carta' | 'medalha' | 'som' | 'som-mudo' | 'musica'
   | 'mapa' | 'escudo' | 'cadeado' | 'check' | 'x' | 'seta' | 'jogar' | 'sair' | 'trofeu' | 'escola'
   | 'livro' | 'orelha' | 'balao' | 'pessoas' | 'bussola' | 'cadeira' | 'corrente' | 'calendario'
-  | 'tijolo' | 'chapeu' | 'controle' | 'tela-cheia' | 'dica' | 'fogo' | 'olho' | 'casa' | 'professor';
+  | 'tijolo' | 'chapeu' | 'controle' | 'tela-cheia' | 'dica' | 'fogo' | 'olho' | 'casa' | 'professor'
+  | 'bandeira' | 'coroa' | 'chave' | 'termo' | 'paleta' | 'coracao';
 
 interface Props extends React.SVGProps<SVGSVGElement> {
   nome: NomeIcone;
@@ -54,6 +55,12 @@ const DESENHOS: Record<NomeIcone, (cor: string) => React.ReactNode> = {
   olho: cor => (<><path d="M2.5 12S6 6 12 6s9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z" fill="#fff" /><path d="M2.5 12S6 6 12 6s9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z" /><circle cx="12" cy="12" r="3" fill={cor === SOL ? '#1F5FD0' : cor} /></>),
   casa: cor => (<><path d="M4 11l8-7 8 7v9H4z" fill={cor} /><path d="M4 11l8-7 8 7v9H4z" strokeLinejoin="round" /><path d="M10 20v-6h4v6" /></>),
   professor: cor => (<><circle cx="12" cy="8" r="3.5" fill={cor} /><circle cx="12" cy="8" r="3.5" /><path d="M5 20a7 7 0 0114 0z" fill={cor} /><path d="M5 20a7 7 0 0114 0z" /><path d="M8.5 5.5L12 4l3.5 1.5" /></>),
+  bandeira: cor => (<><path d="M6 4v17" strokeWidth="2.5" /><path d="M6 4h12l-3 4.5 3 4.5H6z" fill={cor === SOL ? '#E5484D' : cor} /><path d="M6 4h12l-3 4.5 3 4.5H6z" strokeLinejoin="round" /></>),
+  coroa: cor => (<><path d="M4 17l-1-9 5 4 4-7 4 7 5-4-1 9z" fill={cor} strokeLinejoin="round" /><path d="M4 17h16v3H4z" fill={cor} /><circle cx="12" cy="13" r="1.5" fill="#E5484D" stroke="none" /></>),
+  chave: cor => (<><circle cx="8" cy="14" r="4.5" fill={cor} /><circle cx="8" cy="14" r="4.5" /><path d="M11.5 11L20 2.5M17 5.5l2.5 2.5M14.5 8l2.5 2.5" /></>),
+  termo: cor => (<><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z" fill="#fff" /><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z" strokeLinejoin="round" /><path d="M9 8h6M9 11.5h6M9 15h4" /><circle cx="15.5" cy="16" r="2" fill={cor} stroke="none" /></>),
+  paleta: cor => (<><path d="M12 3a9 9 0 100 18c1.7 0 2-1 2-2 0-1.2-1-1.6-1-2.6 0-1 .8-1.4 2-1.4h2a4 4 0 004-4c0-4.4-4-8-9-8z" fill={cor} /><path d="M12 3a9 9 0 100 18c1.7 0 2-1 2-2 0-1.2-1-1.6-1-2.6 0-1 .8-1.4 2-1.4h2a4 4 0 004-4c0-4.4-4-8-9-8z" /><circle cx="8" cy="10" r="1.3" fill="#E5484D" stroke="none" /><circle cx="12" cy="7.5" r="1.3" fill="#1F5FD0" stroke="none" /><circle cx="16" cy="10" r="1.3" fill="#3FA34D" stroke="none" /></>),
+  coracao: cor => (<path d="M12 20s-7-4.4-8.5-8.6C2.3 8 4.5 5 7.5 5c1.8 0 3.2 1 4.5 2.6C13.3 6 14.7 5 16.5 5c3 0 5.2 3 4 6.4C19 15.6 12 20 12 20z" fill={cor === SOL ? '#E5484D' : cor} strokeLinejoin="round" />),
 };
 
 export const Icone: React.FC<Props> = ({ nome, cor = SOL, titulo, className = 'w-6 h-6', ...rest }) => (

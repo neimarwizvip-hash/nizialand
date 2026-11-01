@@ -26,11 +26,35 @@ export const MISSION_MAP: MissionMapLevel[] = [
   { number: 10, title: 'O vencedor que me tornei', theme: 'Reconhecer a jornada', icon: '🎓', color: 'purple', description: 'Planejado: revisão final, discurso e cerimônia.', path: '/nivel10', activityCount: 8 },
 ];
 
+function resultadosDoNivel(results: Record<string, ActivityResult>, level: number): ActivityResult[] {
+  const prefixes = level === 2 ? ['n2_'] : [`nivel${level}-`];
+  return Object.values(results).filter(r => r.completed && prefixes.some(prefix => r.activityId.startsWith(prefix)));
+}
+
 export function levelCompletion(results: Record<string, ActivityResult>, quiz: QuizResult | null, flashcards: FlashcardResult | null, level: number): boolean {
   if (level === 0) return !!quiz?.completed && !!flashcards?.completed;
-  const prefixes = level === 2 ? ['n2_'] : [`nivel${level}-`];
   const required = MISSION_MAP[level]?.activityCount ?? 0;
-  return required > 0 && Object.values(results).filter(r => r.completed && prefixes.some(prefix => r.activityId.startsWith(prefix))).length >= required;
+  return required > 0 && resultadosDoNivel(results, level).length >= required;
+}
+
+// Aproveitamento do nível (0 a 1): no Nível 0, pelas estrelas do quiz e dos flashcards; nos demais, pontos/máximo das atividades.
+export function levelFraction(results: Record<string, ActivityResult>, quiz: QuizResult | null, flashcards: FlashcardResult | null, level: number): number {
+  if (level === 0) {
+    const estrelas = (quiz?.stars ?? 0) + (flashcards?.stars ?? 0);
+    return Math.max(0, Math.min(1, estrelas / 6));
+  }
+  const lista = resultadosDoNivel(results, level);
+  const maximo = lista.reduce((s, r) => s + (r.maxScore || 0), 0);
+  if (maximo <= 0) return 0;
+  return Math.max(0, Math.min(1, lista.reduce((s, r) => s + (r.score || 0), 0) / maximo));
+}
+
+// Medalha do nível completo: ouro a partir de 90 %, prata a partir de 70 %, bronze abaixo disso.
+export type Medalha = 'ouro' | 'prata' | 'bronze';
+export function medalhaDaFracao(frac: number): Medalha {
+  if (frac >= 0.9) return 'ouro';
+  if (frac >= 0.7) return 'prata';
+  return 'bronze';
 }
 
 export function getMissionMapState(results: Record<string, ActivityResult>, quiz: QuizResult | null, flashcards: FlashcardResult | null) {
@@ -40,6 +64,8 @@ export function getMissionMapState(results: Record<string, ActivityResult>, quiz
     const available = level.number === 0 || previousCompleted;
     const state = completed ? 'completed' : available ? 'available' : 'locked';
     previousCompleted = completed;
-    return { ...level, completed, available, state: state as 'completed' | 'available' | 'locked' };
+    const fraction = completed ? levelFraction(results, quiz, flashcards, level.number) : 0;
+    const medal: Medalha | null = completed ? medalhaDaFracao(fraction) : null;
+    return { ...level, completed, available, state: state as 'completed' | 'available' | 'locked', fraction, medal };
   });
 }

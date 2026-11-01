@@ -4,10 +4,11 @@ import { useGame } from '../../context/GameContext';
 import { getMissionMapState } from '../../data/missionMap';
 import { audioService } from '../../services/audio';
 import { PlayerAvatar } from '../../components/ui/PlayerAvatar';
-import { BotaoJogo, Cenario, Ficha, Hud, Icone, ICONE_NIVEL, Painel, Titulo } from '../../components/kit';
+import { BotaoJogo, Cenario, Ficha, Hud, Icone, ICONE_NIVEL, Medalha, NOME_MEDALHA, Painel, Titulo } from '../../components/kit';
 
 // Mapa das missões: tabuleiro de papel com a trilha da escola e os 11 níveis como paradas.
 // O avatar do aluno fica parado no nível atual; o caminho já percorrido fica verde.
+// Cada nível completo ganha medalha de ouro (90 %+), prata (70 %+) ou bronze, pelo aproveitamento das atividades.
 
 const LARGURA = 1000;
 const ALTURA = 560;
@@ -168,9 +169,9 @@ export const MissionMapScreen: React.FC = () => {
                       <span className={`absolute left-1/2 -translate-x-1/2 top-full mt-0.5 font-display text-[clamp(10px,1.3vw,15px)] leading-none px-1.5 py-0.5 rounded-md ${level.state === 'locked' ? 'text-nisia-tinta-suave' : 'bg-nisia-papel text-nisia-tinta border border-nisia-papel-linha'}`}>
                         {level.number}
                       </span>
-                      {level.state === 'completed' && (
-                        <span className="absolute -top-1.5 -right-1.5 w-[46%] h-[46%] drop-shadow-[0_2px_0_rgba(26,42,74,0.4)]" aria-hidden="true">
-                          <Icone nome="medalha" className="w-full h-full text-nisia-tinta" />
+                      {level.medal && (
+                        <span className="absolute -top-2 -right-2 w-[52%] h-[65%] drop-shadow-[0_2px_0_rgba(26,42,74,0.4)]" title={NOME_MEDALHA[level.medal]}>
+                          <Medalha tipo={level.medal} className="w-full h-full" />
                         </span>
                       )}
                     </button>
@@ -198,7 +199,9 @@ export const MissionMapScreen: React.FC = () => {
             <Painel tipo="papel" fita className="p-4 pt-5 short:p-2.5 short:pt-3">
               <div className="flex items-center justify-between gap-2">
                 <Ficha cor={nivelSel.state === 'completed' ? 'verde' : nivelSel.state === 'available' ? 'sol' : 'papel'}>Nível {nivelSel.number}</Ficha>
-                <Icone nome={ICONE_NIVEL[nivelSel.number]} className="w-9 h-9 text-nisia-tinta" />
+                {nivelSel.medal
+                  ? <span className="inline-flex items-center gap-1.5"><Medalha tipo={nivelSel.medal} className="w-9 h-11 short:w-7 short:h-9" /><span className="font-display text-sm text-nisia-tinta-suave short:hidden">{Math.round(nivelSel.fraction * 100)}%</span></span>
+                  : <Icone nome={ICONE_NIVEL[nivelSel.number]} className="w-9 h-9 text-nisia-tinta" />}
               </div>
               <h2 className="mt-2 font-display text-2xl short:text-lg leading-tight text-nisia-azul-700">{nivelSel.title}</h2>
               <p className="font-body font-semibold text-nisia-laranja-700 short:text-sm">{nivelSel.theme}</p>
@@ -217,6 +220,13 @@ export const MissionMapScreen: React.FC = () => {
             </Painel>
             <Painel tipo="placa" className="px-4 py-2.5 text-center short:hidden">
               <p className="font-display text-lg short:text-sm">{levels.filter(l => l.completed).length} de {levels.length} níveis completos</p>
+              {levels.some(l => l.medal) && (
+                <p className="mt-1 inline-flex items-center justify-center gap-3 text-sm font-semibold" aria-label="Medalhas conquistadas">
+                  {(['ouro', 'prata', 'bronze'] as const).map(t => (
+                    <span key={t} className="inline-flex items-center gap-1"><Medalha tipo={t} className="w-5 h-6" comFita={false} /> {levels.filter(l => l.medal === t).length}</span>
+                  ))}
+                </p>
+              )}
             </Painel>
           </aside>
         </main>

@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Play, HelpCircle, KeyRound } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
-import { Button } from '../../components/ui/Button';
+import { BotaoJogo, Icone, Painel } from '../../components/kit';
+import type { NomeIcone } from '../../components/kit';
+import { audioService } from '../../services/audio';
 import { FullscreenButton } from '../../components/ui/FullscreenButton';
 import { GameControls, LevelBadge } from '../../components/ui/GameControls';
 import { NisialandLogo } from '../../components/ui/NisialandLogo';
+
+const COMO_JOGAR: { titulo: string; texto: string; icone: NomeIcone; cor: 'sol' | 'azul' | 'verde' | 'roxo' }[] = [
+  { titulo: 'Nível 0: desvie do Zé Cartinha!', texto: 'Entre com seu código, confirme sua série (6º ao 9º ano) e complete as 2 atividades. O Zé vai chamar para o bafo e embaralhar as cartas: mantenha o foco!', icone: 'controle', cor: 'sol' },
+  { titulo: 'Introdução da história', texto: 'Antes da Missão 0, um vídeo curto apresenta a escola e o Zé Cartinha. Você pode pular se já assistiu.', icone: 'estrela', cor: 'verde' },
+  { titulo: 'Atividade 1: quiz', texto: 'Responda 10 perguntas de inglês da sua série, até 100 pontos cada. Dispense o Zé com "Agora não, Zé!" e acerte para ganhar +10.', icone: 'lupa', cor: 'azul' },
+  { titulo: 'Atividade 2: flashcards', texto: 'Memorize os 8 estudantes em 30 segundos e encontre as cartas certas sem perder seus 3 corações, mesmo quando o Zé embaralhar tudo.', icone: 'carta', cor: 'roxo' },
+  { titulo: 'Treino livre', texto: 'Arcade sem cadastro: escolha a série (6º ano ao Ensino Médio) e até 2 tópicos, faça combos e use os poderes 50/50 e +10s.', icone: 'jogar', cor: 'azul' },
+];
 
 export const StartScreen: React.FC = () => {
   const navigate = useNavigate();
@@ -87,49 +96,47 @@ export const StartScreen: React.FC = () => {
         </div>
 
         {/* Como jogar (canto superior esquerdo, área livre do céu) */}
-        <div className="order-5 wide:order-none flex justify-center wide:flex-col gap-2 wide:absolute wide:top-[2.5%] wide:left-[1.5%] wide:w-[11%] animate-rise-in">
-          <Button variant="sky" size="sm" onClick={() => setShowHowToPlay(true)} className="gap-1.5">
-            <HelpCircle className="w-4 h-4 text-blue-600" />
+        <div className="order-5 wide:order-none flex justify-center wide:flex-col gap-2 wide:absolute wide:top-[2.5%] wide:left-[1.5%] animate-rise-in">
+          <BotaoJogo cor="papel" tamanho="sm" className="whitespace-nowrap" onClick={() => { audioService.playClick(); setShowHowToPlay(true); }}>
+            <Icone nome="dica" className="w-4 h-4" />
             <span>Como jogar</span>
-          </Button>
+          </BotaoJogo>
         </div>
 
         {/* JOGAR + acesso por código (área livre à direita do logo) */}
         <section className="order-3 wide:order-none w-full max-w-md mx-auto wide:mx-0 wide:max-w-none flex flex-col items-center gap-2 wide:absolute wide:top-[13%] short:top-[12.5%] wide:right-[1.5%] wide:w-[20%] animate-rise-in [animation-delay:200ms]">
           <div className="relative w-full">
-            <span className="glow-ring absolute inset-0 rounded-full border-4 border-amber-300 pointer-events-none" />
-            <button
+            <span className="absolute inset-0 rounded-2xl bg-nisia-sol-400 animate-anel-pulsa pointer-events-none" aria-hidden="true" />
+            <BotaoJogo
+              cor="sol"
+              tamanho="lg"
               onClick={handleStartLevel0}
-              className="btn-shine overflow-hidden group relative flex items-center justify-center w-full px-6 wide:px-3 py-4 short:py-2 xl:py-5 text-2xl short:text-xl xl:text-3xl font-heading font-black tracking-widest uppercase text-slate-950 bg-gradient-to-b from-amber-300 via-amber-400 to-amber-500 rounded-full border-4 border-amber-600 shadow-[0_6px_0_0_#b45309] hover:from-amber-200 hover:to-amber-400 transition-all duration-150 active:translate-y-1 active:shadow-[0_2px_0_0_#b45309]"
+              className="btn-shine overflow-hidden relative w-full !text-3xl short:!text-xl xl:!text-4xl tracking-widest short:min-h-[44px]"
               aria-label="Iniciar NISIALAND Nível 0"
             >
-              <span className="flex items-center gap-2 xl:gap-3 drop-shadow-sm">
-                <Play className="w-7 h-7 xl:w-8 xl:h-8 fill-slate-950 text-slate-950" />
-                JOGAR
-              </span>
-            </button>
+              <Icone nome="jogar" className="w-8 h-8 short:w-6 short:h-6" cor="#1A2A4A" />
+              JOGAR
+            </BotaoJogo>
           </div>
 
-          <button
-            onClick={handleGoToLogin}
-            className="mt-1 short:mt-0 flex items-center justify-center gap-1.5 px-3 py-1.5 bg-white/90 text-blue-800 font-heading font-black text-[11px] xl:text-xs uppercase rounded-xl border-2 border-sky-200 shadow-[0_3px_0_0_#bae6fd] hover:bg-white transition-colors"
-          >
-            <KeyRound className="w-3.5 h-3.5 text-amber-500" />
+          <BotaoJogo cor="papel" tamanho="sm" onClick={handleGoToLogin} className="mt-1 short:mt-0 whitespace-nowrap">
+            <Icone nome="chave" className="w-4 h-4" />
             <span>Já tenho código</span>
-          </button>
+          </BotaoJogo>
 
           {currentPlayer && (
-            <div className="w-full bg-white/90 border-2 border-sky-200 px-2 py-1.5 rounded-xl flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-center">
-              <span className="text-[11px] text-slate-600 font-semibold">
-                Jogando como: <strong className="text-blue-800 font-heading">{currentPlayer.displayName}</strong> ({currentPlayer.className})
+            <Painel tipo="papel" liso className="w-full px-2 py-1.5 flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-center">
+              <span className="text-[11px] text-nisia-tinta-suave font-semibold">
+                Jogando como <strong className="text-nisia-azul-700 font-display">{currentPlayer.displayName}</strong> ({currentPlayer.className})
               </span>
               <button
-                onClick={() => navigate('/missions')}
-                className="text-[11px] font-heading font-black text-amber-600 hover:underline uppercase"
+                type="button"
+                onClick={() => navigate('/mapa')}
+                className="text-[11px] font-display text-nisia-laranja-700 hover:underline uppercase tracking-wide"
               >
-                Continuar missões →
+                Continuar →
               </button>
-            </div>
+            </Painel>
           )}
         </section>
 
@@ -141,78 +148,33 @@ export const StartScreen: React.FC = () => {
       {/* A introdução da história (historia_nivel0.mp4) toca ao entrar na Missão 0 (PhaseStoryGate em /missions). */}
       {/* Música de fundo fica desligada até o aluno ligar no botão "Música" */}
 
-      {/* HOW TO PLAY MODAL */}
+      {/* Como jogar: folha de regras pregada */}
       {showHowToPlay && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-sky-900/40 backdrop-blur-sm animate-fadeIn">
-          <div className="animate-rise-in [animation-duration:0.45s] game-panel-gold max-w-lg w-full p-6 text-slate-700 max-h-[90dvh] overflow-y-auto">
-            <div className="flex justify-between items-center pb-3 border-b-2 border-amber-200">
-              <h3 className="font-heading font-black text-xl text-blue-800 flex items-center gap-2">
-                🎮 Como jogar NISIALAND
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-nisia-tinta/55 backdrop-blur-sm animate-fadeIn" role="dialog" aria-modal="true" aria-label="Como jogar NISIALAND">
+          <Painel tipo="papel" fita className="animate-balao-in max-w-lg w-full p-5 pt-7 short:p-3 short:pt-5 max-h-[90dvh] overflow-y-auto">
+            <div className="flex justify-between items-center gap-2 pb-2 border-b-2 border-dashed border-nisia-papel-linha">
+              <h3 className="font-display text-xl short:text-base text-nisia-azul-700 inline-flex items-center gap-2">
+                <Icone nome="controle" className="w-7 h-7" /> Como jogar NISIALAND
               </h3>
-              <button
-                onClick={() => setShowHowToPlay(false)}
-                className="w-9 h-9 rounded-full bg-white border-2 border-amber-300 text-amber-700 hover:bg-amber-50 text-base font-black"
-              >
-                ✕
+              <button type="button" onClick={() => setShowHowToPlay(false)} className="kit-btn kit-btn--papel kit-btn--sm !min-w-0 !px-2" aria-label="Fechar">
+                <Icone nome="x" className="w-4 h-4" cor="#E5484D" />
               </button>
             </div>
-
-            <div className="py-4 space-y-4 text-sm text-slate-600">
-              <div className="flex items-start gap-3">
-                <span className="bg-cyan-600 text-white font-black rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-xs">0</span>
-                <div>
-                  <strong className="text-blue-900 block font-heading">Nível 0: Desvie do Zé Cartinha!</strong>
-                  Entre com seu código, confirme sua série (6º ao 9º ano) e complete as 2 atividades. O Zé Cartinha vai aparecer chamando para o bafo e embaralhando as cartas: mantenha o foco!
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <span className="bg-emerald-600 text-white font-black rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-xs">★</span>
-                <div>
-                  <strong className="text-blue-900 block font-heading">Introdução da história</strong>
-                  Antes da Missão 0, um vídeo curto apresenta a escola e o <strong>Zé Cartinha</strong>. Você pode pular a história se já assistiu.
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <span className="bg-blue-600 text-white font-black rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-xs">1</span>
-                <div>
-                  <strong className="text-blue-900 block font-heading">Atividade 1: Quiz</strong>
-                  Responda 10 perguntas de inglês da sua série. Até 100 pontos por pergunta! Dispense o Zé rapidinho com "Agora não, Zé!" e acerte para ganhar +10.
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <span className="bg-purple-600 text-white font-black rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-xs">2</span>
-                <div>
-                  <strong className="text-blue-900 block font-heading">Atividade 2: Flashcards</strong>
-                  Memorize os 8 estudantes em 30 segundos! Depois encontre as cartas certas sem perder seus 3 corações, mesmo quando o Zé embaralhar tudo!
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <span className="bg-cyan-600 text-white font-black rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 text-xs">🎮</span>
-                <div>
-                  <strong className="text-blue-900 block font-heading">Treino livre</strong>
-                  Arcade sem cadastro: escolha sua série (6º ano ao Ensino Médio) e até 2 tópicos, faça combos e use os poderes 50/50 e +10s.
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-2 text-center">
-              <Button
-                variant="gold"
-                size="md"
-                onClick={() => {
-                  setShowHowToPlay(false);
-                  handleStartLevel0();
-                }}
-                className="w-full"
-              >
-                Começar o Nível 0 ▶
-              </Button>
-            </div>
-          </div>
+            <ol className="py-3 short:py-2 flex flex-col gap-3 short:gap-1.5 text-sm short:text-xs text-nisia-tinta">
+              {COMO_JOGAR.map(item => (
+                <li key={item.titulo} className="flex items-start gap-3">
+                  <span className={`kit-ficha kit-ficha--${item.cor} !w-8 !h-8 !p-0 justify-center shrink-0`}><Icone nome={item.icone} className="w-5 h-5" /></span>
+                  <span className="leading-snug">
+                    <strong className="block font-display text-nisia-azul-700">{item.titulo}</strong>
+                    {item.texto}
+                  </span>
+                </li>
+              ))}
+            </ol>
+            <BotaoJogo cor="sol" onClick={() => { setShowHowToPlay(false); handleStartLevel0(); }} className="w-full">
+              Começar o Nível 0 <Icone nome="seta" className="w-5 h-5" />
+            </BotaoJogo>
+          </Painel>
         </div>
       )}
     </div>

@@ -70,3 +70,29 @@ export const Fita: React.FC<{ frac: number; className?: string; rotulo?: string 
     <div className="h-full rounded-full bg-gradient-to-r from-nisia-sol-400 to-nisia-laranja-500 transition-all duration-500" style={{ width: `${Math.max(0, Math.min(1, frac)) * 100}%` }} />
   </div>
 );
+
+// Medalha de nível: ouro, prata ou bronze (fita azul, disco metálico com estrela).
+const COR_MEDALHA = {
+  ouro: { disco: '#FFD23F', borda: '#B36E00', brilho: '#FFF1B0' },
+  prata: { disco: '#D9DEE6', borda: '#6B7686', brilho: '#FFFFFF' },
+  bronze: { disco: '#D08A4A', borda: '#7A4A1E', brilho: '#F2C99B' },
+} as const;
+export const NOME_MEDALHA = { ouro: 'Medalha de ouro', prata: 'Medalha de prata', bronze: 'Medalha de bronze' } as const;
+
+export const Medalha: React.FC<{ tipo: 'ouro' | 'prata' | 'bronze'; className?: string; comFita?: boolean }> = ({ tipo, className = 'w-8 h-8', comFita = true }) => {
+  const c = COR_MEDALHA[tipo];
+  return (
+    <svg viewBox="0 0 32 40" className={className} role="img" aria-label={NOME_MEDALHA[tipo]}>
+      {comFita && (
+        <>
+          <path d="M9 1h6l2 13-6 2z" fill="#1F5FD0" stroke="#0C2A66" strokeWidth="1.5" strokeLinejoin="round" />
+          <path d="M23 1h-6l-2 13 6 2z" fill="#7B3FE4" stroke="#0C2A66" strokeWidth="1.5" strokeLinejoin="round" />
+        </>
+      )}
+      <circle cx="16" cy="26" r="12" fill={c.borda} />
+      <circle cx="16" cy="25" r="11" fill={c.disco} stroke="#1A2A4A" strokeWidth="1.5" />
+      <circle cx="16" cy="25" r="7.5" fill="none" stroke={c.borda} strokeWidth="1.2" opacity="0.7" />
+      <path d="M16 19.5l1.8 3.6 4 .6-2.9 2.8.7 4L16 28.6l-3.6 1.9.7-4-2.9-2.8 4-.6z" fill={c.brilho} stroke={c.borda} strokeWidth="1" strokeLinejoin="round" />
+    </svg>
+  );
+};

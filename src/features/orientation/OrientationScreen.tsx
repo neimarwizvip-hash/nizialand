@@ -1,29 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Sparkles,
-  BookOpen,
-  Users,
-  Gamepad2,
-  GraduationCap,
-  Volume2,
-  CheckCircle2,
-  ShieldCheck,
-  ArrowRight,
-  HeartHandshake
-} from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { soundEffects, audioService } from '../../services/audio';
 import { speechService } from '../../services/speech';
+import { Anfitriao, BotaoJogo, Cenario, Ficha, Hud, Icone, Painel, Titulo } from '../../components/kit';
+import type { NomeIcone } from '../../components/kit';
+import { falaDaTela } from '../../data/falasAnfitrioes';
+
+// Reunião educativa no auditório: a orientadora Leia apresenta as regras da escola em três grupos,
+// faz duas perguntas rápidas e recolhe o termo de compromisso antes do cadastro. Lógica igual à anterior.
 
 interface RuleGroup {
   id: 'convivencia' | 'jogo' | 'aprendizagem';
   titleEn: string;
   titlePt: string;
-  icon: string;
-  color: string;
-  borderColor: string;
-  bgGrad: string;
+  icone: NomeIcone;
+  cor: 'sol' | 'azul' | 'verde';
   rules: { title: string; desc: string; enDesc?: string }[];
 }
 
@@ -32,10 +24,8 @@ const RULE_GROUPS: RuleGroup[] = [
     id: 'convivencia',
     titleEn: 'Community & Respect',
     titlePt: '1. Regras de Convivência',
-    icon: '🤝',
-    color: 'text-amber-600',
-    borderColor: 'border-amber-500',
-    bgGrad: 'from-amber-100 to-sky-50',
+    icone: 'pessoas',
+    cor: 'sol',
     rules: [
       {
         title: 'Respeito Mútuo entre Equipes',
@@ -58,10 +48,8 @@ const RULE_GROUPS: RuleGroup[] = [
     id: 'jogo',
     titleEn: 'Fair Play & Game Rules',
     titlePt: '2. Regras do Jogo e Fair Play',
-    icon: '🎮',
-    color: 'text-cyan-600',
-    borderColor: 'border-cyan-500',
-    bgGrad: 'from-blue-100 to-sky-50',
+    icone: 'controle',
+    cor: 'azul',
     rules: [
       {
         title: 'Quiz de Comparativos (2 Tentativas)',
@@ -84,10 +72,8 @@ const RULE_GROUPS: RuleGroup[] = [
     id: 'aprendizagem',
     titleEn: 'Learning & Growth',
     titlePt: '3. Regras de Aprendizagem',
-    icon: '📚',
-    color: 'text-emerald-600',
-    borderColor: 'border-emerald-500',
-    bgGrad: 'from-emerald-100 to-sky-50',
+    icone: 'livro',
+    cor: 'verde',
     rules: [
       {
         title: 'Ouvir e Praticar a Pronúncia',
@@ -108,6 +94,19 @@ const RULE_GROUPS: RuleGroup[] = [
   }
 ];
 
+type Aba = 'convivencia' | 'jogo' | 'aprendizagem' | 'quiz' | 'terms';
+const ABAS: { id: Aba; rotulo: string; curto: string; icone: NomeIcone }[] = [
+  { id: 'convivencia', rotulo: '1. Convivência', curto: '1', icone: 'pessoas' },
+  { id: 'jogo', rotulo: '2. Jogo e fair play', curto: '2', icone: 'controle' },
+  { id: 'aprendizagem', rotulo: '3. Aprendizagem', curto: '3', icone: 'livro' },
+  { id: 'quiz', rotulo: 'Perguntas rápidas', curto: '?', icone: 'dica' },
+  { id: 'terms', rotulo: 'Termo e cadastro', curto: 'OK', icone: 'termo' },
+];
+
+const Percevejo: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <span className={`absolute left-1/2 -translate-x-1/2 -top-2 w-4 h-4 rounded-full bg-nisia-erro border-2 border-nisia-tinta shadow-[0_2px_0_0_rgba(26,42,74,0.4)] ${className}`} aria-hidden="true" />
+);
+
 export const OrientationScreen: React.FC = () => {
   const navigate = useNavigate();
 
@@ -117,14 +116,13 @@ export const OrientationScreen: React.FC = () => {
     return () => audioService.releaseMusicForStory();
   }, []);
 
-  // Active Tab: 'convivencia' | 'jogo' | 'aprendizagem' | 'quiz' | 'terms'
-  const [activeTab, setActiveTab] = useState<'convivencia' | 'jogo' | 'aprendizagem' | 'quiz' | 'terms'>('convivencia');
+  const [activeTab, setActiveTab] = useState<Aba>('convivencia');
 
-  // Formative Quiz State
+  // Perguntas formativas
   const [q1Answer, setQ1Answer] = useState<number | null>(null);
   const [q2Answer, setQ2Answer] = useState<number | null>(null);
 
-  // Terms Agreement
+  // Termo de compromisso
   const [agreedToTerms, setAgreedToTerms] = useState<boolean>(false);
 
   const slogan = "LEIA! Know the rules, learn and go further!";
@@ -160,349 +158,180 @@ export const OrientationScreen: React.FC = () => {
     navigate('/register');
   };
 
+  const mudarAba = (aba: Aba) => { audioService.playClick(); setActiveTab(aba); };
+
+  // A Leia fala conforme a parte da reunião (regras, perguntas, termo)
+  const momento = activeTab === 'quiz' ? 'orientacaoQuiz' : activeTab === 'terms' ? 'orientacaoTermo' : 'orientacao';
+  const fala = useMemo(() => falaDaTela(momento), [momento]);
+
+  const grupo = RULE_GROUPS.find(g => g.id === activeTab);
+  const proximaAba: Aba = activeTab === 'convivencia' ? 'jogo' : activeTab === 'jogo' ? 'aprendizagem' : 'quiz';
+
+  const Opcao: React.FC<{ texto: string; escolhida: boolean; certa: boolean; onClick: () => void }> = ({ texto, escolhida, certa, onClick }) => (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={escolhida}
+      className={`kit-papel kit-papel--liso px-3 py-2.5 short:py-1.5 rounded-xl border-2 text-left text-sm short:text-xs font-semibold transition-all flex items-start gap-2 ${
+        escolhida ? (certa ? '!border-nisia-verde-500 !bg-nisia-verde-100 text-nisia-verde-700' : '!border-nisia-erro !bg-red-50 text-nisia-erro') : 'border-nisia-papel-linha hover:border-nisia-azul-400 text-nisia-tinta hover:-translate-y-0.5'
+      }`}
+    >
+      {escolhida && <Icone nome={certa ? 'check' : 'x'} className="w-5 h-5 shrink-0" cor={certa ? '#DDF5D9' : '#E5484D'} />}
+      <span>{texto}</span>
+    </button>
+  );
+
   return (
-    <div className="relative min-h-screen game-sky text-slate-900 flex flex-col justify-between overflow-hidden">
-      {/* Background: School Auditorium Artwork */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="/assets/nisialand_auditorium_bg.jpg"
-          alt="Auditório da Escola Nísia Vilela Fernandes"
-          className="w-full h-full object-cover filter brightness-[0.75] transition-all duration-700"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-sky-50 via-white/60 to-sky-50/70"></div>
-      </div>
+    <div className="relative min-h-screen text-nisia-tinta flex flex-col overflow-x-hidden">
+      <Cenario nome="auditorio" escurecer={0.3} />
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Hud nivel={0} mostrarMoedas={false} mostrarMapa={false} mostrarPlacar={false} />
 
-      {/* Top Header */}
-      <header className="relative z-10 w-full max-w-5xl mx-auto px-4 pt-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="bg-emerald-500 text-slate-950 px-3.5 py-1.5 rounded-2xl font-heading font-black text-xs sm:text-sm tracking-wider uppercase shadow-game-emerald flex items-center gap-1.5">
-            <span>🏛️</span> <span>REUNIÃO EDUCATIVA NO AUDITÓRIO</span>
-          </div>
-        </div>
+        <main className="flex-1 w-full max-w-6xl mx-auto px-3 sm:px-5 py-3 md:py-5 short:py-1 grid grid-cols-1 md:grid-cols-[15rem_1fr] short:grid-cols-1 gap-3 short:gap-2 items-start">
+          {/* Leia no palco */}
+          <aside className="hidden md:flex short:hidden flex-col items-start self-end">
+            <Anfitriao nome="leia" fala={fala.pt} traducao={fala.en} altura="h-64 short:h-32" />
+          </aside>
 
-        <button
-          onClick={() => navigate('/')}
-          className="text-xs font-heading font-bold text-slate-500 hover:text-slate-900 px-3 py-1 bg-sky-50/80 rounded-lg border border-sky-200"
-        >
-          Voltar ao Início
-        </button>
-      </header>
-
-      {/* Main Body */}
-      <main className="relative z-10 w-full max-w-4xl mx-auto px-4 my-auto py-4">
-        {/* Presenter Card: Orientadora Edileia ("Leia") */}
-        <div className="game-panel !border-emerald-300 !shadow-[0_6px_0_0_#34d399] p-4 sm:p-6 mb-4 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-          {/* Avatar Cutout / Turnaround */}
-          <div className="relative flex-shrink-0">
-            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-3 border-emerald-400 shadow-glow-emerald bg-white/95 p-1 flex items-center justify-center">
-              <img
-                src="/assets/nisialand_institutional_characters.jpg"
-                alt="Orientadora Edileia (Leia)"
-                className="w-full h-full object-cover object-right"
-              />
+          <section aria-label="Reunião educativa" className="flex flex-col gap-2 short:gap-1 min-w-0">
+            <div className="flex flex-wrap items-end justify-between gap-2 px-1 short:hidden">
+              <Titulo nivel={1} className="text-3xl sm:text-4xl leading-none">Reunião no auditório</Titulo>
+              <Ficha cor="papel" className="short:hidden">Orientação Educacional · Leia</Ficha>
             </div>
-            <div className="absolute -bottom-2 inset-x-0 mx-auto w-max px-2.5 py-0.5 rounded-full bg-emerald-500 text-slate-950 font-heading font-black text-[10px] uppercase shadow">
-              Orientadora
-            </div>
-          </div>
 
-          {/* Slogan and Introduction */}
-          <div className="text-center sm:text-left flex-1">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1">
-              <div>
-                <h1 className="text-xl sm:text-2xl font-heading font-black text-slate-900">
-                  Edileia "Leia" • Orientação Educacional
-                </h1>
-                <p className="text-xs text-emerald-700 font-medium">
-                  Escola Municipal Nísia Vilela Fernandes
+            {/* Balão da Leia no celular em pé (sem a figura) */}
+            <div className="md:hidden short:hidden kit-balao kit-balao--esq text-sm" role="note">{fala.pt}</div>
+
+            <Painel tipo="mural" as="div" className="p-3 sm:p-4 short:p-2 flex flex-col gap-3 short:gap-1.5">
+              {/* Abas */}
+              <div role="tablist" aria-label="Partes da reunião" className="flex flex-wrap gap-1.5 short:gap-1">
+                {ABAS.map(a => {
+                  const ativa = activeTab === a.id;
+                  return (
+                    <button
+                      key={a.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={ativa}
+                      onClick={() => mudarAba(a.id)}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 short:px-2 short:py-1 rounded-full border-2 font-display text-sm short:text-xs uppercase tracking-wide transition-all ${
+                        ativa ? 'bg-nisia-sol-400 border-nisia-sol-700 text-nisia-tinta shadow-[0_3px_0_0_#B36E00]' : 'bg-nisia-papel border-nisia-papel-linha text-nisia-tinta-suave hover:bg-nisia-sol-100'
+                      }`}
+                    >
+                      <Icone nome={a.icone} className="w-4 h-4" cor={ativa ? '#1A2A4A' : '#FFD23F'} />
+                      <span className="hidden sm:inline short:hidden">{a.rotulo}</span>
+                      <span className="sm:hidden short:inline">{a.curto}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Lema pregado no mural */}
+              <Painel tipo="papel" liso className="px-3 py-2 short:py-1 flex flex-wrap items-center justify-between gap-2 rotate-[-0.6deg]">
+                <Percevejo />
+                <p className="min-w-0 leading-tight">
+                  <span className="font-display text-base short:text-sm text-nisia-azul-700">“{slogan}”</span>
+                  <span className="block text-xs text-nisia-tinta-suave font-semibold short:hidden">“LEIA! Conheça as regras, aprenda e vá mais longe!”</span>
                 </p>
-              </div>
+                <button type="button" onClick={handleSpeakSlogan} className="kit-btn kit-btn--azul kit-btn--sm shrink-0" title="Ouvir o lema em inglês" aria-label="Ouvir o lema em inglês">
+                  <Icone nome="som" className="w-4 h-4" /> <span className="short:hidden">Ouvir lema</span>
+                </button>
+              </Painel>
 
-              <button
-                onClick={handleSpeakSlogan}
-                className="self-center sm:self-auto px-3 py-1.5 bg-emerald-100 border border-emerald-500/60 hover:bg-emerald-100 text-emerald-700 text-xs font-heading font-bold rounded-xl flex items-center gap-1.5 transition-all"
-                title="Ouvir slogan em inglês"
-              >
-                <Volume2 className="w-4 h-4 text-emerald-600" />
-                <span>Ouvir Lema</span>
-              </button>
-            </div>
-
-            {/* Slogan Callout */}
-            <div className="mt-2 bg-gradient-to-r from-emerald-100 via-white/40 to-cyan-100 border-2 border-emerald-400/60 rounded-2xl px-4 py-2 flex items-center gap-3">
-              <span className="text-2xl">💡</span>
-              <div>
-                <div className="text-xs sm:text-sm font-heading font-black text-emerald-700 tracking-wider">
-                  "{slogan}"
-                </div>
-                <div className="text-[11px] text-slate-600">
-                  "LEIA! Conheça as regras, aprenda e vá mais longe!"
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Tab Selector Navigation */}
-        <div className="flex justify-center gap-2 mb-4 overflow-x-auto pb-1">
-          <button
-            onClick={() => setActiveTab('convivencia')}
-            className={`px-3.5 py-2 rounded-xl font-heading font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all ${
-              activeTab === 'convivencia'
-                ? 'bg-amber-500 text-slate-950 shadow-game-gold scale-105'
-                : 'bg-sky-50/80 text-slate-600 hover:bg-sky-100'
-            }`}
-          >
-            <span>🤝</span> <span>1. Convivência</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('jogo')}
-            className={`px-3.5 py-2 rounded-xl font-heading font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all ${
-              activeTab === 'jogo'
-                ? 'bg-cyan-500 text-slate-950 shadow-game-blue scale-105'
-                : 'bg-sky-50/80 text-slate-600 hover:bg-sky-100'
-            }`}
-          >
-            <span>🎮</span> <span>2. Jogo &amp; Fair Play</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('aprendizagem')}
-            className={`px-3.5 py-2 rounded-xl font-heading font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all ${
-              activeTab === 'aprendizagem'
-                ? 'bg-emerald-500 text-slate-950 shadow-game-emerald scale-105'
-                : 'bg-sky-50/80 text-slate-600 hover:bg-sky-100'
-            }`}
-          >
-            <span>📚</span> <span>3. Aprendizagem</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('quiz')}
-            className={`px-3.5 py-2 rounded-xl font-heading font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all ${
-              activeTab === 'quiz'
-                ? 'bg-purple-500 text-white shadow-game-purple scale-105'
-                : 'bg-sky-50/80 text-slate-600 hover:bg-sky-100'
-            }`}
-          >
-            <span>❓</span> <span>Perguntas Rápidas</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('terms')}
-            className={`px-3.5 py-2 rounded-xl font-heading font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all ${
-              activeTab === 'terms'
-                ? 'bg-gradient-to-r from-amber-400 to-emerald-400 text-slate-950 shadow-game-gold scale-105 font-black'
-                : 'bg-sky-50/80 text-amber-700 hover:bg-sky-100'
-            }`}
-          >
-            <span>📜</span> <span>Termo &amp; Cadastro</span>
-          </button>
-        </div>
-
-        {/* Tab Content Cards */}
-        <div className="game-panel p-5 sm:p-6 animate-fadeIn">
-          {/* TAB 1, 2, 3: RULE GROUPS */}
-          {(activeTab === 'convivencia' || activeTab === 'jogo' || activeTab === 'aprendizagem') && (
-            <div>
-              {(() => {
-                const grp = RULE_GROUPS.find(g => g.id === activeTab)!;
-                return (
-                  <div>
-                    <div className="flex items-center justify-between pb-3 mb-4 border-b border-sky-200">
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl">{grp.icon}</span>
-                        <div>
-                          <h2 className={`font-heading font-black text-lg ${grp.color}`}>
-                            {grp.titlePt}
-                          </h2>
-                          <p className="text-xs text-slate-500 font-heading uppercase">
-                            {grp.titleEn}
-                          </p>
-                        </div>
+              {/* Regras do grupo escolhido */}
+              {grupo && (
+                <div className="flex flex-col gap-2 short:gap-1">
+                  <div className="flex items-center justify-between gap-2 px-1">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <Icone nome={grupo.icone} className="w-7 h-7 short:w-5 short:h-5 text-nisia-papel shrink-0" />
+                      <div className="leading-tight min-w-0">
+                        <h2 className="font-display text-lg short:text-sm text-nisia-papel truncate">{grupo.titlePt}</h2>
+                        <p className="text-[11px] uppercase tracking-wider text-nisia-papel-escuro font-semibold short:hidden">{grupo.titleEn}</p>
                       </div>
-
-                      <button
-                        onClick={() => {
-                          const next =
-                            activeTab === 'convivencia'
-                              ? 'jogo'
-                              : activeTab === 'jogo'
-                              ? 'aprendizagem'
-                              : 'quiz';
-                          setActiveTab(next);
-                        }}
-                        className="text-xs font-heading font-bold text-cyan-700 hover:text-cyan-800 flex items-center gap-1 bg-sky-50 px-3 py-1.5 rounded-xl border border-sky-200"
-                      >
-                        <span>Próximo Grupo</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
                     </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {grp.rules.map((rule, idx) => (
-                        <div
-                          key={idx}
-                          className="bg-white border-2 border-sky-200 hover:border-sky-300 rounded-2xl p-4 flex flex-col justify-between shadow-[0_4px_0_0_#bae6fd] transition-all hover:-translate-y-0.5"
-                        >
-                          <div>
-                            <div className="flex items-center gap-2 mb-2">
-                              <span className="w-6 h-6 rounded-full bg-sky-50 text-slate-700 font-heading font-black text-xs flex items-center justify-center">
-                                {idx + 1}
-                              </span>
-                              <h3 className="font-heading font-bold text-sm text-slate-900">
-                                {rule.title}
-                              </h3>
-                            </div>
-                            <p className="text-xs text-slate-600 leading-relaxed mb-3">
-                              {rule.desc}
-                            </p>
-                          </div>
-
-                          {rule.enDesc && (
-                            <div className="pt-2 border-t border-sky-200 flex items-start gap-1.5 text-[11px] text-cyan-700/90 italic">
-                              <Sparkles className="w-3.5 h-3.5 text-cyan-600 flex-shrink-0 mt-0.5" />
-                              <span>{rule.enDesc}</span>
-                            </div>
-                          )}
+                    <BotaoJogo cor="papel" tamanho="sm" onClick={() => mudarAba(proximaAba)}>
+                      Próximo <Icone nome="seta" className="w-4 h-4" />
+                    </BotaoJogo>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 short:grid-cols-3 gap-3 short:gap-2 pt-2">
+                    {grupo.rules.map((rule, idx) => (
+                      <Painel key={idx} tipo="papel" liso as="article" className={`p-3 short:p-2 flex flex-col gap-1.5 short:gap-1 ${idx % 2 ? 'rotate-[0.7deg]' : 'rotate-[-0.5deg]'}`}>
+                        <Percevejo />
+                        <div className="flex items-center gap-2">
+                          <span className={`kit-ficha kit-ficha--${grupo.cor} !px-2`}>{idx + 1}</span>
+                          <h3 className="font-display text-sm short:text-xs leading-tight text-nisia-azul-700">{rule.title}</h3>
                         </div>
-                      ))}
+                        <p className="text-xs short:text-[11px] text-nisia-tinta leading-snug short:line-clamp-3">{rule.desc}</p>
+                        {rule.enDesc && (
+                          <p className="mt-auto pt-1.5 border-t-2 border-dashed border-nisia-papel-linha text-[11px] italic text-nisia-laranja-700 font-semibold leading-snug short:hidden">{rule.enDesc}</p>
+                        )}
+                      </Painel>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Perguntas rápidas */}
+              {activeTab === 'quiz' && (
+                <div className="flex flex-col gap-2 short:gap-1">
+                  <h2 className="font-display text-lg short:text-sm text-nisia-papel px-1">Perguntas rápidas da orientadora</h2>
+                  <Painel tipo="papel" className="p-3 short:p-2 flex flex-col gap-2 short:gap-1">
+                    <h3 className="font-display text-sm short:text-xs text-nisia-tinta">1. O que expressa o lema <em className="text-nisia-laranja-700">“{slogan}”</em>?</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 short:gap-1">
+                      {[
+                        { text: 'Conhecer as regras e ler ajuda a aprender e ir mais longe!', correct: true },
+                        { text: 'Apenas correr o mais rápido possível no pátio', correct: false }
+                      ].map((opt, i) => <Opcao key={i} texto={opt.text} escolhida={q1Answer === i} certa={opt.correct} onClick={() => handleSelectQ1(i)} />)}
                     </div>
-                  </div>
-                );
-              })()}
-            </div>
-          )}
-
-          {/* TAB 4: FORMATIVE QUESTIONS */}
-          {activeTab === 'quiz' && (
-            <div>
-              <div className="pb-3 mb-4 border-b border-sky-200">
-                <h2 className="font-heading font-black text-lg text-purple-700 flex items-center gap-2">
-                  <span>❓</span> PERGUNTAS FORMATIVAS DA ORIENTADORA LEIA
-                </h2>
-                <p className="text-xs text-slate-500">
-                  Teste rápido para fixar os princípios antes de ingressar no jogo!
-                </p>
-              </div>
-
-              <div className="space-y-6">
-                {/* Question 1 */}
-                <div className="bg-sky-50 border-2 border-sky-200 shadow-[0_3px_0_0_#bae6fd] rounded-2xl p-4">
-                  <h3 className="font-heading font-bold text-sm text-slate-900 mb-2">
-                    1. O que expressa o slogan da Orientadora: <em className="text-amber-700">"LEIA! Know the rules, learn and go further!"</em>?
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                    {[
-                      { text: "Conhecer as regras e ler ajuda a aprender e ir mais longe!", correct: true },
-                      { text: "Apenas correr o mais rápido possível no pátio", correct: false }
-                    ].map((opt, i) => (
-                      <button
-                        key={i}
-                        onClick={() => handleSelectQ1(i)}
-                        className={`p-3 rounded-xl border text-left font-medium transition-all ${
-                          q1Answer === i
-                            ? opt.correct
-                              ? 'bg-emerald-100 border-emerald-500 text-emerald-800'
-                              : 'bg-red-100 border-red-500 text-red-800'
-                            : 'bg-white/95 border-sky-200 hover:border-sky-400 text-slate-600'
-                        }`}
-                      >
-                        {opt.text}
-                      </button>
-                    ))}
+                  </Painel>
+                  <Painel tipo="papel" className="p-3 short:p-2 flex flex-col gap-2 short:gap-1">
+                    <h3 className="font-display text-sm short:text-xs text-nisia-tinta">2. Como deve ser a relação entre a <span className="text-nisia-azul-500">Equipe Azul</span> e a <span className="text-nisia-roxo-500">Equipe Roxa</span>?</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 short:gap-1">
+                      {[
+                        { text: 'Uma rivalidade hostil com ofensas', correct: false },
+                        { text: 'Uma competição esportiva saudável com respeito e amizade!', correct: true }
+                      ].map((opt, i) => <Opcao key={i} texto={opt.text} escolhida={q2Answer === i} certa={opt.correct} onClick={() => handleSelectQ2(i)} />)}
+                    </div>
+                  </Painel>
+                  <div className="flex justify-end">
+                    <BotaoJogo cor="roxo" tamanho="sm" onClick={() => mudarAba('terms')}>
+                      Ir para o termo de compromisso <Icone nome="seta" className="w-4 h-4" />
+                    </BotaoJogo>
                   </div>
                 </div>
+              )}
 
-                {/* Question 2 */}
-                <div className="bg-sky-50 border-2 border-sky-200 shadow-[0_3px_0_0_#bae6fd] rounded-2xl p-4">
-                  <h3 className="font-heading font-bold text-sm text-slate-900 mb-2">
-                    2. Como deve ser a relação entre o <span className="text-blue-600">BLUE TEAM</span> e o <span className="text-purple-600">PURPLE TEAM</span>?
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                    {[
-                      { text: "Uma rivalidade hostil com ofensas", correct: false },
-                      { text: "Uma competição esportiva saudável com respeito e amizade!", correct: true }
-                    ].map((opt, i) => (
-                      <button
-                        key={i}
-                        onClick={() => handleSelectQ2(i)}
-                        className={`p-3 rounded-xl border text-left font-medium transition-all ${
-                          q2Answer === i
-                            ? opt.correct
-                              ? 'bg-emerald-100 border-emerald-500 text-emerald-800'
-                              : 'bg-red-100 border-red-500 text-red-800'
-                            : 'bg-white/95 border-sky-200 hover:border-sky-400 text-slate-600'
-                        }`}
-                      >
-                        {opt.text}
-                      </button>
-                    ))}
+              {/* Termo de compromisso */}
+              {activeTab === 'terms' && (
+                <Painel tipo="papel" fita className="p-4 pt-6 short:p-3 short:pt-4 max-w-2xl mx-auto w-full flex flex-col gap-3 short:gap-1.5 text-center">
+                  <div className="flex items-center justify-center gap-2">
+                    <Icone nome="termo" className="w-9 h-9 short:w-6 short:h-6 text-nisia-tinta" />
+                    <h2 className="font-display text-xl short:text-base text-nisia-azul-700 uppercase tracking-wide">Termo de ciência e compromisso</h2>
                   </div>
-                </div>
+                  <p className="text-sm short:text-xs text-nisia-tinta-suave font-semibold leading-snug short:hidden">
+                    Você concluiu a orientação educativa da Escola Municipal Nísia Vilela Fernandes. Para registrar sua pontuação e defender sua turma no ranking, confirme seu compromisso:
+                  </p>
+                  <label className={`flex items-start gap-3 text-left rounded-2xl border-2 p-3 short:p-2 cursor-pointer transition-colors ${agreedToTerms ? 'bg-nisia-verde-100 border-nisia-verde-500' : 'bg-nisia-sol-100 border-nisia-sol-500 hover:border-nisia-sol-700'}`}>
+                    <input type="checkbox" checked={agreedToTerms} onChange={e => { audioService.playClick(); setAgreedToTerms(e.target.checked); }} className="mt-0.5 w-6 h-6 short:w-5 short:h-5 accent-nisia-verde-500 cursor-pointer shrink-0" />
+                    <span className="text-sm short:text-xs text-nisia-tinta leading-snug">
+                      <strong className="block font-display text-nisia-laranja-700 uppercase tracking-wide text-xs mb-0.5">Declaração do estudante</strong>
+                      “Li e compreendi as regras do Nisialand. Comprometo-me a respeitar meus colegas, jogar com honestidade, não usar ofensas e dar o meu melhor para aprender Língua Inglesa!”
+                    </span>
+                  </label>
+                  <BotaoJogo cor="sol" tamanho="lg" onClick={handleFinishOrientation} disabled={!agreedToTerms} className="w-full sm:w-auto mx-auto short:min-h-[40px] short:text-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:translate-y-0">
+                    Criar meu cadastro oficial <Icone nome="seta" className="w-5 h-5" />
+                  </BotaoJogo>
+                </Painel>
+              )}
+            </Painel>
 
-                <div className="text-right">
-                  <button
-                    onClick={() => setActiveTab('terms')}
-                    className="px-6 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-heading font-black text-xs uppercase rounded-xl border-2 border-purple-900 shadow-[0_4px_0_0_#3b0764] active:translate-y-1 active:shadow-[0_1px_0_0_#3b0764] transition-all inline-flex items-center gap-1.5"
-                  >
-                    <span>Ir para o Termo de Compromisso</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
+            <div className="flex justify-between items-center px-1 text-xs text-nisia-papel short:hidden">
+              <span className="font-semibold drop-shadow">Escola Municipal Nísia Vilela Fernandes • Duque de Caxias</span>
+              <button type="button" onClick={() => { audioService.playClick(); navigate('/'); }} className="font-display uppercase tracking-wide hover:underline">← Início</button>
             </div>
-          )}
-
-          {/* TAB 5: TERMS AND TRANSITION TO REGISTRATION */}
-          {activeTab === 'terms' && (
-            <div className="text-center max-w-xl mx-auto">
-              <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center text-emerald-600">
-                <ShieldCheck className="w-8 h-8" />
-              </div>
-
-              <h2 className="font-heading font-black text-xl text-slate-900 mb-2">
-                TERMO DE CIÊNCIA E COMPROMISSO
-              </h2>
-              <p className="text-xs text-slate-600 mb-6 leading-relaxed">
-                Você concluiu a Orientação Educativa da Escola Municipal Nísia Vilela Fernandes com sucesso. Para registrar sua pontuação e defender sua turma no ranking, confirme seu compromisso:
-              </p>
-
-              {/* Agreement Box */}
-              <label className="flex items-start gap-3 bg-amber-50 border-2 border-amber-300 shadow-[0_4px_0_0_#f59e0b] rounded-2xl p-4 text-left cursor-pointer mb-6 hover:border-amber-400 transition-colors">
-                <input
-                  type="checkbox"
-                  checked={agreedToTerms}
-                  onChange={e => setAgreedToTerms(e.target.checked)}
-                  className="mt-1 w-5 h-5 accent-emerald-500 rounded cursor-pointer flex-shrink-0"
-                />
-                <div className="text-xs text-slate-700">
-                  <strong className="text-amber-700 block font-heading mb-0.5">
-                    Declaração do Estudante:
-                  </strong>
-                  "Li e compreendi as regras do Nisialand. Comprometo-me a respeitar meus colegas, jogar com honestidade, não usar ofensas e dar o meu melhor para aprender Língua Inglesa!"
-                </div>
-              </label>
-
-              {/* Action Button */}
-              <button
-                onClick={handleFinishOrientation}
-                disabled={!agreedToTerms}
-                className="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 text-slate-950 font-heading font-black text-base uppercase tracking-wider rounded-full border-[3px] border-amber-600 shadow-[0_6px_0_0_#b45309] active:translate-y-1 active:shadow-[0_2px_0_0_#b45309] hover:from-amber-300 hover:to-amber-200 disabled:opacity-40 disabled:cursor-not-allowed transition-all inline-flex items-center justify-center gap-2"
-              >
-                <span>CRIAR MEU CADASTRO OFICIAL (ESCOLHER AVATAR)</span>
-                <ArrowRight className="w-5 h-5" />
-              </button>
-            </div>
-          )}
-        </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="relative z-10 w-full text-center py-3 text-xs text-slate-500 border-t border-sky-200 bg-white/80 backdrop-blur-sm">
-        Escola Municipal Nísia Vilela Fernandes • Orientadora Edileia "Leia" • Duque de Caxias
-      </footer>
+          </section>
+        </main>
+      </div>
     </div>
   );
 };
