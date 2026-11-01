@@ -9,6 +9,7 @@ import { LEVEL5 } from '../../content/level5';
 import { LEVEL6 } from '../../content/level6';
 import { LEVEL7 } from '../../content/level7';
 import type { Level } from '../../core/types';
+import { CHAVE_CORREDOR_3D, CORREDOR_3D_LIBERADO } from '../../config/corredor3d';
 
 interface Item { label: string; to: string; story?: string }
 
@@ -89,9 +90,22 @@ export const VistoriaScreen: React.FC = () => {
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
           <h1 className="text-2xl sm:text-3xl font-black">Vistoria do professor</h1>
-          <button type="button" onClick={exit} className="rounded-xl bg-nisia-azul-700 hover:bg-nisia-azul-500 px-4 py-2 font-bold">
-            Sair da vistoria
-          </button>
+          <div className="flex flex-wrap gap-2">
+            {/* Liga/desliga o corredor 3D só neste aparelho (para vistoriar antes de liberar aos alunos). */}
+            <button
+              type="button"
+              onClick={() => {
+                try { localStorage.setItem(CHAVE_CORREDOR_3D, CORREDOR_3D_LIBERADO ? '0' : '1'); } catch { /* sem armazenamento */ }
+                window.location.reload();
+              }}
+              className={`rounded-xl px-4 py-2 font-bold ${CORREDOR_3D_LIBERADO ? 'bg-nisia-verde-500 hover:bg-nisia-verde-700' : 'bg-nisia-azul-700 hover:bg-nisia-azul-500'}`}
+            >
+              Corredor 3D neste aparelho: {CORREDOR_3D_LIBERADO ? 'ligado' : 'desligado'}
+            </button>
+            <button type="button" onClick={exit} className="rounded-xl bg-nisia-azul-700 hover:bg-nisia-azul-500 px-4 py-2 font-bold">
+              Sair da vistoria
+            </button>
+          </div>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
           {VISTORIA_LEVELS.map(level => (

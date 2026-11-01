@@ -1,13 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { ArrowLeft, DoorOpen, LayoutList, Lock } from 'lucide-react';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { audioService } from '../../services/audio';
+import { narrar } from '../../services/narracao';
 import { AVATAR_CATALOG, skinToneFilter, type SkinTone } from '../../components/ui/PlayerAvatar';
 import { MANE_CORRIDOR_LINES, MANE_IMG } from '../../data/level3Mane';
+import { Icone } from '../../components/kit/Icones';
 
-// Corredor 3D do Nível 3: mesmas técnicas do protótipo public/prototipos/nivel2-3d.html
-// (PNGs oficiais como sprites virados para a câmera, instancing, materiais compartilhados,
-// sem MSAA, DPR adaptativo, dt suavizado, joystick + WASD, arrastar para olhar).
+// Corredor 3D dos Níveis 3 e 4 no padrão da Rota Piloto AEE (piso de qualidade do projeto):
+//   ALTA       texturas fotográficas 1K (cor, relevo, rugosidade/oclusão), céu de foto que ilumina,
+//              sol entrando pelas janelas com sombra suave 2048, oclusão de ambiente (GTAO), MSAA 4×,
+//              curva de tom PBR Neutral e pontilhado. ≈ 1 MB baixado uma vez.
+//   ECONÔMICO  mesmas fotos em 512, sombra 1024, sem pós-processamento (tom no material). ≈ 0,46 MB.
+// Proteção automática: primeiro a resolução, depois Alta → Econômico, por último as sombras; sempre com aviso.
+// Acessibilidade: alto contraste, modo calmo, voz pt-BR com região aria-live, teclado completo,
+// controles de toque grandes, minimapa e respeito a prefers-reduced-motion/prefers-contrast.
+// Texturas e licenças: public/assets/3d/ORIGENS.csv.
 
 export interface CorridorDoor { id: string; label: string; name: string; state: 'locked' | 'open' | 'done' }
 
@@ -26,174 +34,499 @@ interface Corridor3DProps {
   onSimpleMode: () => void;
 }
 
-const DOOR_GAP = 7;
-const HALF_W = 3;
-const NEAR = 2.4;
-const SPEED = 4.2;
-const ZE_LINES = ['Essa porta aí você não abre!', 'Hehe, aposto que você erra a próxima!', 'Corre não... a sala não foge!', 'Eu sei a resposta e não conto!'];
-const SCHOOL_SIGNS = ['LIBRARY', 'HALLWAY', 'TEAM ROOM', 'NOTICE BOARD', 'GYM', 'REVIEW'];
-const ZONE_COLORS = ['#fbbf24', '#38bdf8', '#a78bfa', '#fb7185', '#34d399', '#f472b6'];
+type Qualidade = 'alta' | 'economica';
+const CHAVE_QUALIDADE = 'nisialand.3d.qualidade';
+const TEX = '/assets/3d/tex/';
 
-const doorZ = (i: number) => -4 - i * DOOR_GAP;
+// Medidas do corredor (metros).
+const HALF_W = 1.7;
+const ALTURA = 3.2;
+const DOOR_GAP = 6;
+const PERTO = 1.25;
+const VEL = 3.0;
+const ESPESSURA = 0.16;
+const JANELA = { larg: 1.7, peitoril: 0.95, verga: 2.45 };
+
+const ZE_LINES = ['Essa porta aí você não abre!', 'Hehe, aposto que você erra a próxima!', 'Corre não... a sala não foge!', 'Eu sei a resposta e não conto!'];
+const SINAIS_N4 = ['LIBRARY', 'HALLWAY', 'TEAM ROOM', 'NOTICE BOARD', 'GYM', 'REVIEW'];
+
+const doorZ = (i: number) => -3 - i * DOOR_GAP;
 const doorSide = (i: number) => (i % 2 === 0 ? -1 : 1);
 
-function labelTexture(lines: string[], color: string) {
+// Sol pelas janelas do lado direito (+x), alto o bastante para desenhar as janelas no piso.
+const ALT_SOL = (38 * Math.PI) / 180;
+const DIR_SOL = new THREE.Vector3(Math.cos(ALT_SOL) * 0.9, Math.sin(ALT_SOL), Math.cos(ALT_SOL) * 0.45).normalize();
+const COR_HORIZONTE = 0x9fb2c8;
+const COR_ZENITE = 0x5d7aa8;
+
+// Acabamentos: textura, metros por repetição, rugosidade/metal quando não há mapa.
+interface Acab { tex?: string; m?: number; rug?: number; metal?: number; env?: number; folha?: boolean; emissivo?: number }
+const ACAB: Record<string, Acab> = {
+  piso: { tex: 'piso', m: 1.6, rug: 0.35 },
+  parede: { tex: 'parede', m: 2.0, rug: 0.95 },
+  barrado: { tex: 'parede', m: 2.0, rug: 0.9 },
+  forro: { tex: 'parede', m: 2.4, rug: 0.95 },
+  grama: { tex: 'grama', m: 2.2, rug: 1 },
+  rodape: { rug: 0.55 },
+  porta: { rug: 0.45 },
+  batente: { rug: 0.4 },
+  macaneta: { rug: 0.25, metal: 0.9 },
+  armario: { rug: 0.45, metal: 0.55 },
+  frestas: { rug: 0.6, metal: 0.3 },
+  caixilho: { rug: 0.3, metal: 0.85 },
+  banco: { rug: 0.65 },
+  vaso: { rug: 0.85 },
+  folha: { rug: 0.75, folha: true },
+  luminaria: { rug: 0.3, emissivo: 1.6 },
+  placa: { rug: 0.5 },
+  tronco: { rug: 0.9 },
+  muro: { tex: 'parede', m: 2.4, rug: 0.95 },
+};
+const NORMAL_1K = new Set(['piso']);
+
+const PALETAS: Record<'normal' | 'contraste', Record<string, number>> = {
+  normal: {
+    piso: 0xf2f0ec, parede: 0xfaf5ec, barrado: 0xb9cdee, forro: 0xfbfaf7, grama: 0xd8e8bb, rodape: 0x9a6a42,
+    porta: 0x1f5fd0, batente: 0xf4f1ea, macaneta: 0xd9dde2, armario: 0xf08a24, frestas: 0x5a3a18, caixilho: 0xdfe3e7,
+    banco: 0xa77447, vaso: 0xc0673f, folha: 0xffffff, luminaria: 0xfff8e6, placa: 0xffffff, tronco: 0x6b4a2f, muro: 0xe8dcc6,
+  },
+  contraste: {
+    piso: 0x262626, parede: 0x3a3a3a, barrado: 0x3a3a3a, forro: 0x1a1a1a, grama: 0x0d0d0d, rodape: 0xffffff,
+    porta: 0xffffff, batente: 0xffd400, macaneta: 0xffd400, armario: 0x808080, frestas: 0x000000, caixilho: 0xffffff,
+    banco: 0x808080, vaso: 0x808080, folha: 0x2a2a2a, luminaria: 0xffffff, placa: 0xffffff, tronco: 0x2a2a2a, muro: 0x1a1a1a,
+  },
+};
+const COR_N4 = { barrado: 0xbfe0c6, armario: 0x3f8f5f };
+
+// Curva de tom "PBR Neutral" (Khronos), a mesma da Rota Piloto: preserva as cores reais.
+const TOM_NEUTRO = /* glsl */ `
+vec3 tomNeutro( vec3 color ) {
+  const float inicio = 0.8 - 0.04;
+  const float dessat = 0.15;
+  float x = min( color.r, min( color.g, color.b ) );
+  float desloc = x < 0.08 ? x - 6.25 * x * x : 0.04;
+  color -= desloc;
+  float pico = max( color.r, max( color.g, color.b ) );
+  if ( pico < inicio ) return color;
+  const float d = 1.0 - inicio;
+  float novoPico = 1.0 - d * d / ( pico + d - inicio );
+  color *= novoPico / pico;
+  float g = 1.0 - 1.0 / ( dessat * ( pico - novoPico ) + 1.0 );
+  return mix( color, vec3( novoPico ), g );
+}`;
+let tomInstalado = false;
+function instalarTom() {
+  if (tomInstalado) return;
+  tomInstalado = true;
+  THREE.ShaderChunk.tonemapping_pars_fragment = THREE.ShaderChunk.tonemapping_pars_fragment.replace(
+    'vec3 CustomToneMapping( vec3 color ) { return color; }',
+    TOM_NEUTRO + '\nvec3 CustomToneMapping( vec3 color ) { return tomNeutro( toneMappingExposure * color ); }',
+  );
+}
+
+// Variação de tom em grande escala (esconde a repetição das fotos) a partir da posição no mundo.
+const MACRO: Record<string, number> = { piso: 0.06, parede: 0.07, barrado: 0.06, forro: 0.03, grama: 0.22, muro: 0.12 };
+function prepararMacro(m: THREE.MeshStandardMaterial, forca: number) {
+  m.onBeforeCompile = shader => {
+    shader.uniforms.uMacro = { value: forca };
+    shader.vertexShader = shader.vertexShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vPosMundo;')
+      .replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\nvPosMundo = ( modelMatrix * vec4( transformed, 1.0 ) ).xyz;');
+    shader.fragmentShader = shader.fragmentShader
+      .replace('#include <common>', `#include <common>
+        varying vec3 vPosMundo; uniform float uMacro;
+        float hashM( vec2 p ) { return fract( sin( dot( p, vec2( 127.1, 311.7 ) ) ) * 43758.5453 ); }
+        float ruidoM( vec2 p ) { vec2 i = floor( p ), f = fract( p ); f = f * f * ( 3.0 - 2.0 * f );
+          return mix( mix( hashM( i ), hashM( i + vec2( 1, 0 ) ), f.x ), mix( hashM( i + vec2( 0, 1 ) ), hashM( i + vec2( 1, 1 ) ), f.x ), f.y ); }`)
+      .replace('#include <map_fragment>', `#include <map_fragment>
+        vec2 pm = vPosMundo.xz * 0.22 + vPosMundo.yy * 0.15;
+        diffuseColor.rgb *= 1.0 + uMacro * ( ruidoM( pm ) * 0.7 + ruidoM( pm * 3.1 ) * 0.3 - 0.5 ) * 2.0;`);
+  };
+  m.customProgramCacheKey = () => `macro-${forca}`;
+}
+
+function qualidadeInicial(): Qualidade {
+  try {
+    const salva = localStorage.getItem(CHAVE_QUALIDADE);
+    if (salva === 'alta' || salva === 'economica') return salva;
+  } catch { /* sem armazenamento: escolha automática */ }
+  const nav = navigator as Navigator & { connection?: { saveData?: boolean }; deviceMemory?: number };
+  const toque = window.matchMedia?.('(pointer: coarse)').matches;
+  const economia = !!nav.connection?.saveData;
+  const poucaMemoria = !!nav.deviceMemory && nav.deviceMemory <= 4;
+  return toque || economia || poucaMemoria ? 'economica' : 'alta';
+}
+const preferencia = (q: string) => { try { return window.matchMedia(q).matches; } catch { return false; } };
+
+// Caixa com UV em metros projetada pela face (as texturas não esticam).
+function caixa(x0: number, y0: number, z0: number, x1: number, y1: number, z1: number, m = 1): THREE.BufferGeometry {
+  const g = new THREE.BoxGeometry(Math.abs(x1 - x0), Math.abs(y1 - y0), Math.abs(z1 - z0));
+  g.translate((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2);
+  const p = g.attributes.position, n = g.attributes.normal, uv = g.attributes.uv;
+  for (let i = 0; i < p.count; i++) {
+    const ax = Math.abs(n.getX(i)), ay = Math.abs(n.getY(i));
+    const x = p.getX(i), y = p.getY(i), z = p.getZ(i);
+    if (ay > 0.5) uv.setXY(i, x / m, z / m);
+    else if (ax > 0.5) uv.setXY(i, z / m, y / m);
+    else uv.setXY(i, x / m, y / m);
+  }
+  return g;
+}
+
+// Textura das placas das portas (desenhada com as fontes do kit).
+function placaTextura(linha1: string, linha2: string, cor: string): THREE.CanvasTexture {
   const c = document.createElement('canvas');
-  c.width = 512; c.height = 160;
+  c.width = 512; c.height = 176;
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.anisotropy = 4;
+  const desenhar = () => {
+    const g = c.getContext('2d');
+    if (!g) return;
+    g.clearRect(0, 0, 512, 176);
+    g.fillStyle = cor;
+    g.beginPath(); g.roundRect(6, 6, 500, 164, 22); g.fill();
+    g.lineWidth = 8; g.strokeStyle = '#FFD23F'; g.stroke();
+    g.textAlign = 'center';
+    g.fillStyle = '#FFD23F';
+    g.font = '64px "Lilita One", "Fredoka", sans-serif';
+    g.fillText(linha1, 256, 82);
+    g.fillStyle = '#FFFFFF';
+    g.font = '600 38px "Fredoka", sans-serif';
+    g.fillText(linha2.length > 24 ? linha2.slice(0, 23) + '…' : linha2, 256, 140);
+    t.needsUpdate = true;
+  };
+  desenhar();
+  document.fonts?.ready.then(desenhar).catch(() => undefined);
+  return t;
+}
+
+// Sombra de contato redonda sob os personagens (sprites não projetam sombra).
+function texturaSombraContato(): THREE.CanvasTexture {
+  const c = document.createElement('canvas');
+  c.width = c.height = 128;
   const g = c.getContext('2d');
   if (g) {
-    g.fillStyle = color; g.fillRect(0, 0, 512, 160);
-    g.fillStyle = '#ffffff'; g.textAlign = 'center';
-    g.font = 'bold 56px sans-serif'; g.fillText(lines[0], 256, 66);
-    g.font = 'bold 36px sans-serif'; g.fillText(lines[1] ?? '', 256, 128);
+    const r = g.createRadialGradient(64, 64, 4, 64, 64, 62);
+    r.addColorStop(0, 'rgba(20,24,40,0.55)');
+    r.addColorStop(1, 'rgba(20,24,40,0)');
+    g.fillStyle = r; g.fillRect(0, 0, 128, 128);
   }
-  const t = new THREE.CanvasTexture(c);
-  return t;
+  return new THREE.CanvasTexture(c);
 }
 
 const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarId, avatarSkinTone, level = 3, heading = 'SALAS DE AULA', simpleLabel = 'Modo simples', zeLine, onEnter, onExit, onSimpleMode }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const zeRef = useRef<HTMLDivElement>(null);
   const maneRef = useRef<HTMLDivElement>(null);
-  const [maneIdx, setManeIdx] = useState(-1);
+  const mapaRef = useRef<HTMLCanvasElement>(null);
   const stickRef = useRef<HTMLDivElement>(null);
   const knobRef = useRef<HTMLDivElement>(null);
+  const [maneIdx, setManeIdx] = useState(-1);
   const [near, setNear] = useState<CorridorDoor | null>(null);
   const [failed, setFailed] = useState(false);
   const [zeText, setZeText] = useState(ZE_LINES[0]);
+  const [qualidade, setQualidade] = useState<Qualidade>(qualidadeInicial);
+  const [contraste, setContraste] = useState<boolean>(() => preferencia('(prefers-contrast: more)') || document.documentElement.hasAttribute('data-contraste'));
+  const [calmo, setCalmo] = useState<boolean>(() => preferencia('(prefers-reduced-motion: reduce)') || document.documentElement.hasAttribute('data-calmo'));
+  const [voz, setVoz] = useState(true);
+  const [sombras, setSombras] = useState(true);
+  const [ajuda, setAjuda] = useState(false);
+  const [aviso, setAviso] = useState('');
+  const [carga, setCarga] = useState('');
 
-  // Valores que o laço lê sem recriar a cena.
   const pausedRef = useRef(paused);
   const doorsRef = useRef(doors);
   const nearRef = useRef<CorridorDoor | null>(null);
   const onEnterRef = useRef(onEnter);
   const resumeRef = useRef<() => void>(() => {});
-  const doorMatsRef = useRef<THREE.MeshLambertMaterial[]>([]);
-  const labelRef = useRef<THREE.Sprite[]>([]);
+  const vozRef = useRef(voz);
+  const opcoes = useRef({ qualidade, contraste, calmo, sombras });
+  const aplicarRef = useRef<(motivo?: string) => void>(() => {});
   onEnterRef.current = onEnter;
   doorsRef.current = doors;
+  vozRef.current = voz;
+
+  // Mensagem visível + região aria-live + voz pt-BR (quando ligada).
+  const pararVoz = useRef<() => void>(() => undefined);
+  const avisar = (texto: string, falar = true) => {
+    setAviso(texto);
+    if (falar && vozRef.current) { pararVoz.current(); pararVoz.current = narrar([{ texto, idioma: 'pt-BR' }]); }
+  };
+  const avisarRef = useRef(avisar);
+  avisarRef.current = avisar;
 
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
+    instalarTom();
     let renderer: THREE.WebGLRenderer;
     try {
-      renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+      renderer = new THREE.WebGLRenderer({ antialias: true, stencil: false, powerPreference: 'high-performance' });
     } catch {
       setFailed(true);
       return;
     }
-    const maxDpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    let dpr = maxDpr;
-    renderer.setPixelRatio(dpr);
+    let escala = 1;
+    const razaoPixels = () => Math.max(0.5, Math.min(window.devicePixelRatio || 1, opcoes.current.qualidade === 'alta' ? 2 : 1.5) * escala);
+    renderer.setPixelRatio(razaoPixels());
     renderer.setSize(mount.clientWidth, mount.clientHeight);
+    renderer.toneMapping = THREE.CustomToneMapping;
+    renderer.toneMappingExposure = 1.35;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.info.autoReset = false; // soma todos os passos do quadro (cena + oclusão + final) na medição
     mount.appendChild(renderer.domElement);
+    renderer.domElement.setAttribute('aria-hidden', 'true');
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color('#bfe3ff');
-    const length = doors.length * DOOR_GAP + 10;
-    scene.fog = new THREE.Fog('#bfe3ff', 12, length);
-    const camera = new THREE.PerspectiveCamera(62, mount.clientWidth / mount.clientHeight, 0.1, 120);
-    scene.add(new THREE.HemisphereLight('#ffffff', '#8a7a66', 1.0));
-    const sun = new THREE.DirectionalLight('#ffffff', 0.5);
-    sun.position.set(2, 6, 3);
-    scene.add(sun);
+    const comprimento = doors.length * DOOR_GAP + 8;
+    const zIni = 3.5;
+    const zFim = -(comprimento - 4);
+    const camera = new THREE.PerspectiveCamera(64, mount.clientWidth / mount.clientHeight, 0.1, 300);
 
-    const disposables: { dispose: () => void }[] = [];
-    const track = <T extends { dispose: () => void }>(o: T) => { disposables.push(o); return o; };
-    const loader = new THREE.TextureLoader();
-    const tex = (src: string) => { const t = track(loader.load(src)); t.encoding = THREE.sRGBEncoding; return t; };
+    const descartar: { dispose: () => void }[] = [];
+    const guardar = <T extends { dispose: () => void }>(o: T) => { descartar.push(o); return o; };
 
-    // Piso, teto e paredes (materiais compartilhados).
-    const plane = track(new THREE.PlaneGeometry(1, 1));
-    const floorMat = track(new THREE.MeshLambertMaterial({ color: level === 4 ? '#c8d5c8' : '#d9c7a3' }));
-    const wallMat = track(new THREE.MeshLambertMaterial({ color: level === 4 ? '#e8f1e8' : '#f4efe4' }));
-    const ceilMat = track(new THREE.MeshLambertMaterial({ color: '#ffffff' }));
-    const midZ = -length / 2 + 4;
-    const floor = new THREE.Mesh(plane, floorMat);
-    floor.rotation.x = -Math.PI / 2; floor.scale.set(HALF_W * 2, length, 1); floor.position.set(0, 0, midZ);
-    const ceil = new THREE.Mesh(plane, ceilMat);
-    ceil.rotation.x = Math.PI / 2; ceil.scale.set(HALF_W * 2, length, 1); ceil.position.set(0, 3.4, midZ);
-    scene.add(floor, ceil);
-    for (const side of [-1, 1]) {
-      const w = new THREE.Mesh(plane, wallMat);
-      w.rotation.y = side * -Math.PI / 2; w.scale.set(length, 3.4, 1); w.position.set(side * HALF_W, 1.7, midZ);
-      scene.add(w);
+    // Luz: céu (hemisfério até a foto chegar), sol pelas janelas e ambiente de foto (PMREM).
+    // Luz interna difusa e quente (o que as luminárias do forro fariam), somada ao ambiente de foto.
+    const hemi = new THREE.HemisphereLight(0xfffaf0, 0xe2d2b2, 1.7);
+    scene.add(hemi);
+    const sol = new THREE.DirectionalLight(0xfff0d8, 3.4);
+    sol.castShadow = true;
+    sol.shadow.bias = -0.0004;
+    sol.shadow.normalBias = 0.03;
+    scene.add(sol, sol.target);
+
+    // ---------- Materiais PBR por acabamento ----------
+    const mats: Record<string, THREE.MeshStandardMaterial> = {};
+    const paleta = (): Record<string, number> => ({ ...PALETAS[opcoes.current.contraste ? 'contraste' : 'normal'], ...(level === 4 && !opcoes.current.contraste ? COR_N4 : {}) });
+    const mat = (chave: string) => {
+      if (!mats[chave]) {
+        const a = ACAB[chave] ?? {};
+        const m = guardar(new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: a.rug ?? 0.8, metalness: a.metal ?? 0 }));
+        if (a.folha) { m.alphaTest = 0.5; m.side = THREE.DoubleSide; m.alphaToCoverage = true; }
+        if (a.emissivo) { m.emissive.set(0xfff4dc); m.emissiveIntensity = a.emissivo; }
+        m.envMapIntensity = a.env ?? 0.55;
+        m.userData.acab = a;
+        if (MACRO[chave]) prepararMacro(m, MACRO[chave]);
+        mats[chave] = m;
+      }
+      return mats[chave];
+    };
+    const baldes: Record<string, THREE.BufferGeometry[]> = {};
+    const add = (chave: string, g: THREE.BufferGeometry) => { (baldes[chave] ||= []).push(g); };
+    const m = (chave: string) => ACAB[chave]?.m ?? 1;
+
+    // ---------- Corredor: piso, forro, paredes com janelas, barrado e rodapé ----------
+    add('piso', caixa(-HALF_W, -0.1, zFim - 0.2, HALF_W, 0, zIni + 0.2, m('piso')));
+    add('forro', caixa(-HALF_W - ESPESSURA, ALTURA, zFim - 0.2, HALF_W + ESPESSURA, ALTURA + 0.1, zIni + 0.2, m('forro')));
+    add('grama', caixa(-60, -0.16, zFim - 40, -HALF_W - ESPESSURA, -0.1, zIni + 40, m('grama')));
+    add('grama', caixa(HALF_W + ESPESSURA, -0.16, zFim - 40, 60, -0.1, zIni + 40, m('grama')));
+
+    // Janelas entre as portas, nos dois lados; portas alternadas.
+    const janelasPorLado: Record<number, Array<[number, number]>> = { [-1]: [], [1]: [] };
+    for (let i = 0; i < doors.length; i++) {
+      const zc = doorZ(i) - DOOR_GAP / 2;
+      for (const s of [-1, 1]) janelasPorLado[s].push([zc - JANELA.larg / 2, zc + JANELA.larg / 2]);
     }
-    const end = new THREE.Mesh(plane, wallMat);
-    end.scale.set(HALF_W * 2, 3.4, 1); end.position.set(0, 1.7, -length + 4);
-    scene.add(end);
+    janelasPorLado[1].push([doorZ(0) + 2.4 - JANELA.larg / 2, doorZ(0) + 2.4 + JANELA.larg / 2]);
+    for (const s of [-1, 1]) {
+      const x0 = s < 0 ? -HALF_W - ESPESSURA : HALF_W;
+      const x1 = s < 0 ? -HALF_W : HALF_W + ESPESSURA;
+      const aberturas = janelasPorLado[s].filter(([a, b]) => b < zIni && a > zFim).sort((a, b) => b[0] - a[0]);
+      let zTopo = zIni + 0.2;
+      for (const [a, b] of aberturas) {
+        add('parede', caixa(x0, 1.0, b, x1, ALTURA, zTopo, m('parede')));
+        add('barrado', caixa(x0, 0, b, x1, 1.0, zTopo, m('barrado')));
+        add('barrado', caixa(x0, 0, a, x1, JANELA.peitoril, b, m('barrado')));
+        add('parede', caixa(x0, JANELA.verga, a, x1, ALTURA, b, m('parede')));
+        // Caixilho e peitoril (as janelas ficam abertas para o jardim: luz e céu de verdade).
+        const xi = s < 0 ? -HALF_W : HALF_W;
+        add('caixilho', caixa(xi - 0.05, JANELA.peitoril - 0.04, a, xi + 0.05, JANELA.peitoril, b));
+        add('caixilho', caixa(xi - 0.04, JANELA.verga, a, xi + 0.04, JANELA.verga + 0.05, b));
+        add('caixilho', caixa(xi - 0.03, JANELA.peitoril, (a + b) / 2 - 0.025, xi + 0.03, JANELA.verga, (a + b) / 2 + 0.025));
+        add('caixilho', caixa(xi - 0.03, JANELA.peitoril, a, xi + 0.03, JANELA.verga, a + 0.05));
+        add('caixilho', caixa(xi - 0.03, JANELA.peitoril, b - 0.05, xi + 0.03, JANELA.verga, b));
+        zTopo = a;
+      }
+      add('parede', caixa(x0, 1.0, zFim - 0.2, x1, ALTURA, zTopo, m('parede')));
+      add('barrado', caixa(x0, 0, zFim - 0.2, x1, 1.0, zTopo, m('barrado')));
+      // Rodapé de madeira e faixa no alto do barrado.
+      const xr = s < 0 ? -HALF_W : HALF_W - 0.02;
+      add('rodape', caixa(xr, 0, zFim, xr + 0.02, 0.12, zIni));
+      add('rodape', caixa(xr, 0.98, zFim, xr + 0.02, 1.04, zIni));
+    }
+    // Fundo e entrada do corredor.
+    add('parede', caixa(-HALF_W, 1.0, zFim - 0.2 - ESPESSURA, HALF_W, ALTURA, zFim - 0.2, m('parede')));
+    add('barrado', caixa(-HALF_W, 0, zFim - 0.2 - ESPESSURA, HALF_W, 1.0, zFim - 0.2, m('barrado')));
+    add('parede', caixa(-HALF_W, 1.0, zIni + 0.2, HALF_W, ALTURA, zIni + 0.2 + ESPESSURA, m('parede')));
+    add('barrado', caixa(-HALF_W, 0, zIni + 0.2, HALF_W, 1.0, zIni + 0.2 + ESPESSURA, m('barrado')));
 
-    // Faixa azul da escola, armários e luminárias: um InstancedMesh para cada.
-    const box = track(new THREE.BoxGeometry(1, 1, 1));
-    const stripeMat = track(new THREE.MeshLambertMaterial({ color: level === 4 ? '#16a34a' : '#2563eb' }));
-    const stripes = new THREE.InstancedMesh(box, stripeMat, 2);
-    const m = new THREE.Matrix4();
-    [-1, 1].forEach((s, i) => { m.compose(new THREE.Vector3(s * (HALF_W - 0.02), 0.5, midZ), new THREE.Quaternion(), new THREE.Vector3(0.04, 0.12, length)); stripes.setMatrixAt(i, m); });
-    scene.add(stripes);
-    const lockerSpots: THREE.Vector3[] = [];
-    doors.forEach((_, i) => {
-      const s = -doorSide(i);
-      for (let k = -1; k <= 1; k++) lockerSpots.push(new THREE.Vector3(s * (HALF_W - 0.25), 0.9, doorZ(i) + k * 0.75));
-    });
-    const lockerMat = track(new THREE.MeshLambertMaterial({ color: level === 4 ? '#5b8c6f' : '#f59e0b' }));
-    const lockers = new THREE.InstancedMesh(box, lockerMat, lockerSpots.length);
-    lockerSpots.forEach((p, i) => { m.compose(p, new THREE.Quaternion(), new THREE.Vector3(0.45, 1.8, 0.7)); lockers.setMatrixAt(i, m); });
-    scene.add(lockers);
-    const lampMat = track(new THREE.MeshBasicMaterial({ color: '#fffbe6' }));
-    const lampCount = Math.ceil(length / 4);
-    const lamps = new THREE.InstancedMesh(box, lampMat, lampCount);
-    for (let i = 0; i < lampCount; i++) { m.compose(new THREE.Vector3(0, 3.38, 2 - i * 4), new THREE.Quaternion(), new THREE.Vector3(1.4, 0.04, 0.3)); lamps.setMatrixAt(i, m); }
-    scene.add(lamps);
+    // Luminárias embutidas no forro.
+    for (let z = zIni - 1.5; z > zFim + 0.5; z -= 3) add('luminaria', caixa(-0.55, ALTURA - 0.03, z - 0.25, 0.55, ALTURA, z + 0.25));
 
-    // Portas: cor por estado; a disponível pulsa.
-    const doorGeo = track(new THREE.BoxGeometry(0.12, 2.3, 1.3));
-    const frameMat = track(new THREE.MeshLambertMaterial({ color: '#1e3a8a' }));
-    const frameGeo = track(new THREE.BoxGeometry(0.08, 2.5, 1.55));
-    doorMatsRef.current = [];
-    labelRef.current = [];
+    // ---------- Portas, armários, bancos e vasos ----------
+    const placas: THREE.Mesh[] = [];
+    const luzesPorta: THREE.MeshStandardMaterial[] = [];
+    const aneis: THREE.Mesh[] = [];
+    const geoPlaca = guardar(new THREE.PlaneGeometry(1.1, 0.38));
+    const geoLuz = guardar(new THREE.BoxGeometry(0.08, 0.08, 0.08));
+    const geoAnel = guardar(new THREE.RingGeometry(0.5, 0.62, 40));
     doors.forEach((d, i) => {
       const s = doorSide(i);
-      const frame = new THREE.Mesh(frameGeo, frameMat);
-      frame.position.set(s * (HALF_W - 0.02), 1.25, doorZ(i));
-      const mat = track(new THREE.MeshLambertMaterial({ color: '#94a3b8' }));
-      doorMatsRef.current.push(mat);
-      const door = new THREE.Mesh(doorGeo, mat);
-      door.position.set(s * (HALF_W - 0.08), 1.15, doorZ(i));
-      const lmat = track(new THREE.SpriteMaterial({ map: track(labelTexture([d.label, d.name], '#1e3a8a')), depthWrite: false }));
-      const label = new THREE.Sprite(lmat);
-      label.scale.set(1.6, 0.5, 1);
-      label.position.set(s * (HALF_W - 0.5), 2.75, doorZ(i));
-      labelRef.current.push(label);
-      scene.add(frame, door, label);
-      if (level === 4) {
-        // Faixa no piso e placa bilingue distinguem os setores do mapa provisório.
-        const zoneMat = track(new THREE.MeshLambertMaterial({ color: ZONE_COLORS[i % ZONE_COLORS.length] }));
-        const tile = new THREE.Mesh(box, zoneMat);
-        tile.position.set(s * 1.75, 0.025, doorZ(i));
-        tile.scale.set(1.7, 0.05, 1.9);
-        const signMat = track(new THREE.SpriteMaterial({ map: track(labelTexture([SCHOOL_SIGNS[i] ?? 'SCHOOL', d.label], '#14532d')), depthWrite: false }));
-        const sign = new THREE.Sprite(signMat);
-        sign.position.set(s * (HALF_W - 0.6), 2.1, doorZ(i) + 2.35);
-        sign.scale.set(1.35, 0.42, 1);
-        scene.add(tile, sign);
+      const z = doorZ(i);
+      const xw = s * HALF_W;
+      const dentro = -s;
+      // Batente, folha azul, maçaneta e visor.
+      add('batente', caixa(xw + dentro * 0.06, 0, z - 0.62, xw, 2.24, z - 0.54));
+      add('batente', caixa(xw + dentro * 0.06, 0, z + 0.54, xw, 2.24, z + 0.62));
+      add('batente', caixa(xw + dentro * 0.06, 2.16, z - 0.62, xw, 2.26, z + 0.62));
+      add('porta', caixa(xw + dentro * 0.035, 0.01, z - 0.54, xw, 2.16, z + 0.54));
+      add('macaneta', caixa(xw + dentro * 0.07, 1.0, z + 0.36, xw + dentro * 0.035, 1.05, z + 0.46));
+      add('caixilho', caixa(xw + dentro * 0.04, 1.45, z - 0.16, xw + dentro * 0.036, 1.85, z + 0.16));
+      // Placa com o nome da sala (sobre a porta, virada para o corredor).
+      const pt = guardar(placaTextura(level === 4 ? (SINAIS_N4[i] ?? d.label).toUpperCase() : d.label.toUpperCase(), d.name, level === 4 ? '#22703A' : '#0C2A66'));
+      const pm = guardar(new THREE.MeshStandardMaterial({ map: pt, roughness: 0.5, transparent: true }));
+      const placa = new THREE.Mesh(geoPlaca, pm);
+      placa.position.set(xw + dentro * 0.03, 2.62, z);
+      placa.rotation.y = s < 0 ? Math.PI / 2 : -Math.PI / 2;
+      placa.userData.semAO = true;
+      placas.push(placa);
+      scene.add(placa);
+      // Luz de estado acima da placa.
+      const lm = guardar(new THREE.MeshStandardMaterial({ color: 0x333333, emissive: 0x000000, roughness: 0.3 }));
+      const luz = new THREE.Mesh(geoLuz, lm);
+      luz.position.set(xw + dentro * 0.05, 2.9, z);
+      luzesPorta.push(lm);
+      scene.add(luz);
+      // Anel no piso diante da porta aberta (guia de jogo).
+      const am = guardar(new THREE.MeshBasicMaterial({ color: 0xffd23f, transparent: true, opacity: 0.0, depthWrite: false }));
+      const anel = new THREE.Mesh(geoAnel, am);
+      anel.rotation.x = -Math.PI / 2;
+      anel.position.set(xw + dentro * 0.75, 0.012, z);
+      anel.userData.semAO = true;
+      aneis.push(anel);
+      scene.add(anel);
+      // Armários do lado oposto (três portas cada, com frestas e puxadores).
+      const xo = -s * HALF_W;
+      for (let k = -1; k <= 1; k++) {
+        const zc = z + k * 0.62;
+        add('armario', caixa(xo + s * 0.38, 0.06, zc - 0.29, xo, 1.85, zc + 0.29));
+        add('frestas', caixa(xo + s * 0.386, 1.55, zc - 0.2, xo + s * 0.378, 1.58, zc + 0.2));
+        add('frestas', caixa(xo + s * 0.386, 1.45, zc - 0.2, xo + s * 0.378, 1.48, zc + 0.2));
+        add('macaneta', caixa(xo + s * 0.40, 0.95, zc + 0.16, xo + s * 0.38, 1.15, zc + 0.2));
+      }
+      // Banco de madeira sob a janela seguinte (lado da porta) e um vaso com folhagem.
+      const zj = z - DOOR_GAP / 2;
+      const xb = s * (HALF_W - 0.25);
+      add('banco', caixa(xb - 0.2, 0.42, zj - 0.7, xb + 0.2, 0.47, zj + 0.7));
+      add('banco', caixa(xb - 0.18, 0, zj - 0.65, xb + 0.18, 0.42, zj - 0.58));
+      add('banco', caixa(xb - 0.18, 0, zj + 0.58, xb + 0.18, 0.42, zj + 0.65));
+      const xv = -s * (HALF_W - 0.3);
+      add('vaso', caixa(xv - 0.2, 0, zj - 0.2, xv + 0.2, 0.42, zj + 0.2));
+      for (let c = 0; c < 3; c++) {
+        const g = new THREE.PlaneGeometry(0.95, 1.05);
+        g.translate(0, 0.95, 0);
+        g.rotateY((c * Math.PI) / 3 + i);
+        g.translate(xv, 0, zj);
+        add('folha', g);
       }
     });
 
-    // Usa o avatar escolhido pelo aluno, inclusive os recortes dos painéis de avatares.
+    // Jardim lá fora: árvores de folhagem fotográfica e um muro baixo ao fundo (entorno visto pelas janelas).
+    const rnd = (k: number) => { const x = Math.sin(k * 12.9898) * 43758.5453; return x - Math.floor(x); };
+    for (const s of [-1, 1]) {
+      for (let k = 0; k < Math.ceil((zIni - zFim) / 7) + 2; k++) {
+        const z = zIni + 4 - k * 7 - rnd(k + s * 10) * 3;
+        const x = s * (HALF_W + 4.5 + rnd(k * 3 + s) * 6);
+        const alto = 4.2 + rnd(k * 7 + s) * 2.2;
+        add('tronco', caixa(x - 0.12, -0.1, z - 0.12, x + 0.12, alto * 0.62, z + 0.12));
+        for (let c = 0; c < 3; c++) {
+          const g = new THREE.PlaneGeometry(alto * 0.95, alto * 0.7);
+          g.translate(0, alto * 0.7, 0);
+          g.rotateY((c * Math.PI) / 3 + k);
+          g.translate(x, 0, z);
+          add('folha', g);
+        }
+      }
+      const xm = s * (HALF_W + 16);
+      add('muro', caixa(xm - 0.15, -0.1, zFim - 40, xm + 0.15, 1.8, zIni + 40, m('parede')));
+    }
+
+    // Junta tudo por acabamento (poucas chamadas de desenho).
+    const chao = ['piso', 'grama'];
+    let malhaFolha: THREE.Mesh | null = null;
+    for (const [chave, geos] of Object.entries(baldes)) {
+      const g = guardar(mergeGeometries(geos, false) as THREE.BufferGeometry);
+      geos.forEach(x => x.dispose());
+      const malha = new THREE.Mesh(g, mat(chave));
+      malha.receiveShadow = true;
+      malha.castShadow = !chao.includes(chave);
+      if (chave === 'folha') { malhaFolha = malha; malha.castShadow = false; }
+      scene.add(malha);
+    }
+    // A folhagem só projeta sombra quando a foto (com o recorte) chega: sombra recortada, não retângulo.
+    const sombraDaFolha = (t: THREE.Texture) => {
+      if (!malhaFolha) return;
+      malhaFolha.customDepthMaterial = guardar(new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, map: t, alphaTest: 0.5 }));
+      malhaFolha.castShadow = true;
+    };
+
+    // ---------- Céu: foto do céu pela direção do olhar (vista pelas janelas) ----------
+    const cupula = new THREE.Mesh(
+      guardar(new THREE.SphereGeometry(200, 32, 16)),
+      guardar(new THREE.ShaderMaterial({
+        uniforms: { ceu: { value: null }, temCeu: { value: 0 }, horizonte: { value: new THREE.Color(COR_HORIZONTE) }, zenite: { value: new THREE.Color(COR_ZENITE) } },
+        vertexShader: /* glsl */ `
+          varying vec3 vDir;
+          void main() { vDir = position; gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 ); gl_Position.z = gl_Position.w * 0.99999; }`,
+        fragmentShader: /* glsl */ `
+          uniform sampler2D ceu; uniform float temCeu; uniform vec3 horizonte; uniform vec3 zenite; varying vec3 vDir;
+          void main() {
+            vec3 d = normalize( vDir );
+            float alt = asin( clamp( d.y, -1.0, 1.0 ) ) * 0.63661977;
+            vec3 cor = mix( horizonte, zenite, pow( max( alt, 0.0 ), 0.6 ) );
+            if ( temCeu > 0.5 && alt > 0.0 ) { float u = atan( d.z, d.x ) * 0.15915494 + 0.5; cor = texture2D( ceu, vec2( u, alt ) ).rgb; }
+            cor = mix( horizonte, cor, smoothstep( 0.0, 0.05, alt ) );
+            gl_FragColor = vec4( cor, 1.0 );
+            #include <tonemapping_fragment>
+            #include <colorspace_fragment>
+          }`,
+        side: THREE.BackSide, depthWrite: false,
+      })),
+    );
+    cupula.renderOrder = -1;
+    cupula.frustumCulled = false;
+    cupula.userData.semAO = true;
+    scene.add(cupula);
+    const ceuMat = cupula.material as THREE.ShaderMaterial;
+
+    // ---------- Personagens oficiais (sprites) com sombra de contato ----------
+    const carregador = new THREE.TextureLoader();
+    const texSprite = (src: string) => { const t = guardar(carregador.load(src)); t.colorSpace = THREE.SRGBColorSpace; return t; };
+    const sombraTex = guardar(texturaSombraContato());
+    const sombraMat = guardar(new THREE.MeshBasicMaterial({ map: sombraTex, transparent: true, depthWrite: false }));
+    const geoSombra = guardar(new THREE.PlaneGeometry(1, 1));
+    const sombraDe = (largura: number) => {
+      const s = new THREE.Mesh(geoSombra, sombraMat);
+      s.rotation.x = -Math.PI / 2; s.scale.set(largura, largura * 0.55, 1); s.position.y = 0.01; s.userData.semAO = true;
+      scene.add(s);
+      return s;
+    };
     const chosen = AVATAR_CATALOG.find(a => a.id === avatarId || a.src === avatarId);
-    let avatarTexture: THREE.Texture;
-    let imageActive = true;
+    let avatarTex: THREE.Texture;
+    let imagemAtiva = true;
     if (chosen?.type === 'sprite-board' || chosen?.type === 'sprite-inc') {
       const board = chosen.type === 'sprite-board';
-      const canvasAvatar = document.createElement('canvas');
-      canvasAvatar.width = 256; canvasAvatar.height = 384;
-      const ctx = canvasAvatar.getContext('2d');
-      avatarTexture = track(new THREE.CanvasTexture(canvasAvatar));
-      avatarTexture.encoding = THREE.sRGBEncoding;
+      const cv = document.createElement('canvas');
+      cv.width = 256; cv.height = 384;
+      const ctx = cv.getContext('2d');
+      avatarTex = guardar(new THREE.CanvasTexture(cv));
+      avatarTex.colorSpace = THREE.SRGBColorSpace;
       const img = new Image();
       img.onload = () => {
-        if (!imageActive || !ctx) return;
+        if (!imagemAtiva || !ctx) return;
         const w = img.width / (board ? 8.2 : 4.2);
         const h = img.height / 2.1;
         const x = (img.width - w) * ((chosen.col ?? 0) / (board ? 7 : 3));
@@ -202,50 +535,225 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
         if (chosen.allowsSkinTone && avatarSkinTone) ctx.filter = skinToneFilter[avatarSkinTone];
         ctx.drawImage(img, x, y, w, h, 0, 0, 256, 384);
         ctx.filter = 'none';
-        avatarTexture.needsUpdate = true;
+        avatarTex.needsUpdate = true;
       };
       img.src = board ? '/assets/nisialand_16_avatars_board.jpg' : '/assets/nisialand_inclusive_students.png';
     } else {
-      avatarTexture = tex(chosen?.src || '/assets/student_boy_hoodie.png');
+      avatarTex = texSprite(chosen?.src || '/assets/student_boy_hoodie.png');
     }
-    const avatarMat = track(new THREE.SpriteMaterial({ map: avatarTexture, transparent: true }));
-    const avatar = new THREE.Sprite(avatarMat);
-    avatar.scale.set(0.9, 1.6, 1);
-    avatar.center.set(0.5, 0);
-    scene.add(avatar);
-    const zeMat = track(new THREE.SpriteMaterial({ map: tex('/assets/ze_cartinha.png'), transparent: true }));
-    const ze = new THREE.Sprite(zeMat);
-    ze.scale.set(1, 1.5, 1);
-    ze.center.set(0.5, 0);
-    scene.add(ze);
-    // Mané Zoeira (Nível 3): colega do aluno, espera na próxima porta aberta (teletransporta, não desliza).
-    const maneMat = track(new THREE.SpriteMaterial({ map: tex(MANE_IMG), transparent: true }));
-    const mane = new THREE.Sprite(maneMat);
-    mane.scale.set(1, 1.5, 1);
-    mane.center.set(0.5, 0);
-    mane.visible = false;
-    scene.add(mane);
+    const sprite = (t: THREE.Texture, w: number, h: number) => {
+      const s = new THREE.Sprite(guardar(new THREE.SpriteMaterial({ map: t, transparent: true })));
+      s.scale.set(w, h, 1); s.center.set(0.5, 0); s.userData.semAO = true;
+      scene.add(s);
+      return s;
+    };
+    const avatar = sprite(avatarTex, 0.85, 1.55);
+    const sombraAvatar = sombraDe(0.8);
+    const ze = sprite(texSprite('/assets/ze_cartinha.png'), 0.95, 1.45);
+    const sombraZe = sombraDe(0.8);
+    const mane = sprite(texSprite(MANE_IMG), 0.95, 1.45);
+    const sombraMane = sombraDe(0.8);
+    mane.visible = false; sombraMane.visible = false;
     let maneAt = -2;
 
-    // Estado do jogador.
+    // ---------- Texturas fotográficas e ambiente, por qualidade ----------
+    const cache = new Map<string, Promise<THREE.Texture>>();
+    const obter = (nome: string, cor: boolean) => {
+      if (!cache.has(nome)) {
+        cache.set(nome, carregador.loadAsync(TEX + nome + '.webp').then(t => {
+          guardar(t);
+          t.wrapS = t.wrapT = THREE.RepeatWrapping;
+          t.colorSpace = cor ? THREE.SRGBColorSpace : THREE.NoColorSpace;
+          t.anisotropy = Math.min(opcoes.current.qualidade === 'alta' ? 8 : 4, renderer.capabilities.getMaxAnisotropy());
+          return t;
+        }));
+      }
+      return cache.get(nome)!;
+    };
+    const aplicarMapas = (mt: THREE.MeshStandardMaterial) => {
+      const a = mt.userData.acab as Acab;
+      const mp = opcoes.current.contraste && !a.folha ? {} : (mt.userData.mapas ?? {});
+      for (const k of ['map', 'normalMap', 'roughnessMap', 'metalnessMap', 'aoMap'] as const) {
+        const v = (mp as Record<string, THREE.Texture | undefined>)[k] ?? null;
+        if (mt[k] !== v) { mt[k] = v; mt.needsUpdate = true; }
+      }
+      const arm = !!(mp as Record<string, unknown>).roughnessMap;
+      mt.roughness = arm ? 1 : opcoes.current.contraste ? 0.9 : a.rug ?? 0.8;
+      mt.metalness = arm ? 1 : opcoes.current.contraste ? 0 : a.metal ?? 0;
+    };
+    let geracao = 0;
+    let ambientePronto = false;
+    const carregarTexturas = async () => {
+      const alta = opcoes.current.qualidade === 'alta';
+      const minha = ++geracao;
+      const tarefas: Promise<unknown>[] = [];
+      let feitas = 0, total = 0;
+      const pegar = (nome: string, cor: boolean) => {
+        total++;
+        return obter(nome, cor).then(t => { feitas++; if (minha === geracao) setCarga(feitas < total ? `Carregando acabamento ${feitas} de ${total}` : ''); return t; });
+      };
+      for (const [chave, a] of Object.entries(ACAB)) {
+        if (!a.tex || !mats[chave]) continue;
+        const n = a.tex;
+        const lista = [pegar(alta ? `${n}_c` : `${n}_c5`, true), pegar(alta && NORMAL_1K.has(n) ? `${n}_n` : `${n}_n5`, false)];
+        if (alta) lista.push(pegar(`${n}_r`, false));
+        tarefas.push(Promise.all(lista).then(([map, normalMap, arm]) => {
+          if (minha !== geracao) return;
+          mats[chave].userData.mapas = { map, normalMap, roughnessMap: arm, metalnessMap: arm, aoMap: arm };
+          aplicarMapas(mats[chave]);
+        }));
+      }
+      tarefas.push(pegar(alta ? 'copa' : 'copa5', true).then(t => { if (minha !== geracao || !mats.folha) return; mats.folha.userData.mapas = { map: t }; aplicarMapas(mats.folha); sombraDaFolha(t); }));
+      tarefas.push(pegar(alta ? 'ceu' : 'ceu5', true).then(t => {
+        if (minha !== geracao) return;
+        t.wrapT = THREE.ClampToEdgeWrapping; t.generateMipmaps = false; t.minFilter = THREE.LinearFilter; t.needsUpdate = true;
+        ceuMat.uniforms.ceu.value = t; ceuMat.uniforms.temCeu.value = 1;
+      }));
+      tarefas.push(pegar('ambiente', true).then(t => {
+        if (ambientePronto) return;
+        ambientePronto = true;
+        t.mapping = THREE.EquirectangularReflectionMapping;
+        const pm = new THREE.PMREMGenerator(renderer);
+        scene.environment = guardar(pm.fromEquirectangular(t).texture);
+        pm.dispose();
+        hemi.intensity = 1.35;
+      }));
+      try { await Promise.all(tarefas); } catch (e) {
+        console.warn('Textura do corredor não carregada', e);
+        avisarRef.current('Parte do acabamento não carregou. O corredor continua funcionando.', false);
+      }
+      if (minha === geracao) setCarga('');
+    };
+
+    // ---------- Pós-processamento da Alta (baixado só quando usado) ----------
+    type Composer = { render: () => void; setSize: (w: number, h: number) => void; setPixelRatio: (r: number) => void };
+    let composer: Composer | null = null;
+    let passoFinal: { uniforms: Record<string, { value: number }> } | null = null;
+    let posPromessa: Promise<void> | null = null;
+    const prepararPos = () => {
+      posPromessa ||= Promise.all([
+        import('three/examples/jsm/postprocessing/EffectComposer.js'),
+        import('three/examples/jsm/postprocessing/RenderPass.js'),
+        import('three/examples/jsm/postprocessing/ShaderPass.js'),
+        import('three/examples/jsm/postprocessing/GTAOPass.js'),
+      ]).then(([{ EffectComposer }, { RenderPass }, { ShaderPass }, { GTAOPass }]) => {
+        const w = mount.clientWidth, h = mount.clientHeight;
+        const alvo = new THREE.WebGLRenderTarget(w, h, { type: THREE.HalfFloatType, samples: 4 });
+        const c = new EffectComposer(renderer, alvo);
+        c.addPass(new RenderPass(scene, camera));
+        const ao = new GTAOPass(scene, camera, w, h, {});
+        const aoInterno = ao as unknown as { _visibilityCache: Map<THREE.Object3D, boolean>; scene: THREE.Scene; overrideVisibility: () => void };
+        aoInterno.overrideVisibility = function () {
+          const cacheV = this._visibilityCache;
+          this.scene.traverse(o => { cacheV.set(o, o.visible); if ((o as THREE.Points).isPoints || (o as THREE.Line).isLine || o.userData.semAO) o.visible = false; });
+        };
+        ao.updateGtaoMaterial({ radius: 0.5, distanceExponent: 1.4, thickness: 1.0, scale: 1.1, samples: 12, distanceFallOff: 1.0, screenSpaceRadius: false });
+        ao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, rings: 2, samples: 12 });
+        ao.blendIntensity = 1.0;
+        c.addPass(ao);
+        const final = new ShaderPass({
+          uniforms: { tDiffuse: { value: null }, exposicao: { value: renderer.toneMappingExposure }, tempo: { value: 0 } },
+          vertexShader: /* glsl */ `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 ); }`,
+          fragmentShader: /* glsl */ `
+            uniform sampler2D tDiffuse; uniform float exposicao; uniform float tempo; varying vec2 vUv;
+            ${TOM_NEUTRO.replace('tomNeutro', 'tomNeutroFinal')}
+            void main() {
+              vec3 c = tomNeutroFinal( texture2D( tDiffuse, vUv ).rgb * exposicao );
+              vec2 p = vUv - 0.5;
+              c *= 1.0 - 0.18 * dot( p, p ) * 2.0;
+              c = clamp( c, 0.0, 1.0 );
+              c = mix( c * 12.92, 1.055 * pow( c, vec3( 1.0 / 2.4 ) ) - 0.055, step( 0.0031308, c ) );
+              float n = fract( sin( dot( gl_FragCoord.xy + tempo * 61.0, vec2( 12.9898, 78.233 ) ) ) * 43758.5453 );
+              gl_FragColor = vec4( c + ( n - 0.5 ) / 255.0, 1.0 );
+            }`,
+        });
+        final.material.toneMapped = false;
+        c.addPass(final);
+        passoFinal = final as unknown as { uniforms: Record<string, { value: number }> };
+        composer = c as unknown as Composer;
+        ajustarTamanho();
+      }).catch(e => { console.warn('Pós-processamento indisponível; seguindo sem ele.', e); composer = null; });
+      return posPromessa;
+    };
+    const usaPos = () => !!composer && opcoes.current.qualidade === 'alta' && !opcoes.current.contraste;
+
+    const ajustarTamanho = () => {
+      const w = mount.clientWidth, h = mount.clientHeight;
+      if (!w || !h) return;
+      renderer.setPixelRatio(razaoPixels());
+      renderer.setSize(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      if (composer) { composer.setPixelRatio(renderer.getPixelRatio()); composer.setSize(w, h); }
+    };
+
+    const aplicarSombras = () => {
+      const ligadas = opcoes.current.sombras && !opcoes.current.contraste;
+      if (sol.castShadow !== ligadas) { sol.castShadow = ligadas; Object.values(mats).forEach(x => { x.needsUpdate = true; }); }
+    };
+    const aplicarPaleta = () => {
+      const p = paleta();
+      for (const [chave, mt] of Object.entries(mats)) {
+        if (p[chave] !== undefined) mt.color.setHex(p[chave]);
+        // Fotos de piso e reboco são escuras: clareia um pouco no modo normal (cores reais, escola ensolarada).
+        if (!opcoes.current.contraste && ACAB[chave]?.tex) mt.color.multiplyScalar(chave === 'piso' ? 1.35 : 1.15);
+        aplicarMapas(mt);
+      }
+      scene.background = opcoes.current.contraste ? new THREE.Color(0x000000) : null;
+      cupula.visible = !opcoes.current.contraste;
+      renderer.domElement.style.filter = opcoes.current.calmo && !opcoes.current.contraste ? 'saturate(0.72)' : '';
+    };
+
+    // Aplica qualidade, contraste, calmo e sombras (chamado pelos botões).
+    const aplicar = async (motivo?: string) => {
+      const alta = opcoes.current.qualidade === 'alta';
+      escala = 1;
+      lentos = lentosQ = 0;
+      const tam = alta ? 2048 : 1024;
+      if (sol.shadow.mapSize.x !== tam) {
+        sol.shadow.mapSize.set(tam, tam);
+        if (sol.shadow.map) { sol.shadow.map.dispose(); (sol.shadow as unknown as { map: THREE.WebGLRenderTarget | null }).map = null; }
+      }
+      const meia = alta ? 9 : 7;
+      Object.assign(sol.shadow.camera, { left: -meia, right: meia, top: meia, bottom: -meia, near: 0.5, far: 60 });
+      sol.shadow.camera.updateProjectionMatrix();
+      const tipo = alta ? THREE.PCFSoftShadowMap : THREE.PCFShadowMap;
+      if (renderer.shadowMap.type !== tipo) { renderer.shadowMap.type = tipo; Object.values(mats).forEach(x => { x.needsUpdate = true; }); }
+      aplicarSombras();
+      aplicarPaleta();
+      ajustarTamanho();
+      if (motivo) avisarRef.current(motivo);
+      const prontas = carregarTexturas();
+      if (alta) await prepararPos();
+      ajustarTamanho();
+      await prontas;
+    };
+    aplicarRef.current = (motivo?: string) => { void aplicar(motivo); };
+
+    // ---------- Estado do jogador e controles ----------
     const startIdx = Math.max(0, doors.findIndex(d => d.id === startAt));
-    const pos = new THREE.Vector3(0, 0, startAt ? doorZ(startIdx) + 1.2 : 2);
+    const pos = new THREE.Vector3(0, 0, startAt ? doorZ(startIdx) + 1.4 : zIni - 1);
     let yaw = 0;
-    const keys = new Set<string>();
+    const teclas = new Set<string>();
     const stick = { x: 0, y: 0 };
-    let zeT = 0;
-    let zeLineAt = 0;
-    let lineIdx = 0;
+    let zeLineAt = 0, lineIdx = 0;
+    let zeSpot = 0, zeTrocaAt = 0;
 
     const onKey = (e: KeyboardEvent, down: boolean) => {
+      if (pausedRef.current) return;
+      const target = e.target as HTMLElement | null;
+      if (target && /input|textarea|select/i.test(target.tagName)) return;
       const k = e.key.toLowerCase();
-      if (down && (k === 'enter' || k === 'e') && nearRef.current && nearRef.current.state !== 'locked' && !pausedRef.current) {
-        onEnterRef.current(nearRef.current.id);
-        return;
-      }
+      if (down && (k === 'enter' || k === 'e') && nearRef.current && nearRef.current.state !== 'locked') { onEnterRef.current(nearRef.current.id); return; }
+      if (down && k === 'q') { (window as unknown as { __nisia3dQualidade?: () => void }).__nisia3dQualidade?.(); return; }
+      if (down && k === 'h') { setAjuda(a => !a); return; }
+      if (down && k === 'c') { setContraste(v => !v); return; }
+      if (down && k === 'm') { setCalmo(v => !v); return; }
+      if (down && k === 'v') { setVoz(v => !v); return; }
+      if (down && k === 'escape') { setAjuda(false); return; }
       if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd'].includes(k)) {
         e.preventDefault();
-        if (down) keys.add(k); else keys.delete(k);
+        if (down) teclas.add(k); else teclas.delete(k);
       }
     };
     const kd = (e: KeyboardEvent) => onKey(e, true);
@@ -253,21 +761,17 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
     window.addEventListener('keydown', kd);
     window.addEventListener('keyup', ku);
 
-    // Arrastar na tela gira a câmera.
     const canvas = renderer.domElement;
-    let dragId: number | null = null;
-    let dragX = 0;
+    let dragId: number | null = null, dragX = 0;
     const pd = (e: PointerEvent) => { dragId = e.pointerId; dragX = e.clientX; canvas.setPointerCapture(e.pointerId); };
-    const pm = (e: PointerEvent) => { if (e.pointerId !== dragId) return; yaw -= (e.clientX - dragX) * 0.006; dragX = e.clientX; };
+    const pmv = (e: PointerEvent) => { if (e.pointerId !== dragId) return; yaw -= (e.clientX - dragX) * 0.006; dragX = e.clientX; };
     const pu = (e: PointerEvent) => { if (e.pointerId === dragId) dragId = null; };
     canvas.addEventListener('pointerdown', pd);
-    canvas.addEventListener('pointermove', pm);
+    canvas.addEventListener('pointermove', pmv);
     canvas.addEventListener('pointerup', pu);
     canvas.addEventListener('pointercancel', pu);
 
-    // Joystick.
-    const base = stickRef.current;
-    const knob = knobRef.current;
+    const base = stickRef.current, knob = knobRef.current;
     let stickId: number | null = null;
     const moveStick = (e: PointerEvent) => {
       if (!base || !knob) return;
@@ -277,167 +781,255 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
       const len = Math.hypot(dx, dy);
       if (len > 1) { dx /= len; dy /= len; }
       stick.x = dx; stick.y = dy;
-      knob.style.transform = `translate(${dx * 32}px, ${dy * 32}px)`;
+      knob.style.transform = `translate(${dx * 34}px, ${dy * 34}px)`;
     };
     const sd = (e: PointerEvent) => { stickId = e.pointerId; base?.setPointerCapture(e.pointerId); moveStick(e); };
     const sm = (e: PointerEvent) => { if (e.pointerId === stickId) moveStick(e); };
-    const su = (e: PointerEvent) => {
-      if (e.pointerId !== stickId) return;
-      stickId = null; stick.x = 0; stick.y = 0;
-      if (knob) knob.style.transform = '';
-    };
+    const su = (e: PointerEvent) => { if (e.pointerId !== stickId) return; stickId = null; stick.x = 0; stick.y = 0; if (knob) knob.style.transform = ''; };
     base?.addEventListener('pointerdown', sd);
     base?.addEventListener('pointermove', sm);
     base?.addEventListener('pointerup', su);
     base?.addEventListener('pointercancel', su);
+    window.addEventListener('resize', ajustarTamanho);
 
-    const onResize = () => {
-      const w = mount.clientWidth, h = mount.clientHeight;
-      if (!w || !h) return;
-      renderer.setSize(w, h);
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
+    // ---------- Minimapa ----------
+    const desenharMapa = () => {
+      const cv = mapaRef.current;
+      if (!cv) return;
+      const g = cv.getContext('2d');
+      if (!g) return;
+      const W = cv.width, H = cv.height;
+      const sx = (x: number) => W / 2 + (x / (HALF_W + 0.4)) * (W / 2 - 6);
+      const sz = (z: number) => 8 + ((zIni - z) / (zIni - zFim)) * (H - 16);
+      g.clearRect(0, 0, W, H);
+      g.fillStyle = opcoes.current.contraste ? '#000' : 'rgba(255,246,223,0.95)';
+      g.fillRect(0, 0, W, H);
+      g.fillStyle = opcoes.current.contraste ? '#333' : '#E7D3A6';
+      g.fillRect(sx(-HALF_W), sz(zIni), sx(HALF_W) - sx(-HALF_W), sz(zFim) - sz(zIni));
+      doorsRef.current.forEach((d, i) => {
+        const cor = d.state === 'locked' ? '#8A8A8A' : d.state === 'done' ? '#3FA34D' : '#F2811D';
+        g.fillStyle = cor;
+        const x = doorSide(i) < 0 ? sx(-HALF_W) - 5 : sx(HALF_W) - 1;
+        g.fillRect(x, sz(doorZ(i)) - 6, 6, 12);
+      });
+      g.fillStyle = '#1F5FD0';
+      g.beginPath(); g.arc(sx(pos.x), sz(pos.z), 5, 0, Math.PI * 2); g.fill();
+      g.strokeStyle = '#1F5FD0'; g.lineWidth = 2;
+      g.beginPath(); g.moveTo(sx(pos.x), sz(pos.z)); g.lineTo(sx(pos.x - Math.sin(yaw) * 0.9), sz(pos.z - Math.cos(yaw) * 0.9)); g.stroke();
     };
-    window.addEventListener('resize', onResize);
 
-    const fwd = new THREE.Vector3();
-    const right = new THREE.Vector3();
-    const look = new THREE.Vector3();
-    const screen = new THREE.Vector3();
-    let raf = 0;
-    let last = performance.now();
-    let smooth = 1 / 60;
-    let frames = 0;
-    let fpsAt = last;
-    let elapsed = 0;
+    // ---------- Laço ----------
+    const fwd = new THREE.Vector3(), right = new THREE.Vector3(), look = new THREE.Vector3(), tela = new THREE.Vector3();
+    let raf = 0, last = performance.now(), elapsed = 0, passo = 0;
+    let soma = 0, n = 0, t1 = 0, lentos = 0, lentosQ = 0;
 
-    const frame = (now: number) => {
+    const posicionarBalao = (el: HTMLDivElement | null, alvo: THREE.Object3D, mostrar: boolean) => {
+      if (!el) return;
+      let ok = mostrar;
+      if (ok) {
+        tela.set(alvo.position.x, 1.75, alvo.position.z).project(camera);
+        ok = tela.z < 1 && Math.abs(tela.x) < 1.1 && Math.abs(tela.y) < 1.1;
+      }
+      el.style.display = ok ? 'block' : 'none';
+      if (ok) el.style.transform = `translate(${(tela.x + 1) / 2 * mount.clientWidth}px, ${(1 - tela.y) / 2 * mount.clientHeight}px) translate(-50%, -100%)`;
+    };
+
+    const frame = (agora: number) => {
       raf = 0;
       if (pausedRef.current) return;
-      const raw = Math.min(0.05, (now - last) / 1000);
-      last = now;
-      smooth = smooth * 0.8 + raw * 0.2;
-      const dt = smooth;
+      const dt = Math.min(0.05, (agora - last) / 1000);
+      last = agora;
       elapsed += dt;
+      const o = opcoes.current;
 
-      // Movimento relativo à câmera.
+      // Movimento relativo à câmera (modo calmo: mais devagar).
       fwd.set(-Math.sin(yaw), 0, -Math.cos(yaw));
       right.set(-fwd.z, 0, fwd.x);
       let mx = stick.x, my = -stick.y;
-      if (keys.has('w') || keys.has('arrowup')) my += 1;
-      if (keys.has('s') || keys.has('arrowdown')) my -= 1;
-      if (keys.has('d')) mx += 1;
-      if (keys.has('a')) mx -= 1;
-      if (keys.has('arrowleft')) yaw += 1.8 * dt;
-      if (keys.has('arrowright')) yaw -= 1.8 * dt;
+      if (teclas.has('w') || teclas.has('arrowup')) my += 1;
+      if (teclas.has('s') || teclas.has('arrowdown')) my -= 1;
+      if (teclas.has('d')) mx += 1;
+      if (teclas.has('a')) mx -= 1;
+      const giro = o.calmo ? 1.2 : 1.8;
+      if (teclas.has('arrowleft')) yaw += giro * dt;
+      if (teclas.has('arrowright')) yaw -= giro * dt;
       const ml = Math.hypot(mx, my);
-      if (ml > 0.05) {
-        const k = Math.min(1, ml) * SPEED * dt / ml;
+      const andando = ml > 0.05;
+      if (andando) {
+        const k = Math.min(1, ml) * (o.calmo ? VEL * 0.7 : VEL) * dt / ml;
         pos.addScaledVector(fwd, my * k).addScaledVector(right, mx * k);
-        pos.x = Math.max(-HALF_W + 0.5, Math.min(HALF_W - 0.5, pos.x));
-        pos.z = Math.max(-length + 5, Math.min(3, pos.z));
+        pos.x = Math.max(-HALF_W + 0.72, Math.min(HALF_W - 0.72, pos.x));
+        pos.z = Math.max(zFim + 0.8, Math.min(zIni - 0.4, pos.z));
+        passo += dt * 9;
       }
-      avatar.position.copy(pos);
+      // Passo no lugar ao andar (o avatar não desliza).
+      const bob = andando && !o.calmo ? Math.abs(Math.sin(passo)) * 0.05 : 0;
+      avatar.position.set(pos.x, bob, pos.z);
+      sombraAvatar.position.set(pos.x, 0.01, pos.z);
 
-      camera.position.set(pos.x - fwd.x * 3.2, 2.0, pos.z - fwd.z * 3.2);
-      camera.position.x = Math.max(-HALF_W + 0.3, Math.min(HALF_W - 0.3, camera.position.x));
-      look.set(pos.x + fwd.x * 2, 1.2, pos.z + fwd.z * 2);
+      camera.position.set(pos.x - fwd.x * 3.0, 1.95, pos.z - fwd.z * 3.0);
+      camera.position.x = Math.max(-HALF_W + 0.25, Math.min(HALF_W - 0.25, camera.position.x));
+      camera.position.z = Math.min(zIni + 0.1, Math.max(zFim - 0.1, camera.position.z));
+      look.set(pos.x + fwd.x * 2, 1.15, pos.z + fwd.z * 2);
       camera.lookAt(look);
+      cupula.position.copy(camera.position);
 
-      // Portas: brilho na disponível, verde na concluída.
+      // O sol (e o recorte da sombra) acompanha o aluno, em passos de meio metro.
+      const sxp = Math.round(pos.x * 2) / 2, szp = Math.round(pos.z * 2) / 2;
+      sol.target.position.set(sxp, 0, szp - 2);
+      sol.position.copy(sol.target.position).addScaledVector(DIR_SOL, 30);
+
+      // Portas: luz de estado, anel no piso da porta aberta e porta mais próxima.
       const ds = doorsRef.current;
-      let closest: CorridorDoor | null = null;
+      let maisPerto: CorridorDoor | null = null;
       ds.forEach((d, i) => {
-        const mat = doorMatsRef.current[i];
-        if (mat) {
-          if (d.state === 'locked') { mat.color.set('#94a3b8'); mat.emissive.set('#000000'); }
-          else if (d.state === 'done') { mat.color.set('#16a34a'); mat.emissive.set('#052e16'); }
-          else { mat.color.set('#f59e0b'); mat.emissive.setRGB(0.5 + 0.4 * Math.sin(elapsed * 4), 0.3, 0); }
+        const lm = luzesPorta[i];
+        const anel = aneis[i];
+        const pulso = o.calmo ? 0.8 : 0.6 + 0.4 * Math.sin(elapsed * 3);
+        if (lm) {
+          if (d.state === 'locked') { lm.color.setHex(0x553333); lm.emissive.setHex(0x330000); lm.emissiveIntensity = 1; }
+          else if (d.state === 'done') { lm.color.setHex(0x3fa34d); lm.emissive.setHex(0x3fa34d); lm.emissiveIntensity = 1.4; }
+          else { lm.color.setHex(0xffd23f); lm.emissive.setHex(0xffb000); lm.emissiveIntensity = 1 + pulso; }
         }
-        // Só a distância ao longo do corredor: andar pelo meio já mostra o ENTRAR.
-        if (Math.abs(doorZ(i) - pos.z) < NEAR / 2) closest = d;
+        if (anel) (anel.material as THREE.MeshBasicMaterial).opacity = d.state === 'open' ? 0.35 + 0.35 * pulso : 0;
+        if (Math.abs(doorZ(i) - pos.z) < PERTO) maisPerto = d;
       });
-      if (closest !== nearRef.current) { nearRef.current = closest; setNear(closest); }
-
-      // Zé passeia pelo corredor com o balão.
-      zeT += dt * 0.25;
-      const zeZ = -length / 2 + 4 + Math.sin(zeT) * (length / 2 - 6);
-      ze.position.set(Math.sin(zeT * 2.3) * 1.4, 0, zeZ);
-      if (elapsed - zeLineAt > 5) { zeLineAt = elapsed; lineIdx = (lineIdx + 1) % ZE_LINES.length; setZeText(ZE_LINES[lineIdx]); }
-      const balloon = zeRef.current;
-      if (balloon) {
-        screen.set(ze.position.x, 1.75, ze.position.z).project(camera);
-        const visible = screen.z < 1 && Math.abs(screen.x) < 1.1 && Math.abs(screen.y) < 1.1 && ze.position.distanceTo(pos) < 14;
-        balloon.style.display = visible ? 'block' : 'none';
-        if (visible) balloon.style.transform = `translate(${(screen.x + 1) / 2 * mount.clientWidth}px, ${(1 - screen.y) / 2 * mount.clientHeight}px) translate(-50%, -100%)`;
+      if (maisPerto !== nearRef.current) {
+        nearRef.current = maisPerto;
+        setNear(maisPerto);
+        const d = maisPerto as CorridorDoor | null;
+        if (d) avisarRef.current(d.state === 'locked' ? `${d.label}, ${d.name}: trancada. Termine a sala anterior.` : d.state === 'done' ? `${d.label}, ${d.name}: concluída. Aperte Enter para jogar de novo.` : `${d.label}, ${d.name}. Aperte Enter para entrar.`);
       }
 
-      // Mané: aparece direto na primeira porta aberta.
+      // Zé: fica parado numa porta à frente e muda de lugar quando o aluno chega perto (sem deslizar).
+      const alvoZe = Math.min(ds.length - 1, Math.max(0, Math.round((zIni - 1 - pos.z) / DOOR_GAP) + 1));
+      if ((alvoZe !== zeSpot && elapsed - zeTrocaAt > 6) || zeTrocaAt === 0) {
+        zeSpot = alvoZe; zeTrocaAt = elapsed;
+        ze.position.set(-doorSide(zeSpot) * 0.55, 0, doorZ(zeSpot) - 1.6);
+        sombraZe.position.set(ze.position.x, 0.01, ze.position.z);
+      }
+      ze.scale.y = 1.45 * (1 + (o.calmo ? 0 : 0.012 * Math.sin(elapsed * 2)));
+      if (elapsed - zeLineAt > 6) { zeLineAt = elapsed; lineIdx = (lineIdx + 1) % ZE_LINES.length; setZeText(ZE_LINES[lineIdx]); }
+      posicionarBalao(zeRef.current, ze, ze.position.distanceTo(pos) < 9);
+
+      // Mané (Nível 3): espera na primeira porta aberta (aparece direto, não desliza).
       const openIdx = level === 3 ? ds.findIndex(d => d.state === 'open') : -1;
       if (openIdx !== maneAt) {
         maneAt = openIdx;
         setManeIdx(openIdx);
-        mane.visible = openIdx >= 0;
-        if (openIdx >= 0) mane.position.set(doorSide(openIdx) * (HALF_W - 0.9), 0, doorZ(openIdx) + 0.8);
-      }
-      const maneBalloon = maneRef.current;
-      if (maneBalloon) {
-        let show = mane.visible && Math.abs(mane.position.z - pos.z) < 4;
-        if (show) {
-          screen.set(mane.position.x, 1.75, mane.position.z).project(camera);
-          show = screen.z < 1 && Math.abs(screen.x) < 1.1 && Math.abs(screen.y) < 1.1;
+        mane.visible = sombraMane.visible = openIdx >= 0;
+        if (openIdx >= 0) {
+          mane.position.set(doorSide(openIdx) * (HALF_W - 0.85), 0, doorZ(openIdx) + 0.95);
+          sombraMane.position.set(mane.position.x, 0.01, mane.position.z);
         }
-        maneBalloon.style.display = show ? 'block' : 'none';
-        if (show) maneBalloon.style.transform = `translate(${(screen.x + 1) / 2 * mount.clientWidth}px, ${(1 - screen.y) / 2 * mount.clientHeight}px) translate(-50%, -100%)`;
+      }
+      posicionarBalao(maneRef.current, mane, mane.visible && Math.abs(mane.position.z - pos.z) < 4);
+
+      renderer.info.reset();
+      if (usaPos() && composer) {
+        if (passoFinal) passoFinal.uniforms.tempo.value = (performance.now() % 10000) / 1000;
+        composer.render();
+      } else {
+        renderer.render(scene, camera);
       }
 
-      renderer.render(scene, camera);
-
-      // DPR adaptativo: mede 1 s de quadros e ajusta a resolução.
-      frames++;
-      if (now - fpsAt >= 1000) {
-        const fps = frames * 1000 / (now - fpsAt);
-        (window as unknown as { __nisiaFps?: number }).__nisiaFps = Math.round(fps);
-        if (fps < 45 && dpr > 0.75) { dpr = Math.max(0.75, dpr - 0.25); renderer.setPixelRatio(dpr); }
-        else if (fps > 58 && dpr < maxDpr) { dpr = Math.min(maxDpr, dpr + 0.25); renderer.setPixelRatio(dpr); }
-        frames = 0; fpsAt = now;
+      // Medição a cada segundo e proteção automática (resolução → econômico → sombras).
+      soma += dt; n++; t1 += dt;
+      if (t1 >= 1) {
+        const medio = soma / n;
+        const alta = o.qualidade === 'alta';
+        const alvo = alta ? 50 : 30;
+        const minimo = alta ? 0.6 : 0.5;
+        if (medio > 1 / alvo + 0.002 && escala > minimo) escala = Math.max(minimo, escala - 0.1);
+        else if (medio < 1 / (alvo * 1.3) && escala < 1) escala = Math.min(1, escala + 0.05);
+        if (alta && escala <= 0.6 && medio > 1 / 30) {
+          if (++lentosQ >= 3) {
+            lentosQ = 0;
+            opcoes.current = { ...opcoes.current, qualidade: 'economica' };
+            setQualidade('economica');
+            void aplicar('Mudei para o modo econômico para manter o movimento fluido. Para voltar, use o botão de qualidade ou a tecla Q.');
+          }
+        } else lentosQ = 0;
+        if (!alta && o.sombras && !o.contraste && medio > 1 / 28) {
+          if (++lentos >= 3) {
+            lentos = 0;
+            opcoes.current = { ...opcoes.current, sombras: false };
+            setSombras(false);
+            aplicarSombras();
+            avisarRef.current('Desliguei as sombras para manter o movimento fluido. Para religar, abra a Ajuda com a tecla H.');
+          }
+        } else lentos = 0;
+        if (Math.abs(renderer.getPixelRatio() - razaoPixels()) > 0.01) ajustarTamanho();
+        const info = renderer.info.render;
+        (window as unknown as { __nisia3d?: object }).__nisia3d = { qps: Math.round(1 / medio), qualidade: o.qualidade, pos: usaPos(), chamadas: info.calls, triangulos: info.triangles, pixel: renderer.getPixelRatio(), escala };
+        soma = n = t1 = 0;
+        desenharMapa();
       }
       raf = requestAnimationFrame(frame);
     };
     resumeRef.current = () => {
       if (raf || pausedRef.current) return;
-      // Um link direto para uma sala monta a cena oculta; ao voltar, mede o canvas visível.
-      onResize();
-      last = performance.now(); fpsAt = last; frames = 0;
-      keys.clear(); stick.x = 0; stick.y = 0;
+      ajustarTamanho();
+      last = performance.now();
+      teclas.clear(); stick.x = 0; stick.y = 0;
       raf = requestAnimationFrame(frame);
     };
+    void aplicar();
+    desenharMapa();
     resumeRef.current();
 
     return () => {
-      imageActive = false;
+      imagemAtiva = false;
       cancelAnimationFrame(raf);
       resumeRef.current = () => {};
+      aplicarRef.current = () => {};
+      pararVoz.current();
       window.removeEventListener('keydown', kd);
       window.removeEventListener('keyup', ku);
-      window.removeEventListener('resize', onResize);
+      window.removeEventListener('resize', ajustarTamanho);
       canvas.removeEventListener('pointerdown', pd);
-      canvas.removeEventListener('pointermove', pm);
+      canvas.removeEventListener('pointermove', pmv);
       canvas.removeEventListener('pointerup', pu);
       canvas.removeEventListener('pointercancel', pu);
       base?.removeEventListener('pointerdown', sd);
       base?.removeEventListener('pointermove', sm);
       base?.removeEventListener('pointerup', su);
       base?.removeEventListener('pointercancel', su);
-      stripes.dispose(); lockers.dispose(); lamps.dispose();
-      disposables.forEach(d => d.dispose());
+      descartar.forEach(d => d.dispose());
+      sol.shadow.map?.dispose();
       renderer.dispose();
       renderer.forceContextLoss();
       canvas.remove();
     };
-    // A cena é montada uma vez; portas mudam de cor pelo doorsRef.
+    // A cena é montada uma vez; portas mudam pelo doorsRef e as opções por aplicarRef.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Botões de opção → cena.
+  useEffect(() => {
+    const antes = opcoes.current;
+    opcoes.current = { qualidade, contraste, calmo, sombras };
+    if (antes.qualidade !== qualidade) {
+      aplicarRef.current(qualidade === 'alta'
+        ? 'Qualidade alta: texturas detalhadas, sombras suaves e cantos sombreados.'
+        : 'Modo econômico: menos dados, menos bateria e movimento mais leve.');
+    } else if (antes.contraste !== contraste || antes.calmo !== calmo || antes.sombras !== sombras) {
+      aplicarRef.current(antes.contraste !== contraste ? (contraste ? 'Alto contraste ligado.' : 'Alto contraste desligado.') : antes.calmo !== calmo ? (calmo ? 'Modo calmo ligado.' : 'Modo calmo desligado.') : undefined);
+    }
+  }, [qualidade, contraste, calmo, sombras]);
+
+  // Atalho Q e botão de qualidade usam a mesma troca (com a escolha guardada no aparelho).
+  const alternarQualidade = () => {
+    setQualidade(q => {
+      const nova: Qualidade = q === 'alta' ? 'economica' : 'alta';
+      try { localStorage.setItem(CHAVE_QUALIDADE, nova); } catch { /* vale só nesta visita */ }
+      return nova;
+    });
+  };
+  useEffect(() => {
+    (window as unknown as { __nisia3dQualidade?: () => void }).__nisia3dQualidade = alternarQualidade;
+    return () => { delete (window as unknown as { __nisia3dQualidade?: () => void }).__nisia3dQualidade; };
+  });
 
   // Pausa o laço enquanto a sala está aberta e retoma ao voltar.
   useEffect(() => {
@@ -447,58 +1039,93 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
 
   if (failed) {
     return (
-      <div className="fixed inset-0 game-sky flex flex-col items-center justify-center gap-3 p-4 text-center">
-        <p className="font-heading font-black text-blue-900">Este aparelho não abriu o corredor 3D.</p>
-        <button type="button" onClick={onSimpleMode} className="px-6 py-3 rounded-full bg-amber-400 border-2 border-amber-600 font-heading font-black uppercase text-sm">Usar modo simples</button>
+      <div className="fixed inset-0 bg-nisia-azul-900 flex flex-col items-center justify-center gap-3 p-4 text-center">
+        <p className="font-display text-xl text-nisia-sol-400">Este aparelho não abriu o corredor 3D.</p>
+        <button type="button" onClick={onSimpleMode} className="kit-btn kit-btn--sol">Usar o quadro das salas</button>
       </div>
     );
   }
 
   const enterNear = () => { if (near && near.state !== 'locked') { audioService.playClick(); onEnter(near.id); } };
+  const btn = 'kit-hud__btn';
 
   return (
-    <div className="fixed inset-0 overflow-hidden select-none touch-none">
+    <div className="fixed inset-0 overflow-hidden select-none touch-none bg-nisia-azul-900" role="application" aria-label={`${heading}: corredor 3D. Use as setas ou W A S D para andar, Enter para entrar na sala, H para ajuda.`}>
       <div ref={mountRef} className="absolute inset-0" />
-      <div className="absolute top-2 left-2 right-2 flex items-center justify-between gap-2 pointer-events-none">
-        <div className="px-3 py-1 rounded-xl bg-white/85 border-2 border-sky-300">
-          <p className="text-[10px] font-black tracking-widest text-emerald-700">NISIALAND · NÍVEL {level}</p>
-          <p className="font-bungee text-lg short:text-base text-blue-900 leading-none">{heading}</p>
+
+      {/* Topo: nome do nível e controles (seletor de qualidade sempre visível) */}
+      <div className="absolute top-2 left-2 right-2 flex items-start justify-between gap-2 pointer-events-none">
+        <div className="kit-placa px-5 py-1.5 short:px-4 short:py-0.5 -rotate-1">
+          <p className="text-[10px] font-display tracking-widest opacity-80">NISIALAND · NÍVEL {level}</p>
+          <p className="font-display text-lg short:text-sm leading-none">{heading}</p>
         </div>
-        <div className="flex gap-2 pointer-events-auto">
-          <button type="button" onClick={onSimpleMode} className="px-3 py-2 short:py-1 rounded-xl bg-white border-2 border-sky-300 font-black text-sm flex items-center gap-2">
-            <LayoutList className="w-4 h-4" /> {simpleLabel}
+        <div className="flex flex-wrap justify-end gap-1.5 pointer-events-auto max-w-[70%]">
+          <button type="button" onClick={alternarQualidade} className={btn} aria-label={`Qualidade: ${qualidade === 'alta' ? 'alta' : 'econômico'}. Trocar (tecla Q)`} title="Trocar a qualidade (tecla Q)">
+            <Icone nome={qualidade === 'alta' ? 'estrela' : 'relogio'} className="w-5 h-5" cor={qualidade === 'alta' ? '#FFD23F' : '#A9CDFF'} />
+            <span>{qualidade === 'alta' ? 'Alta' : 'Econômico'}</span>
           </button>
-          <button type="button" onClick={onExit} className="px-3 py-2 short:py-1 rounded-xl bg-white border-2 border-sky-300 font-black text-sm flex items-center gap-2">
-            <ArrowLeft className="w-4 h-4" /> Mapa
-          </button>
+          <button type="button" onClick={() => setAjuda(a => !a)} className={btn} aria-expanded={ajuda} aria-label="Ajuda e acessibilidade (tecla H)"><Icone nome="dica" className="w-5 h-5" /> <span className="hidden sm:inline">Ajuda</span></button>
+          <button type="button" onClick={onSimpleMode} className={btn}><Icone nome="livro" className="w-5 h-5" /> <span className="hidden sm:inline">{simpleLabel}</span></button>
+          <button type="button" onClick={onExit} className={btn}><Icone nome="mapa" className="w-5 h-5" /> <span className="hidden sm:inline">Mapa</span></button>
         </div>
       </div>
 
-      <div ref={zeRef} className="absolute left-0 top-0 pointer-events-none max-w-[220px] px-3 py-2 rounded-2xl bg-white border-2 border-pink-400 text-xs font-black text-pink-700 shadow" style={{ display: 'none' }}>
+      {/* Minimapa */}
+      <canvas ref={mapaRef} width={70} height={180} className="absolute right-3 top-16 short:top-12 w-[70px] h-[180px] short:h-[120px] rounded-lg border-2 border-nisia-tinta shadow-[0_3px_0_0_rgba(26,42,74,0.35)]" aria-label="Minimapa do corredor" role="img" />
+
+      {/* Aviso falado (também lido por leitores de tela) */}
+      <p className="absolute left-1/2 -translate-x-1/2 bottom-24 short:bottom-20 max-w-[min(92vw,560px)] px-4 py-2 rounded-xl bg-nisia-tinta/85 text-white text-sm font-semibold text-center pointer-events-none" role="status" aria-live="polite" style={{ display: aviso ? 'block' : 'none' }}>{aviso}</p>
+      {carga && <p className="absolute left-1/2 -translate-x-1/2 top-16 px-3 py-1 rounded-full bg-nisia-papel text-nisia-tinta text-xs font-semibold pointer-events-none">{carga}</p>}
+
+      {/* Ajuda e acessibilidade */}
+      {ajuda && (
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(92vw,460px)] kit-papel kit-papel--liso p-4 text-nisia-tinta" role="dialog" aria-label="Ajuda do corredor">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="font-display text-lg text-nisia-azul-700">Ajuda</h2>
+            <button type="button" onClick={() => setAjuda(false)} className="kit-btn kit-btn--papel kit-btn--sm !min-w-0 !px-2" aria-label="Fechar a ajuda"><Icone nome="x" className="w-4 h-4" cor="#E5484D" /></button>
+          </div>
+          <ul className="text-sm space-y-1 mb-3">
+            <li><b>Andar:</b> setas ou W A S D · no toque, o círculo à esquerda</li>
+            <li><b>Olhar:</b> arrastar na tela · setas ← →</li>
+            <li><b>Entrar na sala:</b> Enter ou o botão Entrar</li>
+            <li><b>Atalhos:</b> Q qualidade · C contraste · M calmo · V voz · H ajuda</li>
+          </ul>
+          <div className="grid grid-cols-2 gap-2">
+            <button type="button" onClick={() => setContraste(v => !v)} aria-pressed={contraste} className={`kit-btn kit-btn--sm ${contraste ? 'kit-btn--sol' : 'kit-btn--papel'}`}>Alto contraste</button>
+            <button type="button" onClick={() => setCalmo(v => !v)} aria-pressed={calmo} className={`kit-btn kit-btn--sm ${calmo ? 'kit-btn--sol' : 'kit-btn--papel'}`}>Modo calmo</button>
+            <button type="button" onClick={() => setVoz(v => !v)} aria-pressed={voz} className={`kit-btn kit-btn--sm ${voz ? 'kit-btn--sol' : 'kit-btn--papel'}`}>Voz</button>
+            <button type="button" onClick={() => setSombras(v => !v)} aria-pressed={sombras} className={`kit-btn kit-btn--sm ${sombras ? 'kit-btn--sol' : 'kit-btn--papel'}`}>Sombras</button>
+          </div>
+        </div>
+      )}
+
+      <div ref={zeRef} className="absolute left-0 top-0 pointer-events-none kit-balao !px-3 !py-1.5 max-w-[220px] text-xs font-semibold" style={{ display: 'none' }}>
+        <span className="block text-[10px] font-display uppercase tracking-widest text-nisia-laranja-700">Zé Cartinha</span>
         {zeLine ?? zeText}
       </div>
-
-      <div ref={maneRef} data-testid="mane-balloon" className="absolute left-0 top-0 pointer-events-none max-w-[220px] short:max-w-[170px] px-3 py-2 short:py-1 rounded-2xl bg-white border-2 border-emerald-500 text-xs short:text-[10px] font-black text-emerald-800 shadow" style={{ display: 'none' }}>
+      <div ref={maneRef} data-testid="mane-balloon" className="absolute left-0 top-0 pointer-events-none kit-balao !px-3 !py-1.5 max-w-[220px] short:max-w-[170px] text-xs short:text-[10px] font-semibold" style={{ display: 'none' }}>
         {maneIdx >= 0 && MANE_CORRIDOR_LINES[maneIdx] && (
           <>
-            <span className="block">Mané: {MANE_CORRIDOR_LINES[maneIdx].pt}</span>
-            <span className="block text-emerald-600 italic">{MANE_CORRIDOR_LINES[maneIdx].en}</span>
+            <span className="block text-[10px] font-display uppercase tracking-widest text-nisia-laranja-700">Mané</span>
+            <span className="block">{MANE_CORRIDOR_LINES[maneIdx].pt}</span>
+            <span className="block text-nisia-tinta-suave italic">{MANE_CORRIDOR_LINES[maneIdx].en}</span>
           </>
         )}
       </div>
 
-      <div ref={stickRef} aria-label="Controle de movimento" className="absolute left-4 bottom-4 short:left-3 short:bottom-3 w-28 h-28 short:w-24 short:h-24 rounded-full bg-white/40 border-2 border-white/80 flex items-center justify-center touch-none">
-        <div ref={knobRef} className="w-12 h-12 rounded-full bg-white/90 border-2 border-sky-400 pointer-events-none" />
+      {/* Joystick grande (toque) */}
+      <div ref={stickRef} aria-label="Controle de movimento" role="img" className="absolute left-4 bottom-4 short:left-3 short:bottom-3 w-32 h-32 short:w-28 short:h-28 rounded-full bg-white/35 border-[3px] border-white/85 flex items-center justify-center touch-none backdrop-blur-[2px]">
+        <div ref={knobRef} className="w-14 h-14 rounded-full bg-nisia-papel border-[3px] border-nisia-azul-500 shadow-[0_3px_0_0_rgba(26,42,74,0.35)] pointer-events-none" />
       </div>
 
       {near && (
-        <div className="absolute right-4 bottom-4 short:right-3 short:bottom-3 flex flex-col items-end gap-1">
-          <p className="px-3 py-1 rounded-xl bg-white/90 text-xs font-black text-blue-900">{near.label} · {near.name}</p>
+        <div className="absolute right-4 bottom-4 short:right-3 short:bottom-3 flex flex-col items-end gap-1.5">
+          <p className="kit-ficha kit-ficha--papel normal-case tracking-normal">{near.label} · {near.name}</p>
           {near.state === 'locked' ? (
-            <span className="px-5 py-3 short:py-2 rounded-full bg-slate-300 border-2 border-slate-500 font-heading font-black uppercase text-sm flex items-center gap-2"><Lock className="w-4 h-4" /> Trancada</span>
+            <span className="kit-btn kit-btn--papel opacity-80 cursor-not-allowed"><Icone nome="cadeado" className="w-5 h-5" cor="#F3E4BE" /> Trancada</span>
           ) : (
-            <button type="button" onClick={enterNear} className="px-7 py-3 short:py-2 rounded-full bg-gradient-to-r from-amber-400 to-yellow-400 border-2 border-amber-600 shadow-[0_5px_0_0_#b45309] font-heading font-black uppercase text-base flex items-center gap-2 active:translate-y-1">
-              <DoorOpen className="w-5 h-5" /> Entrar
+            <button type="button" onClick={enterNear} className="kit-btn kit-btn--sol kit-btn--lg">
+              <Icone nome="jogar" className="w-6 h-6" cor="#1A2A4A" /> {near.state === 'done' ? 'Jogar de novo' : 'Entrar'}
             </button>
           )}
         </div>
