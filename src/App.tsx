@@ -27,6 +27,8 @@ import { LEVEL6 } from './content/level6';
 import { LEVEL7 } from './content/level7';
 import { LEVEL6_CONTENT } from './data/level6Content';
 import { LEVEL7_CONTENT } from './data/level7Content';
+import { LEVEL8 } from './content/level8';
+import { LEVEL8_CONTENT } from './data/level8Content';
 
 // Telas pesadas ou menos usadas ficam fora do pacote principal (baixadas quando abertas).
 const Level0Screen = lazy(() => import('./features/level0/Level0Screen').then(m => ({ default: m.Level0Screen })));
@@ -69,6 +71,8 @@ const ROUTE_TRACKS: Record<string, MusicTrack> = {
   '/nivel6/consequencias': 'desafio',
   '/nivel7': 'mapa',
   '/nivel7/organizacao': 'desafio',
+  '/nivel8': 'mapa',
+  '/nivel8/projeto': 'desafio',
 };
 const VICTORY_ROUTES = ['/quiz/results', '/results/final'];
 
@@ -113,6 +117,12 @@ const RequireLevel7: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const { level6Completed, progressLoaded } = useGame();
   if (!progressLoaded) return null;
   return level6Completed ? <>{children}</> : <Navigate to="/nivel6" replace />;
+};
+
+const RequireLevel8: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { level7Completed, progressLoaded } = useGame();
+  if (!progressLoaded) return null;
+  return level7Completed ? <>{children}</> : <Navigate to="/nivel7" replace />;
 };
 
 const RouteMusic: React.FC = () => {
@@ -200,6 +210,10 @@ export const App: React.FC = () => {
             {/* Nível 7: aprender a se organizar */}
             <Route path="/nivel7" element={<RequirePlayer><RequireLevel7><PhaseMissionScreen level={LEVEL7} content={LEVEL7_CONTENT} accent="sky" /></RequireLevel7></RequirePlayer>} />
             <Route path="/nivel7/organizacao" element={<RequirePlayer><RequireLevel7><PhaseMissionScreen level={LEVEL7} content={LEVEL7_CONTENT} accent="sky" /></RequireLevel7></RequirePlayer>} />
+
+            {/* Nível 8: organizado na prática */}
+            <Route path="/nivel8" element={<RequirePlayer><RequireLevel8><PhaseMissionScreen level={LEVEL8} content={LEVEL8_CONTENT} accent="teal" /></RequireLevel8></RequirePlayer>} />
+            <Route path="/nivel8/projeto" element={<RequirePlayer><RequireLevel8><PhaseMissionScreen level={LEVEL8} content={LEVEL8_CONTENT} accent="teal" /></RequireLevel8></RequirePlayer>} />
 
             {/* Tela 4: Mission 1 Quiz */}
             <Route path="/quiz" element={<RequirePlayer><QuizScreen /></RequirePlayer>} />

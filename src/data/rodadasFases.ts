@@ -1,6 +1,6 @@
 import type { SchoolGrade } from './level0Content';
 
-// Rodadas das atividades dos Níveis 5, 6 e 7: cada atividade vira uma sequência curta de perguntas.
+// Rodadas das atividades dos Níveis 5 a 8: cada atividade vira uma sequência curta de perguntas.
 // CONTEÚDO PROVISÓRIO (escrito pelo Claude em 01/11/2026) — para revisão do professor.
 // Duas faixas: "base" (6º e 7º ano) e "avancado" (8º e 9º ano).
 // Em cada item a alternativa certa é escrita primeiro (answer: 0); a tela embaralha na hora de jogar.
@@ -292,7 +292,107 @@ const NIVEL7: Banco = {
   },
 };
 
-const BANCO: Banco = { ...NIVEL5, ...NIVEL6, ...NIVEL7 };
+// ---------------- Nível 8 · Organizado na prática ----------------
+const NIVEL8: Banco = {
+  'nivel8-semana': {
+    base: [
+      q('Your plan says: “Monday – study English.” What did you do on Monday?', ['I studied English.', 'I study English yesterday.', 'I studyed English.'], 'Studied é o passado de study (y vira ied).', 'writing', 'Past simple (regular)'),
+      q('Complete: “On Tuesday, I ___ my homework.”', ['did', 'do', 'doed'], 'Did é o passado de do.', 'writing', 'Past simple (irregular)'),
+      q('You finished all your tasks this week. How do you feel?', ['Proud, because I followed my plan.', 'Proud because plan follow.', 'I feel plan.'], 'Because explica o motivo; followed está no passado.', 'speaking', 'Because clause'),
+    ],
+    avancado: [
+      q('Which sentence describes the week correctly?', ['I followed my plan and finished every task.', 'I follow my plan and finished every task yesterday.', 'I followed my plan and finish every task last week.'], 'Os dois verbos ficam no passado.', 'writing', 'Past simple'),
+      q('You missed one task. What is the best reflection?', ['Next week, I’m going to start earlier.', 'Plans never work.', 'I will never plan again.'], 'Going to apresenta o plano de melhora.', 'speaking', 'Going to'),
+      q('Complete: “This week was ___ than last week.”', ['better', 'gooder', 'more good'], 'Good vira better no comparativo.', 'writing', 'Irregular comparatives'),
+    ],
+  },
+  'nivel8-entrega': {
+    base: [
+      q('You give the project to the teacher. What do you say?', ['Here is our project, teacher.', 'Take it, fast.', 'Project our here is.'], 'Here is... entrega com educação.', 'speaking', 'Here is...'),
+      q('The teacher asks: “Who made the poster?” Choose the answer.', ['We made it together.', 'We make it together yesterday.', 'Made us together.'], 'Made é o passado de make.', 'speaking', 'Past simple'),
+      q('A classmate forgot his part. What do you say?', ['Don’t worry. Let’s finish it together.', 'You ruined everything!', 'Your problem, not mine.'], 'Let’s finish it together resolve em equipe.', 'speaking', 'Let’s + base verb'),
+    ],
+    avancado: [
+      q('The teacher asks why the project is late. Choose an honest answer.', ['We had a problem with the printer. Sorry.', 'We have problem printer yesterday.', 'It is not late.'], 'Had é o passado de have; pedir desculpas mostra responsabilidade.', 'speaking', 'Past simple + apology'),
+      q('Choose the best way to describe each member’s role.', ['Ana wrote the text and Leo drew the pictures.', 'Ana write the text and Leo draw the pictures.', 'Ana wrote the text and Leo drawed the pictures.'], 'Wrote e drew são passados irregulares.', 'writing', 'Irregular past'),
+      q('The teacher asks: “What was the hardest part?” Choose the best answer.', ['The hardest part was organizing the data.', 'The most hard part was organize data.', 'The harder part is organizing.'], 'Hard vira the hardest no superlativo.', 'speaking', 'Superlatives'),
+    ],
+  },
+  'nivel8-simulado': {
+    base: [
+      q('Complete: “An elephant is ___ than a dog.”', ['bigger', 'biger', 'more big'], 'Big dobra o g no comparativo: bigger.', 'writing', 'Comparatives'),
+      q('Complete: “Yesterday we ___ a test.”', ['had', 'have', 'haved'], 'Had é o passado de have.', 'writing', 'Past simple (irregular)'),
+      q('Which word is the opposite of “easy”?', ['difficult', 'fast', 'happy'], 'Easy (fácil) é o contrário de difficult (difícil).', 'reading', 'Opposites'),
+    ],
+    avancado: [
+      q('Complete: “This is the ___ test of the year.”', ['hardest', 'harder', 'most hard'], 'Superlativo de hard: the hardest.', 'writing', 'Superlatives'),
+      q('Complete: “She ___ the answer before the bell rang.”', ['found', 'find', 'finded'], 'Found é o passado de find.', 'writing', 'Irregular past'),
+      q('Choose the correct sentence.', ['Math is more difficult than art for me.', 'Math is difficulter than art for me.', 'Math is more difficult that art for me.'], 'Adjetivo longo: more ... than.', 'writing', 'Comparatives'),
+    ],
+  },
+  'nivel8-sala': {
+    base: [
+      instrucao('Put the desk next to the window.', 'Where is the desk?', ['Next to the window.', 'Under the window.', 'On the roof.'], 'Next to: ao lado de.'),
+      instrucao('Put the plant on the shelf.', 'Where is the plant?', ['On the shelf.', 'Under the shelf.', 'Behind the door.'], 'On: em cima de.'),
+      q('Complete: “The board is ___ the wall.”', ['on', 'in', 'under'], 'O quadro fica na parede: on the wall.', 'writing', 'Prepositions of place'),
+    ],
+    avancado: [
+      instrucao('Put the bookshelf between the door and the board.', 'Where is the bookshelf?', ['Between the door and the board.', 'In front of the board.', 'Next to the window.'], 'Between: entre duas coisas.'),
+      instrucao('Place the chairs in front of the desks.', 'Where are the chairs?', ['In front of the desks.', 'Behind the desks.', 'On the desks.'], 'In front of: na frente de.'),
+      q('Which classroom is the best for studying?', ['The one with the most light and the least noise.', 'The one with the more noise.', 'The noisiest one.'], 'The most / the least formam superlativos.', 'reading', 'Superlatives: the most / the least'),
+    ],
+  },
+  'nivel8-travessia': {
+    base: [
+      q('To cross the hall safely, what do you do first?', ['Look left and right.', 'Run with your eyes closed.', 'Jump over people.'], 'Look left and right: olhe para os dois lados.', 'reading', 'Directions'),
+      instrucao('Turn left at the library.', 'Which way do you go?', ['Left, at the library.', 'Right, at the gym.', 'Straight to the exit.'], 'Turn left: vire à esquerda.'),
+      q('Complete: “Go ___ the stairs to the second floor.”', ['up', 'down', 'under'], 'Go up: subir.', 'writing', 'Directions'),
+    ],
+    avancado: [
+      instrucao('Go straight ahead and turn right after the cafeteria.', 'Where do you turn?', ['Right, after the cafeteria.', 'Left, before the cafeteria.', 'Right, before the stairs.'], 'After the cafeteria: depois da cantina.'),
+      q('Complete: “The lab is ___ the library and the gym.”', ['between', 'among', 'through'], 'Between para dois lugares.', 'writing', 'Prepositions of place'),
+      q('Choose the correct sentence.', ['Walk past the office and go down the stairs.', 'Walk pass the office and go under the stairs.', 'Walk past office and go down stairs the.'], 'Walk past: passar em frente a; go down: descer.', 'writing', 'Directions'),
+    ],
+  },
+  'nivel8-distracoes': {
+    base: [
+      q('Zé says: “Play now, study later!” Choose the best answer.', ['No, thanks. I’m studying now.', 'OK, I never study.', 'Yes, studying is boring.'], 'No, thanks recusa com educação.', 'speaking', 'Saying no politely'),
+      q('Which one is a distraction during homework?', ['Watching videos.', 'Reading the question.', 'Writing the answer.'], 'Assistir vídeos tira a atenção da tarefa.', 'reading', 'Vocabulary'),
+      q('Complete: “I should not ___ games during class.”', ['play', 'plays', 'playing'], 'Should not + verbo base.', 'writing', 'Should not + base verb'),
+    ],
+    avancado: [
+      q('Zé says: “Your phone is more fun than your book.” Choose a smart reply.', ['Maybe, but my book is more useful now.', 'Yes, I’ll forget the book.', 'My book is usefuller.'], 'More useful: comparativo de adjetivo longo.', 'speaking', 'Comparatives'),
+      q('Which strategy helps you concentrate the most?', ['Turning off notifications while studying.', 'Keeping every app open.', 'Studying with the TV on.'], 'Desligar notificações é o que mais ajuda.', 'reading', 'Superlatives'),
+      q('Complete: “Yesterday I ___ my phone away and finished everything.”', ['put', 'putted', 'puts'], 'Put não muda no passado.', 'writing', 'Irregular past'),
+    ],
+  },
+  'nivel8-apresentacao': {
+    base: [
+      q('How do you start a presentation?', ['Good morning, everyone. Today we will talk about our project.', 'Hey, look here now.', 'Good morning, everyone. Today we talks about our project.'], 'Saudar a turma e anunciar o tema abre bem a apresentação.', 'speaking', 'Presentation openings'),
+      q('Choose a good sentence for the end.', ['Thank you for listening!', 'Finish, bye.', 'Go away now.'], 'Agradecer encerra a apresentação.', 'speaking', 'Polite expressions'),
+      q('Someone asks a question you don’t know. What do you say?', ['Good question! I’ll check and tell you later.', 'I don’t care.', 'Your question is bad.'], 'Reconhecer a pergunta e prometer responder é respeitoso.', 'speaking', 'Polite expressions'),
+    ],
+    avancado: [
+      q('Choose the best way to present a result.', ['Our survey showed that most students prefer group work.', 'Our survey show that most student prefers group work.', 'Survey our showed most prefer.'], 'Showed é o passado de show.', 'speaking', 'Past simple'),
+      q('Choose the best comparison for your slide.', ['Plan B was cheaper and faster than Plan A.', 'Plan B was more cheap and more fast than Plan A.', 'Plan B was cheapest than Plan A.'], 'Cheap vira cheaper; fast vira faster.', 'writing', 'Comparatives'),
+      q('How do you thank your group at the end?', ['I want to thank my team for their hard work.', 'I thank team me work.', 'Thanks me for working.'], 'I want to thank... agradece de forma clara.', 'speaking', 'Expressing thanks'),
+    ],
+  },
+  'nivel8-revisao': {
+    base: [
+      q('Complete: “My bag is ___ than yours.”', ['heavier', 'heavyer', 'more heavy'], 'Heavy vira heavier.', 'writing', 'Comparatives'),
+      q('Complete: “Last week we ___ a great project.”', ['made', 'make', 'maked'], 'Made é o passado de make.', 'writing', 'Past simple (irregular)'),
+      q('Choose the organized plan.', ['First plan, then work, then check.', 'First check, then do nothing.', 'Work without a plan.'], 'Planejar, fazer e conferir, nessa ordem.', 'reading', 'Sequence words'),
+    ],
+    avancado: [
+      q('Complete: “It was the ___ day of the project.”', ['busiest', 'busier', 'most busy'], 'Busy vira the busiest.', 'writing', 'Superlatives'),
+      q('Choose the correct sentence.', ['We finished earlier than we expected.', 'We finished more early than we expected.', 'We finish earlier than we expected yesterday.'], 'Early vira earlier.', 'writing', 'Comparatives'),
+      q('Choose the best reflection.', ['I learned that planning makes everything easier.', 'I learn that planning make easier.', 'Planning easier me learned.'], 'Learned (passado) + that + frase completa.', 'writing', 'Past simple'),
+    ],
+  },
+};
+
+const BANCO: Banco = { ...NIVEL5, ...NIVEL6, ...NIVEL7, ...NIVEL8 };
 
 /**
  * Perguntas da rodada de uma atividade.

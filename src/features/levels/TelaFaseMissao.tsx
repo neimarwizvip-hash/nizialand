@@ -5,6 +5,7 @@ import { Anfitriao, BotaoJogo, Cenario, Estrelas, Ficha, Fita, Hud, Icone, Paine
 import type { NomeAnfitriao, NomeCenario, NomeIcone } from '../../components/kit';
 import type { Mechanic } from '../../core/types';
 import { fala as falaDoRoteiro } from '../../data/falasAnfitrioes';
+import { useGame } from '../../context/GameContext';
 import type { ItemRodada } from '../../data/rodadasFases';
 import { RodadaAtividade, type ResultadoRodada } from './RodadaAtividade';
 
@@ -18,7 +19,7 @@ interface Props {
   descricao?: string;
   atividades: ActivityProgress[];
   concluido: boolean;
-  notaConclusao?: string; // ex.: "O Nível 8 será lançado em breve."
+  notaConclusao?: string; // ex.: "O Nível 9 será lançado em breve."
   selecionada: { id: string; nome: string } | null;
   itens: ItemRodada[] | null; // perguntas da rodada da atividade aberta
   cronometro?: number; // segundos por pergunta nas atividades contra o relógio
@@ -28,8 +29,8 @@ interface Props {
   onMapa: () => void;
 }
 
-const ANFITRIAO: Record<number, NomeAnfitriao> = { 3: 'rosana', 4: 'mane', 5: 'leia', 6: 'marcio', 7: 'vania' };
-const CENARIO: Record<number, NomeCenario> = { 3: 'corredor', 4: 'escola', 5: 'auditorio', 6: 'corredor', 7: 'fachada' };
+const ANFITRIAO: Record<number, NomeAnfitriao> = { 3: 'rosana', 4: 'mane', 5: 'leia', 6: 'marcio', 7: 'vania', 8: 'rosana' };
+const CENARIO: Record<number, NomeCenario> = { 3: 'corredor', 4: 'escola', 5: 'auditorio', 6: 'corredor', 7: 'fachada', 8: 'patio' };
 const ICONE_MECANICA: Partial<Record<Mechanic, NomeIcone>> = {
   listen: 'orelha', order: 'livro', dialogue: 'balao', explore: 'lupa', quiz: 'dica', flashcards: 'carta',
   dictation: 'orelha', wordsearch: 'lupa', truefalse: 'check', gapfill: 'balao', timed: 'relogio', duel: 'carta',
@@ -46,13 +47,15 @@ const Percevejo: React.FC<{ cor: string }> = ({ cor }) => (
 export const TelaFaseMissao: React.FC<Props> = ({
   nivel, titulo, subtitulo, descricao, atividades, concluido, notaConclusao, selecionada, itens, cronometro, onConcluir, onAbrir, onVoltar, onMapa,
 }) => {
+  const { currentPlayer } = useGame();
+  const nome = currentPlayer?.displayName || currentPlayer?.name;
   const host = ANFITRIAO[nivel] ?? 'marcio';
   const feitas = atividades.filter(a => a.state === 'completed').length;
   const proxima = atividades.find(a => a.state === 'available')?.activity.name;
   const momento = concluido ? 'concluido' : feitas > 0 ? 'meio' : 'apresenta';
-  const falaHost = useMemo(() => falaDoRoteiro(nivel, momento, { missao: titulo, proxima }),
+  const falaHost = useMemo(() => falaDoRoteiro(nivel, momento, { nome, missao: titulo, proxima }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [nivel, momento, proxima]);
+    [nivel, momento, proxima, nome]);
 
   // ----- Rodada de uma atividade -----
   if (selecionada && itens && itens.length) {

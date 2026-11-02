@@ -123,10 +123,22 @@ export const ROTEIRO: Record<number, RoteiroNivel> = {
       semSerie: [{ pt: 'Oi, {nome}! Vânia aqui. Em que série você está?', en: 'Hi! What grade are you in?' }],
       apresenta: [{ pt: 'Chegou a hora de se organizar: material, rotina, aula, grupo e estudo. Quem se organiza chega mais longe, e em inglês também.', en: 'Time to get organized!' }],
       meio: [{ pt: 'Organizado, {nome}! Agora {proxima}.', en: 'Well organized! Next.' }],
-      concluido: [{ pt: 'Missão sete completa, {nome}! Você aprendeu a se organizar. O Nível oito está sendo preparado.', en: 'Mission seven complete! Level eight is coming.' }],
+      concluido: [{ pt: 'Missão sete completa, {nome}! Você aprendeu a se organizar. Agora o Nível oito: organizado na prática.', en: 'Mission seven complete! Level eight is open.' }],
       certo: [{ pt: 'Perfeito, tudo no lugar.', en: 'Perfect!' }],
       errado: [{ pt: 'Quase. Veja a ordem certa.', en: 'Almost. Check the right order.' }],
       volta: [{ pt: 'De volta, {nome}? Sua agenda está esperando.', en: 'Welcome back!' }],
+    },
+  },
+  8: {
+    anfitriao: 'rosana',
+    falas: {
+      semSerie: [{ pt: 'Oi, {nome}! Rosana aqui. Em que série você está?', en: 'Hi! What grade are you in?' }],
+      apresenta: [{ pt: 'Agora o plano vira prática, {nome}: semana organizada, entrega, simulado e apresentação. O resultado da sua organização vira pontos.', en: 'Now the plan becomes practice!' }],
+      meio: [{ pt: 'Mandou bem, {nome}! Próxima: {proxima}.', en: 'Well done! Next.' }],
+      concluido: [{ pt: 'Missão oito completa, {nome}! Você colocou a organização em prática. A gincana vem aí.', en: 'Mission eight complete!' }],
+      certo: [{ pt: 'Isso! Melhor impossível.', en: 'Better than ever!' }],
+      errado: [{ pt: 'Quase. Compare as opções e veja a certa.', en: 'Almost. Compare the options.' }],
+      volta: [{ pt: 'De volta ao projeto, {nome}?', en: 'Welcome back to the project!' }],
     },
   },
 };

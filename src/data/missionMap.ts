@@ -21,7 +21,7 @@ export const MISSION_MAP: MissionMapLevel[] = [
   { number: 5, title: 'Minhas escolhas', theme: 'Refletir e decidir', icon: '🧭', color: 'violet', description: 'Escolhas, sentimentos, conselhos e reflexão em inglês.', path: '/nivel5', activityCount: 7 },
   { number: 6, title: 'Consequências', theme: 'Entender os efeitos', icon: '🔗', color: 'rose', description: 'Causa, efeito, passado e responsabilidade em inglês.', path: '/nivel6', activityCount: 7 },
   { number: 7, title: 'Aprender a se organizar', theme: 'Planejar material e estudo', icon: '📅', color: 'sky', description: 'Rotina, agenda, estudo e organização em inglês.', path: '/nivel7', activityCount: 8 },
-  { number: 8, title: 'Organizado na prática', theme: 'Aplicar o planejamento', icon: '🧱', color: 'teal', description: 'Planejado: projeto, simulado e apresentação.', path: '/nivel8', activityCount: 8 },
+  { number: 8, title: 'Organizado na prática', theme: 'Aplicar o planejamento', icon: '🧱', color: 'teal', description: 'Semana organizada, simulado, sala ideal e apresentação em inglês.', path: '/nivel8', activityCount: 8 },
   { number: 9, title: 'Gincana', theme: 'Competir com respeito', icon: '🏆', color: 'yellow', description: 'Planejado: desafios esportivos e inglês.', path: '/nivel9', activityCount: 8 },
   { number: 10, title: 'O vencedor que me tornei', theme: 'Reconhecer a jornada', icon: '🎓', color: 'purple', description: 'Planejado: revisão final, discurso e cerimônia.', path: '/nivel10', activityCount: 8 },
 ];

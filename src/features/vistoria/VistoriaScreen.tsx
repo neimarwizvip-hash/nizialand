@@ -8,6 +8,7 @@ import { LEVEL4 } from '../../content/level4';
 import { LEVEL5 } from '../../content/level5';
 import { LEVEL6 } from '../../content/level6';
 import { LEVEL7 } from '../../content/level7';
+import { LEVEL8 } from '../../content/level8';
 import type { Level } from '../../core/types';
 import { CHAVE_CORREDOR_3D, CORREDOR_3D_LIBERADO } from '../../config/corredor3d';
 
@@ -60,6 +61,7 @@ export const VISTORIA_LEVELS: { title: string; items: Item[] }[] = [
   phase(LEVEL5, '/nivel5'),
   phase(LEVEL6, '/nivel6'),
   phase(LEVEL7, '/nivel7'),
+  phase(LEVEL8, '/nivel8'),
   {
     title: 'Mapa',
     items: [{ label: 'Mapa das missões (0 a 10)', to: '/mapa' }],

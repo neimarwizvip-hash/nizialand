@@ -45,7 +45,7 @@ export const PhaseMissionScreen: React.FC<{ level: Level; content: any; accent: 
       descricao={content[grade].curriculum.progression}
       atividades={progress.activities}
       concluido={progress.isCompleted}
-      notaConclusao={level.number === 7 ? 'O Nível 8 será lançado em breve. Seu progresso do Nível 7 foi registrado.' : 'Continue sua jornada no próximo nível.'}
+      notaConclusao={level.number === 8 ? 'O Nível 9 (Gincana) será lançado em breve. Seu progresso do Nível 8 foi registrado.' : 'Continue sua jornada no próximo nível.'}
       selecionada={aberta ? { id: aberta.id, nome: aberta.name } : null}
       itens={itens}
       cronometro={aberta?.mechanic === 'timed' ? SEGUNDOS_POR_PERGUNTA : undefined}
