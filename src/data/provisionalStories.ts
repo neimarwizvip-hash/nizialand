@@ -26,7 +26,7 @@ export const PROVISIONAL_STORIES: Record<ProvisionalStoryId, { title: string; pa
     title: 'Uma tarefa para todos',
     panels: [
       { scene: 'Novo desafio', speaker: 'Narrador', voz: 'narrador', text: 'A turma recebe uma tarefa que ninguém resolve sozinho: seguir as pistas pela escola.', background: '/assets/nisialand_school_facade_clean.jpg' },
-      { scene: 'Dividindo papéis', speaker: 'Colega', voz: 'colega', text: 'Quem vai procurar as pistas?', en: 'Who will find the clues?', image: '/assets/student_boy_tshirt.png', background: '/assets/nisialand_hallway_bg.jpg' },
+      { scene: 'Dividindo papéis', speaker: 'Colega', voz: 'colegaM', text: 'Quem vai procurar as pistas?', en: 'Who will find the clues?', image: '/assets/student_boy_tshirt.png', background: '/assets/nisialand_hallway_bg.jpg' },
       { scene: 'A equipe começa', speaker: 'Narrador', voz: 'narrador', text: 'Cada pessoa assume um papel. Juntos, os colegas percorrem a escola e montam a resposta.', background: '/assets/nisialand_school_facade_clean.jpg' },
     ],
   },

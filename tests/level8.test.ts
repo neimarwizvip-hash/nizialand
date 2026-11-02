@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { LEVEL8 } from '../src/content/level8';
 import { LEVEL8_CONTENT } from '../src/data/level8Content';
-import { MISSION_MAP, getMissionMapState } from '../src/data/missionMap';
+import { MISSION_MAP, getMissionMapState, lancamentoLiberado } from '../src/data/missionMap';
 import { getMissionProgress } from '../src/engines/progression/progress';
 import type { ActivityResult } from '../src/core/types';
 
@@ -26,5 +26,11 @@ describe('Nível 8: organizado na prática', () => {
     expect(MISSION_MAP[8].activityCount).toBe(LEVEL8.mission.activities.length);
     const estado = getMissionMapState(empty, null, null);
     expect(estado[8].state).toBe('locked');
+  });
+
+  it('Níveis 9 e 10 só abrem com mais de 100 alunos no nível anterior', () => {
+    expect(lancamentoLiberado(9, 100)).toBe(false);
+    expect(lancamentoLiberado(9, 101)).toBe(true);
+    expect(lancamentoLiberado(8, 0)).toBe(true);
   });
 });

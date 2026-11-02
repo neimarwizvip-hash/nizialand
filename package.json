@@ -11,7 +11,9 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "deploy:pages": "wrangler pages deploy dist --project-name nizialand"
+    "deploy:pages": "wrangler pages deploy dist --project-name nizialand",
+    "vozes:lista": "esbuild scripts/vozes/exportar-falas.ts --bundle --platform=node --format=cjs --outfile=_to_delete/exportar-falas.cjs --log-level=warning && node _to_delete/exportar-falas.cjs",
+    "vozes": "npm run vozes:lista && %USERPROFILE%\\.claude-voice\\venv\\Scripts\\python.exe scripts/vozes/gerar_vozes.py"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",

@@ -32,3 +32,11 @@
 - Fase 1 parte 2: inicio, cadastro (Secretaria), orientacao (auditorio) e ranking (Quadro de honra) no kit. Medalhas por nivel no mapa: ouro >= 90%, prata >= 70%, bronze abaixo (Nivel 0 pelas estrelas do quiz e flashcards). Placar Azul x Roxa na HUD usa a media por jogador (criterio oficial do ranking), com cache de 60 s. Falas das telas fora dos niveis em FALAS_TELAS (PROVISORIO).
 
 - Niveis 1 a 4 no kit: quadro de cartazes comum (QuadroMissao) no modo simples dos Niveis 3 e 4; atividades do Nivel 4 no mural com cenario e HUD (montados pela tela da missao, porque o teste monta a atividade fora do roteador). Cores antigas do conteudo das atividades convertidas por script para a paleta nisia. Nova tela 'alto' (altura >= 860 px) para frases extras.
+
+## 02/11/2026 — Vozes, espaços da escola e lançamento dos Níveis 9 e 10
+
+- **Vozes fixas por personagem (aprovado):** falas gravadas no computador com o Phonon (pt: phonon-40m-pt; en: phonon-31m-en), sem depender da voz do navegador. Elenco em `src/data/elenco.ts`: Márcio = Otávio/Miles; Edileia = Clarice/Delia; Vânia = Débora/Hadley; Rosana = Flávia/Harper; Mané = Kauã/Micah; Zé = Igor/Easton; narrador = Marcelo/Preston; colegas = Rafaela/Zoey e Davi/Trevor; frases de escuta = Juniper. `npm run vozes` lista as falas (`public/assets/vozes/manifesto.json`) e gera só os mp3 que faltam. O nome do aluno não é falado (o balão continua mostrando). Sem arquivo, a fala cai na voz do navegador.
+- **Mapa dos espaços (cada fase num lugar da escola; cada atividade, uma sala ou ponto):** 2 Pátio · 3 Corredor das salas · 4 Área externa e quadra · 5 Auditório · 6 Biblioteca · 7 Refeitório e laboratório de informática · 8 Laboratório e sala de projetos · 9 Pátio e quadra (gincana) · 10 Escola enfeitada (festa final). Não há cantina.
+- **Lançamento coletivo:** o Nível 9 só é lançado quando mais de 100 alunos concluírem o Nível 8; o Nível 10, quando mais de 100 concluírem o Nível 9. O mapa mostra o contador (dados do ranking da planilha).
+- **Gamificação:** nada de "pergunta, pergunta, pergunta". Próxima etapa: minijogos variados com dificuldade gradual nos Níveis 5 a 8 e revisão dos Níveis 1 a 4.
+- **3D:** um motor com peças da escola, um espaço por fase (tabela acima); personagens 3D leves com base CC0, começando pelo Márcio como piloto.

@@ -53,7 +53,7 @@ export const RodadaAtividade: React.FC<Props> = ({ nivel, nome, itens, cronometr
   const falar = useCallback(() => {
     if (!item?.ouvir) return;
     pararFala.current();
-    pararFala.current = narrar([{ texto: item.ouvir, idioma: 'en-US', rate: 0.9 }]);
+    pararFala.current = narrar([{ texto: item.ouvir, idioma: 'en-US', rate: 0.9, personagem: 'professora' }]);
   }, [item]);
 
   // Ao abrir cada pergunta: fala a frase (escuta) e reinicia o relógio.

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { audioService } from '../../services/audio';
 import { narrar, narracaoDisponivel, tempoDeLeitura, trechosDaFala } from '../../services/narracao';
 import { Icone } from '../kit/Icones';
+import { FALA_EDILEIA, FALA_MARCIO } from '../../data/falasHq';
 
 // HQ Motion "Reunião urgente", entre o Nível 0 e o Nível 1. Falas literais do Oliveira.
 // Q1 plano geral (3 s) · Q2 fala da Edileia · Q3 fala do Márcio (aceno) · Q4 olhar + virada de página.
@@ -16,8 +17,6 @@ const MUSIC_SRC = '/assets/audio/hq_reuniao.mp3';
 const MUSIC_FALLBACK = '/assets/audio/trilha_mapa.mp3';
 const VOLUME_TRILHA = 0.3;
 
-const FALA_EDILEIA = 'Márcio, preciso conversar com esses meninos sobre as regras da escola.';
-const FALA_MARCIO = 'Sim, precisamos marcar uma reunião urgentemente com os alunos e responsáveis.';
 
 const Q1_MS = 3000;
 const FALA_MIN_MS = 5000; // sem voz, cada balão fica 5 s (o tempo de leitura do roteiro original)

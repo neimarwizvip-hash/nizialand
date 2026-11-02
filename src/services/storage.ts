@@ -604,7 +604,11 @@ class StorageService {
     if (!this.rankingPendente) {
       this.rankingPendente = planilha
         .ranking()
-        .then(r => (r.ok && Array.isArray(r.jogadores) ? r.jogadores.map(j => this.entradaDaPlanilha(j)) : null))
+        .then(r => {
+          if (!(r.ok && Array.isArray(r.jogadores))) return null;
+          this.rankingBruto = r.jogadores;
+          return r.jogadores.map(j => this.entradaDaPlanilha(j));
+        })
         .finally(() => {
           this.rankingPendente = null;
         });
@@ -617,6 +621,25 @@ class StorageService {
     }
     this.rankingSource = 'local';
     return this.getLocalLeaderboard();
+  }
+
+  private rankingBruto: JogadorRanking[] | null = null;
+
+  /**
+   * Quantos alunos já concluíram um nível (todas as `atividades` com o prefixo `nivelN-`).
+   * Usa o ranking da planilha (todos os alunos); sem planilha, conta os alunos deste aparelho.
+   * Serve para o lançamento coletivo dos Níveis 9 e 10.
+   */
+  public async contarAlunosQueConcluiram(nivel: number, atividades: number): Promise<{ total: number; fonte: 'planilha' | 'local' }> {
+    const prefixo = `nivel${nivel}-`;
+    await this.getLeaderboard().catch(() => null);
+    if (this.rankingSource === 'planilha' && this.rankingBruto) {
+      const total = this.rankingBruto.filter(j => Object.entries(j.porAtividade ?? {}).filter(([k, v]) => k.startsWith(prefixo) && v != null).length >= atividades).length;
+      return { total, fonte: 'planilha' };
+    }
+    const todos = this.getAllActivityResults();
+    const total = Object.values(todos).filter(r => Object.values(r).filter(x => x.completed && x.activityId.startsWith(prefixo)).length >= atividades).length;
+    return { total, fonte: 'local' };
   }
 
   private entradaDaPlanilha(j: JogadorRanking): LeaderboardPlayerEntry {

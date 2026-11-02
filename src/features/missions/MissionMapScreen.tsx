@@ -1,10 +1,11 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGame } from '../../context/GameContext';
-import { getMissionMapState } from '../../data/missionMap';
+import { getMissionMapState, LANCAMENTO, MISSION_MAP } from '../../data/missionMap';
+import { storageService } from '../../services/storage';
 import { audioService } from '../../services/audio';
 import { PlayerAvatar } from '../../components/ui/PlayerAvatar';
-import { BotaoJogo, Cenario, Ficha, Hud, Icone, ICONE_NIVEL, Medalha, NOME_MEDALHA, Painel, Titulo } from '../../components/kit';
+import { BotaoJogo, Cenario, Ficha, Fita, Hud, Icone, ICONE_NIVEL, Medalha, NOME_MEDALHA, Painel, Titulo } from '../../components/kit';
 
 // Mapa das missões: tabuleiro de papel com a trilha da escola e os 11 níveis como paradas.
 // O avatar do aluno fica parado no nível atual; o caminho já percorrido fica verde.
@@ -32,7 +33,17 @@ function trechos(p: Array<[number, number]>): string[] {
 export const MissionMapScreen: React.FC = () => {
   const navigate = useNavigate();
   const { currentPlayer, activityResults, quizResult, flashcardResult } = useGame();
-  const levels = getMissionMapState(activityResults, quizResult, flashcardResult);
+  // Lançamento coletivo dos Níveis 9 e 10: quantos alunos já concluíram o nível anterior.
+  const [concluiram, setConcluiram] = useState<Record<number, number | null>>({});
+  useEffect(() => {
+    let vivo = true;
+    const anteriores = [...new Set(Object.values(LANCAMENTO).map(r => r.apos))];
+    Promise.all(anteriores.map(async n => [n, (await storageService.contarAlunosQueConcluiram(n, MISSION_MAP[n]?.activityCount ?? 8)).total] as const))
+      .then(pares => { if (vivo) setConcluiram(Object.fromEntries(pares)); })
+      .catch(() => undefined);
+    return () => { vivo = false; };
+  }, []);
+  const levels = getMissionMapState(activityResults, quizResult, flashcardResult, concluiram);
   const atual = levels.find(l => l.state === 'available') ?? levels[levels.length - 1];
   const [selecionado, setSelecionado] = useState<number>(atual.number);
   const nivelSel = levels[selecionado] ?? atual;
@@ -205,10 +216,13 @@ export const MissionMapScreen: React.FC = () => {
               </div>
               <h2 className="mt-2 font-display text-2xl short:text-lg leading-tight text-nisia-azul-700">{nivelSel.title}</h2>
               <p className="font-body font-semibold text-nisia-laranja-700 short:text-sm">{nivelSel.theme}</p>
+              {nivelSel.lugar && <p className="mt-1 inline-flex items-center gap-1.5 text-sm short:text-xs font-semibold text-nisia-azul-700"><Icone nome="mapa" className="w-4 h-4" cor="#1F5FD0" /> {nivelSel.lugar}</p>}
               <p className="mt-2 short:mt-1 text-sm short:text-xs text-nisia-tinta leading-snug">{nivelSel.description}</p>
               <p className="mt-2 short:mt-1 text-sm font-semibold text-nisia-tinta-suave">{nivelSel.activityCount} atividades</p>
               <div className="mt-3 short:mt-2">
-                {nivelSel.state === 'locked' ? (
+                {LANCAMENTO[nivelSel.number] && nivelSel.state === 'locked' ? (
+                  <ContadorLancamento nivel={nivelSel.number} concluiram={concluiram[LANCAMENTO[nivelSel.number].apos] ?? null} aguardando={!!nivelSel.aguardando} />
+                ) : nivelSel.state === 'locked' ? (
                   <p className="inline-flex items-center gap-2 text-sm font-semibold text-nisia-tinta-suave"><Icone nome="cadeado" className="w-5 h-5" cor="#F3E4BE" /> Termine o Nível {nivelSel.number - 1} para abrir.</p>
                 ) : (
                   <BotaoJogo cor={nivelSel.state === 'completed' ? 'papel' : 'laranja'} onClick={ir} className="w-full short:min-h-[38px] short:text-sm">
@@ -234,4 +248,26 @@ export const MissionMapScreen: React.FC = () => {
     </div>
   );
 };
+
+// Contador do lançamento coletivo (Níveis 9 e 10).
+const ContadorLancamento: React.FC<{ nivel: number; concluiram: number | null; aguardando: boolean }> = ({ nivel, concluiram, aguardando }) => {
+  const { apos, minimo } = LANCAMENTO[nivel];
+  const meta = minimo + 1; // "mais de 100"
+  const ja = concluiram ?? 0;
+  const faltam = Math.max(0, meta - ja);
+  return (
+    <div className="flex flex-col gap-1.5" role="status" aria-live="polite">
+      <p className="text-sm short:text-xs font-semibold text-nisia-tinta leading-snug">
+        <Icone nome="cadeado" className="inline w-4 h-4 -mt-0.5 mr-1" cor="#F3E4BE" />
+        Lançamento coletivo: abre quando mais de {minimo} alunos concluírem o Nível {apos}.
+      </p>
+      <Fita frac={Math.min(1, ja / meta)} rotulo={`Alunos que concluíram o Nível ${apos}`} />
+      <p className="font-display text-base short:text-sm text-nisia-azul-700">
+        {concluiram === null ? 'Contando os alunos…' : faltam > 0 ? `${ja} de ${meta} alunos · faltam ${faltam}` : 'Meta alcançada! O nível chega em breve.'}
+      </p>
+      {aguardando && faltam > 0 && <p className="text-xs text-nisia-tinta-suave">Você já fez a sua parte. Chame os colegas para chegar lá!</p>}
+    </div>
+  );
+};
+
 export default MissionMapScreen;

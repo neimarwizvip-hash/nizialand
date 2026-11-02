@@ -1,0 +1,1962 @@
+[
+ {
+  "chave": "72d2eab4",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Ao ouvir, organizar e respeitar os outros, a turma abre as portas das salas.",
+  "origem": "hq nivel3"
+ },
+ {
+  "chave": "7e887aac",
+  "idioma": "pt-BR",
+  "voz": "Rafaela",
+  "personagem": "colega",
+  "texto": "Posso sentar aqui?",
+  "origem": "hq nivel3"
+ },
+ {
+  "chave": "95896b93",
+  "idioma": "en-US",
+  "voz": "Zoey",
+  "personagem": "colega",
+  "texto": "May I sit here?",
+  "origem": "hq nivel3"
+ },
+ {
+  "chave": "f463d14b",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Depois do pátio, a turma chega à nova sala. Cada colega precisa de espaço para aprender.",
+  "origem": "hq nivel3"
+ },
+ {
+  "chave": "3a7de75a",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "A turma recebe uma tarefa que ninguém resolve sozinho: seguir as pistas pela escola.",
+  "origem": "hq nivel4"
+ },
+ {
+  "chave": "3b59e812",
+  "idioma": "en-US",
+  "voz": "Trevor",
+  "personagem": "colegaM",
+  "texto": "Who will find the clues?",
+  "origem": "hq nivel4"
+ },
+ {
+  "chave": "a717ff93",
+  "idioma": "pt-BR",
+  "voz": "Davi",
+  "personagem": "colegaM",
+  "texto": "Quem vai procurar as pistas?",
+  "origem": "hq nivel4"
+ },
+ {
+  "chave": "b45ceab4",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Cada pessoa assume um papel. Juntos, os colegas percorrem a escola e montam a resposta.",
+  "origem": "hq nivel4"
+ },
+ {
+  "chave": "565fefcb",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Sim, precisamos marcar uma reunião urgentemente com os alunos e responsáveis.",
+  "origem": "hq reuniao"
+ },
+ {
+  "chave": "73af886f",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Márcio, preciso conversar com esses meninos sobre as regras da escola.",
+  "origem": "hq reuniao"
+ },
+ {
+  "chave": "4459bca0",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I was proud because I finished the project on my own.",
+  "origem": "rodada nivel5-sentimentos"
+ },
+ {
+  "chave": "4cd42fde",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I am happy because my team helped me.",
+  "origem": "rodada nivel5-sentimentos"
+ },
+ {
+  "chave": "5a3ca48c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I am angry because someone broke my pen.",
+  "origem": "rodada nivel5-sentimentos"
+ },
+ {
+  "chave": "7d4a7fee",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I felt embarrassed when I forgot my lines in the play.",
+  "origem": "rodada nivel5-sentimentos"
+ },
+ {
+  "chave": "83be2d91",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I am worried because the test is tomorrow.",
+  "origem": "rodada nivel5-sentimentos"
+ },
+ {
+  "chave": "d8b03b3a",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I felt disappointed, but I learned from the mistake.",
+  "origem": "rodada nivel5-sentimentos"
+ },
+ {
+  "chave": "e718be17",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I am scared because the room is dark.",
+  "origem": "rodada nivel5-sentimentos"
+ },
+ {
+  "chave": "f6ddb1b9",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I was relieved because the team solved the problem.",
+  "origem": "rodada nivel5-sentimentos"
+ },
+ {
+  "chave": "309409d0",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Wash your hands.",
+  "origem": "rodada nivel7-cozinha"
+ },
+ {
+  "chave": "3d523932",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Preheat the oven before you add the cake.",
+  "origem": "rodada nivel7-cozinha"
+ },
+ {
+  "chave": "7c53dc02",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Don’t open the oven for twenty minutes.",
+  "origem": "rodada nivel7-cozinha"
+ },
+ {
+  "chave": "92d51dc6",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Mix the flour and the milk.",
+  "origem": "rodada nivel7-cozinha"
+ },
+ {
+  "chave": "96774a74",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the eggs in the bowl.",
+  "origem": "rodada nivel7-cozinha"
+ },
+ {
+  "chave": "c4f22012",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Cut the bananas carefully and put them on the plate.",
+  "origem": "rodada nivel7-cozinha"
+ },
+ {
+  "chave": "3fd70f70",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the bookshelf between the door and the board.",
+  "origem": "rodada nivel8-sala"
+ },
+ {
+  "chave": "73a6ed51",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the plant on the shelf.",
+  "origem": "rodada nivel8-sala"
+ },
+ {
+  "chave": "9ddb8e62",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the desk next to the window.",
+  "origem": "rodada nivel8-sala"
+ },
+ {
+  "chave": "c4b45c06",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Place the chairs in front of the desks.",
+  "origem": "rodada nivel8-sala"
+ },
+ {
+  "chave": "224b5f6f",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Turn left at the library.",
+  "origem": "rodada nivel8-travessia"
+ },
+ {
+  "chave": "76b3d9da",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Go straight ahead and turn right after the cafeteria.",
+  "origem": "rodada nivel8-travessia"
+ },
+ {
+  "chave": "12c4a78b",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Lembre-se: o Zé vai tentar atrapalhar. Respire fundo, leia com calma e responda.",
+  "origem": "roteiro 0 apresenta"
+ },
+ {
+  "chave": "a9ba8ba0",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Take a deep breath and answer.",
+  "origem": "roteiro 0 apresenta"
+ },
+ {
+  "chave": "ac72ff0f",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Welcome to NISIALAND! Stay focused!",
+  "origem": "roteiro 0 apresenta"
+ },
+ {
+  "chave": "b538d2e4",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Bem-vindo à NISIALAND! Sua primeira missão é desviar das distrações do Zé Cartinha. Mostre que você consegue se concentrar.",
+  "origem": "roteiro 0 apresenta"
+ },
+ {
+  "chave": "a4cf95b1",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Very good!",
+  "origem": "roteiro 0 certo"
+ },
+ {
+  "chave": "b3995e6a",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Isso! Resposta certa.",
+  "origem": "roteiro 0 certo"
+ },
+ {
+  "chave": "f6e603d3",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Muito bem.",
+  "origem": "roteiro 0 certo"
+ },
+ {
+  "chave": "ffd89e28",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Correct!",
+  "origem": "roteiro 0 certo"
+ },
+ {
+  "chave": "9dda15f6",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Mission complete! Well done!",
+  "origem": "roteiro 0 concluido"
+ },
+ {
+  "chave": "cb074018",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Missão zero completa! Você passou pelo Zé Cartinha. A escola inteira está orgulhosa.",
+  "origem": "roteiro 0 concluido"
+ },
+ {
+  "chave": "131435ae",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Calma. Leia de novo e tente outra vez.",
+  "origem": "roteiro 0 errado"
+ },
+ {
+  "chave": "15aea0e6",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Read it again and try once more.",
+  "origem": "roteiro 0 errado"
+ },
+ {
+  "chave": "1ebb07d3",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Halfway there! Keep going.",
+  "origem": "roteiro 0 meio"
+ },
+ {
+  "chave": "43a807cc",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Metade feita! Agora vem: Quiz. Vamos terminar bem.",
+  "origem": "roteiro 0 meio"
+ },
+ {
+  "chave": "936a95b0",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Metade feita! Agora vem: Flashcards. Vamos terminar bem.",
+  "origem": "roteiro 0 meio"
+ },
+ {
+  "chave": "a81c9abc",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Metade feita! Agora vem: a próxima atividade. Vamos terminar bem.",
+  "origem": "roteiro 0 meio"
+ },
+ {
+  "chave": "a10d1a06",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Hello! What grade are you in?",
+  "origem": "roteiro 0 semSerie"
+ },
+ {
+  "chave": "f701fab0",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Olá! Eu sou o Diretor Márcio. Antes de começar, me diga: em que série você está?",
+  "origem": "roteiro 0 semSerie"
+ },
+ {
+  "chave": "507816cc",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Good to see you again!",
+  "origem": "roteiro 0 volta"
+ },
+ {
+  "chave": "97ea9b14",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Que bom ver você de volta. Vamos continuar de onde parou.",
+  "origem": "roteiro 0 volta"
+ },
+ {
+  "chave": "1577bcec",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Cada atividade libera a próxima. Comece ouvindo o meu recado com atenção.",
+  "origem": "roteiro 1 apresenta"
+ },
+ {
+  "chave": "3f37561b",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Know the rules, learn and go further!",
+  "origem": "roteiro 1 apresenta"
+ },
+ {
+  "chave": "a058c581",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Na nossa escola, as regras existem para todo mundo conviver bem. Vamos aprender a ouvir, montar, conversar e explorar. Leia! Know the rules, learn and go further!",
+  "origem": "roteiro 1 apresenta"
+ },
+ {
+  "chave": "b03ca9da",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Listen carefully to my message.",
+  "origem": "roteiro 1 apresenta"
+ },
+ {
+  "chave": "058ef3f9",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Perfeito, você entendeu o recado.",
+  "origem": "roteiro 1 certo"
+ },
+ {
+  "chave": "68018786",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Perfect!",
+  "origem": "roteiro 1 certo"
+ },
+ {
+  "chave": "03a48893",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Mission one complete! Go to the playground.",
+  "origem": "roteiro 1 concluido"
+ },
+ {
+  "chave": "ac724c6b",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "As regras agora são suas também. Missão um completa! Pode seguir para o pátio.",
+  "origem": "roteiro 1 concluido"
+ },
+ {
+  "chave": "cdb23e9d",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Quase. Ouça mais uma vez e pense na regra.",
+  "origem": "roteiro 1 errado"
+ },
+ {
+  "chave": "d88dad9f",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Almost. Listen once more.",
+  "origem": "roteiro 1 errado"
+ },
+ {
+  "chave": "06d47a8f",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Você está indo bem. A próxima é Explore a escola.",
+  "origem": "roteiro 1 meio"
+ },
+ {
+  "chave": "215cf2d2",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Você está indo bem. A próxima é Conversa no corredor.",
+  "origem": "roteiro 1 meio"
+ },
+ {
+  "chave": "43e7ba31",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Você está indo bem. A próxima é O recado da Leia.",
+  "origem": "roteiro 1 meio"
+ },
+ {
+  "chave": "89453423",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Você está indo bem. A próxima é a próxima atividade.",
+  "origem": "roteiro 1 meio"
+ },
+ {
+  "chave": "cc580b17",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Você está indo bem. A próxima é Monte a mensagem.",
+  "origem": "roteiro 1 meio"
+ },
+ {
+  "chave": "f570ddeb",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "You are doing well!",
+  "origem": "roteiro 1 meio"
+ },
+ {
+  "chave": "164dd3a0",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Hi! What grade are you in?",
+  "origem": "roteiro 1 semSerie"
+ },
+ {
+  "chave": "59499afe",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Oi! Eu sou a Leia, da orientação. Me conte em que série você está para eu preparar as atividades.",
+  "origem": "roteiro 1 semSerie"
+ },
+ {
+  "chave": "62bae24c",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Welcome back!",
+  "origem": "roteiro 1 volta"
+ },
+ {
+  "chave": "ae1b2893",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Voltou? Ótimo. As regras continuam esperando por você.",
+  "origem": "roteiro 1 volta"
+ },
+ {
+  "chave": "030537e4",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "Go to each station. Ask politely!",
+  "origem": "roteiro 2 apresenta"
+ },
+ {
+  "chave": "53dfa9f7",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "No pátio a gente aprende a pedir com educação e a respeitar quem cuida da escola. Vá até cada estação; eu organizo tudo por aqui.",
+  "origem": "roteiro 2 apresenta"
+ },
+ {
+  "chave": "5d58d7bb",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "Go to the next station.",
+  "origem": "roteiro 2 apresenta"
+ },
+ {
+  "chave": "6c431502",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Sua próxima estação é Duelo de bafo com o Zé. Ande até ela e toque na placa.",
+  "origem": "roteiro 2 apresenta"
+ },
+ {
+  "chave": "81caa754",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Sua próxima estação é Corrida contra o relógio. Ande até ela e toque na placa.",
+  "origem": "roteiro 2 apresenta"
+ },
+ {
+  "chave": "9490b548",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Sua próxima estação é O mural da Vânia. Ande até ela e toque na placa.",
+  "origem": "roteiro 2 apresenta"
+ },
+ {
+  "chave": "b2c701ab",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Sua próxima estação é a próxima atividade. Ande até ela e toque na placa.",
+  "origem": "roteiro 2 apresenta"
+ },
+ {
+  "chave": "ece014e6",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Sua próxima estação é Ditado do Márcio. Ande até ela e toque na placa.",
+  "origem": "roteiro 2 apresenta"
+ },
+ {
+  "chave": "f409c787",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Sua próxima estação é Caça-palavras no pátio. Ande até ela e toque na placa.",
+  "origem": "roteiro 2 apresenta"
+ },
+ {
+  "chave": "fe65431b",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Sua próxima estação é Complete o bilhete. Ande até ela e toque na placa.",
+  "origem": "roteiro 2 apresenta"
+ },
+ {
+  "chave": "cd5d0f7e",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "That is right!",
+  "origem": "roteiro 2 certo"
+ },
+ {
+  "chave": "e7ba2f06",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Isso mesmo, com educação a gente chega longe.",
+  "origem": "roteiro 2 certo"
+ },
+ {
+  "chave": "3ffd3ef2",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "All stations done! Mission two complete.",
+  "origem": "roteiro 2 concluido"
+ },
+ {
+  "chave": "b37a2e80",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Pátio completo! Você pediu, ouviu e respeitou. Missão dois concluída.",
+  "origem": "roteiro 2 concluido"
+ },
+ {
+  "chave": "6c1f401f",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "Not this time. Check the answer.",
+  "origem": "roteiro 2 errado"
+ },
+ {
+  "chave": "f07ec6ea",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Hum, não foi dessa vez. Olhe a resposta certa e siga.",
+  "origem": "roteiro 2 errado"
+ },
+ {
+  "chave": "0b151bb4",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Boa! Agora Ditado do Márcio. O pátio está quase todo visitado.",
+  "origem": "roteiro 2 meio"
+ },
+ {
+  "chave": "20ed438e",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Boa! Agora O mural da Vânia. O pátio está quase todo visitado.",
+  "origem": "roteiro 2 meio"
+ },
+ {
+  "chave": "86d58a93",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "Great! Next station.",
+  "origem": "roteiro 2 meio"
+ },
+ {
+  "chave": "9f02493b",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Boa! Agora Caça-palavras no pátio. O pátio está quase todo visitado.",
+  "origem": "roteiro 2 meio"
+ },
+ {
+  "chave": "aa220be7",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Boa! Agora a próxima atividade. O pátio está quase todo visitado.",
+  "origem": "roteiro 2 meio"
+ },
+ {
+  "chave": "b4a43e13",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Boa! Agora Complete o bilhete. O pátio está quase todo visitado.",
+  "origem": "roteiro 2 meio"
+ },
+ {
+  "chave": "c56056aa",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Boa! Agora Corrida contra o relógio. O pátio está quase todo visitado.",
+  "origem": "roteiro 2 meio"
+ },
+ {
+  "chave": "f75697e4",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Boa! Agora Duelo de bafo com o Zé. O pátio está quase todo visitado.",
+  "origem": "roteiro 2 meio"
+ },
+ {
+  "chave": "b1f05876",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Olá! Sou a coordenadora Vânia. Em que série você está?",
+  "origem": "roteiro 2 semSerie"
+ },
+ {
+  "chave": "ebcd0bb7",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "Hello! What grade are you in?",
+  "origem": "roteiro 2 semSerie"
+ },
+ {
+  "chave": "317f594c",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "De volta ao pátio? A próxima estação é Duelo de bafo com o Zé.",
+  "origem": "roteiro 2 volta"
+ },
+ {
+  "chave": "35cf0edc",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "De volta ao pátio? A próxima estação é Ditado do Márcio.",
+  "origem": "roteiro 2 volta"
+ },
+ {
+  "chave": "3b794a95",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "De volta ao pátio? A próxima estação é Caça-palavras no pátio.",
+  "origem": "roteiro 2 volta"
+ },
+ {
+  "chave": "5900310a",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "De volta ao pátio? A próxima estação é Corrida contra o relógio.",
+  "origem": "roteiro 2 volta"
+ },
+ {
+  "chave": "617e1d9d",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "Welcome back to the playground!",
+  "origem": "roteiro 2 volta"
+ },
+ {
+  "chave": "9a0daa01",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "De volta ao pátio? A próxima estação é a próxima atividade.",
+  "origem": "roteiro 2 volta"
+ },
+ {
+  "chave": "a06ac2c9",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "De volta ao pátio? A próxima estação é Complete o bilhete.",
+  "origem": "roteiro 2 volta"
+ },
+ {
+  "chave": "e871939e",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "De volta ao pátio? A próxima estação é O mural da Vânia.",
+  "origem": "roteiro 2 volta"
+ },
+ {
+  "chave": "42f5ef19",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Hoje é dia de conviver bem em sala. Entre em cada sala do corredor, arrume, responda e revise. O Mané vai junto, mas a resposta é sua.",
+  "origem": "roteiro 3 apresenta"
+ },
+ {
+  "chave": "d418f265",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "Enter each classroom. The answer is yours!",
+  "origem": "roteiro 3 apresenta"
+ },
+ {
+  "chave": "58a29b70",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "Well done!",
+  "origem": "roteiro 3 certo"
+ },
+ {
+  "chave": "86c3cba2",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Muito bem! Pode seguir.",
+  "origem": "roteiro 3 certo"
+ },
+ {
+  "chave": "22c0ec8f",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Todas as salas arrumadas! Conviver bem também é inglês. Missão três completa.",
+  "origem": "roteiro 3 concluido"
+ },
+ {
+  "chave": "d7d29088",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "All classrooms done! Mission three complete.",
+  "origem": "roteiro 3 concluido"
+ },
+ {
+  "chave": "18b53e92",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "Read the whole sentence.",
+  "origem": "roteiro 3 errado"
+ },
+ {
+  "chave": "99feaaed",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Vamos pensar juntos: leia a frase inteira.",
+  "origem": "roteiro 3 errado"
+ },
+ {
+  "chave": "25b86ce9",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Mais uma sala: Labirinto do corredor.",
+  "origem": "roteiro 3 meio"
+ },
+ {
+  "chave": "3bcd9d05",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Mais uma sala: Memória da sala.",
+  "origem": "roteiro 3 meio"
+ },
+ {
+  "chave": "68de6a94",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Mais uma sala: Quadro de quiz.",
+  "origem": "roteiro 3 meio"
+ },
+ {
+  "chave": "b38c9e9e",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Mais uma sala: Arrume a sala.",
+  "origem": "roteiro 3 meio"
+ },
+ {
+  "chave": "d3101044",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "One more classroom!",
+  "origem": "roteiro 3 meio"
+ },
+ {
+  "chave": "ef44fd43",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Mais uma sala: a próxima atividade.",
+  "origem": "roteiro 3 meio"
+ },
+ {
+  "chave": "fbdba6df",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Mais uma sala: Quem disse?.",
+  "origem": "roteiro 3 meio"
+ },
+ {
+  "chave": "fdc62a76",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Mais uma sala: Sala de revisão.",
+  "origem": "roteiro 3 meio"
+ },
+ {
+  "chave": "118bc261",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "Hi! What grade are you in?",
+  "origem": "roteiro 3 semSerie"
+ },
+ {
+  "chave": "ffa3fcfc",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Oi! Sou a professora Rosana. Qual é a sua série?",
+  "origem": "roteiro 3 semSerie"
+ },
+ {
+  "chave": "21a184db",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "Welcome back!",
+  "origem": "roteiro 3 volta"
+ },
+ {
+  "chave": "8bb1bf6c",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Bem-vindo de volta ao corredor.",
+  "origem": "roteiro 3 volta"
+ },
+ {
+  "chave": "00a603a4",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Teamwork! Let us go around the school!",
+  "origem": "roteiro 4 apresenta"
+ },
+ {
+  "chave": "a7117d9a",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Trabalho em equipe, hein? Eu ajudo a procurar as pistas, mas quem responde é você. Bora pela escola toda!",
+  "origem": "roteiro 4 apresenta"
+ },
+ {
+  "chave": "4ff421b6",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Aê! Essa foi na mosca.",
+  "origem": "roteiro 4 certo"
+ },
+ {
+  "chave": "da9d6c09",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Yes! Nailed it.",
+  "origem": "roteiro 4 certo"
+ },
+ {
+  "chave": "8b6320a1",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Equipe completa! Até eu, que só atrapalho, aprendi alguma coisa. Missão quatro feita!",
+  "origem": "roteiro 4 concluido"
+ },
+ {
+  "chave": "d5e91308",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Mission four complete! Great team!",
+  "origem": "roteiro 4 concluido"
+ },
+ {
+  "chave": "7cead9af",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Ih, errou. Relaxa, olha a certa e vem comigo.",
+  "origem": "roteiro 4 errado"
+ },
+ {
+  "chave": "b3b2774d",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Oops. Check the right one.",
+  "origem": "roteiro 4 errado"
+ },
+ {
+  "chave": "17628593",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Next stop!",
+  "origem": "roteiro 4 meio"
+ },
+ {
+  "chave": "229046b0",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Tamo junto! Próxima parada: Monte a equipe.",
+  "origem": "roteiro 4 meio"
+ },
+ {
+  "chave": "31dc73c7",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Tamo junto! Próxima parada: Revezamento de perguntas.",
+  "origem": "roteiro 4 meio"
+ },
+ {
+  "chave": "40eea862",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Tamo junto! Próxima parada: Caça às pistas.",
+  "origem": "roteiro 4 meio"
+ },
+ {
+  "chave": "51652b9b",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Tamo junto! Próxima parada: Siga as direções.",
+  "origem": "roteiro 4 meio"
+ },
+ {
+  "chave": "950be097",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Tamo junto! Próxima parada: Mensagem secreta.",
+  "origem": "roteiro 4 meio"
+ },
+ {
+  "chave": "cac27c21",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Tamo junto! Próxima parada: Revisão da equipe.",
+  "origem": "roteiro 4 meio"
+ },
+ {
+  "chave": "d185628c",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Tamo junto! Próxima parada: a próxima atividade.",
+  "origem": "roteiro 4 meio"
+ },
+ {
+  "chave": "61fc6a63",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "E aí! Mané na área. Qual é a sua série, parceiro?",
+  "origem": "roteiro 4 semSerie"
+ },
+ {
+  "chave": "b5349214",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Hey! What grade are you in?",
+  "origem": "roteiro 4 semSerie"
+ },
+ {
+  "chave": "2d0d8aaf",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Voltou? Eu guardei o seu lugar na equipe.",
+  "origem": "roteiro 4 volta"
+ },
+ {
+  "chave": "43c36675",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Welcome back, teammate!",
+  "origem": "roteiro 4 volta"
+ },
+ {
+  "chave": "3331cc2e",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Agora a missão é sobre as suas escolhas. Não existe resposta por impulso aqui: pense, decida e explique o porquê.",
+  "origem": "roteiro 5 apresenta"
+ },
+ {
+  "chave": "4ea1da78",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Think, decide and explain why.",
+  "origem": "roteiro 5 apresenta"
+ },
+ {
+  "chave": "2e5d9d05",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Escolha certa, e bem explicada.",
+  "origem": "roteiro 5 certo"
+ },
+ {
+  "chave": "a986e3ea",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Right choice!",
+  "origem": "roteiro 5 certo"
+ },
+ {
+  "chave": "8a4ef868",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Você refletiu e decidiu. Missão cinco completa.",
+  "origem": "roteiro 5 concluido"
+ },
+ {
+  "chave": "be19f3ba",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Mission five complete!",
+  "origem": "roteiro 5 concluido"
+ },
+ {
+  "chave": "00939873",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Vamos ver juntos qual seria a melhor escolha.",
+  "origem": "roteiro 5 errado"
+ },
+ {
+  "chave": "d6caae8e",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Let us see the best choice.",
+  "origem": "roteiro 5 errado"
+ },
+ {
+  "chave": "39f2205d",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Good choice. Next one.",
+  "origem": "roteiro 5 meio"
+ },
+ {
+  "chave": "3d181996",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Boa decisão. Agora Revisão das escolhas.",
+  "origem": "roteiro 5 meio"
+ },
+ {
+  "chave": "5e73e1b3",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Boa decisão. Agora a próxima atividade.",
+  "origem": "roteiro 5 meio"
+ },
+ {
+  "chave": "75b031b7",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Boa decisão. Agora Desafio de ritmo.",
+  "origem": "roteiro 5 meio"
+ },
+ {
+  "chave": "9685a08b",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Boa decisão. Agora Diálogos de escolha.",
+  "origem": "roteiro 5 meio"
+ },
+ {
+  "chave": "a75f4089",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Boa decisão. Agora História com caminhos.",
+  "origem": "roteiro 5 meio"
+ },
+ {
+  "chave": "a82324e3",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Boa decisão. Agora Sentimentos em inglês.",
+  "origem": "roteiro 5 meio"
+ },
+ {
+  "chave": "d47d3129",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Boa decisão. Agora Jogo do “e se?”.",
+  "origem": "roteiro 5 meio"
+ },
+ {
+  "chave": "e27f3d8a",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Boa decisão. Agora Conselho para um colega.",
+  "origem": "roteiro 5 meio"
+ },
+ {
+  "chave": "08819ed1",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Oi de novo! Em que série você está?",
+  "origem": "roteiro 5 semSerie"
+ },
+ {
+  "chave": "4c8b2b68",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Hi again! What grade are you in?",
+  "origem": "roteiro 5 semSerie"
+ },
+ {
+  "chave": "b2c57b80",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Voltou para decidir mais? Ótimo.",
+  "origem": "roteiro 5 volta"
+ },
+ {
+  "chave": "60f49ce6",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Toda escolha tem consequência, para você e para os colegas. Nesta missão vamos ver o que acontece depois de cada decisão.",
+  "origem": "roteiro 6 apresenta"
+ },
+ {
+  "chave": "a5bec0f5",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Every choice has a consequence.",
+  "origem": "roteiro 6 apresenta"
+ },
+ {
+  "chave": "ddeb329a",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Exato. Causa e efeito.",
+  "origem": "roteiro 6 certo"
+ },
+ {
+  "chave": "de733f38",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Exactly. Cause and effect.",
+  "origem": "roteiro 6 certo"
+ },
+ {
+  "chave": "0554be93",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Missão seis completa. Você já enxerga o efeito das suas escolhas.",
+  "origem": "roteiro 6 concluido"
+ },
+ {
+  "chave": "7a0ba8fb",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Mission six complete!",
+  "origem": "roteiro 6 concluido"
+ },
+ {
+  "chave": "84256d84",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Pense no que aconteceria depois. Veja a resposta.",
+  "origem": "roteiro 6 errado"
+ },
+ {
+  "chave": "868f8adc",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Think about what happens next.",
+  "origem": "roteiro 6 errado"
+ },
+ {
+  "chave": "223199e6",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Continue. Próxima: Revisão das consequências.",
+  "origem": "roteiro 6 meio"
+ },
+ {
+  "chave": "3154eaeb",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Continue. Próxima: Linha do tempo.",
+  "origem": "roteiro 6 meio"
+ },
+ {
+  "chave": "65f0baf1",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Continue. Próxima: Tetris de palavras.",
+  "origem": "roteiro 6 meio"
+ },
+ {
+  "chave": "c066f708",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Continue. Próxima: Entrevista com um colega.",
+  "origem": "roteiro 6 meio"
+ },
+ {
+  "chave": "c34c6932",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Continue. Próxima: Reescreva o final.",
+  "origem": "roteiro 6 meio"
+ },
+ {
+  "chave": "cae02fac",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Continue. Próxima: Conserte o mal-entendido.",
+  "origem": "roteiro 6 meio"
+ },
+ {
+  "chave": "cb23c394",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Keep going.",
+  "origem": "roteiro 6 meio"
+ },
+ {
+  "chave": "cdedbf62",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Continue. Próxima: a próxima atividade.",
+  "origem": "roteiro 6 meio"
+ },
+ {
+  "chave": "f48154e1",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Continue. Próxima: Causa e efeito.",
+  "origem": "roteiro 6 meio"
+ },
+ {
+  "chave": "5cf2c4ee",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Hello again! What grade are you in?",
+  "origem": "roteiro 6 semSerie"
+ },
+ {
+  "chave": "861599f0",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Olá. Diretor Márcio de novo. Em que série você está?",
+  "origem": "roteiro 6 semSerie"
+ },
+ {
+  "chave": "38eb394f",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Bem-vindo de volta.",
+  "origem": "roteiro 6 volta"
+ },
+ {
+  "chave": "9393badd",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Welcome back!",
+  "origem": "roteiro 6 volta"
+ },
+ {
+  "chave": "1361d9e2",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "Time to get organized!",
+  "origem": "roteiro 7 apresenta"
+ },
+ {
+  "chave": "2850f77d",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Chegou a hora de se organizar: material, rotina, aula, grupo e estudo. Quem se organiza chega mais longe, e em inglês também.",
+  "origem": "roteiro 7 apresenta"
+ },
+ {
+  "chave": "470c8362",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Perfeito, tudo no lugar.",
+  "origem": "roteiro 7 certo"
+ },
+ {
+  "chave": "c5aaaebe",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "Perfect!",
+  "origem": "roteiro 7 certo"
+ },
+ {
+  "chave": "63c68c1e",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Missão sete completa! Você aprendeu a se organizar. Agora o Nível oito: organizado na prática.",
+  "origem": "roteiro 7 concluido"
+ },
+ {
+  "chave": "dd1665a0",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "Mission seven complete! Level eight is open.",
+  "origem": "roteiro 7 concluido"
+ },
+ {
+  "chave": "264aa183",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "Almost. Check the right order.",
+  "origem": "roteiro 7 errado"
+ },
+ {
+  "chave": "f1b77388",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Quase. Veja a ordem certa.",
+  "origem": "roteiro 7 errado"
+ },
+ {
+  "chave": "07e486ae",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Organizado! Agora Divida o trabalho.",
+  "origem": "roteiro 7 meio"
+ },
+ {
+  "chave": "39009546",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Organizado! Agora Revisão da organização.",
+  "origem": "roteiro 7 meio"
+ },
+ {
+  "chave": "6e9a5f94",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Organizado! Agora Plano de estudo.",
+  "origem": "roteiro 7 meio"
+ },
+ {
+  "chave": "734b0972",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Organizado! Agora Organize o material.",
+  "origem": "roteiro 7 meio"
+ },
+ {
+  "chave": "73950dbb",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Organizado! Agora Agenda inteligente.",
+  "origem": "roteiro 7 meio"
+ },
+ {
+  "chave": "7da73e09",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "Well organized! Next.",
+  "origem": "roteiro 7 meio"
+ },
+ {
+  "chave": "836945de",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Organizado! Agora Cozinha em equipe.",
+  "origem": "roteiro 7 meio"
+ },
+ {
+  "chave": "c7ac7d5c",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Organizado! Agora a próxima atividade.",
+  "origem": "roteiro 7 meio"
+ },
+ {
+  "chave": "fdfb6d32",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Organizado! Agora Monte sua rotina.",
+  "origem": "roteiro 7 meio"
+ },
+ {
+  "chave": "fee5fceb",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Organizado! Agora Prepare-se para a aula.",
+  "origem": "roteiro 7 meio"
+ },
+ {
+  "chave": "9493b418",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "Hi! What grade are you in?",
+  "origem": "roteiro 7 semSerie"
+ },
+ {
+  "chave": "aee0c740",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "Oi! Vânia aqui. Em que série você está?",
+  "origem": "roteiro 7 semSerie"
+ },
+ {
+  "chave": "9e152254",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "Welcome back!",
+  "origem": "roteiro 7 volta"
+ },
+ {
+  "chave": "fd49fffe",
+  "idioma": "pt-BR",
+  "voz": "Débora",
+  "personagem": "vania",
+  "texto": "De volta? Sua agenda está esperando.",
+  "origem": "roteiro 7 volta"
+ },
+ {
+  "chave": "427a3ab7",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "Now the plan becomes practice!",
+  "origem": "roteiro 8 apresenta"
+ },
+ {
+  "chave": "b3d74485",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Agora o plano vira prática: semana organizada, entrega, simulado e apresentação. O resultado da sua organização vira pontos.",
+  "origem": "roteiro 8 apresenta"
+ },
+ {
+  "chave": "005c10d0",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Isso! Melhor impossível.",
+  "origem": "roteiro 8 certo"
+ },
+ {
+  "chave": "0dc2e797",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "Better than ever!",
+  "origem": "roteiro 8 certo"
+ },
+ {
+  "chave": "6887fc66",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Missão oito completa! Você colocou a organização em prática. A gincana vem aí.",
+  "origem": "roteiro 8 concluido"
+ },
+ {
+  "chave": "82043f9a",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "Mission eight complete!",
+  "origem": "roteiro 8 concluido"
+ },
+ {
+  "chave": "41f68cfb",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "Almost. Compare the options.",
+  "origem": "roteiro 8 errado"
+ },
+ {
+  "chave": "6f6f6d46",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Quase. Compare as opções e veja a certa.",
+  "origem": "roteiro 8 errado"
+ },
+ {
+  "chave": "28a78862",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Mandou bem! Próxima: Ataque das distrações.",
+  "origem": "roteiro 8 meio"
+ },
+ {
+  "chave": "31da0515",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Mandou bem! Próxima: Travessia do corredor.",
+  "origem": "roteiro 8 meio"
+ },
+ {
+  "chave": "598cb77e",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Mandou bem! Próxima: Construa a sala ideal.",
+  "origem": "roteiro 8 meio"
+ },
+ {
+  "chave": "78b4ac7b",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Mandou bem! Próxima: Semana organizada.",
+  "origem": "roteiro 8 meio"
+ },
+ {
+  "chave": "981a049d",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "Well done! Next.",
+  "origem": "roteiro 8 meio"
+ },
+ {
+  "chave": "adc07a84",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Mandou bem! Próxima: Revisão do projeto.",
+  "origem": "roteiro 8 meio"
+ },
+ {
+  "chave": "b6dd8972",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Mandou bem! Próxima: Apresentação do projeto.",
+  "origem": "roteiro 8 meio"
+ },
+ {
+  "chave": "d2299cf9",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Mandou bem! Próxima: a próxima atividade.",
+  "origem": "roteiro 8 meio"
+ },
+ {
+  "chave": "d8f1d9f8",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Mandou bem! Próxima: Entrega do trabalho.",
+  "origem": "roteiro 8 meio"
+ },
+ {
+  "chave": "f64d9f0c",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Mandou bem! Próxima: Simulado com tempo.",
+  "origem": "roteiro 8 meio"
+ },
+ {
+  "chave": "c1a3a961",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Oi! Rosana aqui. Em que série você está?",
+  "origem": "roteiro 8 semSerie"
+ },
+ {
+  "chave": "8585f666",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "Welcome back to the project!",
+  "origem": "roteiro 8 volta"
+ },
+ {
+  "chave": "88966f27",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "De volta ao projeto?",
+  "origem": "roteiro 8 volta"
+ },
+ {
+  "chave": "1d484244",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Agora é oficial! Escolha seu nome, sua turma, sua equipe e o seu avatar. Depois eu te entrego o seu código de jogador.",
+  "origem": "tela cadastro"
+ },
+ {
+  "chave": "9ff04f90",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Capriche no nome: ele vai aparecer no ranking da escola inteira.",
+  "origem": "tela cadastro"
+ },
+ {
+  "chave": "a922ba1d",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Pick a good name: the whole school will see it!",
+  "origem": "tela cadastro"
+ },
+ {
+  "chave": "e0c14d63",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Choose your name, class, team and avatar!",
+  "origem": "tela cadastro"
+ },
+ {
+  "chave": "09d4b095",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Type your code and I will find your points.",
+  "origem": "tela codigo"
+ },
+ {
+  "chave": "d5dfa0d1",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Já tem código? Digite aqui que eu busco seus pontos e suas missões.",
+  "origem": "tela codigo"
+ },
+ {
+  "chave": "c4c6e53d",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Bem-vindo à reunião no auditório! Antes de jogar, vamos combinar as regras da nossa escola. Leia! Know the rules, learn and go further!",
+  "origem": "tela orientacao"
+ },
+ {
+  "chave": "1ada1988",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Duas perguntinhas rápidas para ver se o recado ficou claro.",
+  "origem": "tela orientacaoQuiz"
+ },
+ {
+  "chave": "e149f105",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Two quick questions!",
+  "origem": "tela orientacaoQuiz"
+ },
+ {
+  "chave": "98318847",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Read the agreement and tick if you agree.",
+  "origem": "tela orientacaoTermo"
+ },
+ {
+  "chave": "ba8615cd",
+  "idioma": "pt-BR",
+  "voz": "Clarice",
+  "personagem": "leia",
+  "texto": "Para terminar, o termo de compromisso. Leia com atenção e marque se concorda.",
+  "origem": "tela orientacaoTermo"
+ },
+ {
+  "chave": "1d7b1b6f",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "The school honor board: players, classes and teams.",
+  "origem": "tela ranking"
+ },
+ {
+  "chave": "5a59a1fe",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "Aqui está o quadro de honra da escola: jogadores, turmas e a disputa entre a Equipe Azul e a Equipe Roxa.",
+  "origem": "tela ranking"
+ },
+ {
+  "chave": "34d70a96",
+  "idioma": "pt-BR",
+  "voz": "Otávio",
+  "personagem": "marcio",
+  "texto": "O quadro ainda está vazio. Jogue o Nível 0 e seja o primeiro nome aqui!",
+  "origem": "tela rankingVazio"
+ },
+ {
+  "chave": "d7de93ae",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Play Level 0 and be the first name here!",
+  "origem": "tela rankingVazio"
+ },
+ {
+  "chave": "5f77aa09",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Try it as a guest! Guests are not in the ranking.",
+  "origem": "tela visitante"
+ },
+ {
+  "chave": "e05f5580",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Quer só dar uma olhada? Entra como visitante! Mas visitante não aparece no ranking, hein.",
+  "origem": "tela visitante"
+ }
+]

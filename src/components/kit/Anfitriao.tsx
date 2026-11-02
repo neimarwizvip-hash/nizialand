@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { audioService } from '../../services/audio';
 import { Icone } from './Icones';
+import { narrar, trechosDaFala } from '../../services/narracao';
 
 // Anfitrião do nível: personagem oficial em pé + balão de HQ que FALA (pt-BR e, em seguida, a frase em inglês).
 // Fase 0/1: uma imagem por personagem (a pose muda só o balão). As falas vêm de src/data/falasAnfitrioes.ts (PROVISÓRIO).
@@ -9,7 +10,7 @@ export type Pose = 'apresenta' | 'aprova' | 'consola';
 
 export const ANFITRIOES: Record<NomeAnfitriao, { nome: string; cargo: string; src: string; pitch: number; rate: number }> = {
   marcio: { nome: 'Diretor Márcio', cargo: 'Direção', src: '/assets/diretor_marcio_hd.png', pitch: 0.85, rate: 1.0 },
-  leia: { nome: 'Orientadora Leia', cargo: 'Orientação Educacional', src: '/assets/orientadora_leia.png', pitch: 1.1, rate: 0.98 },
+  leia: { nome: 'Orientadora Edileia', cargo: 'Orientação Educacional', src: '/assets/orientadora_leia.png', pitch: 1.1, rate: 0.98 },
   vania: { nome: 'Coordenadora Vânia', cargo: 'Coordenação', src: '/assets/coordenadora_vania.png', pitch: 1.05, rate: 1.05 },
   rosana: { nome: 'Professora Rosana', cargo: 'Professora', src: '/assets/rosana.png', pitch: 1.15, rate: 1.0 },
   mane: { nome: 'Mané Zoeira', cargo: 'Colega', src: '/assets/mane_zoeira.png', pitch: 1.35, rate: 1.15 },
@@ -17,7 +18,9 @@ export const ANFITRIOES: Record<NomeAnfitriao, { nome: string; cargo: string; sr
 };
 
 // Fala em voz: português e depois inglês, sem música por cima (regra do projeto). Devolve função para parar.
-export function falarBalao(texto: string, traducao: string | undefined, voz: { pitch: number; rate: number }, onFim?: () => void): () => void {
+export function falarBalao(texto: string, traducao: string | undefined, voz: { pitch: number; rate: number }, onFim?: () => void, personagem?: NomeAnfitriao): () => void {
+  // Com personagem: fala gravada dele (mesma voz o jogo inteiro); sem arquivo, voz do navegador.
+  if (personagem) return narrar(trechosDaFala(personagem, texto, traducao), () => onFim?.());
   if (typeof window === 'undefined' || !('speechSynthesis' in window)) { onFim?.(); return () => undefined; }
   const synth = window.speechSynthesis;
   synth.cancel();
@@ -49,15 +52,16 @@ interface BalaoProps {
   className?: string;
   voz?: { pitch: number; rate: number };
   falar?: boolean; // fala sozinho ao aparecer (se o som estiver ligado)
+  personagem?: NomeAnfitriao; // quem fala: usa a voz gravada desse personagem
 }
 
-export const BalaoFala: React.FC<BalaoProps> = ({ texto, traducao, lado = 'esq', className = '', voz = { pitch: 1, rate: 1 }, falar = true }) => {
+export const BalaoFala: React.FC<BalaoProps> = ({ texto, traducao, lado = 'esq', className = '', voz = { pitch: 1, rate: 1 }, falar = true, personagem }) => {
   const [falando, setFalando] = useState(false);
   const parar = useRef<() => void>(() => undefined);
   const tocar = () => {
     parar.current();
     setFalando(true);
-    parar.current = falarBalao(texto, traducao, voz, () => setFalando(false));
+    parar.current = falarBalao(texto, traducao, voz, () => setFalando(false), personagem);
   };
   useEffect(() => {
     if (falar && audioService.isSoundOn()) tocar();
@@ -100,7 +104,7 @@ export const Anfitriao: React.FC<AnfitriaoProps> = ({ nome, fala, traducao, lado
   const a = ANFITRIOES[nome];
   return (
     <figure className={`relative flex flex-col ${lado === 'esq' ? 'items-start' : 'items-end'} gap-2 ${className}`}>
-      {fala && <BalaoFala texto={fala} traducao={traducao} lado={lado} className="mb-3" voz={{ pitch: a.pitch, rate: a.rate }} falar={falar} />}
+      {fala && <BalaoFala texto={fala} traducao={traducao} lado={lado} className="mb-3" voz={{ pitch: a.pitch, rate: a.rate }} falar={falar} personagem={nome} />}
       <img
         src={a.src}
         alt={a.nome}
