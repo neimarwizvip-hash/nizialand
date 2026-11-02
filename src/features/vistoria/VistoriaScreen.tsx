@@ -73,6 +73,8 @@ export const VISTORIA_LEVELS: { title: string; items: Item[] }[] = [
       { label: 'Tiro nas notas 2 (Nível 3)', to: '/intervalo/notas-n3' },
       { label: 'Pula distração (Nível 2)', to: '/intervalo/pula-n2' },
       { label: 'Pula distração 2 (Nível 3)', to: '/intervalo/pula-n3' },
+      { label: 'Labirinto da escola (Nível 4)', to: '/intervalo/labirinto-n4' },
+      { label: 'Missão bebedouro (Nível 5)', to: '/intervalo/bebedouro-n5' },
     ],
   },
 ];

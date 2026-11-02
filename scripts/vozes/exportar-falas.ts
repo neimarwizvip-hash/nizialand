@@ -20,6 +20,7 @@ import { LEVEL6 } from '../../src/content/level6';
 import { LEVEL7 } from '../../src/content/level7';
 import { LEVEL8 } from '../../src/content/level8';
 import type { Level } from '../../src/core/types';
+import { LUGARES, ETAPAS } from '../../src/data/frasesIntervalo';
 
 interface Item { chave: string; idioma: IdiomaFala; voz: string; personagem: Personagem; texto: string; origem: string }
 const itens = new Map<string, Item>();
@@ -75,7 +76,7 @@ for (const id of atividadesComRodada()) {
 }
 
 // Comandos fixos dos jogos de intervalo
-for (const f of ['Jump!', 'Duck!', 'Approved!', 'Failed!']) add('professora', 'en-US', f, 'intervalo');
+for (const f of ['Jump!', 'Duck!', 'Approved!', 'Failed!', ...LUGARES.map(l => l.frase), ...Object.values(ETAPAS)]) add('professora', 'en-US', f, 'intervalo');
 
 const lista = [...itens.values()].sort((a, b) => a.origem.localeCompare(b.origem) || a.chave.localeCompare(b.chave));
 const pasta = join(process.cwd(), 'public', 'assets', 'vozes');

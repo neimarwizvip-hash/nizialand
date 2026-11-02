@@ -80,11 +80,75 @@
   "origem": "hq reuniao"
  },
  {
+  "chave": "00edf768",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Go to the classroom!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "07a4a7ac",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Go to the gym!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "0f08ab71",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Go down the ramp to the water fountain!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "47cd5cee",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Drink some water!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "4a1c88b0",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Go to the lab!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "4a294797",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Go back to the classroom!",
+  "origem": "intervalo"
+ },
+ {
   "chave": "5357879e",
   "idioma": "en-US",
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Duck!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "596b70a4",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Go to the library!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "65d0cff1",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Go to the office!",
   "origem": "intervalo"
  },
  {
@@ -109,6 +173,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Jump!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "de9dff8b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Go to the bathroom!",
   "origem": "intervalo"
  },
  {
