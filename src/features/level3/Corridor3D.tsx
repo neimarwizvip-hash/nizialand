@@ -50,7 +50,9 @@ const ZE_LINES = ['Essa porta aí você não abre!', 'Hehe, aposto que você err
 const SINAIS_N4 = ['LIBRARY', 'HALLWAY', 'TEAM ROOM', 'NOTICE BOARD', 'GYM', 'REVIEW'];
 
 const doorZ = (i: number) => -3 - i * DOOR_GAP;
-const doorSide = (i: number) => (i % 2 === 0 ? -1 : 1);
+// Portas sempre na parede das salas (esquerda); a parede da direita tem as janelas para o jardim.
+// (Antes alternavam e algumas portas ficavam na parede das janelas: uma porta que "daria para fora".)
+const doorSide = (_i: number) => -1;
 
 // Sol pelas janelas do lado direito (+x), alto o bastante para desenhar as janelas no piso.
 const ALT_SOL = (38 * Math.PI) / 180;
@@ -250,11 +252,11 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
     add('grama', caixa(-60, -0.16, zFim - 40, -HALF_W - ESPESSURA, -0.1, zIni + 40, m('grama')));
     add('grama', caixa(HALF_W + ESPESSURA, -0.16, zFim - 40, 60, -0.1, zIni + 40, m('grama')));
 
-    // Janelas entre as portas, nos dois lados; portas alternadas.
+    // Janelas só na parede do jardim (direita), uma entre cada porta e uma diante de cada porta.
     const janelasPorLado: Record<number, Array<[number, number]>> = { [-1]: [], [1]: [] };
     for (let i = 0; i < doors.length; i++) {
       const zc = doorZ(i) - DOOR_GAP / 2;
-      for (const s of [-1, 1]) janelasPorLado[s].push([zc - JANELA.larg / 2, zc + JANELA.larg / 2]);
+      janelasPorLado[1].push([zc - JANELA.larg / 2, zc + JANELA.larg / 2]);
     }
     janelasPorLado[1].push([doorZ(0) + 2.4 - JANELA.larg / 2, doorZ(0) + 2.4 + JANELA.larg / 2]);
     for (const s of [-1, 1]) {
@@ -345,11 +347,11 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
       }
       // Banco de madeira sob a janela seguinte (lado da porta) e um vaso com folhagem.
       const zj = z - DOOR_GAP / 2;
-      const xb = s * (HALF_W - 0.25);
+      const xb = HALF_W - 0.25; // banco sob a janela (parede do jardim)
       add('banco', caixa(xb - 0.2, 0.42, zj - 0.7, xb + 0.2, 0.47, zj + 0.7));
       add('banco', caixa(xb - 0.18, 0, zj - 0.65, xb + 0.18, 0.42, zj - 0.58));
       add('banco', caixa(xb - 0.18, 0, zj + 0.58, xb + 0.18, 0.42, zj + 0.65));
-      const xv = -s * (HALF_W - 0.3);
+      const xv = s * (HALF_W - 0.3); // vaso entre as portas, na parede das salas
       add('vaso', caixa(xv - 0.2, 0, zj - 0.2, xv + 0.2, 0.42, zj + 0.2));
       for (let c = 0; c < 3; c++) {
         const g = new THREE.PlaneGeometry(0.95, 1.05);

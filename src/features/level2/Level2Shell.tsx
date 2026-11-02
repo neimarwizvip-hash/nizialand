@@ -19,6 +19,7 @@ const CENARIO_POR_FUNDO: Record<string, NomeCenario> = {
   '/assets/nisialand_hallway_bg.jpg': 'corredor',
   '/assets/nisialand_auditorium_bg.jpg': 'auditorio',
   '/assets/nisialand_school_facade_clean.jpg': 'patio',
+  '/assets/espacos/sala.webp': 'sala',
 };
 
 interface Level2ShellProps {

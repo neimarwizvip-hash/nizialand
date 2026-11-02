@@ -55,7 +55,7 @@ export const TeamMissionScreen: React.FC = () => {
   const enter = (id: string) => { lastDoor.current = id; setParams({ atividade: id }); };
   const activityView = open && selected ? (
     <div className="relative min-h-screen text-nisia-tinta flex flex-col">
-      <Cenario nome="patio" escurecer={0.2} />
+      <Cenario nome="sala" escurecer={0.2} />
       <div className="relative z-10 flex flex-col min-h-screen">
         <Hud nivel={4} />
         <Level4Activities key={selected.id} activity={selected} grade={grade} onExit={() => setParams({})} onSave={saveActivityResult} />

@@ -30,7 +30,8 @@ export interface Level3ActivityProps {
 // Ordem das salas: decide o tamanho do Zé e a fala de entrada.
 export const LEVEL3_ROOM_ORDER = [LEVEL3_ARRUME.id, LEVEL3_LOUSA.id, LEVEL3_QUEM.id, LEVEL3_MEMORIA.id, LEVEL3_LABIRINTO.id, LEVEL3_REVISAO.id];
 const roomIndex = (id: string) => Math.max(0, LEVEL3_ROOM_ORDER.indexOf(id));
-const BG = '/assets/nisialand_hallway_bg.jpg';
+// Dentro das salas do corredor: o fundo é a sala de aula (espaço 3D capturado).
+const BG = '/assets/espacos/sala.webp';
 
 const speakEn = (text: string) => { if (audioService.isSoundOn()) speechService.speakEnglish(text); };
 const toMc = (q: Level3Question): Level3Mc => ({ question: q.prompt, ...shuffleOptions(q.options, q.answer) });

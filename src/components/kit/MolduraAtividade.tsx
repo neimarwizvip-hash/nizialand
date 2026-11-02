@@ -48,7 +48,7 @@ interface Props {
 }
 
 const ANFITRIAO_PADRAO: Record<number, NomeAnfitriao> = { 0: 'marcio', 1: 'leia', 2: 'vania', 3: 'rosana', 4: 'rosana' };
-const CENARIO_PADRAO: Record<number, NomeCenario> = { 0: 'corredor', 1: 'auditorio', 2: 'patio', 3: 'corredor', 4: 'corredor' };
+const CENARIO_PADRAO: Record<number, NomeCenario> = { 0: 'corredor', 1: 'auditorio', 2: 'patio', 3: 'sala', 4: 'sala' };
 
 export const MolduraAtividade: React.FC<Props> = ({
   nivel, cenario, painel = 'mural', anfitriao, nome, progresso, segundos, totalSegundos, alerta = 5, pontos, feedback, proximo, fim, children, overlay,
