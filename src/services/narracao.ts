@@ -10,7 +10,6 @@ export const VOZES = {
   narrador: { pitch: 1.0, rate: 0.95 },
   marcio: { pitch: 0.85, rate: 1.0 },
   leia: { pitch: 1.1, rate: 0.98 },
-  edilene: { pitch: 1.1, rate: 0.98 },
   vania: { pitch: 1.05, rate: 1.05 },
   rosana: { pitch: 1.15, rate: 1.0 },
   mane: { pitch: 1.35, rate: 1.15 },

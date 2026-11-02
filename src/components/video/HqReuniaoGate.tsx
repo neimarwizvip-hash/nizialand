@@ -4,20 +4,19 @@ import { narrar, narracaoDisponivel, tempoDeLeitura, trechosDaFala } from '../..
 import { Icone } from '../kit/Icones';
 
 // HQ Motion "Reunião urgente", entre o Nível 0 e o Nível 1. Falas literais do Oliveira.
-// Q1 plano geral (3 s) · Q2 fala da Edilene · Q3 fala do Márcio (aceno) · Q4 olhar + virada de página.
+// Q1 plano geral (3 s) · Q2 fala da Edileia · Q3 fala do Márcio (aceno) · Q4 olhar + virada de página.
 // Cada fala é dita em voz; o quadro dura o tempo da fala (mínimo 5 s sem voz). Sem zoom e sem personagem
 // deslizando: só respiração, passo no lugar e aceno. A trilha toca só no Q1 e no Q4 (nada de música sob fala).
 const SEEN = 'nisialand_story_seen_hq_reuniao';
 const MISSING = 'nisialand_story_missing_hq_reuniao';
-// ATENÇÃO: edilene.png é hoje idêntica a rosana.png (mesmo arquivo). Trocar pela imagem oficial da Edilene.
-const EDILENE_SRC = '/assets/edilene.png';
+const EDILEIA_SRC = '/assets/orientadora_leia.png';
 const MARCIO_SRC = '/assets/diretor_marcio_hd.png';
 // Trilha instrumental leve (provisória até chegar o áudio definido para a cena).
 const MUSIC_SRC = '/assets/audio/hq_reuniao.mp3';
 const MUSIC_FALLBACK = '/assets/audio/trilha_mapa.mp3';
 const VOLUME_TRILHA = 0.3;
 
-const FALA_EDILENE = 'Márcio, preciso conversar com esses meninos sobre as regras da escola.';
+const FALA_EDILEIA = 'Márcio, preciso conversar com esses meninos sobre as regras da escola.';
 const FALA_MARCIO = 'Sim, precisamos marcar uma reunião urgentemente com os alunos e responsáveis.';
 
 const Q1_MS = 3000;
@@ -73,7 +72,7 @@ export const HqReuniaoGate: React.FC<{ children: React.ReactNode }> = ({ childre
     setPlaying(false);
   };
 
-  // Sem a imagem da Edilene a HQ não roda (não inventamos personagem): a fase abre direto.
+  // Sem a imagem da Edileia a HQ não roda (não inventamos personagem): a fase abre direto.
   const fail = () => { writeFlag(MISSING); setMissing(true); finish(); };
 
   const trilha = (volume: number) => {
@@ -84,7 +83,7 @@ export const HqReuniaoGate: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   // Fala do quadro; o próximo quadro vem quando a fala termina (ou após o mínimo, sem voz).
-  const quadroFalado = (atual: 2 | 3, texto: string, quem: 'edilene' | 'marcio') => {
+  const quadroFalado = (atual: 2 | 3, texto: string, quem: 'leia' | 'marcio') => {
     trilha(0);
     const inicio = performance.now();
     const seguir = () => {
@@ -131,7 +130,7 @@ export const HqReuniaoGate: React.FC<{ children: React.ReactNode }> = ({ childre
     if (!playing) return;
     window.clearTimeout(timer.current);
     if (q === 1) { timer.current = window.setTimeout(() => setQ(2), Q1_MS); }
-    if (q === 2) quadroFalado(2, FALA_EDILENE, 'edilene');
+    if (q === 2) quadroFalado(2, FALA_EDILEIA, 'leia');
     if (q === 3) quadroFalado(3, FALA_MARCIO, 'marcio');
     if (q === 4) { if (audioService.isMusicOn()) trilha(VOLUME_TRILHA); timer.current = window.setTimeout(finish, Q4_MS); }
     return () => window.clearTimeout(timer.current);
@@ -156,7 +155,7 @@ export const HqReuniaoGate: React.FC<{ children: React.ReactNode }> = ({ childre
     window.clearTimeout(timer.current);
     pararFala.current();
     vozRef.current = true; setVoz(true);
-    quadroFalado(q, q === 2 ? FALA_EDILENE : FALA_MARCIO, q === 2 ? 'edilene' : 'marcio');
+    quadroFalado(q, q === 2 ? FALA_EDILEIA : FALA_MARCIO, q === 2 ? 'leia' : 'marcio');
   };
   const alternarVoz = () => {
     const v = !voz;
@@ -176,15 +175,15 @@ export const HqReuniaoGate: React.FC<{ children: React.ReactNode }> = ({ childre
           <img src="/assets/nisialand_hallway_bg.jpg" alt="Corredor perto da sala da direção" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(26,42,74,0.18)_1px,transparent_1.5px)] [background-size:0.5em_0.5em] mix-blend-multiply pointer-events-none" />
 
-          {/* Q1: plano geral, Edilene caminhando (passo no lugar) até o Márcio. Depois: os dois lado a lado */}
+          {/* Q1: plano geral, Edileia caminhando (passo no lugar) até o Márcio. Depois: os dois lado a lado */}
           <div className={`absolute bottom-0 ${q === 1 ? 'left-[14%] h-[66%]' : 'left-[16%] h-[74%]'}`}>
-            <img src={EDILENE_SRC} alt="Edilene" onError={fail} className={`h-full w-auto object-contain drop-shadow-[0_0.4em_0.5em_rgba(26,42,74,0.4)] ${q === 1 ? 'hq-step' : 'hq-breathe'}`} />
+            <img src={EDILEIA_SRC} alt="Edileia" onError={fail} className={`h-full w-auto object-contain drop-shadow-[0_0.4em_0.5em_rgba(26,42,74,0.4)] ${q === 1 ? 'hq-step' : 'hq-breathe'}`} />
           </div>
           <div className={`absolute bottom-0 ${q === 1 ? 'right-[18%] h-[70%]' : 'right-[16%] h-[78%]'}`}>
             <img key={q === 3 ? 'aceno' : 'parado'} src={MARCIO_SRC} alt="Diretor Márcio" className={`h-full w-auto object-contain drop-shadow-[0_0.4em_0.5em_rgba(26,42,74,0.4)] ${q === 3 ? 'hq-nod' : 'hq-breathe'}`} />
           </div>
 
-          {q === 2 && <Balloon key="e" text={FALA_EDILENE} side="left" falando={falando} />}
+          {q === 2 && <Balloon key="e" text={FALA_EDILEIA} side="left" falando={falando} />}
           {q === 3 && <Balloon key="m" text={FALA_MARCIO} side="right" falando={falando} />}
 
           {/* Q4: virada de página suave */}
@@ -200,13 +199,13 @@ export const HqReuniaoGate: React.FC<{ children: React.ReactNode }> = ({ childre
             </button>
             {(q === 2 || q === 3) && (
               <button type="button" onClick={ouvirDeNovo} className="kit-hud__btn" aria-label="Ouvir a fala de novo">
-                <Icone nome="balao" className="w-5 h-5" /> <span className="hidden sm:inline">Ouvir de novo</span>
+                <Icone nome="balao" className="w-5 h-5" /> <span className="hidden sm:inline short:hidden">Ouvir de novo</span>
               </button>
             )}
           </>
         )}
         <button type="button" onClick={finish} className="kit-hud__btn">
-          <Icone nome="seta" className="w-5 h-5" /> Pular história
+          <Icone nome="seta" className="w-5 h-5" /> Pular<span className="short:hidden">&nbsp;história</span>
         </button>
       </div>
     </div>
