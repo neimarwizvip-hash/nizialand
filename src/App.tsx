@@ -7,9 +7,6 @@ import { RequirePlayer } from './components/layout/RequirePlayer';
 import { StartScreen } from './features/start/StartScreen';
 import { RegistrationScreen } from './features/auth/RegistrationScreen';
 import { MissionBriefingScreen } from './features/missions/MissionBriefingScreen';
-import { QuizScreen } from './features/quiz/QuizScreen';
-import { QuizResultsScreen } from './features/quiz/QuizResultsScreen';
-import { FlashcardScreen } from './features/flashcards/FlashcardScreen';
 import { FinalResultsScreen } from './features/results/FinalResultsScreen';
 import { PhaseStoryGate } from './components/video/PhaseStoryGate';
 import { HqReuniaoGate } from './components/video/HqReuniaoGate';
@@ -17,19 +14,21 @@ import { StartupVideoScreen } from './components/video/StartupVideoScreen';
 import { keepFullscreen } from './services/fullscreen';
 import { RotateDeviceOverlay } from './components/ui/RotateDeviceOverlay';
 import { audioService, MusicTrack } from './services/audio';
-import PatioScreen from './features/level2/PatioScreen';
-import Level2WorldScreen from './features/level2/Level2WorldScreen';
 import MissionMapScreen from './features/missions/MissionMapScreen';
-import ClassroomScreen from './features/level3/ClassroomScreen';
-import TeamMissionScreen from './features/level4/TeamMissionScreen';
-import ChoicesMissionScreen from './features/level5/ChoicesMissionScreen';
-import { PhaseMissionScreen } from './features/levels/PhaseMissionScreen';
-import { LEVEL6 } from './content/level6';
-import { LEVEL7 } from './content/level7';
-import { LEVEL6_CONTENT } from './data/level6Content';
-import { LEVEL7_CONTENT } from './data/level7Content';
-import { LEVEL8 } from './content/level8';
-import { LEVEL8_CONTENT } from './data/level8Content';
+import { PacoteNivel } from './components/layout/PacoteNivel';
+
+// Carregamento por fase: cada nível é um pacote separado, baixado (e guardado no aparelho) só quando o aluno entra.
+const QuizScreen = lazy(() => import('./features/quiz/QuizScreen').then(m => ({ default: m.QuizScreen })));
+const QuizResultsScreen = lazy(() => import('./features/quiz/QuizResultsScreen').then(m => ({ default: m.QuizResultsScreen })));
+const FlashcardScreen = lazy(() => import('./features/flashcards/FlashcardScreen').then(m => ({ default: m.FlashcardScreen })));
+const PatioScreen = lazy(() => import('./features/level2/PatioScreen'));
+const Level2WorldScreen = lazy(() => import('./features/level2/Level2WorldScreen'));
+const ClassroomScreen = lazy(() => import('./features/level3/ClassroomScreen'));
+const TeamMissionScreen = lazy(() => import('./features/level4/TeamMissionScreen'));
+const ChoicesMissionScreen = lazy(() => import('./features/level5/ChoicesMissionScreen'));
+const Nivel6Screen = lazy(() => import('./features/levels/Nivel6Screen'));
+const Nivel7Screen = lazy(() => import('./features/levels/Nivel7Screen'));
+const Nivel8Screen = lazy(() => import('./features/levels/Nivel8Screen'));
 
 // Telas pesadas ou menos usadas ficam fora do pacote principal (baixadas quando abertas).
 const Level0Screen = lazy(() => import('./features/level0/Level0Screen').then(m => ({ default: m.Level0Screen })));
@@ -165,10 +164,10 @@ export const App: React.FC = () => {
             <Route path="/" element={<StartScreen />} />
 
             {/* Nível 0: Arcade com escolha de série e tópicos (banco de questões) */}
-            <Route path="/level0" element={<ArcadeLevel0Screen />} />
+            <Route path="/level0" element={<PacoteNivel nivel={0}><ArcadeLevel0Screen /></PacoteNivel>} />
 
             {/* Modo História: HQ do Diretor Márcio que leva às Missões do 8º ano */}
-            <Route path="/historia" element={<Level0Screen />} />
+            <Route path="/historia" element={<PacoteNivel nivel={0}><Level0Screen /></PacoteNivel>} />
 
             {/* Reunião Educativa & Orientadora Edileia */}
             <Route path="/orientation" element={<OrientationScreen />} />
@@ -177,59 +176,59 @@ export const App: React.FC = () => {
             <Route path="/register" element={<RegistrationScreen />} />
 
             {/* Tela 3: Mission Briefing */}
-            <Route path="/missions" element={<RequirePlayer><PhaseStoryGate story="nivel0"><MissionBriefingScreen /></PhaseStoryGate></RequirePlayer>} />
+            <Route path="/missions" element={<PacoteNivel nivel={0}><RequirePlayer><PhaseStoryGate story="nivel0"><MissionBriefingScreen /></PhaseStoryGate></RequirePlayer></PacoteNivel>} />
 
             {/* Nível 1: liberado quando a Missão 0 termina; a HQ só toca depois da guarda */}
-            <Route path="/nivel1" element={<RequirePlayer><RequireLevel1><HqReuniaoGate><MissionBriefingScreen level={1} /></HqReuniaoGate></RequireLevel1></RequirePlayer>} />
-            <Route path="/nivel1/ouvir" element={<RequirePlayer><RequireLevel1><ListenScreen /></RequireLevel1></RequirePlayer>} />
-            <Route path="/nivel1/montar" element={<RequirePlayer><RequireLevel1><OrderScreen /></RequireLevel1></RequirePlayer>} />
-            <Route path="/nivel1/dialogo" element={<RequirePlayer><RequireLevel1><DialogueScreen /></RequireLevel1></RequirePlayer>} />
-            <Route path="/nivel1/explorar" element={<RequirePlayer><RequireLevel1><ExploreScreen /></RequireLevel1></RequirePlayer>} />
+            <Route path="/nivel1" element={<PacoteNivel nivel={1}><RequirePlayer><RequireLevel1><HqReuniaoGate><MissionBriefingScreen level={1} /></HqReuniaoGate></RequireLevel1></RequirePlayer></PacoteNivel>} />
+            <Route path="/nivel1/ouvir" element={<PacoteNivel nivel={1}><RequirePlayer><RequireLevel1><ListenScreen /></RequireLevel1></RequirePlayer></PacoteNivel>} />
+            <Route path="/nivel1/montar" element={<PacoteNivel nivel={1}><RequirePlayer><RequireLevel1><OrderScreen /></RequireLevel1></RequirePlayer></PacoteNivel>} />
+            <Route path="/nivel1/dialogo" element={<PacoteNivel nivel={1}><RequirePlayer><RequireLevel1><DialogueScreen /></RequireLevel1></RequirePlayer></PacoteNivel>} />
+            <Route path="/nivel1/explorar" element={<PacoteNivel nivel={1}><RequirePlayer><RequireLevel1><ExploreScreen /></RequireLevel1></RequirePlayer></PacoteNivel>} />
 
             <Route path="/mapa" element={<RequirePlayer><MissionMapScreen /></RequirePlayer>} />
 
             {/* Nível 2: pátio e respeito à autoridade */}
-            <Route path="/nivel2" element={<RequirePlayer><RequireLevel2><PhaseStoryGate story="nivel2"><MissionBriefingScreen level={2} /></PhaseStoryGate></RequireLevel2></RequirePlayer>} />
-            <Route path="/nivel2/patio" element={<RequirePlayer><RequireLevel2><PatioScreen /></RequireLevel2></RequirePlayer>} />
+            <Route path="/nivel2" element={<PacoteNivel nivel={2}><RequirePlayer><RequireLevel2><PhaseStoryGate story="nivel2"><MissionBriefingScreen level={2} /></PhaseStoryGate></RequireLevel2></RequirePlayer></PacoteNivel>} />
+            <Route path="/nivel2/patio" element={<PacoteNivel nivel={2}><RequirePlayer><RequireLevel2><PatioScreen /></RequireLevel2></RequirePlayer></PacoteNivel>} />
             <Route path="/nivel2/atividades" element={<Navigate to="/nivel2/patio" replace />} />
             {/* Protótipo 3D opcional (só pela vistoria); o fluxo do aluno é o pátio 2D. */}
-            <Route path="/nivel2/mundo3d" element={<RequirePlayer><RequireLevel2><Level2WorldScreen /></RequireLevel2></RequirePlayer>} />
+            <Route path="/nivel2/mundo3d" element={<PacoteNivel nivel={2}><RequirePlayer><RequireLevel2><Level2WorldScreen /></RequireLevel2></RequirePlayer></PacoteNivel>} />
 
             {/* Nível 3: convivência em sala */}
-            <Route path="/nivel3" element={<RequirePlayer><RequireLevel3><ClassroomScreen /></RequireLevel3></RequirePlayer>} />
-            <Route path="/nivel3/salas" element={<RequirePlayer><RequireLevel3><ClassroomScreen /></RequireLevel3></RequirePlayer>} />
+            <Route path="/nivel3" element={<PacoteNivel nivel={3}><RequirePlayer><RequireLevel3><ClassroomScreen /></RequireLevel3></RequirePlayer></PacoteNivel>} />
+            <Route path="/nivel3/salas" element={<PacoteNivel nivel={3}><RequirePlayer><RequireLevel3><ClassroomScreen /></RequireLevel3></RequirePlayer></PacoteNivel>} />
 
             {/* Nível 4: trabalho em equipe */}
-            <Route path="/nivel4" element={<RequirePlayer><RequireLevel4><TeamMissionScreen /></RequireLevel4></RequirePlayer>} />
-            <Route path="/nivel4/equipe" element={<RequirePlayer><RequireLevel4><TeamMissionScreen /></RequireLevel4></RequirePlayer>} />
+            <Route path="/nivel4" element={<PacoteNivel nivel={4}><RequirePlayer><RequireLevel4><TeamMissionScreen /></RequireLevel4></RequirePlayer></PacoteNivel>} />
+            <Route path="/nivel4/equipe" element={<PacoteNivel nivel={4}><RequirePlayer><RequireLevel4><TeamMissionScreen /></RequireLevel4></RequirePlayer></PacoteNivel>} />
 
             {/* Nível 5: minhas escolhas */}
-            <Route path="/nivel5" element={<RequirePlayer><RequireLevel5><ChoicesMissionScreen /></RequireLevel5></RequirePlayer>} />
-            <Route path="/nivel5/escolhas" element={<RequirePlayer><RequireLevel5><ChoicesMissionScreen /></RequireLevel5></RequirePlayer>} />
+            <Route path="/nivel5" element={<PacoteNivel nivel={5}><RequirePlayer><RequireLevel5><ChoicesMissionScreen /></RequireLevel5></RequirePlayer></PacoteNivel>} />
+            <Route path="/nivel5/escolhas" element={<PacoteNivel nivel={5}><RequirePlayer><RequireLevel5><ChoicesMissionScreen /></RequireLevel5></RequirePlayer></PacoteNivel>} />
 
             {/* Nível 6: consequências */}
-            <Route path="/nivel6" element={<RequirePlayer><RequireLevel6><PhaseMissionScreen level={LEVEL6} content={LEVEL6_CONTENT} accent="rose" /></RequireLevel6></RequirePlayer>} />
-            <Route path="/nivel6/consequencias" element={<RequirePlayer><RequireLevel6><PhaseMissionScreen level={LEVEL6} content={LEVEL6_CONTENT} accent="rose" /></RequireLevel6></RequirePlayer>} />
+            <Route path="/nivel6" element={<PacoteNivel nivel={6}><RequirePlayer><RequireLevel6><Nivel6Screen /></RequireLevel6></RequirePlayer></PacoteNivel>} />
+            <Route path="/nivel6/consequencias" element={<PacoteNivel nivel={6}><RequirePlayer><RequireLevel6><Nivel6Screen /></RequireLevel6></RequirePlayer></PacoteNivel>} />
 
             {/* Nível 7: aprender a se organizar */}
-            <Route path="/nivel7" element={<RequirePlayer><RequireLevel7><PhaseMissionScreen level={LEVEL7} content={LEVEL7_CONTENT} accent="sky" /></RequireLevel7></RequirePlayer>} />
-            <Route path="/nivel7/organizacao" element={<RequirePlayer><RequireLevel7><PhaseMissionScreen level={LEVEL7} content={LEVEL7_CONTENT} accent="sky" /></RequireLevel7></RequirePlayer>} />
+            <Route path="/nivel7" element={<PacoteNivel nivel={7}><RequirePlayer><RequireLevel7><Nivel7Screen /></RequireLevel7></RequirePlayer></PacoteNivel>} />
+            <Route path="/nivel7/organizacao" element={<PacoteNivel nivel={7}><RequirePlayer><RequireLevel7><Nivel7Screen /></RequireLevel7></RequirePlayer></PacoteNivel>} />
 
             {/* Nível 8: organizado na prática */}
-            <Route path="/nivel8" element={<RequirePlayer><RequireLevel8><PhaseMissionScreen level={LEVEL8} content={LEVEL8_CONTENT} accent="teal" /></RequireLevel8></RequirePlayer>} />
-            <Route path="/nivel8/projeto" element={<RequirePlayer><RequireLevel8><PhaseMissionScreen level={LEVEL8} content={LEVEL8_CONTENT} accent="teal" /></RequireLevel8></RequirePlayer>} />
+            <Route path="/nivel8" element={<PacoteNivel nivel={8}><RequirePlayer><RequireLevel8><Nivel8Screen /></RequireLevel8></RequirePlayer></PacoteNivel>} />
+            <Route path="/nivel8/projeto" element={<PacoteNivel nivel={8}><RequirePlayer><RequireLevel8><Nivel8Screen /></RequireLevel8></RequirePlayer></PacoteNivel>} />
 
             {/* Jogos de intervalo (interfase) */}
             <Route path="/intervalo/:id" element={<RequirePlayer><IntervaloScreen /></RequirePlayer>} />
 
             {/* Tela 4: Mission 1 Quiz */}
-            <Route path="/quiz" element={<RequirePlayer><QuizScreen /></RequirePlayer>} />
+            <Route path="/quiz" element={<PacoteNivel nivel={0}><RequirePlayer><QuizScreen /></RequirePlayer></PacoteNivel>} />
 
             {/* Tela 5: Mission 1 Results */}
             <Route path="/quiz/results" element={<QuizResultsScreen />} />
 
             {/* Tela 6: Mission 2 Flashcard Challenge */}
-            <Route path="/flashcards" element={<RequirePlayer><FlashcardScreen /></RequirePlayer>} />
+            <Route path="/flashcards" element={<PacoteNivel nivel={0}><RequirePlayer><FlashcardScreen /></RequirePlayer></PacoteNivel>} />
 
             {/* Tela 7: Final Results */}
             <Route path="/results/final" element={<RequirePlayer><FinalResultsScreen /></RequirePlayer>} />

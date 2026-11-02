@@ -63,3 +63,8 @@
 - Cada nivel acontece no espaco do mapa. Espacos modelados em 3D com o kit features/tres (padrao Rota Piloto) e capturados como fundo: sala de aula (atividades dos Niveis 3), area externa e quadra (Nivel 4), biblioteca (Nivel 6).
 - Nivel 4: pontos da missao ao ar livre (Portao, Horta, Arquibancada, Mural externo, Quadra, Patio coberto). O corredor 3D fica so no Nivel 3 ate a area externa ganhar a versao caminhavel.
 - Imagens enviadas ao PC passam por um canal que acrescenta bloco C2PA; sempre remover e conferir o hash antes de gravar no projeto.
+
+
+## 02/11/2026 — Carregamento por fase
+
+- Cada nivel e um pacote separado (telas, imagens, texturas 3D e vozes), baixado quando o aluno entra e guardado no aparelho por um service worker gerado no build (scripts/pacotes). O proximo nivel e adiantado em segundo plano. Lista de cada pacote: dist/pacotes.json. Telas de entrada e arquivos extras: src/config/pacotesNiveis.ts.

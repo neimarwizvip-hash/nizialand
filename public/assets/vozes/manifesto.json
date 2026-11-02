@@ -5,7 +5,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Intervalo! A professora deixou ir beber água. Desça a rampa, beba e volte antes do sinal. Cuidado com o Zé!",
-  "origem": "convite bebedouro-n5"
+  "origem": "convite bebedouro-n5",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "0f3c04a7",
@@ -13,7 +16,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Intervalo! Você saiu da sala sem permissão… e a coordenação viu! Fuja, pegue as palavras certas e não seja pego.",
-  "origem": "convite fuga-n6"
+  "origem": "convite fuga-n6",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "39edb50c",
@@ -21,7 +27,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Intervalo! Os corredores viraram um labirinto, e você está lá dentro. Ouça para onde ir em inglês e ache a sala certa!",
-  "origem": "convite labirinto-n4"
+  "origem": "convite labirinto-n4",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "f1ec080e",
@@ -29,7 +38,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Hora do intervalo! As notas estão caindo do quadro. Apague as que você não quer e some 100 pontos.",
-  "origem": "convite notas-n2"
+  "origem": "convite notas-n2",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "7a1563ab",
@@ -37,7 +49,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Intervalo! Agora as notas são números quebrados e caem mais rápido. Consegue fechar 100?",
-  "origem": "convite notas-n3"
+  "origem": "convite notas-n3",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "b2588d8f",
@@ -45,7 +60,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Intervalo! Corra até a sala sem cair nas distrações do Zé. Pule na cabeça delas!",
-  "origem": "convite pula-n2"
+  "origem": "convite pula-n2",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "fa2bd696",
@@ -53,7 +71,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Intervalo! Agora tem aviãozinho de papel: quando aparecer DUCK!, abaixe!",
-  "origem": "convite pula-n3"
+  "origem": "convite pula-n3",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "47e25a76",
@@ -61,7 +82,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Intervalo! Peças com palavras estão caindo. Guarde as do tema e jogue as outras no lixo!",
-  "origem": "convite tetris-n4"
+  "origem": "convite tetris-n4",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "342fe2a2",
@@ -69,7 +93,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Intervalo! O Tetris voltou mais rápido. Guarde as palavras do tema!",
-  "origem": "convite tetris-n6"
+  "origem": "convite tetris-n6",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "0692fd93",
@@ -77,7 +104,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Pátio coberto, Revisão da equipe: concluída. Aperte Enter para jogar de novo.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "1011fa42",
@@ -85,7 +115,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Quadra, Revezamento de perguntas. Aperte Enter para entrar.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "184b9a2c",
@@ -93,7 +126,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Sala 2, Quadro de quiz: trancada. Termine a sala anterior.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "1894fbbf",
@@ -101,7 +137,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Sala 1, Arrume a sala: concluída. Aperte Enter para jogar de novo.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "1a80c498",
@@ -109,7 +148,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Horta, Siga as direções. Aperte Enter para entrar.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "26cb9d86",
@@ -117,7 +159,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Sala 5, Labirinto do corredor: concluída. Aperte Enter para jogar de novo.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "423f7fa7",
@@ -125,7 +170,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Quadra, Revezamento de perguntas: trancada. Termine a sala anterior.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "42666702",
@@ -133,7 +181,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Sala 2, Quadro de quiz: concluída. Aperte Enter para jogar de novo.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "4311aaa0",
@@ -141,7 +192,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Portão, Caça às pistas: concluída. Aperte Enter para jogar de novo.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "4893c026",
@@ -149,7 +203,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Sala 3, Quem disse?: concluída. Aperte Enter para jogar de novo.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "4f8fa665",
@@ -157,7 +214,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Portão, Caça às pistas. Aperte Enter para entrar.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "523b297d",
@@ -165,7 +225,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Mural externo, Mensagem secreta: trancada. Termine a sala anterior.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "6aab3cc0",
@@ -173,7 +236,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Arquibancada, Monte a equipe: concluída. Aperte Enter para jogar de novo.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "70caeddc",
@@ -181,7 +247,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Mural externo, Mensagem secreta. Aperte Enter para entrar.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "77003ab9",
@@ -189,7 +258,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Horta, Siga as direções: trancada. Termine a sala anterior.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "7a1b9ae3",
@@ -197,7 +269,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Sala 3, Quem disse?. Aperte Enter para entrar.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "835e2256",
@@ -205,7 +280,11 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Alto contraste ligado.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3,
+   4
+  ]
  },
  {
   "chave": "8907cf0f",
@@ -213,7 +292,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Sala 2, Quadro de quiz. Aperte Enter para entrar.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "8b5087d9",
@@ -221,7 +303,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Sala 4, Memória da sala: trancada. Termine a sala anterior.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "8d34774e",
@@ -229,7 +314,11 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Modo calmo desligado.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3,
+   4
+  ]
  },
  {
   "chave": "916e461a",
@@ -237,7 +326,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Revisão, Sala de revisão. Aperte Enter para entrar.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "a31420e8",
@@ -245,7 +337,11 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Mudei para o modo econômico para manter o movimento fluido. Para voltar, use o botão de qualidade ou a tecla Q.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3,
+   4
+  ]
  },
  {
   "chave": "abeec737",
@@ -253,7 +349,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Mural externo, Mensagem secreta: concluída. Aperte Enter para jogar de novo.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "ac6fa66e",
@@ -261,7 +360,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Portão, Caça às pistas: trancada. Termine a sala anterior.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "b17958c3",
@@ -269,7 +371,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Sala 4, Memória da sala: concluída. Aperte Enter para jogar de novo.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "b46a1e80",
@@ -277,7 +382,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Sala 3, Quem disse?: trancada. Termine a sala anterior.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "b50030b9",
@@ -285,7 +393,11 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Desliguei as sombras para manter o movimento fluido. Para religar, abra a Ajuda com a tecla H.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3,
+   4
+  ]
  },
  {
   "chave": "b52488a3",
@@ -293,7 +405,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Horta, Siga as direções: concluída. Aperte Enter para jogar de novo.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "b61f0b44",
@@ -301,7 +416,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Sala 1, Arrume a sala. Aperte Enter para entrar.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "b789848e",
@@ -309,7 +427,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Arquibancada, Monte a equipe: trancada. Termine a sala anterior.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "b94dae03",
@@ -317,7 +438,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Sala 5, Labirinto do corredor. Aperte Enter para entrar.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "bd5e490e",
@@ -325,7 +449,11 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Alto contraste desligado.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3,
+   4
+  ]
  },
  {
   "chave": "c34e8178",
@@ -333,7 +461,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Sala 4, Memória da sala. Aperte Enter para entrar.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "c64538cd",
@@ -341,7 +472,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Revisão, Sala de revisão: concluída. Aperte Enter para jogar de novo.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "c832b306",
@@ -349,7 +483,11 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Parte do acabamento não carregou. O corredor continua funcionando.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3,
+   4
+  ]
  },
  {
   "chave": "ca32e945",
@@ -357,7 +495,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Sala 1, Arrume a sala: trancada. Termine a sala anterior.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "cd3e2ff5",
@@ -365,7 +506,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Quadra, Revezamento de perguntas: concluída. Aperte Enter para jogar de novo.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "ce5dcac8",
@@ -373,7 +517,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Pátio coberto, Revisão da equipe. Aperte Enter para entrar.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "d47275e0",
@@ -381,7 +528,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Sala 5, Labirinto do corredor: trancada. Termine a sala anterior.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "d56341df",
@@ -389,7 +539,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Revisão, Sala de revisão: trancada. Termine a sala anterior.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "dabd5ab0",
@@ -397,7 +550,11 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Qualidade alta: texturas detalhadas, sombras suaves e cantos sombreados.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3,
+   4
+  ]
  },
  {
   "chave": "db10e369",
@@ -405,7 +562,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Pátio coberto, Revisão da equipe: trancada. Termine a sala anterior.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "e59a5496",
@@ -413,7 +573,11 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Modo calmo ligado.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3,
+   4
+  ]
  },
  {
   "chave": "ef0fd17e",
@@ -421,7 +585,11 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Modo econômico: menos dados, menos bateria e movimento mais leve.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   3,
+   4
+  ]
  },
  {
   "chave": "f4c180c5",
@@ -429,7 +597,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Arquibancada, Monte a equipe. Aperte Enter para entrar.",
-  "origem": "corredor"
+  "origem": "corredor",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "0b060ff9",
@@ -437,7 +608,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "coordinator",
-  "origem": "ditado"
+  "origem": "ditado",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "1d256933",
@@ -445,7 +619,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "responsibility",
-  "origem": "ditado"
+  "origem": "ditado",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "1fa36edf",
@@ -453,7 +630,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "quiet",
-  "origem": "ditado"
+  "origem": "ditado",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "201d423d",
@@ -461,7 +641,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "teacher",
-  "origem": "ditado"
+  "origem": "ditado",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "3452b75b",
@@ -469,7 +652,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "responsible",
-  "origem": "ditado"
+  "origem": "ditado",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "3c14a4ba",
@@ -477,7 +663,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "permission",
-  "origem": "ditado"
+  "origem": "ditado",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "414a281b",
@@ -485,7 +674,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "please",
-  "origem": "ditado"
+  "origem": "ditado",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "698705be",
@@ -493,7 +685,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "authority",
-  "origem": "ditado"
+  "origem": "ditado",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "6d4fdea1",
@@ -501,7 +696,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "principal",
-  "origem": "ditado"
+  "origem": "ditado",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "e22a1c50",
@@ -509,7 +707,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "excuse",
-  "origem": "ditado"
+  "origem": "ditado",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "72d2eab4",
@@ -517,7 +718,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Ao ouvir, organizar e respeitar os outros, a turma abre as portas das salas.",
-  "origem": "hq nivel3"
+  "origem": "hq nivel3",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "7e887aac",
@@ -525,7 +729,10 @@
   "voz": "Rafaela",
   "personagem": "colega",
   "texto": "Posso sentar aqui?",
-  "origem": "hq nivel3"
+  "origem": "hq nivel3",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "95896b93",
@@ -533,7 +740,10 @@
   "voz": "Zoey",
   "personagem": "colega",
   "texto": "May I sit here?",
-  "origem": "hq nivel3"
+  "origem": "hq nivel3",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "f463d14b",
@@ -541,7 +751,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Depois do pátio, a turma chega à nova sala. Cada colega precisa de espaço para aprender.",
-  "origem": "hq nivel3"
+  "origem": "hq nivel3",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "3a7de75a",
@@ -549,7 +762,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "A turma recebe uma tarefa que ninguém resolve sozinho: seguir as pistas pela escola.",
-  "origem": "hq nivel4"
+  "origem": "hq nivel4",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "3b59e812",
@@ -557,7 +773,10 @@
   "voz": "Trevor",
   "personagem": "colegaM",
   "texto": "Who will find the clues?",
-  "origem": "hq nivel4"
+  "origem": "hq nivel4",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "a717ff93",
@@ -565,7 +784,10 @@
   "voz": "Davi",
   "personagem": "colegaM",
   "texto": "Quem vai procurar as pistas?",
-  "origem": "hq nivel4"
+  "origem": "hq nivel4",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "b45ceab4",
@@ -573,7 +795,10 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Cada pessoa assume um papel. Juntos, os colegas percorrem a escola e montam a resposta.",
-  "origem": "hq nivel4"
+  "origem": "hq nivel4",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "565fefcb",
@@ -581,7 +806,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Sim, precisamos marcar uma reunião urgentemente com os alunos e responsáveis.",
-  "origem": "hq reuniao"
+  "origem": "hq reuniao",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "73af886f",
@@ -589,7 +817,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Márcio, preciso conversar com esses meninos sobre as regras da escola.",
-  "origem": "hq reuniao"
+  "origem": "hq reuniao",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "00edf768",
@@ -597,7 +828,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Go to the classroom!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "07a4a7ac",
@@ -605,7 +843,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Go to the gym!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "0b342e6d",
@@ -613,7 +858,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "That's the library.",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "0f08ab71",
@@ -621,7 +873,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Go down the ramp to the water fountain!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "0f7aa38b",
@@ -629,7 +888,14 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Where are you going?",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "137d83e7",
@@ -637,7 +903,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Collect the actions!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "29bf91fc",
@@ -645,7 +918,14 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Got you! Let's talk in my office.",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "2ab5efce",
@@ -653,7 +933,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Keep the past tense!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "2cf99653",
@@ -661,7 +948,14 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Stop running in the hallway!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "399fca3f",
@@ -669,7 +963,14 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "Go straight.",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "3a440730",
@@ -677,7 +978,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "That's the office.",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "3df596ed",
@@ -685,7 +993,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "That's the gym.",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "45d30cc1",
@@ -693,7 +1008,14 @@
   "voz": "Hadley",
   "personagem": "vania",
   "texto": "Got you! Back to class!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "47cd5cee",
@@ -701,7 +1023,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Drink some water!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "4a1c88b0",
@@ -709,7 +1038,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Go to the lab!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "4a294797",
@@ -717,7 +1053,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Go back to the classroom!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "4d48ea5b",
@@ -725,7 +1068,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Collect the feelings!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "500a95cb",
@@ -733,7 +1083,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Keep the school places!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "5357879e",
@@ -741,7 +1098,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Duck!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "596b70a4",
@@ -749,7 +1113,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Go to the library!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "61754706",
@@ -757,7 +1128,14 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "It's on your right.",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "65d0cff1",
@@ -765,7 +1143,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Go to the office!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "676ee7c4",
@@ -773,7 +1158,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Approved!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "8b67e61e",
@@ -781,7 +1173,14 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "It's in front of you.",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "99034486",
@@ -789,7 +1188,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Failed!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "a36d93e0",
@@ -797,7 +1203,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Collect the school objects!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "af84dd37",
@@ -805,7 +1218,14 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "Turn around.",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "b0df5031",
@@ -813,7 +1233,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Jump!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "b6263281",
@@ -821,7 +1248,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "That's the lab.",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "b819e68d",
@@ -829,7 +1263,14 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "It's behind you.",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "b9916ef7",
@@ -837,7 +1278,14 @@
   "voz": "Hadley",
   "personagem": "vania",
   "texto": "Back to class, please!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "cb0fe657",
@@ -845,7 +1293,14 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "It's on your left.",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "cbf45a61",
@@ -853,7 +1308,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "That's the classroom.",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "cc45e250",
@@ -861,7 +1323,14 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Got you! Principal's office, now!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "de9dff8b",
@@ -869,7 +1338,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Go to the bathroom!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "dfbb728f",
@@ -877,7 +1353,14 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "Turn left.",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "e431569e",
@@ -885,7 +1368,14 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "Turn right.",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "f14d4226",
@@ -893,7 +1383,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "That's the bathroom.",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "fa7e1aee",
@@ -901,7 +1398,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Keep the rules!",
-  "origem": "intervalo"
+  "origem": "intervalo",
+  "niveis": [
+   2,
+   3,
+   4,
+   5,
+   6
+  ]
  },
  {
   "chave": "91dfaf37",
@@ -909,7 +1413,10 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "LEIA! Know the rules, learn and go further!",
-  "origem": "lema"
+  "origem": "lema",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "03671738",
@@ -917,7 +1424,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Vire à esquerda... ou talvez à direita!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "07841bf9",
@@ -925,7 +1435,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "A lousa tá cheia de mistério... você decifra, eu bato palma!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "12b37b2b",
@@ -933,7 +1446,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Dica: tenta lembrar onde cada carta estava.",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "15dd8ac9",
@@ -941,7 +1457,10 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "Let's go!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "1f9b704e",
@@ -949,7 +1468,10 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "Who is who?",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "1fe79e29",
@@ -957,7 +1479,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Torcida da bagunça: vai, vai, vai!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "209a2939",
@@ -965,7 +1490,10 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "Remember!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "25d3f83a",
@@ -973,7 +1501,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "E trouxe uma distração novinha!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "373cbdaa",
@@ -981,7 +1512,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Coloquei uma palavra extra. Ficou mais bonita!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "3b6677e5",
@@ -989,7 +1523,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Eu posso ser o apresentador e o anotador ao mesmo tempo!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "42dd51c3",
@@ -997,7 +1534,10 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "You can do it!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "4d115c9e",
@@ -1005,7 +1545,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Lê com atenção, a lousa não morde!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "55acd178",
@@ -1013,7 +1556,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Memória de elefante, hein? Vamos ver!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "590eb846",
@@ -1021,7 +1567,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "E eu coloquei uma no lugar errado. Procurem juntos!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "5cca0410",
@@ -1029,7 +1578,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Olha bem as pistas, detetive!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "6179ee4b",
@@ -1037,7 +1589,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Dica: escuta de novo a ordem e procura a palavra do lugar.",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "6f0e0db6",
@@ -1045,7 +1600,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Concentra que dá!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "70b41131",
@@ -1053,7 +1611,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Quem é quem nessa sala? Até eu me confundo, hehe!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "7f3796d2",
@@ -1061,7 +1622,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Escolhe uma sala que eu vou junto!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "9ce7e23c",
@@ -1069,7 +1633,10 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "Almost there!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "a01e3e27",
@@ -1077,7 +1644,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Labirinto! Se perder, eu finjo que não vi.",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "a079c6ca",
@@ -1085,7 +1655,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Dica: sem pressa, lê todas as opções.",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "ab22c594",
@@ -1093,7 +1666,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Calma, um objeto de cada vez!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "af6ab6c6",
@@ -1101,7 +1677,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Dica: lê a frase inteira antes de escolher.",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "b910f1c0",
@@ -1109,7 +1688,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Pega só as palavras certas, foge das cartas do Zé!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "befd2bfa",
@@ -1117,7 +1699,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Dica: olha cada pista com calma antes de escolher.",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "cd579efa",
@@ -1125,7 +1710,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Última sala! Revisão é moleza pra quem chegou até aqui.",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "d077f661",
@@ -1133,7 +1721,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Tudo que você já treinou cai aqui. Bora!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "d38d287b",
@@ -1141,7 +1732,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Trabalho em equipe? Eu trabalho na zoeira!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "d6ac24b7",
@@ -1149,7 +1743,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Ô, a sala tá uma bagunça! Bora arrumar antes do Zé chegar?",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "e1027f18",
@@ -1157,7 +1754,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Dica: palavra errada não vale ponto, olha bem antes de pegar.",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "fe493a51",
@@ -1165,7 +1765,10 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "This way!",
-  "origem": "mane"
+  "origem": "mane",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "4459bca0",
@@ -1173,7 +1776,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "I was proud because I finished the project on my own.",
-  "origem": "rodada nivel5-sentimentos"
+  "origem": "rodada nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "4cd42fde",
@@ -1181,7 +1787,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "I am happy because my team helped me.",
-  "origem": "rodada nivel5-sentimentos"
+  "origem": "rodada nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "5a3ca48c",
@@ -1189,7 +1798,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "I am angry because someone broke my pen.",
-  "origem": "rodada nivel5-sentimentos"
+  "origem": "rodada nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "7d4a7fee",
@@ -1197,7 +1809,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "I felt embarrassed when I forgot my lines in the play.",
-  "origem": "rodada nivel5-sentimentos"
+  "origem": "rodada nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "83be2d91",
@@ -1205,7 +1820,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "I am worried because the test is tomorrow.",
-  "origem": "rodada nivel5-sentimentos"
+  "origem": "rodada nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "d8b03b3a",
@@ -1213,7 +1831,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "I felt disappointed, but I learned from the mistake.",
-  "origem": "rodada nivel5-sentimentos"
+  "origem": "rodada nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "e718be17",
@@ -1221,7 +1842,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "I am scared because the room is dark.",
-  "origem": "rodada nivel5-sentimentos"
+  "origem": "rodada nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "f6ddb1b9",
@@ -1229,7 +1853,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "I was relieved because the team solved the problem.",
-  "origem": "rodada nivel5-sentimentos"
+  "origem": "rodada nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "309409d0",
@@ -1237,7 +1864,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Wash your hands.",
-  "origem": "rodada nivel7-cozinha"
+  "origem": "rodada nivel7-cozinha",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "3d523932",
@@ -1245,7 +1875,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Preheat the oven before you add the cake.",
-  "origem": "rodada nivel7-cozinha"
+  "origem": "rodada nivel7-cozinha",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "7c53dc02",
@@ -1253,7 +1886,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Don’t open the oven for twenty minutes.",
-  "origem": "rodada nivel7-cozinha"
+  "origem": "rodada nivel7-cozinha",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "92d51dc6",
@@ -1261,7 +1897,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Mix the flour and the milk.",
-  "origem": "rodada nivel7-cozinha"
+  "origem": "rodada nivel7-cozinha",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "96774a74",
@@ -1269,7 +1908,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Put the eggs in the bowl.",
-  "origem": "rodada nivel7-cozinha"
+  "origem": "rodada nivel7-cozinha",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "c4f22012",
@@ -1277,7 +1919,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Cut the bananas carefully and put them on the plate.",
-  "origem": "rodada nivel7-cozinha"
+  "origem": "rodada nivel7-cozinha",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "3fd70f70",
@@ -1285,7 +1930,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Put the bookshelf between the door and the board.",
-  "origem": "rodada nivel8-sala"
+  "origem": "rodada nivel8-sala",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "73a6ed51",
@@ -1293,7 +1941,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Put the plant on the shelf.",
-  "origem": "rodada nivel8-sala"
+  "origem": "rodada nivel8-sala",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "9ddb8e62",
@@ -1301,7 +1952,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Put the desk next to the window.",
-  "origem": "rodada nivel8-sala"
+  "origem": "rodada nivel8-sala",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "c4b45c06",
@@ -1309,7 +1963,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Place the chairs in front of the desks.",
-  "origem": "rodada nivel8-sala"
+  "origem": "rodada nivel8-sala",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "224b5f6f",
@@ -1317,7 +1974,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Turn left at the library.",
-  "origem": "rodada nivel8-travessia"
+  "origem": "rodada nivel8-travessia",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "76b3d9da",
@@ -1325,7 +1985,10 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Go straight ahead and turn right after the cafeteria.",
-  "origem": "rodada nivel8-travessia"
+  "origem": "rodada nivel8-travessia",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "12c4a78b",
@@ -1333,7 +1996,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Lembre-se: o Zé vai tentar atrapalhar. Respire fundo, leia com calma e responda.",
-  "origem": "roteiro 0 apresenta"
+  "origem": "roteiro 0 apresenta",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "a9ba8ba0",
@@ -1341,7 +2007,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Take a deep breath and answer.",
-  "origem": "roteiro 0 apresenta"
+  "origem": "roteiro 0 apresenta",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "ac72ff0f",
@@ -1349,7 +2018,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Welcome to NISIALAND! Stay focused!",
-  "origem": "roteiro 0 apresenta"
+  "origem": "roteiro 0 apresenta",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "b538d2e4",
@@ -1357,7 +2029,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Bem-vindo à NISIALAND! Sua primeira missão é desviar das distrações do Zé Cartinha. Mostre que você consegue se concentrar.",
-  "origem": "roteiro 0 apresenta"
+  "origem": "roteiro 0 apresenta",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "a4cf95b1",
@@ -1365,7 +2040,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Very good!",
-  "origem": "roteiro 0 certo"
+  "origem": "roteiro 0 certo",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "b3995e6a",
@@ -1373,7 +2051,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Isso! Resposta certa.",
-  "origem": "roteiro 0 certo"
+  "origem": "roteiro 0 certo",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "f6e603d3",
@@ -1381,7 +2062,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Muito bem.",
-  "origem": "roteiro 0 certo"
+  "origem": "roteiro 0 certo",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "ffd89e28",
@@ -1389,7 +2073,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Correct!",
-  "origem": "roteiro 0 certo"
+  "origem": "roteiro 0 certo",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "9dda15f6",
@@ -1397,7 +2084,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Mission complete! Well done!",
-  "origem": "roteiro 0 concluido"
+  "origem": "roteiro 0 concluido",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "cb074018",
@@ -1405,7 +2095,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Missão zero completa! Você passou pelo Zé Cartinha. A escola inteira está orgulhosa.",
-  "origem": "roteiro 0 concluido"
+  "origem": "roteiro 0 concluido",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "131435ae",
@@ -1413,7 +2106,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Calma. Leia de novo e tente outra vez.",
-  "origem": "roteiro 0 errado"
+  "origem": "roteiro 0 errado",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "15aea0e6",
@@ -1421,7 +2117,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Read it again and try once more.",
-  "origem": "roteiro 0 errado"
+  "origem": "roteiro 0 errado",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "1ebb07d3",
@@ -1429,7 +2128,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Halfway there! Keep going.",
-  "origem": "roteiro 0 meio"
+  "origem": "roteiro 0 meio",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "43a807cc",
@@ -1437,7 +2139,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Metade feita! Agora vem: Quiz. Vamos terminar bem.",
-  "origem": "roteiro 0 meio"
+  "origem": "roteiro 0 meio",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "936a95b0",
@@ -1445,7 +2150,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Metade feita! Agora vem: Flashcards. Vamos terminar bem.",
-  "origem": "roteiro 0 meio"
+  "origem": "roteiro 0 meio",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "a81c9abc",
@@ -1453,7 +2161,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Metade feita! Agora vem: a próxima atividade. Vamos terminar bem.",
-  "origem": "roteiro 0 meio"
+  "origem": "roteiro 0 meio",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "a10d1a06",
@@ -1461,7 +2172,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Hello! What grade are you in?",
-  "origem": "roteiro 0 semSerie"
+  "origem": "roteiro 0 semSerie",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "f701fab0",
@@ -1469,7 +2183,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Olá! Eu sou o Diretor Márcio. Antes de começar, me diga: em que série você está?",
-  "origem": "roteiro 0 semSerie"
+  "origem": "roteiro 0 semSerie",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "507816cc",
@@ -1477,7 +2194,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Good to see you again!",
-  "origem": "roteiro 0 volta"
+  "origem": "roteiro 0 volta",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "97ea9b14",
@@ -1485,7 +2205,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Que bom ver você de volta. Vamos continuar de onde parou.",
-  "origem": "roteiro 0 volta"
+  "origem": "roteiro 0 volta",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "1577bcec",
@@ -1493,7 +2216,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Cada atividade libera a próxima. Comece ouvindo o meu recado com atenção.",
-  "origem": "roteiro 1 apresenta"
+  "origem": "roteiro 1 apresenta",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "3f37561b",
@@ -1501,7 +2227,11 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Know the rules, learn and go further!",
-  "origem": "roteiro 1 apresenta"
+  "origem": "roteiro 1 apresenta",
+  "niveis": [
+   0,
+   1
+  ]
  },
  {
   "chave": "a058c581",
@@ -1509,7 +2239,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Na nossa escola, as regras existem para todo mundo conviver bem. Vamos aprender a ouvir, montar, conversar e explorar. Leia! Know the rules, learn and go further!",
-  "origem": "roteiro 1 apresenta"
+  "origem": "roteiro 1 apresenta",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "b03ca9da",
@@ -1517,7 +2250,10 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Listen carefully to my message.",
-  "origem": "roteiro 1 apresenta"
+  "origem": "roteiro 1 apresenta",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "058ef3f9",
@@ -1525,7 +2261,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Perfeito, você entendeu o recado.",
-  "origem": "roteiro 1 certo"
+  "origem": "roteiro 1 certo",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "68018786",
@@ -1533,7 +2272,10 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Perfect!",
-  "origem": "roteiro 1 certo"
+  "origem": "roteiro 1 certo",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "03a48893",
@@ -1541,7 +2283,10 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Mission one complete! Go to the playground.",
-  "origem": "roteiro 1 concluido"
+  "origem": "roteiro 1 concluido",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "ac724c6b",
@@ -1549,7 +2294,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "As regras agora são suas também. Missão um completa! Pode seguir para o pátio.",
-  "origem": "roteiro 1 concluido"
+  "origem": "roteiro 1 concluido",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "cdb23e9d",
@@ -1557,7 +2305,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Quase. Ouça mais uma vez e pense na regra.",
-  "origem": "roteiro 1 errado"
+  "origem": "roteiro 1 errado",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "d88dad9f",
@@ -1565,7 +2316,10 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Almost. Listen once more.",
-  "origem": "roteiro 1 errado"
+  "origem": "roteiro 1 errado",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "06d47a8f",
@@ -1573,7 +2327,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Você está indo bem. A próxima é Explore a escola.",
-  "origem": "roteiro 1 meio"
+  "origem": "roteiro 1 meio",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "215cf2d2",
@@ -1581,7 +2338,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Você está indo bem. A próxima é Conversa no corredor.",
-  "origem": "roteiro 1 meio"
+  "origem": "roteiro 1 meio",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "43e7ba31",
@@ -1589,7 +2349,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Você está indo bem. A próxima é O recado da Leia.",
-  "origem": "roteiro 1 meio"
+  "origem": "roteiro 1 meio",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "89453423",
@@ -1597,7 +2360,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Você está indo bem. A próxima é a próxima atividade.",
-  "origem": "roteiro 1 meio"
+  "origem": "roteiro 1 meio",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "cc580b17",
@@ -1605,7 +2371,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Você está indo bem. A próxima é Monte a mensagem.",
-  "origem": "roteiro 1 meio"
+  "origem": "roteiro 1 meio",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "f570ddeb",
@@ -1613,7 +2382,10 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "You are doing well!",
-  "origem": "roteiro 1 meio"
+  "origem": "roteiro 1 meio",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "164dd3a0",
@@ -1621,7 +2393,10 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Hi! What grade are you in?",
-  "origem": "roteiro 1 semSerie"
+  "origem": "roteiro 1 semSerie",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "59499afe",
@@ -1629,7 +2404,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Oi! Eu sou a Leia, da orientação. Me conte em que série você está para eu preparar as atividades.",
-  "origem": "roteiro 1 semSerie"
+  "origem": "roteiro 1 semSerie",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "62bae24c",
@@ -1637,7 +2415,11 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Welcome back!",
-  "origem": "roteiro 1 volta"
+  "origem": "roteiro 1 volta",
+  "niveis": [
+   1,
+   5
+  ]
  },
  {
   "chave": "ae1b2893",
@@ -1645,7 +2427,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Voltou? Ótimo. As regras continuam esperando por você.",
-  "origem": "roteiro 1 volta"
+  "origem": "roteiro 1 volta",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "030537e4",
@@ -1653,7 +2438,10 @@
   "voz": "Hadley",
   "personagem": "vania",
   "texto": "Go to each station. Ask politely!",
-  "origem": "roteiro 2 apresenta"
+  "origem": "roteiro 2 apresenta",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "53dfa9f7",
@@ -1661,7 +2449,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "No pátio a gente aprende a pedir com educação e a respeitar quem cuida da escola. Vá até cada estação; eu organizo tudo por aqui.",
-  "origem": "roteiro 2 apresenta"
+  "origem": "roteiro 2 apresenta",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "5d58d7bb",
@@ -1669,7 +2460,10 @@
   "voz": "Hadley",
   "personagem": "vania",
   "texto": "Go to the next station.",
-  "origem": "roteiro 2 apresenta"
+  "origem": "roteiro 2 apresenta",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "6c431502",
@@ -1677,7 +2471,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Sua próxima estação é Duelo de bafo com o Zé. Ande até ela e toque na placa.",
-  "origem": "roteiro 2 apresenta"
+  "origem": "roteiro 2 apresenta",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "81caa754",
@@ -1685,7 +2482,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Sua próxima estação é Corrida contra o relógio. Ande até ela e toque na placa.",
-  "origem": "roteiro 2 apresenta"
+  "origem": "roteiro 2 apresenta",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "9490b548",
@@ -1693,7 +2493,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Sua próxima estação é O mural da Vânia. Ande até ela e toque na placa.",
-  "origem": "roteiro 2 apresenta"
+  "origem": "roteiro 2 apresenta",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "b2c701ab",
@@ -1701,7 +2504,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Sua próxima estação é a próxima atividade. Ande até ela e toque na placa.",
-  "origem": "roteiro 2 apresenta"
+  "origem": "roteiro 2 apresenta",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "ece014e6",
@@ -1709,7 +2515,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Sua próxima estação é Ditado do Márcio. Ande até ela e toque na placa.",
-  "origem": "roteiro 2 apresenta"
+  "origem": "roteiro 2 apresenta",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "f409c787",
@@ -1717,7 +2526,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Sua próxima estação é Caça-palavras no pátio. Ande até ela e toque na placa.",
-  "origem": "roteiro 2 apresenta"
+  "origem": "roteiro 2 apresenta",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "fe65431b",
@@ -1725,7 +2537,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Sua próxima estação é Complete o bilhete. Ande até ela e toque na placa.",
-  "origem": "roteiro 2 apresenta"
+  "origem": "roteiro 2 apresenta",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "cd5d0f7e",
@@ -1733,7 +2548,10 @@
   "voz": "Hadley",
   "personagem": "vania",
   "texto": "That is right!",
-  "origem": "roteiro 2 certo"
+  "origem": "roteiro 2 certo",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "e7ba2f06",
@@ -1741,7 +2559,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Isso mesmo, com educação a gente chega longe.",
-  "origem": "roteiro 2 certo"
+  "origem": "roteiro 2 certo",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "3ffd3ef2",
@@ -1749,7 +2570,10 @@
   "voz": "Hadley",
   "personagem": "vania",
   "texto": "All stations done! Mission two complete.",
-  "origem": "roteiro 2 concluido"
+  "origem": "roteiro 2 concluido",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "b37a2e80",
@@ -1757,7 +2581,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Pátio completo! Você pediu, ouviu e respeitou. Missão dois concluída.",
-  "origem": "roteiro 2 concluido"
+  "origem": "roteiro 2 concluido",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "6c1f401f",
@@ -1765,7 +2592,10 @@
   "voz": "Hadley",
   "personagem": "vania",
   "texto": "Not this time. Check the answer.",
-  "origem": "roteiro 2 errado"
+  "origem": "roteiro 2 errado",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "f07ec6ea",
@@ -1773,7 +2603,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Hum, não foi dessa vez. Olhe a resposta certa e siga.",
-  "origem": "roteiro 2 errado"
+  "origem": "roteiro 2 errado",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "0b151bb4",
@@ -1781,7 +2614,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Boa! Agora Ditado do Márcio. O pátio está quase todo visitado.",
-  "origem": "roteiro 2 meio"
+  "origem": "roteiro 2 meio",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "20ed438e",
@@ -1789,7 +2625,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Boa! Agora O mural da Vânia. O pátio está quase todo visitado.",
-  "origem": "roteiro 2 meio"
+  "origem": "roteiro 2 meio",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "86d58a93",
@@ -1797,7 +2636,10 @@
   "voz": "Hadley",
   "personagem": "vania",
   "texto": "Great! Next station.",
-  "origem": "roteiro 2 meio"
+  "origem": "roteiro 2 meio",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "9f02493b",
@@ -1805,7 +2647,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Boa! Agora Caça-palavras no pátio. O pátio está quase todo visitado.",
-  "origem": "roteiro 2 meio"
+  "origem": "roteiro 2 meio",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "aa220be7",
@@ -1813,7 +2658,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Boa! Agora a próxima atividade. O pátio está quase todo visitado.",
-  "origem": "roteiro 2 meio"
+  "origem": "roteiro 2 meio",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "b4a43e13",
@@ -1821,7 +2669,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Boa! Agora Complete o bilhete. O pátio está quase todo visitado.",
-  "origem": "roteiro 2 meio"
+  "origem": "roteiro 2 meio",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "c56056aa",
@@ -1829,7 +2680,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Boa! Agora Corrida contra o relógio. O pátio está quase todo visitado.",
-  "origem": "roteiro 2 meio"
+  "origem": "roteiro 2 meio",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "f75697e4",
@@ -1837,7 +2691,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Boa! Agora Duelo de bafo com o Zé. O pátio está quase todo visitado.",
-  "origem": "roteiro 2 meio"
+  "origem": "roteiro 2 meio",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "b1f05876",
@@ -1845,7 +2702,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Olá! Sou a coordenadora Vânia. Em que série você está?",
-  "origem": "roteiro 2 semSerie"
+  "origem": "roteiro 2 semSerie",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "ebcd0bb7",
@@ -1853,7 +2713,10 @@
   "voz": "Hadley",
   "personagem": "vania",
   "texto": "Hello! What grade are you in?",
-  "origem": "roteiro 2 semSerie"
+  "origem": "roteiro 2 semSerie",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "317f594c",
@@ -1861,7 +2724,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "De volta ao pátio? A próxima estação é Duelo de bafo com o Zé.",
-  "origem": "roteiro 2 volta"
+  "origem": "roteiro 2 volta",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "35cf0edc",
@@ -1869,7 +2735,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "De volta ao pátio? A próxima estação é Ditado do Márcio.",
-  "origem": "roteiro 2 volta"
+  "origem": "roteiro 2 volta",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "3b794a95",
@@ -1877,7 +2746,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "De volta ao pátio? A próxima estação é Caça-palavras no pátio.",
-  "origem": "roteiro 2 volta"
+  "origem": "roteiro 2 volta",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "5900310a",
@@ -1885,7 +2757,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "De volta ao pátio? A próxima estação é Corrida contra o relógio.",
-  "origem": "roteiro 2 volta"
+  "origem": "roteiro 2 volta",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "617e1d9d",
@@ -1893,7 +2768,10 @@
   "voz": "Hadley",
   "personagem": "vania",
   "texto": "Welcome back to the playground!",
-  "origem": "roteiro 2 volta"
+  "origem": "roteiro 2 volta",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "9a0daa01",
@@ -1901,7 +2779,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "De volta ao pátio? A próxima estação é a próxima atividade.",
-  "origem": "roteiro 2 volta"
+  "origem": "roteiro 2 volta",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "a06ac2c9",
@@ -1909,7 +2790,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "De volta ao pátio? A próxima estação é Complete o bilhete.",
-  "origem": "roteiro 2 volta"
+  "origem": "roteiro 2 volta",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "e871939e",
@@ -1917,7 +2801,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "De volta ao pátio? A próxima estação é O mural da Vânia.",
-  "origem": "roteiro 2 volta"
+  "origem": "roteiro 2 volta",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "42f5ef19",
@@ -1925,7 +2812,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Hoje é dia de conviver bem em sala. Entre em cada sala do corredor, arrume, responda e revise. O Mané vai junto, mas a resposta é sua.",
-  "origem": "roteiro 3 apresenta"
+  "origem": "roteiro 3 apresenta",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "d418f265",
@@ -1933,7 +2823,10 @@
   "voz": "Harper",
   "personagem": "rosana",
   "texto": "Enter each classroom. The answer is yours!",
-  "origem": "roteiro 3 apresenta"
+  "origem": "roteiro 3 apresenta",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "58a29b70",
@@ -1941,7 +2834,10 @@
   "voz": "Harper",
   "personagem": "rosana",
   "texto": "Well done!",
-  "origem": "roteiro 3 certo"
+  "origem": "roteiro 3 certo",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "86c3cba2",
@@ -1949,7 +2845,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Muito bem! Pode seguir.",
-  "origem": "roteiro 3 certo"
+  "origem": "roteiro 3 certo",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "22c0ec8f",
@@ -1957,7 +2856,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Todas as salas arrumadas! Conviver bem também é inglês. Missão três completa.",
-  "origem": "roteiro 3 concluido"
+  "origem": "roteiro 3 concluido",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "d7d29088",
@@ -1965,7 +2867,10 @@
   "voz": "Harper",
   "personagem": "rosana",
   "texto": "All classrooms done! Mission three complete.",
-  "origem": "roteiro 3 concluido"
+  "origem": "roteiro 3 concluido",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "18b53e92",
@@ -1973,7 +2878,10 @@
   "voz": "Harper",
   "personagem": "rosana",
   "texto": "Read the whole sentence.",
-  "origem": "roteiro 3 errado"
+  "origem": "roteiro 3 errado",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "99feaaed",
@@ -1981,7 +2889,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Vamos pensar juntos: leia a frase inteira.",
-  "origem": "roteiro 3 errado"
+  "origem": "roteiro 3 errado",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "25b86ce9",
@@ -1989,7 +2900,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Mais uma sala: Labirinto do corredor.",
-  "origem": "roteiro 3 meio"
+  "origem": "roteiro 3 meio",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "3bcd9d05",
@@ -1997,7 +2911,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Mais uma sala: Memória da sala.",
-  "origem": "roteiro 3 meio"
+  "origem": "roteiro 3 meio",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "68de6a94",
@@ -2005,7 +2922,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Mais uma sala: Quadro de quiz.",
-  "origem": "roteiro 3 meio"
+  "origem": "roteiro 3 meio",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "b38c9e9e",
@@ -2013,7 +2933,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Mais uma sala: Arrume a sala.",
-  "origem": "roteiro 3 meio"
+  "origem": "roteiro 3 meio",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "d3101044",
@@ -2021,7 +2944,10 @@
   "voz": "Harper",
   "personagem": "rosana",
   "texto": "One more classroom!",
-  "origem": "roteiro 3 meio"
+  "origem": "roteiro 3 meio",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "ef44fd43",
@@ -2029,7 +2955,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Mais uma sala: a próxima atividade.",
-  "origem": "roteiro 3 meio"
+  "origem": "roteiro 3 meio",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "fbdba6df",
@@ -2037,7 +2966,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Mais uma sala: Quem disse?.",
-  "origem": "roteiro 3 meio"
+  "origem": "roteiro 3 meio",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "fdc62a76",
@@ -2045,7 +2977,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Mais uma sala: Sala de revisão.",
-  "origem": "roteiro 3 meio"
+  "origem": "roteiro 3 meio",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "118bc261",
@@ -2053,7 +2988,11 @@
   "voz": "Harper",
   "personagem": "rosana",
   "texto": "Hi! What grade are you in?",
-  "origem": "roteiro 3 semSerie"
+  "origem": "roteiro 3 semSerie",
+  "niveis": [
+   3,
+   8
+  ]
  },
  {
   "chave": "ffa3fcfc",
@@ -2061,7 +3000,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Oi! Sou a professora Rosana. Qual é a sua série?",
-  "origem": "roteiro 3 semSerie"
+  "origem": "roteiro 3 semSerie",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "21a184db",
@@ -2069,7 +3011,10 @@
   "voz": "Harper",
   "personagem": "rosana",
   "texto": "Welcome back!",
-  "origem": "roteiro 3 volta"
+  "origem": "roteiro 3 volta",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "8bb1bf6c",
@@ -2077,7 +3022,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Bem-vindo de volta ao corredor.",
-  "origem": "roteiro 3 volta"
+  "origem": "roteiro 3 volta",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "00a603a4",
@@ -2085,7 +3033,10 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "Teamwork! Let us go around the school!",
-  "origem": "roteiro 4 apresenta"
+  "origem": "roteiro 4 apresenta",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "a7117d9a",
@@ -2093,7 +3044,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Trabalho em equipe, hein? Eu ajudo a procurar as pistas, mas quem responde é você. Bora pela escola toda!",
-  "origem": "roteiro 4 apresenta"
+  "origem": "roteiro 4 apresenta",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "4ff421b6",
@@ -2101,7 +3055,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Aê! Essa foi na mosca.",
-  "origem": "roteiro 4 certo"
+  "origem": "roteiro 4 certo",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "da9d6c09",
@@ -2109,7 +3066,10 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "Yes! Nailed it.",
-  "origem": "roteiro 4 certo"
+  "origem": "roteiro 4 certo",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "8b6320a1",
@@ -2117,7 +3077,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Equipe completa! Até eu, que só atrapalho, aprendi alguma coisa. Missão quatro feita!",
-  "origem": "roteiro 4 concluido"
+  "origem": "roteiro 4 concluido",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "d5e91308",
@@ -2125,7 +3088,10 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "Mission four complete! Great team!",
-  "origem": "roteiro 4 concluido"
+  "origem": "roteiro 4 concluido",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "7cead9af",
@@ -2133,7 +3099,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Ih, errou. Relaxa, olha a certa e vem comigo.",
-  "origem": "roteiro 4 errado"
+  "origem": "roteiro 4 errado",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "b3b2774d",
@@ -2141,7 +3110,10 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "Oops. Check the right one.",
-  "origem": "roteiro 4 errado"
+  "origem": "roteiro 4 errado",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "17628593",
@@ -2149,7 +3121,10 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "Next stop!",
-  "origem": "roteiro 4 meio"
+  "origem": "roteiro 4 meio",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "229046b0",
@@ -2157,7 +3132,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Tamo junto! Próxima parada: Monte a equipe.",
-  "origem": "roteiro 4 meio"
+  "origem": "roteiro 4 meio",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "31dc73c7",
@@ -2165,7 +3143,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Tamo junto! Próxima parada: Revezamento de perguntas.",
-  "origem": "roteiro 4 meio"
+  "origem": "roteiro 4 meio",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "40eea862",
@@ -2173,7 +3154,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Tamo junto! Próxima parada: Caça às pistas.",
-  "origem": "roteiro 4 meio"
+  "origem": "roteiro 4 meio",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "51652b9b",
@@ -2181,7 +3165,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Tamo junto! Próxima parada: Siga as direções.",
-  "origem": "roteiro 4 meio"
+  "origem": "roteiro 4 meio",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "950be097",
@@ -2189,7 +3176,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Tamo junto! Próxima parada: Mensagem secreta.",
-  "origem": "roteiro 4 meio"
+  "origem": "roteiro 4 meio",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "cac27c21",
@@ -2197,7 +3187,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Tamo junto! Próxima parada: Revisão da equipe.",
-  "origem": "roteiro 4 meio"
+  "origem": "roteiro 4 meio",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "d185628c",
@@ -2205,7 +3198,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Tamo junto! Próxima parada: a próxima atividade.",
-  "origem": "roteiro 4 meio"
+  "origem": "roteiro 4 meio",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "61fc6a63",
@@ -2213,7 +3209,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "E aí! Mané na área. Qual é a sua série, parceiro?",
-  "origem": "roteiro 4 semSerie"
+  "origem": "roteiro 4 semSerie",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "b5349214",
@@ -2221,7 +3220,10 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "Hey! What grade are you in?",
-  "origem": "roteiro 4 semSerie"
+  "origem": "roteiro 4 semSerie",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "2d0d8aaf",
@@ -2229,7 +3231,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Voltou? Eu guardei o seu lugar na equipe.",
-  "origem": "roteiro 4 volta"
+  "origem": "roteiro 4 volta",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "43c36675",
@@ -2237,7 +3242,10 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "Welcome back, teammate!",
-  "origem": "roteiro 4 volta"
+  "origem": "roteiro 4 volta",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "3331cc2e",
@@ -2245,7 +3253,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Agora a missão é sobre as suas escolhas. Não existe resposta por impulso aqui: pense, decida e explique o porquê.",
-  "origem": "roteiro 5 apresenta"
+  "origem": "roteiro 5 apresenta",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "4ea1da78",
@@ -2253,7 +3264,10 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Think, decide and explain why.",
-  "origem": "roteiro 5 apresenta"
+  "origem": "roteiro 5 apresenta",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "2e5d9d05",
@@ -2261,7 +3275,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Escolha certa, e bem explicada.",
-  "origem": "roteiro 5 certo"
+  "origem": "roteiro 5 certo",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "a986e3ea",
@@ -2269,7 +3286,10 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Right choice!",
-  "origem": "roteiro 5 certo"
+  "origem": "roteiro 5 certo",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "8a4ef868",
@@ -2277,7 +3297,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Você refletiu e decidiu. Missão cinco completa.",
-  "origem": "roteiro 5 concluido"
+  "origem": "roteiro 5 concluido",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "be19f3ba",
@@ -2285,7 +3308,10 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Mission five complete!",
-  "origem": "roteiro 5 concluido"
+  "origem": "roteiro 5 concluido",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "00939873",
@@ -2293,7 +3319,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Vamos ver juntos qual seria a melhor escolha.",
-  "origem": "roteiro 5 errado"
+  "origem": "roteiro 5 errado",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "d6caae8e",
@@ -2301,7 +3330,10 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Let us see the best choice.",
-  "origem": "roteiro 5 errado"
+  "origem": "roteiro 5 errado",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "39f2205d",
@@ -2309,7 +3341,10 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Good choice. Next one.",
-  "origem": "roteiro 5 meio"
+  "origem": "roteiro 5 meio",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "3d181996",
@@ -2317,7 +3352,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Boa decisão. Agora Revisão das escolhas.",
-  "origem": "roteiro 5 meio"
+  "origem": "roteiro 5 meio",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "5e73e1b3",
@@ -2325,7 +3363,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Boa decisão. Agora a próxima atividade.",
-  "origem": "roteiro 5 meio"
+  "origem": "roteiro 5 meio",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "75b031b7",
@@ -2333,7 +3374,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Boa decisão. Agora Desafio de ritmo.",
-  "origem": "roteiro 5 meio"
+  "origem": "roteiro 5 meio",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "9685a08b",
@@ -2341,7 +3385,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Boa decisão. Agora Diálogos de escolha.",
-  "origem": "roteiro 5 meio"
+  "origem": "roteiro 5 meio",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "a75f4089",
@@ -2349,7 +3396,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Boa decisão. Agora História com caminhos.",
-  "origem": "roteiro 5 meio"
+  "origem": "roteiro 5 meio",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "a82324e3",
@@ -2357,7 +3407,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Boa decisão. Agora Sentimentos em inglês.",
-  "origem": "roteiro 5 meio"
+  "origem": "roteiro 5 meio",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "d47d3129",
@@ -2365,7 +3418,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Boa decisão. Agora Jogo do “e se?”.",
-  "origem": "roteiro 5 meio"
+  "origem": "roteiro 5 meio",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "e27f3d8a",
@@ -2373,7 +3429,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Boa decisão. Agora Conselho para um colega.",
-  "origem": "roteiro 5 meio"
+  "origem": "roteiro 5 meio",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "08819ed1",
@@ -2381,7 +3440,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Oi de novo! Em que série você está?",
-  "origem": "roteiro 5 semSerie"
+  "origem": "roteiro 5 semSerie",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "4c8b2b68",
@@ -2389,7 +3451,10 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Hi again! What grade are you in?",
-  "origem": "roteiro 5 semSerie"
+  "origem": "roteiro 5 semSerie",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "b2c57b80",
@@ -2397,7 +3462,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Voltou para decidir mais? Ótimo.",
-  "origem": "roteiro 5 volta"
+  "origem": "roteiro 5 volta",
+  "niveis": [
+   5
+  ]
  },
  {
   "chave": "60f49ce6",
@@ -2405,7 +3473,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Toda escolha tem consequência, para você e para os colegas. Nesta missão vamos ver o que acontece depois de cada decisão.",
-  "origem": "roteiro 6 apresenta"
+  "origem": "roteiro 6 apresenta",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "a5bec0f5",
@@ -2413,7 +3484,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Every choice has a consequence.",
-  "origem": "roteiro 6 apresenta"
+  "origem": "roteiro 6 apresenta",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "ddeb329a",
@@ -2421,7 +3495,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Exato. Causa e efeito.",
-  "origem": "roteiro 6 certo"
+  "origem": "roteiro 6 certo",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "de733f38",
@@ -2429,7 +3506,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Exactly. Cause and effect.",
-  "origem": "roteiro 6 certo"
+  "origem": "roteiro 6 certo",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "0554be93",
@@ -2437,7 +3517,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Missão seis completa. Você já enxerga o efeito das suas escolhas.",
-  "origem": "roteiro 6 concluido"
+  "origem": "roteiro 6 concluido",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "7a0ba8fb",
@@ -2445,7 +3528,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Mission six complete!",
-  "origem": "roteiro 6 concluido"
+  "origem": "roteiro 6 concluido",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "84256d84",
@@ -2453,7 +3539,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Pense no que aconteceria depois. Veja a resposta.",
-  "origem": "roteiro 6 errado"
+  "origem": "roteiro 6 errado",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "868f8adc",
@@ -2461,7 +3550,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Think about what happens next.",
-  "origem": "roteiro 6 errado"
+  "origem": "roteiro 6 errado",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "223199e6",
@@ -2469,7 +3561,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Continue. Próxima: Revisão das consequências.",
-  "origem": "roteiro 6 meio"
+  "origem": "roteiro 6 meio",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "3154eaeb",
@@ -2477,7 +3572,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Continue. Próxima: Linha do tempo.",
-  "origem": "roteiro 6 meio"
+  "origem": "roteiro 6 meio",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "65f0baf1",
@@ -2485,7 +3583,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Continue. Próxima: Tetris de palavras.",
-  "origem": "roteiro 6 meio"
+  "origem": "roteiro 6 meio",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "c066f708",
@@ -2493,7 +3594,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Continue. Próxima: Entrevista com um colega.",
-  "origem": "roteiro 6 meio"
+  "origem": "roteiro 6 meio",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "c34c6932",
@@ -2501,7 +3605,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Continue. Próxima: Reescreva o final.",
-  "origem": "roteiro 6 meio"
+  "origem": "roteiro 6 meio",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "cae02fac",
@@ -2509,7 +3616,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Continue. Próxima: Conserte o mal-entendido.",
-  "origem": "roteiro 6 meio"
+  "origem": "roteiro 6 meio",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "cb23c394",
@@ -2517,7 +3627,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Keep going.",
-  "origem": "roteiro 6 meio"
+  "origem": "roteiro 6 meio",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "cdedbf62",
@@ -2525,7 +3638,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Continue. Próxima: a próxima atividade.",
-  "origem": "roteiro 6 meio"
+  "origem": "roteiro 6 meio",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "f48154e1",
@@ -2533,7 +3649,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Continue. Próxima: Causa e efeito.",
-  "origem": "roteiro 6 meio"
+  "origem": "roteiro 6 meio",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "5cf2c4ee",
@@ -2541,7 +3660,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Hello again! What grade are you in?",
-  "origem": "roteiro 6 semSerie"
+  "origem": "roteiro 6 semSerie",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "861599f0",
@@ -2549,7 +3671,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Olá. Diretor Márcio de novo. Em que série você está?",
-  "origem": "roteiro 6 semSerie"
+  "origem": "roteiro 6 semSerie",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "38eb394f",
@@ -2557,7 +3682,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Bem-vindo de volta.",
-  "origem": "roteiro 6 volta"
+  "origem": "roteiro 6 volta",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "9393badd",
@@ -2565,7 +3693,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Welcome back!",
-  "origem": "roteiro 6 volta"
+  "origem": "roteiro 6 volta",
+  "niveis": [
+   6
+  ]
  },
  {
   "chave": "1361d9e2",
@@ -2573,7 +3704,10 @@
   "voz": "Hadley",
   "personagem": "vania",
   "texto": "Time to get organized!",
-  "origem": "roteiro 7 apresenta"
+  "origem": "roteiro 7 apresenta",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "2850f77d",
@@ -2581,7 +3715,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Chegou a hora de se organizar: material, rotina, aula, grupo e estudo. Quem se organiza chega mais longe, e em inglês também.",
-  "origem": "roteiro 7 apresenta"
+  "origem": "roteiro 7 apresenta",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "470c8362",
@@ -2589,7 +3726,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Perfeito, tudo no lugar.",
-  "origem": "roteiro 7 certo"
+  "origem": "roteiro 7 certo",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "c5aaaebe",
@@ -2597,7 +3737,10 @@
   "voz": "Hadley",
   "personagem": "vania",
   "texto": "Perfect!",
-  "origem": "roteiro 7 certo"
+  "origem": "roteiro 7 certo",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "63c68c1e",
@@ -2605,7 +3748,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Missão sete completa! Você aprendeu a se organizar. Agora o Nível oito: organizado na prática.",
-  "origem": "roteiro 7 concluido"
+  "origem": "roteiro 7 concluido",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "dd1665a0",
@@ -2613,7 +3759,10 @@
   "voz": "Hadley",
   "personagem": "vania",
   "texto": "Mission seven complete! Level eight is open.",
-  "origem": "roteiro 7 concluido"
+  "origem": "roteiro 7 concluido",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "264aa183",
@@ -2621,7 +3770,10 @@
   "voz": "Hadley",
   "personagem": "vania",
   "texto": "Almost. Check the right order.",
-  "origem": "roteiro 7 errado"
+  "origem": "roteiro 7 errado",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "f1b77388",
@@ -2629,7 +3781,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Quase. Veja a ordem certa.",
-  "origem": "roteiro 7 errado"
+  "origem": "roteiro 7 errado",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "07e486ae",
@@ -2637,7 +3792,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Organizado! Agora Divida o trabalho.",
-  "origem": "roteiro 7 meio"
+  "origem": "roteiro 7 meio",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "39009546",
@@ -2645,7 +3803,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Organizado! Agora Revisão da organização.",
-  "origem": "roteiro 7 meio"
+  "origem": "roteiro 7 meio",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "6e9a5f94",
@@ -2653,7 +3814,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Organizado! Agora Plano de estudo.",
-  "origem": "roteiro 7 meio"
+  "origem": "roteiro 7 meio",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "734b0972",
@@ -2661,7 +3825,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Organizado! Agora Organize o material.",
-  "origem": "roteiro 7 meio"
+  "origem": "roteiro 7 meio",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "73950dbb",
@@ -2669,7 +3836,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Organizado! Agora Agenda inteligente.",
-  "origem": "roteiro 7 meio"
+  "origem": "roteiro 7 meio",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "7da73e09",
@@ -2677,7 +3847,10 @@
   "voz": "Hadley",
   "personagem": "vania",
   "texto": "Well organized! Next.",
-  "origem": "roteiro 7 meio"
+  "origem": "roteiro 7 meio",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "836945de",
@@ -2685,7 +3858,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Organizado! Agora Cozinha em equipe.",
-  "origem": "roteiro 7 meio"
+  "origem": "roteiro 7 meio",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "c7ac7d5c",
@@ -2693,7 +3869,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Organizado! Agora a próxima atividade.",
-  "origem": "roteiro 7 meio"
+  "origem": "roteiro 7 meio",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "fdfb6d32",
@@ -2701,7 +3880,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Organizado! Agora Monte sua rotina.",
-  "origem": "roteiro 7 meio"
+  "origem": "roteiro 7 meio",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "fee5fceb",
@@ -2709,7 +3891,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Organizado! Agora Prepare-se para a aula.",
-  "origem": "roteiro 7 meio"
+  "origem": "roteiro 7 meio",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "9493b418",
@@ -2717,7 +3902,10 @@
   "voz": "Hadley",
   "personagem": "vania",
   "texto": "Hi! What grade are you in?",
-  "origem": "roteiro 7 semSerie"
+  "origem": "roteiro 7 semSerie",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "aee0c740",
@@ -2725,7 +3913,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "Oi! Vânia aqui. Em que série você está?",
-  "origem": "roteiro 7 semSerie"
+  "origem": "roteiro 7 semSerie",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "9e152254",
@@ -2733,7 +3924,10 @@
   "voz": "Hadley",
   "personagem": "vania",
   "texto": "Welcome back!",
-  "origem": "roteiro 7 volta"
+  "origem": "roteiro 7 volta",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "fd49fffe",
@@ -2741,7 +3935,10 @@
   "voz": "Débora",
   "personagem": "vania",
   "texto": "De volta? Sua agenda está esperando.",
-  "origem": "roteiro 7 volta"
+  "origem": "roteiro 7 volta",
+  "niveis": [
+   7
+  ]
  },
  {
   "chave": "427a3ab7",
@@ -2749,7 +3946,10 @@
   "voz": "Harper",
   "personagem": "rosana",
   "texto": "Now the plan becomes practice!",
-  "origem": "roteiro 8 apresenta"
+  "origem": "roteiro 8 apresenta",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "b3d74485",
@@ -2757,7 +3957,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Agora o plano vira prática: semana organizada, entrega, simulado e apresentação. O resultado da sua organização vira pontos.",
-  "origem": "roteiro 8 apresenta"
+  "origem": "roteiro 8 apresenta",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "005c10d0",
@@ -2765,7 +3968,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Isso! Melhor impossível.",
-  "origem": "roteiro 8 certo"
+  "origem": "roteiro 8 certo",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "0dc2e797",
@@ -2773,7 +3979,10 @@
   "voz": "Harper",
   "personagem": "rosana",
   "texto": "Better than ever!",
-  "origem": "roteiro 8 certo"
+  "origem": "roteiro 8 certo",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "6887fc66",
@@ -2781,7 +3990,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Missão oito completa! Você colocou a organização em prática. A gincana vem aí.",
-  "origem": "roteiro 8 concluido"
+  "origem": "roteiro 8 concluido",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "82043f9a",
@@ -2789,7 +4001,10 @@
   "voz": "Harper",
   "personagem": "rosana",
   "texto": "Mission eight complete!",
-  "origem": "roteiro 8 concluido"
+  "origem": "roteiro 8 concluido",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "41f68cfb",
@@ -2797,7 +4012,10 @@
   "voz": "Harper",
   "personagem": "rosana",
   "texto": "Almost. Compare the options.",
-  "origem": "roteiro 8 errado"
+  "origem": "roteiro 8 errado",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "6f6f6d46",
@@ -2805,7 +4023,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Quase. Compare as opções e veja a certa.",
-  "origem": "roteiro 8 errado"
+  "origem": "roteiro 8 errado",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "28a78862",
@@ -2813,7 +4034,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Mandou bem! Próxima: Ataque das distrações.",
-  "origem": "roteiro 8 meio"
+  "origem": "roteiro 8 meio",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "31da0515",
@@ -2821,7 +4045,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Mandou bem! Próxima: Travessia do corredor.",
-  "origem": "roteiro 8 meio"
+  "origem": "roteiro 8 meio",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "598cb77e",
@@ -2829,7 +4056,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Mandou bem! Próxima: Construa a sala ideal.",
-  "origem": "roteiro 8 meio"
+  "origem": "roteiro 8 meio",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "78b4ac7b",
@@ -2837,7 +4067,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Mandou bem! Próxima: Semana organizada.",
-  "origem": "roteiro 8 meio"
+  "origem": "roteiro 8 meio",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "981a049d",
@@ -2845,7 +4078,10 @@
   "voz": "Harper",
   "personagem": "rosana",
   "texto": "Well done! Next.",
-  "origem": "roteiro 8 meio"
+  "origem": "roteiro 8 meio",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "adc07a84",
@@ -2853,7 +4089,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Mandou bem! Próxima: Revisão do projeto.",
-  "origem": "roteiro 8 meio"
+  "origem": "roteiro 8 meio",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "b6dd8972",
@@ -2861,7 +4100,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Mandou bem! Próxima: Apresentação do projeto.",
-  "origem": "roteiro 8 meio"
+  "origem": "roteiro 8 meio",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "d2299cf9",
@@ -2869,7 +4111,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Mandou bem! Próxima: a próxima atividade.",
-  "origem": "roteiro 8 meio"
+  "origem": "roteiro 8 meio",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "d8f1d9f8",
@@ -2877,7 +4122,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Mandou bem! Próxima: Entrega do trabalho.",
-  "origem": "roteiro 8 meio"
+  "origem": "roteiro 8 meio",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "f64d9f0c",
@@ -2885,7 +4133,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Mandou bem! Próxima: Simulado com tempo.",
-  "origem": "roteiro 8 meio"
+  "origem": "roteiro 8 meio",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "c1a3a961",
@@ -2893,7 +4144,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "Oi! Rosana aqui. Em que série você está?",
-  "origem": "roteiro 8 semSerie"
+  "origem": "roteiro 8 semSerie",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "8585f666",
@@ -2901,7 +4155,10 @@
   "voz": "Harper",
   "personagem": "rosana",
   "texto": "Welcome back to the project!",
-  "origem": "roteiro 8 volta"
+  "origem": "roteiro 8 volta",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "88966f27",
@@ -2909,7 +4166,10 @@
   "voz": "Flávia",
   "personagem": "rosana",
   "texto": "De volta ao projeto?",
-  "origem": "roteiro 8 volta"
+  "origem": "roteiro 8 volta",
+  "niveis": [
+   8
+  ]
  },
  {
   "chave": "1d484244",
@@ -2917,7 +4177,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Agora é oficial! Escolha seu nome, sua turma, sua equipe e o seu avatar. Depois eu te entrego o seu código de jogador.",
-  "origem": "tela cadastro"
+  "origem": "tela cadastro",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "9ff04f90",
@@ -2925,7 +4188,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Capriche no nome: ele vai aparecer no ranking da escola inteira.",
-  "origem": "tela cadastro"
+  "origem": "tela cadastro",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "a922ba1d",
@@ -2933,7 +4199,10 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Pick a good name: the whole school will see it!",
-  "origem": "tela cadastro"
+  "origem": "tela cadastro",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "e0c14d63",
@@ -2941,7 +4210,10 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Choose your name, class, team and avatar!",
-  "origem": "tela cadastro"
+  "origem": "tela cadastro",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "09d4b095",
@@ -2949,7 +4221,10 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Type your code and I will find your points.",
-  "origem": "tela codigo"
+  "origem": "tela codigo",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "d5dfa0d1",
@@ -2957,7 +4232,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Já tem código? Digite aqui que eu busco seus pontos e suas missões.",
-  "origem": "tela codigo"
+  "origem": "tela codigo",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "c4c6e53d",
@@ -2965,7 +4243,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Bem-vindo à reunião no auditório! Antes de jogar, vamos combinar as regras da nossa escola. Leia! Know the rules, learn and go further!",
-  "origem": "tela orientacao"
+  "origem": "tela orientacao",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "1ada1988",
@@ -2973,7 +4254,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Duas perguntinhas rápidas para ver se o recado ficou claro.",
-  "origem": "tela orientacaoQuiz"
+  "origem": "tela orientacaoQuiz",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "e149f105",
@@ -2981,7 +4265,10 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Two quick questions!",
-  "origem": "tela orientacaoQuiz"
+  "origem": "tela orientacaoQuiz",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "98318847",
@@ -2989,7 +4276,10 @@
   "voz": "Delia",
   "personagem": "leia",
   "texto": "Read the agreement and tick if you agree.",
-  "origem": "tela orientacaoTermo"
+  "origem": "tela orientacaoTermo",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "ba8615cd",
@@ -2997,7 +4287,10 @@
   "voz": "Clarice",
   "personagem": "leia",
   "texto": "Para terminar, o termo de compromisso. Leia com atenção e marque se concorda.",
-  "origem": "tela orientacaoTermo"
+  "origem": "tela orientacaoTermo",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "1d7b1b6f",
@@ -3005,7 +4298,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "The school honor board: players, classes and teams.",
-  "origem": "tela ranking"
+  "origem": "tela ranking",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "5a59a1fe",
@@ -3013,7 +4309,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "Aqui está o quadro de honra da escola: jogadores, turmas e a disputa entre a Equipe Azul e a Equipe Roxa.",
-  "origem": "tela ranking"
+  "origem": "tela ranking",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "34d70a96",
@@ -3021,7 +4320,10 @@
   "voz": "Otávio",
   "personagem": "marcio",
   "texto": "O quadro ainda está vazio. Jogue o Nível 0 e seja o primeiro nome aqui!",
-  "origem": "tela rankingVazio"
+  "origem": "tela rankingVazio",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "d7de93ae",
@@ -3029,7 +4331,10 @@
   "voz": "Miles",
   "personagem": "marcio",
   "texto": "Play Level 0 and be the first name here!",
-  "origem": "tela rankingVazio"
+  "origem": "tela rankingVazio",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "5f77aa09",
@@ -3037,7 +4342,10 @@
   "voz": "Micah",
   "personagem": "mane",
   "texto": "Try it as a guest! Guests are not in the ranking.",
-  "origem": "tela visitante"
+  "origem": "tela visitante",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "e05f5580",
@@ -3045,7 +4353,10 @@
   "voz": "Kauã",
   "personagem": "mane",
   "texto": "Quer só dar uma olhada? Entra como visitante! Mas visitante não aparece no ranking, hein.",
-  "origem": "tela visitante"
+  "origem": "tela visitante",
+  "niveis": [
+   0
+  ]
  },
  {
   "chave": "0cad34a5",
@@ -3053,7 +4364,11 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Larga essa pergunta e vem jogar comigo! Hahaha!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   0,
+   1
+  ]
  },
  {
   "chave": "107e788d",
@@ -3061,7 +4376,11 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Olha minha carta! Olha aqui! Hehehe!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   0,
+   1
+  ]
  },
  {
   "chave": "10a1f750",
@@ -3069,7 +4388,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Que tal escrever \"batata\"? Fica melhor.",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "138264ea",
@@ -3077,7 +4399,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Essa carta é minha da sorte!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "15bf995e",
@@ -3085,7 +4410,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Eu falo tudo sem pensar! Quem foi educado?",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "18877a55",
@@ -3093,7 +4421,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Opa! Troquei tudo de lugar. Hehehe!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "1c62b58b",
@@ -3101,7 +4432,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Última sala! Mostra tudo o que você aprendeu!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "24b0b322",
@@ -3109,7 +4443,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Escondi minhas cartas no labirinto! Não pegue!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "28e8b085",
@@ -3117,7 +4454,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Eu baguncei a sala toda! Me ajuda a arrumar?",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "2975c396",
@@ -3125,7 +4465,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Esse aviso é meu, deixa eu ler primeiro!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "33aa2450",
@@ -3133,7 +4476,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Bafo! Bafo! Bafo!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "33f21040",
@@ -3141,7 +4487,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Misturei os cartões da equipe!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "3b1bd4b3",
@@ -3149,7 +4498,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Baguncei a mensagem secreta!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "4653cbad",
@@ -3157,7 +4509,11 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Ih, o tempo tá passando... Hahaha!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   0,
+   1
+  ]
  },
  {
   "chave": "47a5c78d",
@@ -3165,7 +4521,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Corre, corre! Ou não...",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "6bea585c",
@@ -3173,7 +4532,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Baguncei as palavras! Hehehe!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "6f25b164",
@@ -3181,7 +4543,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Tic-tac, tic-tac!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "7002e92a",
@@ -3189,7 +4554,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Minhas cartas são invencíveis!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "77983ff0",
@@ -3197,7 +4565,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Hahaha! Pegou minha carta!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "7ccf4927",
@@ -3205,7 +4576,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Eu e o Mané temos um plano de bagunça!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "7d6e475f",
@@ -3213,7 +4587,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Vou contar o tempo bem rápido!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "81838c9b",
@@ -3221,7 +4598,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Ops, a caneta escorregou!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "8418de7c",
@@ -3229,7 +4609,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Fiz um desenho artístico no bilhete!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "8b38c2b7",
@@ -3237,7 +4620,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Achei a palavra \"ZÉ\"! Vale ponto?",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "8f3005c1",
@@ -3245,7 +4631,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Trouxe perguntas antigas!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "94de9c5b",
@@ -3253,7 +4642,11 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Desiste, vem pro bafo! Hahahaha!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   0,
+   1
+  ]
  },
  {
   "chave": "9e73a30f",
@@ -3261,7 +4654,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Misturei as cartas! Ache os pares!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "9f631009",
@@ -3269,7 +4665,11 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Ei, psiu! Bora jogar um bafo? Hehehe!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   0,
+   1
+  ]
  },
  {
   "chave": "a17bbcb8",
@@ -3277,7 +4677,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Escondi uma palavra no meu boné!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "a53c92e2",
@@ -3285,7 +4688,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Eu atrasei o relógio... juro que não!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "ab9e7c30",
@@ -3293,7 +4699,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Hoje eu ganho, pode anotar!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "cd18aafa",
@@ -3301,7 +4710,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Eu embaralhei as pistas!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "dae15e0b",
@@ -3309,7 +4721,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Psiu! Ditado? Eu escrevo \"dog\" com três G!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "dc06c277",
@@ -3317,7 +4732,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Troquei a ordem das placas!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   4
+  ]
  },
  {
   "chave": "dec66c06",
@@ -3325,7 +4743,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Colei uma figurinha bem aqui!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "ea874248",
@@ -3333,7 +4754,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Rabisquei, mas ficou lindo, né?",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "f0bb97fb",
@@ -3341,7 +4765,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Hahaha! Caiu na minha armadilha! Menos 5 segundos!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   1
+  ]
  },
  {
   "chave": "f1742046",
@@ -3349,7 +4776,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Procura aqui ó... brincadeira!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "f37303f5",
@@ -3357,7 +4787,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Para tudo! Olha um passarinho!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "f3c9df68",
@@ -3365,7 +4798,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Não ouvi nada, e você?",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  },
  {
   "chave": "f6238363",
@@ -3373,7 +4809,10 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Escrevi umas respostas no quadro... acho que errei algumas!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   3
+  ]
  },
  {
   "chave": "ff0ac7d5",
@@ -3381,6 +4820,9 @@
   "voz": "Igor",
   "personagem": "ze",
   "texto": "Opa, encostei no mural sem querer!",
-  "origem": "ze"
+  "origem": "ze",
+  "niveis": [
+   2
+  ]
  }
 ]
