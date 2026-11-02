@@ -6,12 +6,11 @@ import { audioService } from '../../services/audio';
 import { ZeCartinha } from '../../components/ze/ZeCartinha';
 import { LEVEL1_EXPLORE } from '../../content/level1';
 import { EXPLORE_TRAPS, ExploreSpot, LEVEL1_CONTENT } from '../../data/level1Content';
-import { TRAP_PENALTY_SECONDS } from './level1Rules';
+import { TRAP_PENALTY_SECONDS, ZE_TRAP } from './level1Rules';
 import { useActivityRun } from './useActivityRun';
 import { ActivityShell, useZePop } from './ActivityShell';
 
 // Fala provisória do Zé (trocar pelo texto do Oliveira).
-const ZE_TRAP = `Hahaha! Caiu na minha armadilha! Menos ${TRAP_PENALTY_SECONDS} segundos!`;
 
 // Cada lugar encontrado é um item: o cronômetro de 20 s conta a busca e a resposta.
 const ExploreScreen: React.FC = () => {

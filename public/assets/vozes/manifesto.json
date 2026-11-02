@@ -1,5 +1,517 @@
 [
  {
+  "chave": "27ed2cce",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Intervalo! A professora deixou ir beber água. Desça a rampa, beba e volte antes do sinal. Cuidado com o Zé!",
+  "origem": "convite bebedouro-n5"
+ },
+ {
+  "chave": "0f3c04a7",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Intervalo! Você saiu da sala sem permissão… e a coordenação viu! Fuja, pegue as palavras certas e não seja pego.",
+  "origem": "convite fuga-n6"
+ },
+ {
+  "chave": "39edb50c",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Intervalo! Os corredores viraram um labirinto, e você está lá dentro. Ouça para onde ir em inglês e ache a sala certa!",
+  "origem": "convite labirinto-n4"
+ },
+ {
+  "chave": "f1ec080e",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Hora do intervalo! As notas estão caindo do quadro. Apague as que você não quer e some 100 pontos.",
+  "origem": "convite notas-n2"
+ },
+ {
+  "chave": "7a1563ab",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Intervalo! Agora as notas são números quebrados e caem mais rápido. Consegue fechar 100?",
+  "origem": "convite notas-n3"
+ },
+ {
+  "chave": "b2588d8f",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Intervalo! Corra até a sala sem cair nas distrações do Zé. Pule na cabeça delas!",
+  "origem": "convite pula-n2"
+ },
+ {
+  "chave": "fa2bd696",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Intervalo! Agora tem aviãozinho de papel: quando aparecer DUCK!, abaixe!",
+  "origem": "convite pula-n3"
+ },
+ {
+  "chave": "47e25a76",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Intervalo! Peças com palavras estão caindo. Guarde as do tema e jogue as outras no lixo!",
+  "origem": "convite tetris-n4"
+ },
+ {
+  "chave": "342fe2a2",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Intervalo! O Tetris voltou mais rápido. Guarde as palavras do tema!",
+  "origem": "convite tetris-n6"
+ },
+ {
+  "chave": "02758340",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Biblioteca, Caça às pistas: concluída. Aperte Enter para jogar de novo.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "0dd4eac1",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Revisão, Revisão da equipe: concluída. Aperte Enter para jogar de novo.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "1011fa42",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Quadra, Revezamento de perguntas. Aperte Enter para entrar.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "184b9a2c",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Sala 2, Quadro de quiz: trancada. Termine a sala anterior.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "1894fbbf",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Sala 1, Arrume a sala: concluída. Aperte Enter para jogar de novo.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "20f06047",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Corredor, Siga as direções: trancada. Termine a sala anterior.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "26cb9d86",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Sala 5, Labirinto do corredor: concluída. Aperte Enter para jogar de novo.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "35f2f0a1",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Mural, Mensagem secreta. Aperte Enter para entrar.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "423f7fa7",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Quadra, Revezamento de perguntas: trancada. Termine a sala anterior.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "42666702",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Sala 2, Quadro de quiz: concluída. Aperte Enter para jogar de novo.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "4893c026",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Sala 3, Quem disse?: concluída. Aperte Enter para jogar de novo.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "569bdc98",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Sala de grupo, Monte a equipe. Aperte Enter para entrar.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "771cd30e",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Biblioteca, Caça às pistas: trancada. Termine a sala anterior.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "7a1b9ae3",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Sala 3, Quem disse?. Aperte Enter para entrar.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "835e2256",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Alto contraste ligado.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "8907cf0f",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Sala 2, Quadro de quiz. Aperte Enter para entrar.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "8ab09845",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Biblioteca, Caça às pistas. Aperte Enter para entrar.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "8b5087d9",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Sala 4, Memória da sala: trancada. Termine a sala anterior.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "8cee90a3",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Sala de grupo, Monte a equipe: concluída. Aperte Enter para jogar de novo.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "8d34774e",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Modo calmo desligado.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "916e461a",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Revisão, Sala de revisão. Aperte Enter para entrar.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "96b802b9",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Sala de grupo, Monte a equipe: trancada. Termine a sala anterior.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "a169e822",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Corredor, Siga as direções. Aperte Enter para entrar.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "a31420e8",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Mudei para o modo econômico para manter o movimento fluido. Para voltar, use o botão de qualidade ou a tecla Q.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "b17958c3",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Sala 4, Memória da sala: concluída. Aperte Enter para jogar de novo.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "b46a1e80",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Sala 3, Quem disse?: trancada. Termine a sala anterior.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "b50030b9",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Desliguei as sombras para manter o movimento fluido. Para religar, abra a Ajuda com a tecla H.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "b61f0b44",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Sala 1, Arrume a sala. Aperte Enter para entrar.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "b68ad103",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Revisão, Revisão da equipe: trancada. Termine a sala anterior.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "b84e9cca",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Mural, Mensagem secreta: trancada. Termine a sala anterior.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "b94dae03",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Sala 5, Labirinto do corredor. Aperte Enter para entrar.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "bd5e490e",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Alto contraste desligado.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "c34e8178",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Sala 4, Memória da sala. Aperte Enter para entrar.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "c64538cd",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Revisão, Sala de revisão: concluída. Aperte Enter para jogar de novo.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "c832b306",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Parte do acabamento não carregou. O corredor continua funcionando.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "ca32e945",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Sala 1, Arrume a sala: trancada. Termine a sala anterior.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "cd3e2ff5",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Quadra, Revezamento de perguntas: concluída. Aperte Enter para jogar de novo.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "d47275e0",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Sala 5, Labirinto do corredor: trancada. Termine a sala anterior.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "d4f7f015",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Corredor, Siga as direções: concluída. Aperte Enter para jogar de novo.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "d56341df",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Revisão, Sala de revisão: trancada. Termine a sala anterior.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "dabd5ab0",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Qualidade alta: texturas detalhadas, sombras suaves e cantos sombreados.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "db634eae",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Revisão, Revisão da equipe. Aperte Enter para entrar.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "e59a5496",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Modo calmo ligado.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "ef0fd17e",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Modo econômico: menos dados, menos bateria e movimento mais leve.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "f2815a6c",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Mural, Mensagem secreta: concluída. Aperte Enter para jogar de novo.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "0b060ff9",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "coordinator",
+  "origem": "ditado"
+ },
+ {
+  "chave": "1d256933",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "responsibility",
+  "origem": "ditado"
+ },
+ {
+  "chave": "1fa36edf",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "quiet",
+  "origem": "ditado"
+ },
+ {
+  "chave": "201d423d",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "teacher",
+  "origem": "ditado"
+ },
+ {
+  "chave": "3452b75b",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "responsible",
+  "origem": "ditado"
+ },
+ {
+  "chave": "3c14a4ba",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "permission",
+  "origem": "ditado"
+ },
+ {
+  "chave": "414a281b",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "please",
+  "origem": "ditado"
+ },
+ {
+  "chave": "698705be",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "authority",
+  "origem": "ditado"
+ },
+ {
+  "chave": "6d4fdea1",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "principal",
+  "origem": "ditado"
+ },
+ {
+  "chave": "e22a1c50",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "excuse",
+  "origem": "ditado"
+ },
+ {
   "chave": "72d2eab4",
   "idioma": "pt-BR",
   "voz": "Marcelo",
@@ -390,6 +902,270 @@
   "personagem": "professora",
   "texto": "Keep the rules!",
   "origem": "intervalo"
+ },
+ {
+  "chave": "91dfaf37",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "LEIA! Know the rules, learn and go further!",
+  "origem": "lema"
+ },
+ {
+  "chave": "03671738",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Vire à esquerda... ou talvez à direita!",
+  "origem": "mane"
+ },
+ {
+  "chave": "07841bf9",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "A lousa tá cheia de mistério... você decifra, eu bato palma!",
+  "origem": "mane"
+ },
+ {
+  "chave": "12b37b2b",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Dica: tenta lembrar onde cada carta estava.",
+  "origem": "mane"
+ },
+ {
+  "chave": "15dd8ac9",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Let's go!",
+  "origem": "mane"
+ },
+ {
+  "chave": "1f9b704e",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Who is who?",
+  "origem": "mane"
+ },
+ {
+  "chave": "1fe79e29",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Torcida da bagunça: vai, vai, vai!",
+  "origem": "mane"
+ },
+ {
+  "chave": "209a2939",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Remember!",
+  "origem": "mane"
+ },
+ {
+  "chave": "25d3f83a",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "E trouxe uma distração novinha!",
+  "origem": "mane"
+ },
+ {
+  "chave": "373cbdaa",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Coloquei uma palavra extra. Ficou mais bonita!",
+  "origem": "mane"
+ },
+ {
+  "chave": "3b6677e5",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Eu posso ser o apresentador e o anotador ao mesmo tempo!",
+  "origem": "mane"
+ },
+ {
+  "chave": "42dd51c3",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "You can do it!",
+  "origem": "mane"
+ },
+ {
+  "chave": "4d115c9e",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Lê com atenção, a lousa não morde!",
+  "origem": "mane"
+ },
+ {
+  "chave": "55acd178",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Memória de elefante, hein? Vamos ver!",
+  "origem": "mane"
+ },
+ {
+  "chave": "590eb846",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "E eu coloquei uma no lugar errado. Procurem juntos!",
+  "origem": "mane"
+ },
+ {
+  "chave": "5cca0410",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Olha bem as pistas, detetive!",
+  "origem": "mane"
+ },
+ {
+  "chave": "6179ee4b",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Dica: escuta de novo a ordem e procura a palavra do lugar.",
+  "origem": "mane"
+ },
+ {
+  "chave": "6f0e0db6",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Concentra que dá!",
+  "origem": "mane"
+ },
+ {
+  "chave": "70b41131",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Quem é quem nessa sala? Até eu me confundo, hehe!",
+  "origem": "mane"
+ },
+ {
+  "chave": "7f3796d2",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Escolhe uma sala que eu vou junto!",
+  "origem": "mane"
+ },
+ {
+  "chave": "9ce7e23c",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Almost there!",
+  "origem": "mane"
+ },
+ {
+  "chave": "a01e3e27",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Labirinto! Se perder, eu finjo que não vi.",
+  "origem": "mane"
+ },
+ {
+  "chave": "a079c6ca",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Dica: sem pressa, lê todas as opções.",
+  "origem": "mane"
+ },
+ {
+  "chave": "ab22c594",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Calma, um objeto de cada vez!",
+  "origem": "mane"
+ },
+ {
+  "chave": "af6ab6c6",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Dica: lê a frase inteira antes de escolher.",
+  "origem": "mane"
+ },
+ {
+  "chave": "b910f1c0",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Pega só as palavras certas, foge das cartas do Zé!",
+  "origem": "mane"
+ },
+ {
+  "chave": "befd2bfa",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Dica: olha cada pista com calma antes de escolher.",
+  "origem": "mane"
+ },
+ {
+  "chave": "cd579efa",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Última sala! Revisão é moleza pra quem chegou até aqui.",
+  "origem": "mane"
+ },
+ {
+  "chave": "d077f661",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Tudo que você já treinou cai aqui. Bora!",
+  "origem": "mane"
+ },
+ {
+  "chave": "d38d287b",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Trabalho em equipe? Eu trabalho na zoeira!",
+  "origem": "mane"
+ },
+ {
+  "chave": "d6ac24b7",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Ô, a sala tá uma bagunça! Bora arrumar antes do Zé chegar?",
+  "origem": "mane"
+ },
+ {
+  "chave": "e1027f18",
+  "idioma": "pt-BR",
+  "voz": "Kauã",
+  "personagem": "mane",
+  "texto": "Dica: palavra errada não vale ponto, olha bem antes de pegar.",
+  "origem": "mane"
+ },
+ {
+  "chave": "fe493a51",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "This way!",
+  "origem": "mane"
  },
  {
   "chave": "4459bca0",
@@ -2270,5 +3046,341 @@
   "personagem": "mane",
   "texto": "Quer só dar uma olhada? Entra como visitante! Mas visitante não aparece no ranking, hein.",
   "origem": "tela visitante"
+ },
+ {
+  "chave": "0cad34a5",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Larga essa pergunta e vem jogar comigo! Hahaha!",
+  "origem": "ze"
+ },
+ {
+  "chave": "107e788d",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Olha minha carta! Olha aqui! Hehehe!",
+  "origem": "ze"
+ },
+ {
+  "chave": "10a1f750",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Que tal escrever \"batata\"? Fica melhor.",
+  "origem": "ze"
+ },
+ {
+  "chave": "138264ea",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Essa carta é minha da sorte!",
+  "origem": "ze"
+ },
+ {
+  "chave": "15bf995e",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Eu falo tudo sem pensar! Quem foi educado?",
+  "origem": "ze"
+ },
+ {
+  "chave": "18877a55",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Opa! Troquei tudo de lugar. Hehehe!",
+  "origem": "ze"
+ },
+ {
+  "chave": "1c62b58b",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Última sala! Mostra tudo o que você aprendeu!",
+  "origem": "ze"
+ },
+ {
+  "chave": "24b0b322",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Escondi minhas cartas no labirinto! Não pegue!",
+  "origem": "ze"
+ },
+ {
+  "chave": "28e8b085",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Eu baguncei a sala toda! Me ajuda a arrumar?",
+  "origem": "ze"
+ },
+ {
+  "chave": "2975c396",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Esse aviso é meu, deixa eu ler primeiro!",
+  "origem": "ze"
+ },
+ {
+  "chave": "33aa2450",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Bafo! Bafo! Bafo!",
+  "origem": "ze"
+ },
+ {
+  "chave": "33f21040",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Misturei os cartões da equipe!",
+  "origem": "ze"
+ },
+ {
+  "chave": "3b1bd4b3",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Baguncei a mensagem secreta!",
+  "origem": "ze"
+ },
+ {
+  "chave": "4653cbad",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Ih, o tempo tá passando... Hahaha!",
+  "origem": "ze"
+ },
+ {
+  "chave": "47a5c78d",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Corre, corre! Ou não...",
+  "origem": "ze"
+ },
+ {
+  "chave": "6bea585c",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Baguncei as palavras! Hehehe!",
+  "origem": "ze"
+ },
+ {
+  "chave": "6f25b164",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Tic-tac, tic-tac!",
+  "origem": "ze"
+ },
+ {
+  "chave": "7002e92a",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Minhas cartas são invencíveis!",
+  "origem": "ze"
+ },
+ {
+  "chave": "77983ff0",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Hahaha! Pegou minha carta!",
+  "origem": "ze"
+ },
+ {
+  "chave": "7ccf4927",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Eu e o Mané temos um plano de bagunça!",
+  "origem": "ze"
+ },
+ {
+  "chave": "7d6e475f",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Vou contar o tempo bem rápido!",
+  "origem": "ze"
+ },
+ {
+  "chave": "81838c9b",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Ops, a caneta escorregou!",
+  "origem": "ze"
+ },
+ {
+  "chave": "8418de7c",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Fiz um desenho artístico no bilhete!",
+  "origem": "ze"
+ },
+ {
+  "chave": "8b38c2b7",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Achei a palavra \"ZÉ\"! Vale ponto?",
+  "origem": "ze"
+ },
+ {
+  "chave": "8f3005c1",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Trouxe perguntas antigas!",
+  "origem": "ze"
+ },
+ {
+  "chave": "94de9c5b",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Desiste, vem pro bafo! Hahahaha!",
+  "origem": "ze"
+ },
+ {
+  "chave": "9e73a30f",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Misturei as cartas! Ache os pares!",
+  "origem": "ze"
+ },
+ {
+  "chave": "9f631009",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Ei, psiu! Bora jogar um bafo? Hehehe!",
+  "origem": "ze"
+ },
+ {
+  "chave": "a17bbcb8",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Escondi uma palavra no meu boné!",
+  "origem": "ze"
+ },
+ {
+  "chave": "a53c92e2",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Eu atrasei o relógio... juro que não!",
+  "origem": "ze"
+ },
+ {
+  "chave": "ab9e7c30",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Hoje eu ganho, pode anotar!",
+  "origem": "ze"
+ },
+ {
+  "chave": "cd18aafa",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Eu embaralhei as pistas!",
+  "origem": "ze"
+ },
+ {
+  "chave": "dae15e0b",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Psiu! Ditado? Eu escrevo \"dog\" com três G!",
+  "origem": "ze"
+ },
+ {
+  "chave": "dc06c277",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Troquei a ordem das placas!",
+  "origem": "ze"
+ },
+ {
+  "chave": "dec66c06",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Colei uma figurinha bem aqui!",
+  "origem": "ze"
+ },
+ {
+  "chave": "ea874248",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Rabisquei, mas ficou lindo, né?",
+  "origem": "ze"
+ },
+ {
+  "chave": "f0bb97fb",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Hahaha! Caiu na minha armadilha! Menos 5 segundos!",
+  "origem": "ze"
+ },
+ {
+  "chave": "f1742046",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Procura aqui ó... brincadeira!",
+  "origem": "ze"
+ },
+ {
+  "chave": "f37303f5",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Para tudo! Olha um passarinho!",
+  "origem": "ze"
+ },
+ {
+  "chave": "f3c9df68",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Não ouvi nada, e você?",
+  "origem": "ze"
+ },
+ {
+  "chave": "f6238363",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Escrevi umas respostas no quadro... acho que errei algumas!",
+  "origem": "ze"
+ },
+ {
+  "chave": "ff0ac7d5",
+  "idioma": "pt-BR",
+  "voz": "Igor",
+  "personagem": "ze",
+  "texto": "Opa, encostei no mural sem querer!",
+  "origem": "ze"
  }
 ]

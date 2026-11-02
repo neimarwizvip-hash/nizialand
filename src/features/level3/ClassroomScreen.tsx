@@ -17,6 +17,7 @@ import { CORREDOR_3D_LIBERADO } from '../../config/corredor3d';
 import { BotaoJogo, Icone } from '../../components/kit';
 import { ConclusaoNivel, QuadroMissao } from '../levels/QuadroMissao';
 import type { ItemQuadro } from '../levels/QuadroMissao';
+import { PORTAS_N3 } from '../../data/falasCorredor';
 
 // O corredor 3D (three.js) só é baixado quando o aluno entra no modo 3D.
 const Corridor3D = lazy(() => import('./Corridor3D'));
@@ -31,7 +32,7 @@ function saveLevel3Mode(mode: Level3Mode) {
   try { localStorage.setItem(LEVEL3_MODE_KEY, mode); } catch { /* aparelho sem armazenamento: vale só nesta visita */ }
 }
 
-const ROOM_LABEL = ['Sala 1', 'Sala 2', 'Sala 3', 'Sala 4', 'Sala 5', 'Revisão'];
+const ROOM_LABEL = PORTAS_N3;
 
 export const ClassroomScreen: React.FC = () => {
   const { currentPlayer, activityResults, vistoria } = useGame();

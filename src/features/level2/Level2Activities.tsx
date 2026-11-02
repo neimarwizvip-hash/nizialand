@@ -7,6 +7,7 @@ import {
 import { ZeCartinha } from '../../components/ze/ZeCartinha';
 import { audioService } from '../../services/audio';
 import { speechService } from '../../services/speech';
+import { narrar } from '../../services/narracao';
 import { useZeInterrupt, useZePop } from '../level1/ActivityShell';
 import { Level2Shell } from './Level2Shell';
 import { useLevel2Run } from './useLevel2Run';
@@ -93,14 +94,20 @@ export const DitadoActivity: React.FC<Level2ActivityProps> = ({ grade, onExit })
   const run = useLevel2Run({ activity: LEVEL2_DITADO, grade, total: items.length });
   const item = items[Math.min(run.index, items.length - 1)];
   const [typed, setTyped] = useState('');
+  const [segunda, setSegunda] = useState(false); // já errou uma vez: ganha outra chance com dica
+  const [aviso, setAviso] = useState<string | null>(null);
   const { zeMessage, showZe } = useZePop();
+  const parar = useRef<() => void>(() => undefined);
 
-  const speak = useCallback(() => {
-    if (audioService.isSoundOn()) speechService.speakEnglish(item.word);
+  // O Diretor Márcio dita com a voz gravada dele; "devagar" toca a mesma voz mais lenta.
+  const speak = useCallback((devagar = false) => {
+    parar.current();
+    parar.current = narrar([{ texto: item.word, idioma: 'en-US', personagem: 'marcio', rate: devagar ? 0.7 : undefined }]);
   }, [item.word]);
+  useEffect(() => () => parar.current(), []);
 
   useEffect(() => {
-    setTyped('');
+    setTyped(''); setSegunda(false); setAviso(null);
     if (run.finished) return;
     const t = setTimeout(speak, 300);
     return () => clearTimeout(t);
@@ -115,7 +122,16 @@ export const DitadoActivity: React.FC<Level2ActivityProps> = ({ grade, onExit })
 
   const submit = () => {
     if (!typed.trim() || run.locked) return;
-    run.answer(typed.trim().toLowerCase() === item.word.toLowerCase());
+    const certo = typed.trim().toLowerCase() === item.word.toLowerCase();
+    if (!certo && !segunda) {
+      // Primeira tentativa errada: não perde ainda; ouve devagar e vê quantas letras tem.
+      audioService.playWrong();
+      setSegunda(true); setTyped('');
+      setAviso(`Quase! Ouça devagar e tente de novo. A palavra começa com "${item.word[0].toUpperCase()}" e tem ${item.word.length} letras.`);
+      window.setTimeout(() => speak(true), 500);
+      return;
+    }
+    run.answer(certo);
   };
 
   return (
@@ -133,14 +149,25 @@ export const DitadoActivity: React.FC<Level2ActivityProps> = ({ grade, onExit })
       onExit={onExit}
       overlay={<ZeCartinha visible={!!zeMessage && !run.finished} message={zeMessage ?? ''} />}
     >
-      <QuestionCard>Ouça e escreva a palavra em inglês.</QuestionCard>
+      <QuestionCard>Ouça o Diretor Márcio e escreva a palavra em inglês.</QuestionCard>
+      <p className="mt-1 text-sm short:text-xs text-nisia-tinta-suave font-semibold" aria-hidden="true">
+        {segunda ? item.word.split('').map((l, i) => (i === 0 ? l.toUpperCase() : '_')).join(' ') : 'Pode ouvir quantas vezes quiser. Se errar, tem mais uma chance.'}
+      </p>
+      {aviso && <p role="status" className="mt-1 kit-balao !px-3 !py-1.5 text-sm font-semibold">{aviso}</p>}
       <form className="mt-3 short:mt-1.5 flex flex-wrap gap-2" onSubmit={e => { e.preventDefault(); submit(); }}>
         <button
           type="button"
-          onClick={speak}
+          onClick={() => speak(false)}
           className="px-4 py-3 short:py-1.5 rounded-2xl bg-nisia-azul-500 border-2 border-nisia-azul-700 text-white font-display text-sm flex items-center gap-2"
         >
-          <Volume2 className="w-4 h-4" /> Ouvir
+          <Volume2 className="w-4 h-4" /> Ouvir de novo
+        </button>
+        <button
+          type="button"
+          onClick={() => speak(true)}
+          className="px-4 py-3 short:py-1.5 rounded-2xl bg-nisia-papel border-2 border-nisia-azul-500 text-nisia-azul-700 font-display text-sm flex items-center gap-2"
+        >
+          🐢 Devagar
         </button>
         <input
           aria-label="Palavra ouvida"

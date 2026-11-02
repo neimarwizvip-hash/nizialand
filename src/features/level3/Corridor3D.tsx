@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { audioService } from '../../services/audio';
-import { narrar } from '../../services/narracao';
+import { falarComo, narrar } from '../../services/narracao';
 import { AVATAR_CATALOG, skinToneFilter, type SkinTone } from '../../components/ui/PlayerAvatar';
 import { MANE_CORRIDOR_LINES, MANE_IMG } from '../../data/level3Mane';
+import { AVISOS_CORREDOR, falaDaPorta } from '../../data/falasCorredor';
 import { Icone } from '../../components/kit/Icones';
 import { CHAVE_QUALIDADE, TEX, TOM_NEUTRO, caixa, instalarTom, preferencia, prepararMacro, qualidadeInicial, type Qualidade } from '../tres/base3d';
 
@@ -176,7 +177,7 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
   const pararVoz = useRef<() => void>(() => undefined);
   const avisar = (texto: string, falar = true) => {
     setAviso(texto);
-    if (falar && vozRef.current) { pararVoz.current(); pararVoz.current = narrar([{ texto, idioma: 'pt-BR' }]); }
+    if (falar && vozRef.current) { pararVoz.current(); pararVoz.current = narrar([{ texto, idioma: 'pt-BR', personagem: 'narrador' }]); }
   };
   const avisarRef = useRef(avisar);
   avisarRef.current = avisar;
@@ -545,7 +546,7 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
       }));
       try { await Promise.all(tarefas); } catch (e) {
         console.warn('Textura do corredor não carregada', e);
-        avisarRef.current('Parte do acabamento não carregou. O corredor continua funcionando.', false);
+        avisarRef.current(AVISOS_CORREDOR.acabamento, false);
       }
       if (minha === geracao) setCarga('');
     };
@@ -855,7 +856,7 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
         nearRef.current = maisPerto;
         setNear(maisPerto);
         const d = maisPerto as CorridorDoor | null;
-        if (d) avisarRef.current(d.state === 'locked' ? `${d.label}, ${d.name}: trancada. Termine a sala anterior.` : d.state === 'done' ? `${d.label}, ${d.name}: concluída. Aperte Enter para jogar de novo.` : `${d.label}, ${d.name}. Aperte Enter para entrar.`);
+        if (d) avisarRef.current(falaDaPorta(d.label, d.name, d.state));
       }
 
       // Zé: fica parado numa porta à frente e muda de lugar quando o aluno chega perto (sem deslizar).
@@ -874,6 +875,7 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
       if (openIdx !== maneAt) {
         maneAt = openIdx;
         setManeIdx(openIdx);
+        if (openIdx >= 0 && MANE_CORRIDOR_LINES[openIdx] && vozRef.current) falarComo('mane', MANE_CORRIDOR_LINES[openIdx].pt, 'pt-BR', MANE_CORRIDOR_LINES[openIdx].en);
         mane.visible = sombraMane.visible = openIdx >= 0;
         if (openIdx >= 0) {
           mane.position.set(doorSide(openIdx) * (HALF_W - 0.85), 0, doorZ(openIdx) + 0.95);
@@ -904,7 +906,7 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
             lentosQ = 0;
             opcoes.current = { ...opcoes.current, qualidade: 'economica' };
             setQualidade('economica');
-            void aplicar('Mudei para o modo econômico para manter o movimento fluido. Para voltar, use o botão de qualidade ou a tecla Q.');
+            void aplicar(AVISOS_CORREDOR.economicoAuto);
           }
         } else lentosQ = 0;
         if (!alta && o.sombras && !o.contraste && medio > 1 / 28) {
@@ -913,7 +915,7 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
             opcoes.current = { ...opcoes.current, sombras: false };
             setSombras(false);
             aplicarSombras();
-            avisarRef.current('Desliguei as sombras para manter o movimento fluido. Para religar, abra a Ajuda com a tecla H.');
+            avisarRef.current(AVISOS_CORREDOR.sombras);
           }
         } else lentos = 0;
         if (Math.abs(renderer.getPixelRatio() - razaoPixels()) > 0.01) ajustarTamanho();
@@ -968,10 +970,10 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
     opcoes.current = { qualidade, contraste, calmo, sombras };
     if (antes.qualidade !== qualidade) {
       aplicarRef.current(qualidade === 'alta'
-        ? 'Qualidade alta: texturas detalhadas, sombras suaves e cantos sombreados.'
-        : 'Modo econômico: menos dados, menos bateria e movimento mais leve.');
+        ? AVISOS_CORREDOR.alta
+        : AVISOS_CORREDOR.economico);
     } else if (antes.contraste !== contraste || antes.calmo !== calmo || antes.sombras !== sombras) {
-      aplicarRef.current(antes.contraste !== contraste ? (contraste ? 'Alto contraste ligado.' : 'Alto contraste desligado.') : antes.calmo !== calmo ? (calmo ? 'Modo calmo ligado.' : 'Modo calmo desligado.') : undefined);
+      aplicarRef.current(antes.contraste !== contraste ? (contraste ? AVISOS_CORREDOR.contrasteOn : AVISOS_CORREDOR.contrasteOff) : antes.calmo !== calmo ? (calmo ? AVISOS_CORREDOR.calmoOn : AVISOS_CORREDOR.calmoOff) : undefined);
     }
   }, [qualidade, contraste, calmo, sombras]);
 

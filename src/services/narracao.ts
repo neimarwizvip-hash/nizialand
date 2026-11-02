@@ -108,6 +108,7 @@ export function narrar(trechos: Trecho[], onFim?: (completa: boolean) => void): 
       if (!ativo) return;
       if (!arquivo) { falarNoNavegador(t); return; }
       const a = new Audio(arquivo);
+      if (t.rate && t.rate < 1) a.playbackRate = t.rate; // fala devagar (mantém o tom)
       audioAtual = a;
       a.onended = () => { falou = true; audioAtual = null; proximo(); };
       a.onerror = () => { audioAtual = null; falarNoNavegador(t); };
@@ -129,4 +130,11 @@ export const tempoDeLeitura = (texto: string) => Math.min(6000, Math.max(2500, t
 // Monta os trechos de uma fala bilíngue com a voz do personagem.
 export function trechosDaFala(voz: NomeVoz, pt: string, en?: string): Trecho[] {
   return [{ texto: pt, idioma: 'pt-BR', personagem: voz }, ...(en ? [{ texto: en, idioma: 'en-US' as Idioma, personagem: voz }] : [])];
+}
+
+// Fala curta de um personagem (Zé, Mané…) com a voz gravada dele; a fala nova do mesmo personagem corta a anterior.
+const pararPorPersonagem: Partial<Record<NomeVoz, () => void>> = {};
+export function falarComo(personagem: NomeVoz, texto: string, idioma: Idioma = 'pt-BR', en?: string): void {
+  pararPorPersonagem[personagem]?.();
+  pararPorPersonagem[personagem] = narrar([{ texto, idioma, personagem }, ...(en ? [{ texto: en, idioma: 'en-US' as Idioma, personagem }] : [])]);
 }

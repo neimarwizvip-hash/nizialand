@@ -5,18 +5,19 @@ import { MolduraAtividade } from '../../components/kit/MolduraAtividade';
 import type { FeedbackMoldura } from '../../components/kit/MolduraAtividade';
 import { audioService } from '../../services/audio';
 import { speechService } from '../../services/speech';
+import { falarComo } from '../../services/narracao';
 import { ITEM_SECONDS, ITEM_WARNING_SECONDS, maxScore } from './level1Rules';
 import { ZE_LINE_MS, ZE_SIZES, isZeBlocking, zeLine, zeSizeStage } from '../quiz/zeRules';
 import type { Feedback } from './useActivityRun';
 
-/** Zé aparece com uma fala por alguns segundos (falada em pt-BR) e some. */
+/** Zé aparece com uma fala por alguns segundos (com a voz gravada dele) e some. */
 export function useZePop() {
   const [message, setMessage] = useState<string | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout>>();
   const show = useCallback((text: string, ms = 2500) => {
     clearTimeout(timer.current);
     setMessage(text);
-    if (audioService.isSoundOn()) speechService.speakPortuguese(text);
+    falarComo('ze', text);
     timer.current = setTimeout(() => setMessage(null), ms);
   }, []);
   useEffect(() => () => clearTimeout(timer.current), []);
@@ -56,7 +57,7 @@ export function useZeInterrupt(active: boolean, resolved: boolean, itemKey: numb
       window.speechSynthesis?.cancel();
       return;
     }
-    if (visible && audioService.isSoundOn()) speechService.speakPortuguese(zeLine(tick));
+    if (visible) falarComo('ze', zeLine(tick));
   }, [visible, tick, resolved]);
 
   const dismiss = () => {

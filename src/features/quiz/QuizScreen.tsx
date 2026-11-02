@@ -13,6 +13,7 @@ import {
 } from './zeRules';
 import { audioService } from '../../services/audio';
 import { speechService } from '../../services/speech';
+import { falarComo } from '../../services/narracao';
 import { fireConfetti } from '../../components/ui/ConfettiEffect';
 import { BotaoJogo, Cenario, Cronometro, Ficha, Fita, Hud, Icone, Moedas, Painel } from '../../components/kit';
 
@@ -107,7 +108,7 @@ export const QuizScreen: React.FC = () => {
       window.speechSynthesis?.cancel();
       return;
     }
-    if (zeVisible && audioService.isSoundOn()) speechService.speakPortuguese(zeLine(zeTick));
+    if (zeVisible) falarComo('ze', zeLine(zeTick));
   }, [zeVisible, zeTick, isQuestionResolved]);
 
   const zeBlocking = zeVisible && isZeBlocking(zeTick);

@@ -193,3 +193,6 @@ export function falaDaTela(tela: TelaComFala, campos: { nome?: string } = {}): F
   const troca = (t: string) => t.replace(/\{nome\}/g, campos.nome?.trim() || 'estudante');
   return { pt: troca(base.pt), en: troca(base.en) };
 }
+
+// Lema da reunião no auditório (falado pela Orientadora Edileia).
+export const SLOGAN_ORIENTACAO = 'LEIA! Know the rules, learn and go further!';

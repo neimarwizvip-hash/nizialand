@@ -6,14 +6,13 @@ import { audioService } from '../../services/audio';
 import { ZeCartinha } from '../../components/ze/ZeCartinha';
 import { LEVEL1_ORDER } from '../../content/level1';
 import { LEVEL1_CONTENT } from '../../data/level1Content';
-import { ZE_INTERFERENCE, pickZeItems, shuffled } from './level1Rules';
+import { ZE_INTERFERENCE, ZE_SHUFFLE, pickZeItems, shuffled } from './level1Rules';
 import { useActivityRun } from './useActivityRun';
 import { ActivityShell, useZePop } from './ActivityShell';
 
 interface Tile { id: number; word: string }
 
 // Falas provisórias do Zé (trocar pelo texto do Oliveira).
-const ZE_SHUFFLE = 'Baguncei as palavras! Hehehe!';
 const ZE_SHUFFLE_DELAY_MS = 4000;
 
 const tilesOf = (sentence: string): Tile[] => sentence.split(' ').map((word, id) => ({ id, word }));

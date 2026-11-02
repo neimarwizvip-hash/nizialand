@@ -17,3 +17,7 @@ export const LEVEL4_DISTRACTIONS: Record<string, { ze: string; mane: string }> =
 };
 
 export const LEVEL4: Level = { id: 'nivel4', number: 4, title: 'Trabalho em equipe', story: 'nivel4', mode: '2D', mission: LEVEL4_MISSION };
+
+// Falas padrão da dupla no mural do Nível 4 (quando a atividade não tem fala própria).
+export const ZE_PADRAO = 'Eu e o Mané temos um plano de bagunça!';
+export const MANE_PADRAO = 'Trabalho em equipe? Eu trabalho na zoeira!';

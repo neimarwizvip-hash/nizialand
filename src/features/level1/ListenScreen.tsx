@@ -8,7 +8,7 @@ import { audioService } from '../../services/audio';
 import { ZeCartinha } from '../../components/ze/ZeCartinha';
 import { LEVEL1_LISTEN } from '../../content/level1';
 import { LEVEL1_CONTENT, ListenIcon, ListenOption } from '../../data/level1Content';
-import { ZE_INTERFERENCE, pickZeItems, shuffled } from './level1Rules';
+import { ZE_INTERFERENCE, ZE_SWAP, pickZeItems, shuffled } from './level1Rules';
 import { useActivityRun } from './useActivityRun';
 import { ActivityShell, useZePop } from './ActivityShell';
 
@@ -18,7 +18,6 @@ const ICONS: Record<ListenIcon, LucideIcon> = {
 };
 
 // Falas provisórias do Zé (trocar pelo texto do Oliveira).
-const ZE_SWAP = 'Opa! Troquei tudo de lugar. Hehehe!';
 const ZE_SWAP_DELAY_MS = 3000;
 
 const ListenScreen: React.FC = () => {

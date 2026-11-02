@@ -12,6 +12,7 @@ import { MANE_IMG, MANE_ROOM_START, MANE_ROOM_TIP } from '../../data/level3Mane'
 import { audioService } from '../../services/audio';
 import { speechService } from '../../services/speech';
 import { useZePop } from '../level1/ActivityShell';
+import { falarComo } from '../../services/narracao';
 import { Level2Shell } from '../level2/Level2Shell';
 import { useLevel2Run } from '../level2/useLevel2Run';
 import {
@@ -61,6 +62,7 @@ const ManeCorner: React.FC<{ i: number; finished: boolean; wrong: boolean }> = (
     const t = setTimeout(() => setMsg(null), 4500);
     return () => clearTimeout(t);
   }, [wrong, i]);
+  useEffect(() => { if (msg && !finished) falarComo('mane', msg); }, [msg, finished]);
   if (finished) return null;
   return (
     <div data-testid="mane-corner" className="fixed left-2 bottom-4 z-40 pointer-events-none flex items-end gap-1">

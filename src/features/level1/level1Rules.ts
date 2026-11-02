@@ -12,6 +12,10 @@ export const POINTS_FIRST_TRY = 100;
 export const POINTS_SECOND_TRY = 50;
 // Armadilha do Zé na exploração tira 5 s do item.
 export const TRAP_PENALTY_SECONDS = 5;
+// Falas fixas do Zé no Nível 1 (gravadas com a voz dele).
+export const ZE_TRAP = `Hahaha! Caiu na minha armadilha! Menos ${TRAP_PENALTY_SECONDS} segundos!`;
+export const ZE_SWAP = 'Opa! Troquei tudo de lugar. Hehehe!';
+export const ZE_SHUFFLE = 'Baguncei as palavras! Hehehe!';
 
 /** Pontos de um item: attempt = nº da tentativa que acertou (1, 2...); timedOut = estourou o tempo. */
 export function itemPoints(attempt: number, timedOut = false): number {

@@ -16,6 +16,7 @@ import { BotaoJogo, Cenario, Hud, Icone } from '../../components/kit';
 import type { NomeIcone } from '../../components/kit';
 import { ConclusaoNivel, QuadroMissao } from '../levels/QuadroMissao';
 import type { ItemQuadro } from '../levels/QuadroMissao';
+import { PORTAS_N4 } from '../../data/falasCorredor';
 
 const SchoolCorridor3D = lazy(() => import('../level3/Corridor3D'));
 const LEVEL4_MODE_KEY = 'nisialand_nivel4_modo';
@@ -23,7 +24,7 @@ function readMode(): '3d' | 'simples' {
   try { return localStorage.getItem(LEVEL4_MODE_KEY) === 'simples' ? 'simples' : '3d'; } catch { return '3d'; }
 }
 
-const PLACES = ['Biblioteca', 'Corredor', 'Sala de grupo', 'Mural', 'Quadra', 'Revisão'] as const;
+const PLACES = PORTAS_N4;
 const ICONE_LUGAR: NomeIcone[] = ['livro', 'bussola', 'pessoas', 'balao', 'trofeu', 'check'];
 
 export const TeamMissionScreen: React.FC = () => {

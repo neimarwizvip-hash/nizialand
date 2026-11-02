@@ -3,7 +3,7 @@
 // Uso: npm run vozes
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { ROTEIRO, FALAS_TELAS } from '../../src/data/falasAnfitrioes';
+import { ROTEIRO, FALAS_TELAS, SLOGAN_ORIENTACAO } from '../../src/data/falasAnfitrioes';
 import { PROVISIONAL_STORIES } from '../../src/data/provisionalStories';
 import { FALA_EDILEIA, FALA_MARCIO } from '../../src/data/falasHq';
 import { ELENCO, type Personagem } from '../../src/data/elenco';
@@ -21,6 +21,14 @@ import { LEVEL7 } from '../../src/content/level7';
 import { LEVEL8 } from '../../src/content/level8';
 import type { Level } from '../../src/core/types';
 import { LUGARES, ETAPAS, FALAS_INTERVALO } from '../../src/data/frasesIntervalo';
+import { INTERVALOS } from '../../src/features/intervalo/intervalos';
+import { AVISOS_CORREDOR, PORTAS_N3, PORTAS_N4, falaDaPorta } from '../../src/data/falasCorredor';
+import { ZE_LINES } from '../../src/features/quiz/zeRules';
+import { ZE_TRAP, ZE_SWAP, ZE_SHUFFLE } from '../../src/features/level1/level1Rules';
+import { LEVEL2_ZE_LINES, LEVEL2_CONTENT } from '../../src/data/level2Content';
+import { LEVEL3_ZE_LINES } from '../../src/data/level3Content';
+import { MANE_CORRIDOR_LINES, MANE_ROOM_START, MANE_ROOM_TIP, MANE_SIMPLE_LINE } from '../../src/data/level3Mane';
+import { LEVEL4_DISTRACTIONS, MANE_PADRAO, ZE_PADRAO } from '../../src/content/level4';
 
 interface Item { chave: string; idioma: IdiomaFala; voz: string; personagem: Personagem; texto: string; origem: string }
 const itens = new Map<string, Item>();
@@ -78,6 +86,19 @@ for (const id of atividadesComRodada()) {
 // Comandos fixos dos jogos de intervalo
 for (const f of ['Jump!', 'Duck!', 'Approved!', 'Failed!', ...LUGARES.map(l => l.frase), ...Object.values(ETAPAS)]) add('professora', 'en-US', f, 'intervalo');
 for (const f of FALAS_INTERVALO) add(f.personagem, 'en-US', f.texto, 'intervalo');
+add('leia', 'en-US', SLOGAN_ORIENTACAO, 'lema');
+// Ditado do Diretor Márcio (Nível 2): todas as séries
+for (const g of Object.values(LEVEL2_CONTENT)) for (const d of g.dictation) add('marcio', 'en-US', d.word, 'ditado');
+// Narrador dos corredores 3D (Níveis 3 e 4): portas em cada estado e avisos
+for (const [portas, nivel] of [[PORTAS_N3, LEVEL3], [PORTAS_N4, LEVEL4]] as const) nivel.mission.activities.forEach((a, i) => { for (const e of ['locked', 'open', 'done'] as const) add('narrador', 'pt-BR', falaDaPorta(portas[i], a.name, e), 'corredor'); });
+for (const f of Object.values(AVISOS_CORREDOR)) add('narrador', 'pt-BR', f, 'corredor');
+// Convites de intervalo (Mané)
+for (const i of INTERVALOS) add('mane', 'pt-BR', i.chamada, `convite ${i.id}`);
+// Zé Cartinha: falas fixas dos Níveis 0 a 4
+for (const f of [...ZE_LINES, ZE_TRAP, ZE_SWAP, ZE_SHUFFLE, ...Object.values(LEVEL2_ZE_LINES).flat(), ...LEVEL3_ZE_LINES, 'Hahaha! Pegou minha carta!', ZE_PADRAO, ...Object.values(LEVEL4_DISTRACTIONS).map(d => d.ze)]) add('ze', 'pt-BR', f, 'ze');
+// Mané Zoeira: Níveis 3 e 4
+for (const l of [...MANE_CORRIDOR_LINES, MANE_SIMPLE_LINE]) { add('mane', 'pt-BR', l.pt, 'mane'); add('mane', 'en-US', l.en, 'mane'); }
+for (const f of [...MANE_ROOM_START, ...MANE_ROOM_TIP, MANE_PADRAO, ...Object.values(LEVEL4_DISTRACTIONS).map(d => d.mane)]) add('mane', 'pt-BR', f, 'mane');
 
 const lista = [...itens.values()].sort((a, b) => a.origem.localeCompare(b.origem) || a.chave.localeCompare(b.chave));
 const pasta = join(process.cwd(), 'public', 'assets', 'vozes');

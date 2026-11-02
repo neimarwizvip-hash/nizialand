@@ -2,10 +2,10 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import { soundEffects, audioService } from '../../services/audio';
-import { speechService } from '../../services/speech';
+import { falarComo } from '../../services/narracao';
 import { Anfitriao, BotaoJogo, Cenario, Ficha, Hud, Icone, Painel, Titulo } from '../../components/kit';
 import type { NomeIcone } from '../../components/kit';
-import { falaDaTela } from '../../data/falasAnfitrioes';
+import { falaDaTela, SLOGAN_ORIENTACAO } from '../../data/falasAnfitrioes';
 
 // Reunião educativa no auditório: a orientadora Leia apresenta as regras da escola em três grupos,
 // faz duas perguntas rápidas e recolhe o termo de compromisso antes do cadastro. Lógica igual à anterior.
@@ -125,10 +125,10 @@ export const OrientationScreen: React.FC = () => {
   // Termo de compromisso
   const [agreedToTerms, setAgreedToTerms] = useState<boolean>(false);
 
-  const slogan = "LEIA! Know the rules, learn and go further!";
+  const slogan = SLOGAN_ORIENTACAO;
 
   const handleSpeakSlogan = () => {
-    speechService.speak(slogan, 'en-US');
+    falarComo('leia', slogan, 'en-US');
   };
 
   const handleSelectQ1 = (index: number) => {
@@ -187,16 +187,16 @@ export const OrientationScreen: React.FC = () => {
       <div className="relative z-10 flex flex-col min-h-screen">
         <Hud nivel={0} mostrarMoedas={false} mostrarMapa={false} mostrarPlacar={false} />
 
-        <main className="flex-1 w-full max-w-6xl mx-auto px-3 sm:px-5 py-3 md:py-5 short:py-1 grid grid-cols-1 md:grid-cols-[15rem_1fr] short:grid-cols-1 gap-3 short:gap-2 items-start">
+        <main className="flex-1 w-full max-w-7xl mx-auto px-3 sm:px-5 py-3 md:py-5 short:py-1 grid grid-cols-1 md:grid-cols-[19rem_1fr] short:grid-cols-1 gap-3 short:gap-2 items-start">
           {/* Leia no palco */}
           <aside className="hidden md:flex short:hidden flex-col items-start self-end">
-            <Anfitriao nome="leia" fala={fala.pt} traducao={fala.en} altura="h-64 short:h-32" />
+            <Anfitriao nome="leia" fala={fala.pt} traducao={fala.en} altura="h-[min(56vh,620px)]" />
           </aside>
 
           <section aria-label="Reunião educativa" className="flex flex-col gap-2 short:gap-1 min-w-0">
             <div className="flex flex-wrap items-end justify-between gap-2 px-1 short:hidden">
               <Titulo nivel={1} className="text-3xl sm:text-4xl leading-none">Reunião no auditório</Titulo>
-              <Ficha cor="papel" className="short:hidden">Orientação Educacional · Leia</Ficha>
+              <Ficha cor="papel" className="short:hidden">Orientação Educacional · Edileia</Ficha>
             </div>
 
             {/* Balão da Leia no celular em pé (sem a figura) */}
