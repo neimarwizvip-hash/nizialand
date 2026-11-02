@@ -43,7 +43,8 @@ const HALF_W = 1.7;
 const ALTURA = 3.2;
 const DOOR_GAP = 6;
 const PERTO = 1.25;
-const VEL = 3.0;
+const VEL = 2.6;      // m/s: passo de aluno apressado
+const PASSADA = 1.4;  // metros por ciclo completo (dois passos)
 const ESPESSURA = 0.16;
 const JANELA = { larg: 1.7, peitoril: 0.95, verga: 2.45 };
 
@@ -820,7 +821,9 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
 
     // ---------- Laço ----------
     const fwd = new THREE.Vector3(), right = new THREE.Vector3(), look = new THREE.Vector3(), tela = new THREE.Vector3();
+    const camAlvo = new THREE.Vector3(), lookAlvo = new THREE.Vector3();
     let raf = 0, last = performance.now(), elapsed = 0, passo = 0;
+    let velX = 0, velZ = 0, giroVel = 0, inclina = 0, camPronta = false, lookPronto = false;
     let soma = 0, n = 0, t1 = 0, lentos = 0, lentosQ = 0;
 
     const posicionarBalao = (el: HTMLDivElement | null, alvo: THREE.Object3D, mostrar: boolean) => {
@@ -850,27 +853,57 @@ const Corridor3D: React.FC<Corridor3DProps> = ({ doors, paused, startAt, avatarI
       if (teclas.has('s') || teclas.has('arrowdown')) my -= 1;
       if (teclas.has('d')) mx += 1;
       if (teclas.has('a')) mx -= 1;
+      // Giro com aceleração (sem tranco ao apertar ou soltar a seta).
       const giro = o.calmo ? 1.2 : 1.8;
-      if (teclas.has('arrowleft')) yaw += giro * dt;
-      if (teclas.has('arrowright')) yaw -= giro * dt;
-      const ml = Math.hypot(mx, my);
-      const andando = ml > 0.05;
-      if (andando) {
-        const k = Math.min(1, ml) * (o.calmo ? VEL * 0.7 : VEL) * dt / ml;
-        pos.addScaledVector(fwd, my * k).addScaledVector(right, mx * k);
-        pos.x = Math.max(-HALF_W + 0.72, Math.min(HALF_W - 0.72, pos.x));
-        pos.z = Math.max(zFim + 0.8, Math.min(zIni - 0.4, pos.z));
-        passo += dt * 9;
-      }
-      // Passo no lugar ao andar (o avatar não desliza).
-      const bob = andando && !o.calmo ? Math.abs(Math.sin(passo)) * 0.05 : 0;
-      avatar.position.set(pos.x, bob, pos.z);
-      sombraAvatar.position.set(pos.x, 0.01, pos.z);
+      const giroAlvo = (teclas.has('arrowleft') ? giro : 0) - (teclas.has('arrowright') ? giro : 0);
+      giroVel += (giroAlvo - giroVel) * (1 - Math.exp(-dt * 10));
+      yaw += giroVel * dt;
 
-      camera.position.set(pos.x - fwd.x * 3.0, 1.95, pos.z - fwd.z * 3.0);
-      camera.position.x = Math.max(-HALF_W + 0.25, Math.min(HALF_W - 0.25, camera.position.x));
-      camera.position.z = Math.min(zIni + 0.1, Math.max(zFim - 0.1, camera.position.z));
-      look.set(pos.x + fwd.x * 2, 1.15, pos.z + fwd.z * 2);
+      // Velocidade com arranque e freada suaves (~0,15 s), em vez de liga/desliga.
+      const ml = Math.hypot(mx, my);
+      const vMax = o.calmo ? VEL * 0.7 : VEL;
+      let alvoX = 0, alvoZ = 0;
+      if (ml > 0.05) {
+        const k = (Math.min(1, ml) / ml) * vMax;
+        alvoX = (fwd.x * my + right.x * mx) * k;
+        alvoZ = (fwd.z * my + right.z * mx) * k;
+      }
+      const resp = 1 - Math.exp(-dt * (ml > 0.05 ? 8 : 11));
+      velX += (alvoX - velX) * resp;
+      velZ += (alvoZ - velZ) * resp;
+      pos.x += velX * dt; pos.z += velZ * dt;
+      const limX = HALF_W - 0.72;
+      if (pos.x < -limX || pos.x > limX) { pos.x = Math.max(-limX, Math.min(limX, pos.x)); velX = 0; }
+      if (pos.z < zFim + 0.8 || pos.z > zIni - 0.4) { pos.z = Math.max(zFim + 0.8, Math.min(zIni - 0.4, pos.z)); velZ = 0; }
+      const rapidez = Math.hypot(velX, velZ);
+      const r = Math.min(1, rapidez / VEL); // 0 parado … 1 andando no máximo
+
+      // Passada presa à distância percorrida: o ritmo dos passos acompanha a velocidade (o pé não "patina").
+      passo += (rapidez * dt * Math.PI * 2) / PASSADA;
+      if (r < 0.03) passo += (Math.round(passo / Math.PI) * Math.PI - passo) * (1 - Math.exp(-dt * 8)); // assenta o passo ao parar
+      const lateral = (velX * right.x + velZ * right.z) / VEL; // -1 esquerda … 1 direita, na visão da câmera
+      inclina += (lateral * 0.14 - inclina) * (1 - Math.exp(-dt * 7));
+      const anima = !o.calmo;
+      const quique = anima ? Math.abs(Math.sin(passo)) * 0.06 * r : 0;                  // dois apoios por ciclo
+      const balanco = anima ? Math.sin(passo) * 0.05 * r : 0;                            // peso de um pé para o outro
+      const amassa = anima ? 1 - 0.035 * r * Math.cos(passo * 2) : 1;                    // estica no alto, encolhe no apoio
+      const respira = anima ? 1 + 0.012 * (1 - r) * Math.sin(elapsed * 2.2) : 1;         // parado, respira
+      avatar.position.set(pos.x, quique, pos.z);
+      avatar.scale.set(0.85 * (2 - amassa), 1.55 * amassa * respira, 1);
+      (avatar.material as THREE.SpriteMaterial).rotation = anima ? -(balanco + inclina) : 0;
+      sombraAvatar.position.set(pos.x, 0.01, pos.z);
+      const sombraK = 1 - quique * 2.5;
+      sombraAvatar.scale.set(0.8 * sombraK, 0.8 * 0.55 * sombraK, 1);
+
+      // Câmera segue com atraso suave (não gruda no aluno a cada passo).
+      camAlvo.set(pos.x - fwd.x * 3.0, 1.95, pos.z - fwd.z * 3.0);
+      camAlvo.x = Math.max(-HALF_W + 0.25, Math.min(HALF_W - 0.25, camAlvo.x));
+      camAlvo.z = Math.min(zIni + 0.1, Math.max(zFim - 0.1, camAlvo.z));
+      if (!camPronta) { camera.position.copy(camAlvo); camPronta = true; }
+      else camera.position.lerp(camAlvo, 1 - Math.exp(-dt * 7));
+      lookAlvo.set(pos.x + fwd.x * 2, 1.15, pos.z + fwd.z * 2);
+      if (!lookPronto) { look.copy(lookAlvo); lookPronto = true; }
+      else look.lerp(lookAlvo, 1 - Math.exp(-dt * 9));
       camera.lookAt(look);
       cupula.position.copy(camera.position);
 
