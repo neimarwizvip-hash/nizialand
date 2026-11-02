@@ -5,18 +5,11 @@ import { Anfitriao, BotaoJogo, Cenario, Estrelas, Ficha, Fita, Hud, Icone, Paine
 import type { NomeAnfitriao, NomeCenario, NomeIcone } from '../../components/kit';
 import type { Mechanic } from '../../core/types';
 import { fala as falaDoRoteiro } from '../../data/falasAnfitrioes';
+import type { ItemRodada } from '../../data/rodadasFases';
+import { RodadaAtividade, type ResultadoRodada } from './RodadaAtividade';
 
 // Tela comum das missões dos Níveis 3 a 7 (cartazes das atividades) e da pergunta de cada atividade.
-// Conteúdo pedagógico e quantidade de itens continuam vindo dos arquivos de conteúdo (Fase 3 amplia).
-
-export interface ItemPergunta {
-  prompt: string;
-  options: string[];
-  answer: number;
-  explanation: string;
-  skill?: string;
-  languageFocus?: string;
-}
+// Cada atividade abre uma rodada de perguntas (RodadaAtividade); os itens vêm de data/rodadasFases.ts.
 
 interface Props {
   nivel: number;
@@ -26,11 +19,10 @@ interface Props {
   atividades: ActivityProgress[];
   concluido: boolean;
   notaConclusao?: string; // ex.: "O Nível 8 será lançado em breve."
-  selecionada: { nome: string } | null;
-  item: ItemPergunta | null;
-  respondido: boolean;
-  escolha: number | null;
-  onResponder: (i: number) => void;
+  selecionada: { id: string; nome: string } | null;
+  itens: ItemRodada[] | null; // perguntas da rodada da atividade aberta
+  cronometro?: number; // segundos por pergunta nas atividades contra o relógio
+  onConcluir: (r: ResultadoRodada) => void;
   onAbrir: (id: string) => void;
   onVoltar: () => void;
   onMapa: () => void;
@@ -52,7 +44,7 @@ const Percevejo: React.FC<{ cor: string }> = ({ cor }) => (
 );
 
 export const TelaFaseMissao: React.FC<Props> = ({
-  nivel, titulo, subtitulo, descricao, atividades, concluido, notaConclusao, selecionada, item, respondido, escolha, onResponder, onAbrir, onVoltar, onMapa,
+  nivel, titulo, subtitulo, descricao, atividades, concluido, notaConclusao, selecionada, itens, cronometro, onConcluir, onAbrir, onVoltar, onMapa,
 }) => {
   const host = ANFITRIAO[nivel] ?? 'marcio';
   const feitas = atividades.filter(a => a.state === 'completed').length;
@@ -62,60 +54,18 @@ export const TelaFaseMissao: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [nivel, momento, proxima]);
 
-  // ----- Pergunta de uma atividade -----
-  if (selecionada && item) {
-    const letras = 'ABCD';
+  // ----- Rodada de uma atividade -----
+  if (selecionada && itens && itens.length) {
     return (
       <div className="relative min-h-screen text-nisia-tinta flex flex-col">
         <Cenario nome={CENARIO[nivel] ?? 'corredor'} escurecer={0.22} />
         <div className="relative z-10 flex flex-col min-h-screen">
           <Hud nivel={nivel} />
-          <main className="flex-1 w-full max-w-4xl mx-auto px-3 sm:px-4 py-3 md:py-5 short:py-1 flex flex-col justify-center">
-            <Painel tipo="mural" as="section" aria-label={selecionada.nome} className="p-3 sm:p-5 short:p-2 flex flex-col gap-3 short:gap-1.5">
-              <div className="flex items-center justify-between gap-2 flex-wrap">
-                <div className="flex items-center gap-2 min-w-0">
-                  <Ficha cor="sol">Nível {nivel}</Ficha>
-                  <span className="font-display text-base sm:text-lg short:text-sm text-nisia-papel drop-shadow-[0_2px_0_rgba(90,50,10,0.8)] truncate">{selecionada.nome}</span>
-                </div>
-                <BotaoJogo cor="papel" tamanho="sm" onClick={() => { audioService.playClick(); onVoltar(); }}>Voltar</BotaoJogo>
-              </div>
-              <Painel tipo="papel" liso className="px-4 py-4 short:py-2 text-center">
-                <p className="font-display text-2xl sm:text-3xl short:text-lg leading-tight text-nisia-azul-700">{item.prompt}</p>
-                {(item.skill || item.languageFocus) && (
-                  <p className="mt-2 short:mt-1 flex flex-wrap justify-center gap-2 text-xs">
-                    {item.skill && <span className="kit-ficha kit-ficha--azul text-[11px] normal-case tracking-normal">Habilidade: {item.skill}</span>}
-                    {item.languageFocus && <span className="kit-ficha kit-ficha--sol text-[11px] normal-case tracking-normal">Foco: {item.languageFocus}</span>}
-                  </p>
-                )}
-              </Painel>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 short:gap-1.5">
-                {item.options.map((o, i) => {
-                  let estado = 'bg-nisia-papel border-nisia-papel-linha hover:-translate-y-0.5';
-                  let bolinha = 'bg-nisia-sol-400 border-nisia-sol-700 text-nisia-tinta';
-                  if (respondido && i === item.answer) { estado = 'bg-nisia-verde-100 border-nisia-verde-500 ring-4 ring-nisia-verde-400/50'; bolinha = 'bg-nisia-verde-500 border-nisia-verde-700 text-white'; }
-                  else if (respondido && i === escolha) { estado = 'bg-red-50 border-nisia-erro'; bolinha = 'bg-nisia-erro border-red-800 text-white'; }
-                  else if (respondido) estado = 'bg-nisia-papel border-nisia-papel-linha opacity-50';
-                  return (
-                    <button key={o} type="button" disabled={respondido} onClick={() => { audioService.playClick(); onResponder(i); }}
-                      className={`relative text-left flex items-center gap-3 px-3.5 py-3 short:py-1.5 rounded-xl border-2 shadow-[0_4px_0_0_#E7D3A6] transition-all font-body text-nisia-tinta disabled:cursor-not-allowed ${estado}`}>
-                      <span className={`w-10 h-10 short:w-7 short:h-7 rounded-full border-2 flex items-center justify-center font-display text-lg short:text-base shrink-0 ${bolinha}`}>{letras[i] ?? i + 1}</span>
-                      <span className="text-base sm:text-lg short:text-sm font-semibold flex-1 leading-snug">{o}</span>
-                    </button>
-                  );
-                })}
-              </div>
-              {respondido && (
-                <Painel tipo="papel" liso className="px-4 py-3 short:py-2 flex flex-col sm:flex-row items-center justify-between gap-3 animate-rise-in">
-                  <div>
-                    <p className={`inline-flex items-center gap-2 font-display text-lg ${escolha === item.answer ? 'text-nisia-verde-700' : 'text-nisia-erro'}`}>
-                      <Icone nome={escolha === item.answer ? 'check' : 'x'} className="w-6 h-6" /> {escolha === item.answer ? 'Resposta certa! +100 pontos.' : 'Não foi dessa vez. Veja a resposta certa.'}
-                    </p>
-                    <p className="mt-1 text-sm sm:text-base text-nisia-tinta max-w-xl leading-snug">{item.explanation}</p>
-                  </div>
-                  <BotaoJogo cor="laranja" onClick={() => { audioService.playClick(); onVoltar(); }} className="shrink-0">Voltar à missão <Icone nome="seta" className="w-5 h-5" /></BotaoJogo>
-                </Painel>
-              )}
-            </Painel>
+          {/* my-auto (e não justify-center): se a rodada for mais alta que a tela, rola sem cortar o topo */}
+          <main className="flex-1 w-full max-w-4xl mx-auto px-3 sm:px-4 py-3 md:py-5 short:py-1 flex flex-col">
+            <div className="my-auto">
+            <RodadaAtividade key={selecionada.id} nivel={nivel} nome={selecionada.nome} itens={itens} cronometro={cronometro} onConcluir={onConcluir} onVoltar={onVoltar} />
+            </div>
           </main>
         </div>
       </div>
