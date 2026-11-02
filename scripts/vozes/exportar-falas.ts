@@ -74,6 +74,9 @@ for (const id of atividadesComRodada()) {
   }
 }
 
+// Comandos fixos dos jogos de intervalo
+for (const f of ['Jump!', 'Duck!', 'Approved!', 'Failed!']) add('professora', 'en-US', f, 'intervalo');
+
 const lista = [...itens.values()].sort((a, b) => a.origem.localeCompare(b.origem) || a.chave.localeCompare(b.chave));
 const pasta = join(process.cwd(), 'public', 'assets', 'vozes');
 mkdirSync(pasta, { recursive: true });

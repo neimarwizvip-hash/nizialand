@@ -40,3 +40,11 @@
 - **Lançamento coletivo:** o Nível 9 só é lançado quando mais de 100 alunos concluírem o Nível 8; o Nível 10, quando mais de 100 concluírem o Nível 9. O mapa mostra o contador (dados do ranking da planilha).
 - **Gamificação:** nada de "pergunta, pergunta, pergunta". Próxima etapa: minijogos variados com dificuldade gradual nos Níveis 5 a 8 e revisão dos Níveis 1 a 4.
 - **3D:** um motor com peças da escola, um espaço por fase (tabela acima); personagens 3D leves com base CC0, começando pelo Márcio como piloto.
+
+## 02/11/2026 — Camadas de jogo e atenção dos alunos (decisão do professor)
+
+- **Camada 1.0 (Níveis 0 a 3):** quadro de atividades + minijogos, com acabamento caprichado.
+- **Interfase (Níveis 2 a 6):** jogos de ação curtos no meio do nível, ainda com inglês, como respiro de atenção. Nível 2 e 3: *Tiro nas notas* depois da 3ª atividade (notas em inglês caem; apagar as indesejadas; meta 100; nota = 100 − |100 − soma|; abaixo de 50, reprovado) e *Pula distração* depois da 5ª (plataforma; pular nas distrações e cartas de bafo do Zé; comandos JUMP!/DUCK!). Previstos: labirinto (4), Missão bebedouro com o Zé atrapalhando (5), jogo mais elaborado (6). Aparecem como convite surpresa uma vez por aluno; não contam para concluir o nível; ficam na vistoria.
+- **Camada 2.0 (Níveis 3 a 6):** menos atividades, missões dinâmicas e com narrativa (ex.: resolver um mistério), tela em movimento, mesmo tema do nível. O Nível 3 é a ponte entre 1.0 e 2.0.
+- **Camada 3.0 (Níveis 7 a 10):** proposta do Claude a definir — missões encadeadas na escola 3D, competição entre equipes, chefe final contra o Zé.
+- **Expectativa:** ao concluir um nível, o aluno vê o cartão "Vem aí" com o próximo jogo (`src/data/proximoNivel.ts`).

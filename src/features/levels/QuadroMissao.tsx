@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import type { ActivityResult } from '../../core/types';
 import { audioService } from '../../services/audio';
 import { Anfitriao, BotaoJogo, Cenario, Estrelas, Ficha, Fita, Hud, Icone, Painel, Titulo } from '../../components/kit';
+import { TeaserProximo } from '../../components/kit/TeaserProximo';
 import type { NomeAnfitriao, NomeCenario, NomeIcone } from '../../components/kit';
 import { fala as falaDoRoteiro } from '../../data/falasAnfitrioes';
 
@@ -76,6 +77,7 @@ export const QuadroMissao: React.FC<Props> = ({ nivel, titulo, placa, subtitulo,
             {descricao && <p className="hidden alto:block text-sm text-white/90 font-semibold max-w-3xl drop-shadow-[0_1px_0_rgba(12,42,102,0.8)]">{descricao}</p>}
             <Fita frac={itens.length ? feitas / itens.length : 0} className="max-w-md short:hidden" rotulo="Progresso da missão" />
             {conclusao}
+            {conclusao && <TeaserProximo nivel={nivel} />}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 short:grid-cols-3 gap-4 short:gap-1.5">
               {itens.map((it, i) => {

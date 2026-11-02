@@ -80,6 +80,38 @@
   "origem": "hq reuniao"
  },
  {
+  "chave": "5357879e",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Duck!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "676ee7c4",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Approved!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "99034486",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Failed!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "b0df5031",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Jump!",
+  "origem": "intervalo"
+ },
+ {
   "chave": "4459bca0",
   "idioma": "en-US",
   "voz": "Juniper",

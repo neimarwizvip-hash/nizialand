@@ -1,6 +1,7 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { GameProvider, useGame } from './context/GameContext';
+import { ConviteIntervalo } from './features/intervalo/ConviteIntervalo';
 import { ScreenTransitionLoader, ScreenLoadingFallback } from './components/layout/ScreenTransitionLoader';
 import { RequirePlayer } from './components/layout/RequirePlayer';
 import { StartScreen } from './features/start/StartScreen';
@@ -41,6 +42,7 @@ const DialogueScreen = lazy(() => import('./features/level1/DialogueScreen'));
 const ExploreScreen = lazy(() => import('./features/level1/ExploreScreen'));
 // Vistoria do professor: só no `npm run dev` (no build, import.meta.env.DEV é false e o código nem entra).
 const VistoriaScreen = import.meta.env.DEV ? lazy(() => import('./features/vistoria/VistoriaScreen')) : null;
+const IntervaloScreen = lazy(() => import('./features/intervalo/IntervaloScreen').then(m => ({ default: m.IntervaloScreen })));
 const VistoriaBadge = import.meta.env.DEV ? lazy(() => import('./features/vistoria/VistoriaScreen').then(m => ({ default: m.VistoriaBadge }))) : null;
 const AdminPanel = lazy(() => import('./features/admin/AdminPanel').then(m => ({ default: m.AdminPanel })));
 
@@ -215,6 +217,9 @@ export const App: React.FC = () => {
             <Route path="/nivel8" element={<RequirePlayer><RequireLevel8><PhaseMissionScreen level={LEVEL8} content={LEVEL8_CONTENT} accent="teal" /></RequireLevel8></RequirePlayer>} />
             <Route path="/nivel8/projeto" element={<RequirePlayer><RequireLevel8><PhaseMissionScreen level={LEVEL8} content={LEVEL8_CONTENT} accent="teal" /></RequireLevel8></RequirePlayer>} />
 
+            {/* Jogos de intervalo (interfase) */}
+            <Route path="/intervalo/:id" element={<RequirePlayer><IntervaloScreen /></RequirePlayer>} />
+
             {/* Tela 4: Mission 1 Quiz */}
             <Route path="/quiz" element={<RequirePlayer><QuizScreen /></RequirePlayer>} />
 
@@ -238,6 +243,7 @@ export const App: React.FC = () => {
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          <ConviteIntervalo />
           {VistoriaBadge && <VistoriaBadge />}
           </Suspense>
         </ScreenTransitionLoader>

@@ -11,6 +11,7 @@ import { level0Results } from '../../engines/pedagogy/adapters';
 import { getMissionProgress, ActivityProgress } from '../../engines/progression/progress';
 import type { ActivityColor, Mechanic } from '../../core/types';
 import { Anfitriao, BotaoJogo, Cenario, Estrelas, Ficha, Fita, Hud, Icone, Painel, Titulo } from '../../components/kit';
+import { TeaserProximo } from '../../components/kit/TeaserProximo';
 import type { NomeAnfitriao, NomeCenario, NomeIcone } from '../../components/kit';
 import { fala as falaDoRoteiro } from '../../data/falasAnfitrioes';
 import type { Momento } from '../../data/falasAnfitrioes';
@@ -260,6 +261,7 @@ export const MissionBriefingScreen: React.FC<{ level?: 0 | 1 | 2 }> = ({ level =
               ))}
             </div>
 
+            {progress.isCompleted && <TeaserProximo nivel={level} className="max-w-2xl mx-auto w-full" />}
             {progress.isCompleted && level === 0 && (
               <div className="flex flex-wrap items-center justify-center gap-3 short:gap-2">
                 <BotaoJogo cor="verde" onClick={() => goTo('/results/final')}><Icone nome="trofeu" className="w-5 h-5" /> Ver resultado</BotaoJogo>

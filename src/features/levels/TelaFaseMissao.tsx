@@ -9,6 +9,7 @@ import { useGame } from '../../context/GameContext';
 import type { ItemRodada } from '../../data/rodadasFases';
 import { type ResultadoRodada } from './RodadaAtividade';
 import { JogoAtividade } from '../jogos/JogoAtividade';
+import { TeaserProximo } from '../../components/kit/TeaserProximo';
 import type { DadosJogo } from '../../data/jogosFases';
 
 // Tela comum das missões dos Níveis 3 a 7 (cartazes das atividades) e da pergunta de cada atividade.
@@ -111,6 +112,7 @@ export const TelaFaseMissao: React.FC<Props> = ({
                   {notaConclusao && <p className="text-sm text-nisia-tinta-suave">{notaConclusao}</p>}
                 </div>
                 <BotaoJogo cor="laranja" onClick={() => { audioService.playClick(); onMapa(); }}><Icone nome="mapa" className="w-5 h-5" /> Voltar ao mapa</BotaoJogo>
+                <TeaserProximo nivel={nivel} className="basis-full" />
               </Painel>
             )}
 

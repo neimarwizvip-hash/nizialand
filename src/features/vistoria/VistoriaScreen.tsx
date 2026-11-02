@@ -66,6 +66,15 @@ export const VISTORIA_LEVELS: { title: string; items: Item[] }[] = [
     title: 'Mapa',
     items: [{ label: 'Mapa das missões (0 a 10)', to: '/mapa' }],
   },
+  {
+    title: 'Intervalos (interfase)',
+    items: [
+      { label: 'Tiro nas notas (Nível 2)', to: '/intervalo/notas-n2' },
+      { label: 'Tiro nas notas 2 (Nível 3)', to: '/intervalo/notas-n3' },
+      { label: 'Pula distração (Nível 2)', to: '/intervalo/pula-n2' },
+      { label: 'Pula distração 2 (Nível 3)', to: '/intervalo/pula-n3' },
+    ],
+  },
 ];
 
 // Só existe no `npm run dev` (a rota não entra no build). Abre tudo liberado e nada é salvo.

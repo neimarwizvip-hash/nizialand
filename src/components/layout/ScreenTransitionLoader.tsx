@@ -25,6 +25,7 @@ const DESTINOS: Array<[RegExp, string]> = [
   [/^\/nivel6/, 'Nível 6 · Consequências'],
   [/^\/nivel7/, 'Nível 7 · Aprender a se organizar'],
   [/^\/nivel8/, 'Nível 8 · Organizado na prática'],
+  [/^\/intervalo/, 'Intervalo!'],
   [/^\/leaderboard/, 'Quadro de honra'],
   [/^\/level0/, 'Treino livre'],
   [/^\/historia/, 'A história'],
