@@ -163,6 +163,7 @@ export const ClassroomScreen: React.FC = () => {
         conclusao={celebration}
         onAbrir={enter}
         acoes={<>
+          <BotaoJogo cor="roxo" tamanho="sm" onClick={() => { audioService.playClick(); navigate('/nivel3/misterio'); }}><Icone nome="lupa" className="w-5 h-5" /> Missão 2.0: o mistério do mural</BotaoJogo>
           {CORREDOR_3D_LIBERADO && modeButton}
           <BotaoJogo cor="papel" tamanho="sm" onClick={() => { audioService.playClick(); navigate('/mapa'); }}><Icone nome="mapa" className="w-5 h-5" cor="#1F5FD0" /> Mapa</BotaoJogo>
         </>}

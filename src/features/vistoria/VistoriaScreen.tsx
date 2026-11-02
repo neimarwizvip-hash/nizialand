@@ -77,6 +77,7 @@ export const VISTORIA_LEVELS: { title: string; items: Item[] }[] = [
       { label: 'Tetris das palavras (Nível 4)', to: '/intervalo/tetris-n4' },
       { label: 'Missão bebedouro (Nível 5)', to: '/intervalo/bebedouro-n5' },
       { label: 'Fuga no corredor (Nível 6)', to: '/intervalo/fuga-n6' },
+      { label: 'Missão 2.0: o mistério do mural (Nível 3)', to: '/nivel3/misterio' },
       { label: 'Tetris das palavras 2 (Nível 6)', to: '/intervalo/tetris-n6' },
     ],
   },

@@ -17,6 +17,7 @@ export const ENTRADAS_NIVEL: Record<string, number[]> = {
   'src/features/level2/PatioScreen.tsx': [2],
   'src/features/level2/Level2WorldScreen.tsx': [2],
   'src/features/level3/ClassroomScreen.tsx': [3],
+  'src/features/missoes20/MisterioMural.tsx': [3],
   'src/features/level4/TeamMissionScreen.tsx': [4],
   'src/features/level5/ChoicesMissionScreen.tsx': [5],
   'src/features/levels/Nivel6Screen.tsx': [6],

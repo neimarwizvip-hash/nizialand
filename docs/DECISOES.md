@@ -68,3 +68,8 @@
 ## 02/11/2026 — Carregamento por fase
 
 - Cada nivel e um pacote separado (telas, imagens, texturas 3D e vozes), baixado quando o aluno entra e guardado no aparelho por um service worker gerado no build (scripts/pacotes). O proximo nivel e adiantado em segundo plano. Lista de cada pacote: dist/pacotes.json. Telas de entrada e arquivos extras: src/config/pacotesNiveis.ts.
+
+
+## 02/11/2026 — Camada 2.0: primeira missao viva
+
+- Nivel 3: 'O misterio do mural rasgado' (/nivel3/misterio), botao no quadro do nivel. Investigar pistas na sala, conversar em ingles com educacao (acusar fecha a conversa e tira pontos), linha do tempo, conclusao com provas e reconstruir o mural. Tres casos sorteados (Ze, Mane ou vento). Ainda nao conta para concluir o nivel; textos PROVISORIOS em src/data/missaoMural.ts.

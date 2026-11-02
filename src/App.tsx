@@ -26,6 +26,7 @@ const Level2WorldScreen = lazy(() => import('./features/level2/Level2WorldScreen
 const ClassroomScreen = lazy(() => import('./features/level3/ClassroomScreen'));
 const TeamMissionScreen = lazy(() => import('./features/level4/TeamMissionScreen'));
 const ChoicesMissionScreen = lazy(() => import('./features/level5/ChoicesMissionScreen'));
+const MisterioMural = lazy(() => import('./features/missoes20/MisterioMural'));
 const Nivel6Screen = lazy(() => import('./features/levels/Nivel6Screen'));
 const Nivel7Screen = lazy(() => import('./features/levels/Nivel7Screen'));
 const Nivel8Screen = lazy(() => import('./features/levels/Nivel8Screen'));
@@ -196,6 +197,7 @@ export const App: React.FC = () => {
 
             {/* Nível 3: convivência em sala */}
             <Route path="/nivel3" element={<PacoteNivel nivel={3}><RequirePlayer><RequireLevel3><ClassroomScreen /></RequireLevel3></RequirePlayer></PacoteNivel>} />
+            <Route path="/nivel3/misterio" element={<PacoteNivel nivel={3}><RequirePlayer><RequireLevel3><MisterioMural /></RequireLevel3></RequirePlayer></PacoteNivel>} />
             <Route path="/nivel3/salas" element={<PacoteNivel nivel={3}><RequirePlayer><RequireLevel3><ClassroomScreen /></RequireLevel3></RequirePlayer></PacoteNivel>} />
 
             {/* Nível 4: trabalho em equipe */}

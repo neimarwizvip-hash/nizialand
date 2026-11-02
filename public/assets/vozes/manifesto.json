@@ -1771,6 +1771,435 @@
   ]
  },
  {
+  "chave": "0b017549",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "One corner was loose. I used tape... and it tore. I was scared to tell.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "0c0e9a58",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Vamos reconstruir o mural juntos! Junte as metades de cada regra.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "0d680a26",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Thank you for listening. Next time I will ask for help.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "0ded2d28",
+  "idioma": "en-US",
+  "voz": "Zoey",
+  "personagem": "colega",
+  "texto": "When I arrived, Zé was looking at the mural. He looked worried.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "10849a8d",
+  "idioma": "en-US",
+  "voz": "Easton",
+  "personagem": "ze",
+  "texto": "I was in the cafeteria, eating a sandwich.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "14c81c14",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "We need evidence.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "175dace8",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Papers were on the floor, under the window.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "2506df70",
+  "idioma": "en-US",
+  "voz": "Zoey",
+  "personagem": "colega",
+  "texto": "Mané was holding a roll of tape. He looked sad.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "25ca58dd",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "Let's find out what happened!",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "2bd6283c",
+  "idioma": "en-US",
+  "voz": "Zoey",
+  "personagem": "colega",
+  "texto": "I was in the hallway.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "44ae93cc",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "I saw Zé with his cards near the mural.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "486dc385",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Bom dia! O nosso mural de regras amanheceu rasgado. Não quero culpados: quero entender o que aconteceu para consertar. Você me ajuda a investigar?",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "4aad5bf2",
+  "idioma": "en-US",
+  "voz": "Easton",
+  "personagem": "ze",
+  "texto": "I didn't see anything. I promise!",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "4af2e08f",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Mistério resolvido! Investigar com calma e falar com educação também é convivência.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "4f7ccdbe",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "Let's fix the mural together!",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "638ba577",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "Put the events in order.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "6b4c0c5b",
+  "idioma": "en-US",
+  "voz": "Easton",
+  "personagem": "ze",
+  "texto": "The window was open. The floor was wet.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "6d5c6e21",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "Look for clues.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "72b82a01",
+  "idioma": "en-US",
+  "voz": "Easton",
+  "personagem": "ze",
+  "texto": "Well... my card hit the mural. Then I heard a \"rrrip\". I'm sorry!",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "7bc3614f",
+  "idioma": "en-US",
+  "voz": "Easton",
+  "personagem": "ze",
+  "texto": "I was on the bus. I arrived late.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "8dcc0cf3",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Agora converse com os colegas. Pergunte em inglês e com educação.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "add9f62d",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "I was at the gate with my mom.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "b32eb983",
+  "idioma": "en-US",
+  "voz": "Easton",
+  "personagem": "ze",
+  "texto": "Hey! That's not nice. I won't talk to you like that.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "b83cfa91",
+  "idioma": "en-US",
+  "voz": "Zoey",
+  "personagem": "colega",
+  "texto": "I arrived first, with the cleaning team.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "bf364f36",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Cuidado: acusar sem prova machuca. Olhe as pistas de novo.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "c36cae6e",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Coloque os fatos na ordem em que aconteceram.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "c70be282",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "Olhe a sala com atenção. Toque nos objetos que parecem pistas.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "c7562cc7",
+  "idioma": "en-US",
+  "voz": "Zoey",
+  "personagem": "colega",
+  "texto": "I was in the library.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "c7672470",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "Mystery solved! Great job, detective!",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "cb5eda4f",
+  "idioma": "pt-BR",
+  "voz": "Flávia",
+  "personagem": "rosana",
+  "texto": "E então, detetive? O que aconteceu com o mural?",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "d2d45635",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Whoa, calm down! Ask me nicely, please.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "da1b6758",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "Nobody is guilty. Let's close the windows and fix it together.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "db4df05c",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "Ask politely.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "e91602f6",
+  "idioma": "en-US",
+  "voz": "Zoey",
+  "personagem": "colega",
+  "texto": "It was very windy last night. The mural was on the floor.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "e965f64b",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "I came early to help Ms. Rosana.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "ed44aa13",
+  "idioma": "en-US",
+  "voz": "Harper",
+  "personagem": "rosana",
+  "texto": "What happened?",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "f44e4e09",
+  "idioma": "en-US",
+  "voz": "Easton",
+  "personagem": "ze",
+  "texto": "I'm sorry. Can I help you fix it?",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "f57aeaae",
+  "idioma": "en-US",
+  "voz": "Easton",
+  "personagem": "ze",
+  "texto": "I was in the classroom early. I was playing cards.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "f6daa447",
+  "idioma": "en-US",
+  "voz": "Zoey",
+  "personagem": "colega",
+  "texto": "That's rude. I don't want to talk now.",
+  "origem": "missao mural",
+  "niveis": [
+   3
+  ]
+ },
+ {
   "chave": "4459bca0",
   "idioma": "en-US",
   "voz": "Juniper",

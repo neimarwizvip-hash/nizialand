@@ -22,6 +22,7 @@ import { LEVEL8 } from '../../src/content/level8';
 import type { Level } from '../../src/core/types';
 import { LUGARES, ETAPAS, FALAS_INTERVALO } from '../../src/data/frasesIntervalo';
 import { INTERVALOS } from '../../src/features/intervalo/intervalos';
+import { falasDaMissaoMural } from '../../src/data/missaoMural';
 import { AVISOS_CORREDOR, PORTAS_N3, PORTAS_N4, falaDaPorta } from '../../src/data/falasCorredor';
 import { ZE_LINES } from '../../src/features/quiz/zeRules';
 import { ZE_TRAP, ZE_SWAP, ZE_SHUFFLE } from '../../src/features/level1/level1Rules';
@@ -100,6 +101,8 @@ nos([2], () => { for (const g of Object.values(LEVEL2_CONTENT)) for (const d of 
 // Narrador dos corredores 3D (Níveis 3 e 4): portas em cada estado e avisos
 for (const [portas, nivel] of [[PORTAS_N3, LEVEL3], [PORTAS_N4, LEVEL4]] as const) nos([nivel.number], () => nivel.mission.activities.forEach((a, i) => { for (const e of ['locked', 'open', 'done'] as const) add('narrador', 'pt-BR', falaDaPorta(portas[i], a.name, e), 'corredor'); }));
 nos([3, 4], () => { for (const f of Object.values(AVISOS_CORREDOR)) add('narrador', 'pt-BR', f, 'corredor'); });
+// Camada 2.0: missão do mural (Nível 3)
+nos([3], () => { for (const f of falasDaMissaoMural()) add(f.personagem, f.idioma, f.texto, 'missao mural'); });
 // Convites de intervalo (Mané)
 for (const i of INTERVALOS) nos([i.nivel], () => add('mane', 'pt-BR', i.chamada, `convite ${i.id}`));
 // Zé Cartinha: falas fixas dos Níveis 0 a 4
