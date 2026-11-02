@@ -9,7 +9,6 @@ import { useGame } from '../../context/GameContext';
 import type { ItemRodada } from '../../data/rodadasFases';
 import { type ResultadoRodada } from './RodadaAtividade';
 import { JogoAtividade } from '../jogos/JogoAtividade';
-import { TeaserProximo } from '../../components/kit/TeaserProximo';
 import type { DadosJogo } from '../../data/jogosFases';
 
 // Tela comum das missões dos Níveis 3 a 7 (cartazes das atividades) e da pergunta de cada atividade.
@@ -34,7 +33,8 @@ interface Props {
 }
 
 const ANFITRIAO: Record<number, NomeAnfitriao> = { 3: 'rosana', 4: 'mane', 5: 'leia', 6: 'marcio', 7: 'vania', 8: 'rosana' };
-const CENARIO: Record<number, NomeCenario> = { 3: 'corredor', 4: 'escola', 5: 'auditorio', 6: 'corredor', 7: 'fachada', 8: 'patio' };
+// Cada nível no seu espaço do mapa (6 biblioteca; 7 e 8 ganham os espaços próprios em seguida).
+const CENARIO: Record<number, NomeCenario> = { 3: 'corredor', 4: 'quadra', 5: 'auditorio', 6: 'biblioteca', 7: 'fachada', 8: 'patio' };
 const ICONE_MECANICA: Partial<Record<Mechanic, NomeIcone>> = {
   listen: 'orelha', order: 'livro', dialogue: 'balao', explore: 'lupa', quiz: 'dica', flashcards: 'carta',
   dictation: 'orelha', wordsearch: 'lupa', truefalse: 'check', gapfill: 'balao', timed: 'relogio', duel: 'carta',
@@ -112,7 +112,6 @@ export const TelaFaseMissao: React.FC<Props> = ({
                   {notaConclusao && <p className="text-sm text-nisia-tinta-suave">{notaConclusao}</p>}
                 </div>
                 <BotaoJogo cor="laranja" onClick={() => { audioService.playClick(); onMapa(); }}><Icone nome="mapa" className="w-5 h-5" /> Voltar ao mapa</BotaoJogo>
-                <TeaserProximo nivel={nivel} className="basis-full" />
               </Painel>
             )}
 

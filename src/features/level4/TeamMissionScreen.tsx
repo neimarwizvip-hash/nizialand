@@ -25,13 +25,16 @@ function readMode(): '3d' | 'simples' {
 }
 
 const PLACES = PORTAS_N4;
-const ICONE_LUGAR: NomeIcone[] = ['livro', 'bussola', 'pessoas', 'balao', 'trofeu', 'check'];
+const ICONE_LUGAR: NomeIcone[] = ['bandeira', 'bussola', 'pessoas', 'balao', 'trofeu', 'check'];
+// O Nível 4 acontece na área externa e na quadra (mapa dos espaços). O corredor 3D é dos Níveis 3: aqui fica desligado
+// até a área externa ganhar a versão em que o aluno anda.
+const NIVEL4_CORREDOR_3D = false;
 
 export const TeamMissionScreen: React.FC = () => {
   const { currentPlayer, activityResults, saveActivityResult, vistoria } = useGame();
   const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
-  const [mode, setMode] = useState<'3d' | 'simples'>(() => (CORREDOR_3D_LIBERADO ? readMode() : 'simples'));
+  const [mode, setMode] = useState<'3d' | 'simples'>(() => (CORREDOR_3D_LIBERADO && NIVEL4_CORREDOR_3D ? readMode() : 'simples'));
   const lastDoor = useRef<string | null>(null);
   const grade = getPlayerGrade(currentPlayer) ?? '8';
   const progress = useMemo(() => unlockForVistoria(getMissionProgress(LEVEL4, activityResults, true), vistoria), [activityResults, vistoria]);
@@ -55,7 +58,7 @@ export const TeamMissionScreen: React.FC = () => {
   const enter = (id: string) => { lastDoor.current = id; setParams({ atividade: id }); };
   const activityView = open && selected ? (
     <div className="relative min-h-screen text-nisia-tinta flex flex-col">
-      <Cenario nome="sala" escurecer={0.2} />
+      <Cenario nome="quadra" escurecer={0.2} />
       <div className="relative z-10 flex flex-col min-h-screen">
         <Hud nivel={4} />
         <Level4Activities key={selected.id} activity={selected} grade={grade} onExit={() => setParams({})} onSave={saveActivityResult} />
@@ -94,14 +97,14 @@ export const TeamMissionScreen: React.FC = () => {
         subtitulo={`${grade}º ano`}
         descricao={`${LEVEL4_CONTENT[grade].curriculum.theme} · ${LEVEL4_CONTENT[grade].curriculum.progression}`}
         anfitriao="mane"
-        cenario="escola"
+        cenario="quadra"
         itens={itens}
         rotuloAbrir="Começar"
         conclusao={progress.isCompleted ? <ConclusaoNivel texto="Nível 4 concluído! Equipe reunida." total={total} /> : undefined}
         extraCabecalho={<TeamTroublemakers />}
         onAbrir={id => setParams({ atividade: id })}
         acoes={<>
-          {CORREDOR_3D_LIBERADO && <BotaoJogo cor="azul" tamanho="sm" onClick={() => { audioService.playClick(); switchMode('3d'); }}><Icone nome="escola" className="w-5 h-5" /> Escola 3D</BotaoJogo>}
+          {CORREDOR_3D_LIBERADO && NIVEL4_CORREDOR_3D && <BotaoJogo cor="azul" tamanho="sm" onClick={() => { audioService.playClick(); switchMode('3d'); }}><Icone nome="escola" className="w-5 h-5" /> Escola 3D</BotaoJogo>}
           <BotaoJogo cor="papel" tamanho="sm" onClick={() => { audioService.playClick(); navigate('/mapa'); }}><Icone nome="mapa" className="w-5 h-5" cor="#1F5FD0" /> Mapa</BotaoJogo>
         </>}
       />

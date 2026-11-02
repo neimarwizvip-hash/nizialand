@@ -1,6 +1,7 @@
 // Falas do narrador nos corredores 3D dos Níveis 3 e 4 (gravadas com a voz do narrador; ver scripts/vozes).
 export const PORTAS_N3 = ['Sala 1', 'Sala 2', 'Sala 3', 'Sala 4', 'Sala 5', 'Revisão'];
-export const PORTAS_N4 = ['Biblioteca', 'Corredor', 'Sala de grupo', 'Mural', 'Quadra', 'Revisão'] as const;
+// Nível 4 (área externa e quadra): os pontos da missão ao ar livre.
+export const PORTAS_N4 = ['Portão', 'Horta', 'Arquibancada', 'Mural externo', 'Quadra', 'Pátio coberto'] as const;
 
 export type EstadoPorta = 'locked' | 'open' | 'done';
 export const falaDaPorta = (rotulo: string, nome: string, estado: EstadoPorta) =>

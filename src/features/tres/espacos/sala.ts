@@ -12,7 +12,7 @@ const JL = 1.8, PEITORIL = 0.95, VERGA = 2.45;
 
 const giz = 'rgba(245,241,230,0.93)';
 
-function placaPlano(kit: Kit, tex: THREE.Texture, w: number, h: number, x: number, y: number, z: number, rotY: number, emissivo = 0) {
+export function placaPlano(kit: Kit, tex: THREE.Texture, w: number, h: number, x: number, y: number, z: number, rotY: number, emissivo = 0) {
   const m = kit.guardar(new THREE.MeshStandardMaterial({ map: tex, roughness: 0.85 }));
   if (emissivo) { m.emissive = new THREE.Color(0xffffff); m.emissiveMap = tex; m.emissiveIntensity = emissivo; }
   const p = new THREE.Mesh(kit.guardar(new THREE.PlaneGeometry(w, h)), m);

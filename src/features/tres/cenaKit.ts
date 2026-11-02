@@ -206,3 +206,44 @@ export function texturaCanvas(w: number, h: number, desenhar: (g: CanvasRenderin
   document.fonts?.ready.then(pintar).catch(() => undefined);
   return t;
 }
+
+/** Gira (em torno do eixo vertical) e posiciona uma geometria. */
+export function colocar(g: THREE.BufferGeometry, x: number, y: number, z: number, rotY = 0): THREE.BufferGeometry {
+  if (rotY) g.rotateY(rotY);
+  g.translate(x, y, z);
+  return g;
+}
+
+/** Livros para estantes: junta todos numa malha instanciada (cores variadas, alturas e espessuras diferentes). */
+export class Livros {
+  private matrizes: THREE.Matrix4[] = [];
+  private cores: THREE.Color[] = [];
+  private s: number;
+  constructor(semente = 7) { this.s = semente >>> 0; }
+  sorteio() { this.s = (this.s * 1664525 + 1013904223) >>> 0; return this.s / 4294967296; }
+  /** Enche uma prateleira: `base` é a matriz da estante; x0..x1 ao longo dela, y da prateleira, z da frente. */
+  prateleira(base: THREE.Matrix4, x0: number, x1: number, y: number, z: number, contraste = false) {
+    const paleta = [0xb23a48, 0x2f6690, 0x3a7d44, 0xd9a441, 0x6c4f8c, 0xe07a5f, 0x2b2d42, 0xf2e8cf, 0x1f5fd0, 0xf08a24];
+    const tmp = new THREE.Object3D();
+    let px = x0;
+    while (px < x1 - 0.06) {
+      if (this.sorteio() < 0.07) { px += 0.1; continue; }
+      const esp = 0.035 + this.sorteio() * 0.045, alt = 0.22 + this.sorteio() * 0.12;
+      tmp.position.set(px + esp / 2, y + alt / 2, z);
+      tmp.rotation.set(0, 0, this.sorteio() < 0.05 ? 0.2 : 0);
+      tmp.scale.set(esp, alt, 0.2 + this.sorteio() * 0.05);
+      tmp.updateMatrix();
+      this.matrizes.push(new THREE.Matrix4().multiplyMatrices(base, tmp.matrix));
+      this.cores.push(new THREE.Color(contraste ? 0xbbbbbb : paleta[Math.floor(this.sorteio() * paleta.length)]));
+      px += esp + 0.004;
+    }
+  }
+  criar(kit: Kit) {
+    if (!this.matrizes.length) return;
+    const m = kit.guardar(new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7 }));
+    const malha = new THREE.InstancedMesh(kit.guardar(new THREE.BoxGeometry(1, 1, 1)), m, this.matrizes.length);
+    this.matrizes.forEach((mt, i) => { malha.setMatrixAt(i, mt); malha.setColorAt(i, this.cores[i]); });
+    malha.castShadow = true; malha.receiveShadow = true;
+    kit.scene.add(malha);
+  }
+}

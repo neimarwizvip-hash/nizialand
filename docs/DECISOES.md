@@ -56,3 +56,10 @@
 - Fuga no corredor (Nível 6, estilo Pac-Man): Vânia, depois Edileia, por último Márcio (com a Vânia). Recolher as palavras do tema falado; HALL PASS deixa quem persegue confuso.
 - Tetris das palavras (Níveis 4 e 6): peça do tema encaixa, fora do tema vai para o lixo; três temas por partida.
 - Botão Avançar (teste), só no npm run dev: liga a vistoria (nada salvo, nada vai para a planilha), conclui a próxima atividade e sobe de nível. Atalho Alt + seta para a direita.
+
+
+## 02/11/2026 — Espacos 3D por nivel (mapa)
+
+- Cada nivel acontece no espaco do mapa. Espacos modelados em 3D com o kit features/tres (padrao Rota Piloto) e capturados como fundo: sala de aula (atividades dos Niveis 3), area externa e quadra (Nivel 4), biblioteca (Nivel 6).
+- Nivel 4: pontos da missao ao ar livre (Portao, Horta, Arquibancada, Mural externo, Quadra, Patio coberto). O corredor 3D fica so no Nivel 3 ate a area externa ganhar a versao caminhavel.
+- Imagens enviadas ao PC passam por um canal que acrescenta bloco C2PA; sempre remover e conferir o hash antes de gravar no projeto.

@@ -72,19 +72,11 @@
   "origem": "convite tetris-n6"
  },
  {
-  "chave": "02758340",
+  "chave": "0692fd93",
   "idioma": "pt-BR",
   "voz": "Marcelo",
   "personagem": "narrador",
-  "texto": "Biblioteca, Caça às pistas: concluída. Aperte Enter para jogar de novo.",
-  "origem": "corredor"
- },
- {
-  "chave": "0dd4eac1",
-  "idioma": "pt-BR",
-  "voz": "Marcelo",
-  "personagem": "narrador",
-  "texto": "Revisão, Revisão da equipe: concluída. Aperte Enter para jogar de novo.",
+  "texto": "Pátio coberto, Revisão da equipe: concluída. Aperte Enter para jogar de novo.",
   "origem": "corredor"
  },
  {
@@ -112,11 +104,11 @@
   "origem": "corredor"
  },
  {
-  "chave": "20f06047",
+  "chave": "1a80c498",
   "idioma": "pt-BR",
   "voz": "Marcelo",
   "personagem": "narrador",
-  "texto": "Corredor, Siga as direções: trancada. Termine a sala anterior.",
+  "texto": "Horta, Siga as direções. Aperte Enter para entrar.",
   "origem": "corredor"
  },
  {
@@ -125,14 +117,6 @@
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Sala 5, Labirinto do corredor: concluída. Aperte Enter para jogar de novo.",
-  "origem": "corredor"
- },
- {
-  "chave": "35f2f0a1",
-  "idioma": "pt-BR",
-  "voz": "Marcelo",
-  "personagem": "narrador",
-  "texto": "Mural, Mensagem secreta. Aperte Enter para entrar.",
   "origem": "corredor"
  },
  {
@@ -152,6 +136,14 @@
   "origem": "corredor"
  },
  {
+  "chave": "4311aaa0",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Portão, Caça às pistas: concluída. Aperte Enter para jogar de novo.",
+  "origem": "corredor"
+ },
+ {
   "chave": "4893c026",
   "idioma": "pt-BR",
   "voz": "Marcelo",
@@ -160,19 +152,43 @@
   "origem": "corredor"
  },
  {
-  "chave": "569bdc98",
+  "chave": "4f8fa665",
   "idioma": "pt-BR",
   "voz": "Marcelo",
   "personagem": "narrador",
-  "texto": "Sala de grupo, Monte a equipe. Aperte Enter para entrar.",
+  "texto": "Portão, Caça às pistas. Aperte Enter para entrar.",
   "origem": "corredor"
  },
  {
-  "chave": "771cd30e",
+  "chave": "523b297d",
   "idioma": "pt-BR",
   "voz": "Marcelo",
   "personagem": "narrador",
-  "texto": "Biblioteca, Caça às pistas: trancada. Termine a sala anterior.",
+  "texto": "Mural externo, Mensagem secreta: trancada. Termine a sala anterior.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "6aab3cc0",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Arquibancada, Monte a equipe: concluída. Aperte Enter para jogar de novo.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "70caeddc",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Mural externo, Mensagem secreta. Aperte Enter para entrar.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "77003ab9",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Horta, Siga as direções: trancada. Termine a sala anterior.",
   "origem": "corredor"
  },
  {
@@ -200,27 +216,11 @@
   "origem": "corredor"
  },
  {
-  "chave": "8ab09845",
-  "idioma": "pt-BR",
-  "voz": "Marcelo",
-  "personagem": "narrador",
-  "texto": "Biblioteca, Caça às pistas. Aperte Enter para entrar.",
-  "origem": "corredor"
- },
- {
   "chave": "8b5087d9",
   "idioma": "pt-BR",
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Sala 4, Memória da sala: trancada. Termine a sala anterior.",
-  "origem": "corredor"
- },
- {
-  "chave": "8cee90a3",
-  "idioma": "pt-BR",
-  "voz": "Marcelo",
-  "personagem": "narrador",
-  "texto": "Sala de grupo, Monte a equipe: concluída. Aperte Enter para jogar de novo.",
   "origem": "corredor"
  },
  {
@@ -240,27 +240,27 @@
   "origem": "corredor"
  },
  {
-  "chave": "96b802b9",
-  "idioma": "pt-BR",
-  "voz": "Marcelo",
-  "personagem": "narrador",
-  "texto": "Sala de grupo, Monte a equipe: trancada. Termine a sala anterior.",
-  "origem": "corredor"
- },
- {
-  "chave": "a169e822",
-  "idioma": "pt-BR",
-  "voz": "Marcelo",
-  "personagem": "narrador",
-  "texto": "Corredor, Siga as direções. Aperte Enter para entrar.",
-  "origem": "corredor"
- },
- {
   "chave": "a31420e8",
   "idioma": "pt-BR",
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Mudei para o modo econômico para manter o movimento fluido. Para voltar, use o botão de qualidade ou a tecla Q.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "abeec737",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Mural externo, Mensagem secreta: concluída. Aperte Enter para jogar de novo.",
+  "origem": "corredor"
+ },
+ {
+  "chave": "ac6fa66e",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Portão, Caça às pistas: trancada. Termine a sala anterior.",
   "origem": "corredor"
  },
  {
@@ -288,6 +288,14 @@
   "origem": "corredor"
  },
  {
+  "chave": "b52488a3",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Horta, Siga as direções: concluída. Aperte Enter para jogar de novo.",
+  "origem": "corredor"
+ },
+ {
   "chave": "b61f0b44",
   "idioma": "pt-BR",
   "voz": "Marcelo",
@@ -296,19 +304,11 @@
   "origem": "corredor"
  },
  {
-  "chave": "b68ad103",
+  "chave": "b789848e",
   "idioma": "pt-BR",
   "voz": "Marcelo",
   "personagem": "narrador",
-  "texto": "Revisão, Revisão da equipe: trancada. Termine a sala anterior.",
-  "origem": "corredor"
- },
- {
-  "chave": "b84e9cca",
-  "idioma": "pt-BR",
-  "voz": "Marcelo",
-  "personagem": "narrador",
-  "texto": "Mural, Mensagem secreta: trancada. Termine a sala anterior.",
+  "texto": "Arquibancada, Monte a equipe: trancada. Termine a sala anterior.",
   "origem": "corredor"
  },
  {
@@ -368,19 +368,19 @@
   "origem": "corredor"
  },
  {
+  "chave": "ce5dcac8",
+  "idioma": "pt-BR",
+  "voz": "Marcelo",
+  "personagem": "narrador",
+  "texto": "Pátio coberto, Revisão da equipe. Aperte Enter para entrar.",
+  "origem": "corredor"
+ },
+ {
   "chave": "d47275e0",
   "idioma": "pt-BR",
   "voz": "Marcelo",
   "personagem": "narrador",
   "texto": "Sala 5, Labirinto do corredor: trancada. Termine a sala anterior.",
-  "origem": "corredor"
- },
- {
-  "chave": "d4f7f015",
-  "idioma": "pt-BR",
-  "voz": "Marcelo",
-  "personagem": "narrador",
-  "texto": "Corredor, Siga as direções: concluída. Aperte Enter para jogar de novo.",
   "origem": "corredor"
  },
  {
@@ -400,11 +400,11 @@
   "origem": "corredor"
  },
  {
-  "chave": "db634eae",
+  "chave": "db10e369",
   "idioma": "pt-BR",
   "voz": "Marcelo",
   "personagem": "narrador",
-  "texto": "Revisão, Revisão da equipe. Aperte Enter para entrar.",
+  "texto": "Pátio coberto, Revisão da equipe: trancada. Termine a sala anterior.",
   "origem": "corredor"
  },
  {
@@ -424,11 +424,11 @@
   "origem": "corredor"
  },
  {
-  "chave": "f2815a6c",
+  "chave": "f4c180c5",
   "idioma": "pt-BR",
   "voz": "Marcelo",
   "personagem": "narrador",
-  "texto": "Mural, Mensagem secreta: concluída. Aperte Enter para jogar de novo.",
+  "texto": "Arquibancada, Monte a equipe. Aperte Enter para entrar.",
   "origem": "corredor"
  },
  {
