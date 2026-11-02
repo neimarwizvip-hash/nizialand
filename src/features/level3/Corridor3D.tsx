@@ -6,6 +6,7 @@ import { narrar } from '../../services/narracao';
 import { AVATAR_CATALOG, skinToneFilter, type SkinTone } from '../../components/ui/PlayerAvatar';
 import { MANE_CORRIDOR_LINES, MANE_IMG } from '../../data/level3Mane';
 import { Icone } from '../../components/kit/Icones';
+import { CHAVE_QUALIDADE, TEX, TOM_NEUTRO, caixa, instalarTom, preferencia, prepararMacro, qualidadeInicial, type Qualidade } from '../tres/base3d';
 
 // Corredor 3D dos Níveis 3 e 4 no padrão da Rota Piloto AEE (piso de qualidade do projeto):
 //   ALTA       texturas fotográficas 1K (cor, relevo, rugosidade/oclusão), céu de foto que ilumina,
@@ -33,10 +34,6 @@ interface Corridor3DProps {
   onExit: () => void;
   onSimpleMode: () => void;
 }
-
-type Qualidade = 'alta' | 'economica';
-const CHAVE_QUALIDADE = 'nisialand.3d.qualidade';
-const TEX = '/assets/3d/tex/';
 
 // Medidas do corredor (metros).
 const HALF_W = 1.7;
@@ -99,81 +96,8 @@ const PALETAS: Record<'normal' | 'contraste', Record<string, number>> = {
 };
 const COR_N4 = { barrado: 0xbfe0c6, armario: 0x3f8f5f };
 
-// Curva de tom "PBR Neutral" (Khronos), a mesma da Rota Piloto: preserva as cores reais.
-const TOM_NEUTRO = /* glsl */ `
-vec3 tomNeutro( vec3 color ) {
-  const float inicio = 0.8 - 0.04;
-  const float dessat = 0.15;
-  float x = min( color.r, min( color.g, color.b ) );
-  float desloc = x < 0.08 ? x - 6.25 * x * x : 0.04;
-  color -= desloc;
-  float pico = max( color.r, max( color.g, color.b ) );
-  if ( pico < inicio ) return color;
-  const float d = 1.0 - inicio;
-  float novoPico = 1.0 - d * d / ( pico + d - inicio );
-  color *= novoPico / pico;
-  float g = 1.0 - 1.0 / ( dessat * ( pico - novoPico ) + 1.0 );
-  return mix( color, vec3( novoPico ), g );
-}`;
-let tomInstalado = false;
-function instalarTom() {
-  if (tomInstalado) return;
-  tomInstalado = true;
-  THREE.ShaderChunk.tonemapping_pars_fragment = THREE.ShaderChunk.tonemapping_pars_fragment.replace(
-    'vec3 CustomToneMapping( vec3 color ) { return color; }',
-    TOM_NEUTRO + '\nvec3 CustomToneMapping( vec3 color ) { return tomNeutro( toneMappingExposure * color ); }',
-  );
-}
-
 // Variação de tom em grande escala (esconde a repetição das fotos) a partir da posição no mundo.
 const MACRO: Record<string, number> = { piso: 0.06, parede: 0.07, barrado: 0.06, forro: 0.03, grama: 0.22, muro: 0.12 };
-function prepararMacro(m: THREE.MeshStandardMaterial, forca: number) {
-  m.onBeforeCompile = shader => {
-    shader.uniforms.uMacro = { value: forca };
-    shader.vertexShader = shader.vertexShader
-      .replace('#include <common>', '#include <common>\nvarying vec3 vPosMundo;')
-      .replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\nvPosMundo = ( modelMatrix * vec4( transformed, 1.0 ) ).xyz;');
-    shader.fragmentShader = shader.fragmentShader
-      .replace('#include <common>', `#include <common>
-        varying vec3 vPosMundo; uniform float uMacro;
-        float hashM( vec2 p ) { return fract( sin( dot( p, vec2( 127.1, 311.7 ) ) ) * 43758.5453 ); }
-        float ruidoM( vec2 p ) { vec2 i = floor( p ), f = fract( p ); f = f * f * ( 3.0 - 2.0 * f );
-          return mix( mix( hashM( i ), hashM( i + vec2( 1, 0 ) ), f.x ), mix( hashM( i + vec2( 0, 1 ) ), hashM( i + vec2( 1, 1 ) ), f.x ), f.y ); }`)
-      .replace('#include <map_fragment>', `#include <map_fragment>
-        vec2 pm = vPosMundo.xz * 0.22 + vPosMundo.yy * 0.15;
-        diffuseColor.rgb *= 1.0 + uMacro * ( ruidoM( pm ) * 0.7 + ruidoM( pm * 3.1 ) * 0.3 - 0.5 ) * 2.0;`);
-  };
-  m.customProgramCacheKey = () => `macro-${forca}`;
-}
-
-function qualidadeInicial(): Qualidade {
-  try {
-    const salva = localStorage.getItem(CHAVE_QUALIDADE);
-    if (salva === 'alta' || salva === 'economica') return salva;
-  } catch { /* sem armazenamento: escolha automática */ }
-  const nav = navigator as Navigator & { connection?: { saveData?: boolean }; deviceMemory?: number };
-  const toque = window.matchMedia?.('(pointer: coarse)').matches;
-  const economia = !!nav.connection?.saveData;
-  const poucaMemoria = !!nav.deviceMemory && nav.deviceMemory <= 4;
-  return toque || economia || poucaMemoria ? 'economica' : 'alta';
-}
-const preferencia = (q: string) => { try { return window.matchMedia(q).matches; } catch { return false; } };
-
-// Caixa com UV em metros projetada pela face (as texturas não esticam).
-function caixa(x0: number, y0: number, z0: number, x1: number, y1: number, z1: number, m = 1): THREE.BufferGeometry {
-  const g = new THREE.BoxGeometry(Math.abs(x1 - x0), Math.abs(y1 - y0), Math.abs(z1 - z0));
-  g.translate((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2);
-  const p = g.attributes.position, n = g.attributes.normal, uv = g.attributes.uv;
-  for (let i = 0; i < p.count; i++) {
-    const ax = Math.abs(n.getX(i)), ay = Math.abs(n.getY(i));
-    const x = p.getX(i), y = p.getY(i), z = p.getZ(i);
-    if (ay > 0.5) uv.setXY(i, x / m, z / m);
-    else if (ax > 0.5) uv.setXY(i, z / m, y / m);
-    else uv.setXY(i, x / m, y / m);
-  }
-  return g;
-}
-
 // Textura das placas das portas (desenhada com as fontes do kit).
 function placaTextura(linha1: string, linha2: string, cor: string): THREE.CanvasTexture {
   const c = document.createElement('canvas');

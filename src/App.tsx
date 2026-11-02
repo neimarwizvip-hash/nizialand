@@ -43,6 +43,7 @@ const ExploreScreen = lazy(() => import('./features/level1/ExploreScreen'));
 // Vistoria do professor: só no `npm run dev` (no build, import.meta.env.DEV é false e o código nem entra).
 const VistoriaScreen = import.meta.env.DEV ? lazy(() => import('./features/vistoria/VistoriaScreen')) : null;
 const IntervaloScreen = lazy(() => import('./features/intervalo/IntervaloScreen').then(m => ({ default: m.IntervaloScreen })));
+const BotaoAvancar = import.meta.env.DEV ? lazy(() => import('./features/vistoria/BotaoAvancar')) : null;
 const VistoriaBadge = import.meta.env.DEV ? lazy(() => import('./features/vistoria/VistoriaScreen').then(m => ({ default: m.VistoriaBadge }))) : null;
 const AdminPanel = lazy(() => import('./features/admin/AdminPanel').then(m => ({ default: m.AdminPanel })));
 
@@ -245,6 +246,7 @@ export const App: React.FC = () => {
           </Routes>
           <ConviteIntervalo />
           {VistoriaBadge && <VistoriaBadge />}
+          {BotaoAvancar && <BotaoAvancar />}
           </Suspense>
         </ScreenTransitionLoader>
       </BrowserRouter>

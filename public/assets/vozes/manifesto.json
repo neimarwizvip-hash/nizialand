@@ -96,11 +96,91 @@
   "origem": "intervalo"
  },
  {
+  "chave": "0b342e6d",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "That's the library.",
+  "origem": "intervalo"
+ },
+ {
   "chave": "0f08ab71",
   "idioma": "en-US",
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Go down the ramp to the water fountain!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "0f7aa38b",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Where are you going?",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "137d83e7",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Collect the actions!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "29bf91fc",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Got you! Let's talk in my office.",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "2ab5efce",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Keep the past tense!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "2cf99653",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Stop running in the hallway!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "399fca3f",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Go straight.",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "3a440730",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "That's the office.",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "3df596ed",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "That's the gym.",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "45d30cc1",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "Got you! Back to class!",
   "origem": "intervalo"
  },
  {
@@ -128,6 +208,22 @@
   "origem": "intervalo"
  },
  {
+  "chave": "4d48ea5b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Collect the feelings!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "500a95cb",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Keep the school places!",
+  "origem": "intervalo"
+ },
+ {
   "chave": "5357879e",
   "idioma": "en-US",
   "voz": "Juniper",
@@ -141,6 +237,14 @@
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Go to the library!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "61754706",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "It's on your right.",
   "origem": "intervalo"
  },
  {
@@ -160,11 +264,35 @@
   "origem": "intervalo"
  },
  {
+  "chave": "8b67e61e",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "It's in front of you.",
+  "origem": "intervalo"
+ },
+ {
   "chave": "99034486",
   "idioma": "en-US",
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Failed!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "a36d93e0",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Collect the school objects!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "af84dd37",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Turn around.",
   "origem": "intervalo"
  },
  {
@@ -176,11 +304,91 @@
   "origem": "intervalo"
  },
  {
+  "chave": "b6263281",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "That's the lab.",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "b819e68d",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "It's behind you.",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "b9916ef7",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "Back to class, please!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "cb0fe657",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "It's on your left.",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "cbf45a61",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "That's the classroom.",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "cc45e250",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Got you! Principal's office, now!",
+  "origem": "intervalo"
+ },
+ {
   "chave": "de9dff8b",
   "idioma": "en-US",
   "voz": "Juniper",
   "personagem": "professora",
   "texto": "Go to the bathroom!",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "dfbb728f",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Turn left.",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "e431569e",
+  "idioma": "en-US",
+  "voz": "Micah",
+  "personagem": "mane",
+  "texto": "Turn right.",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "f14d4226",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "That's the bathroom.",
+  "origem": "intervalo"
+ },
+ {
+  "chave": "fa7e1aee",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Keep the rules!",
   "origem": "intervalo"
  },
  {

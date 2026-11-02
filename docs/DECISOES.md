@@ -48,3 +48,11 @@
 - **Camada 2.0 (Níveis 3 a 6):** menos atividades, missões dinâmicas e com narrativa (ex.: resolver um mistério), tela em movimento, mesmo tema do nível. O Nível 3 é a ponte entre 1.0 e 2.0.
 - **Camada 3.0 (Níveis 7 a 10):** proposta do Claude a definir — missões encadeadas na escola 3D, competição entre equipes, chefe final contra o Zé.
 - **Expectativa:** ao concluir um nível, o aluno vê o cartão "Vem aí" com o próximo jogo (`src/data/proximoNivel.ts`).
+
+
+## 02/11/2026 — Labirinto 3D, perseguição, Tetris e botão Avançar
+
+- Labirinto do Nível 4 em 3D, primeira pessoa, com três etapas graduais em espaços diferentes (corredor das salas, biblioteca, jardim de cerca viva). Pedir direção: o Mané responde em inglês a partir de para onde o aluno olha. Padrão Rota Piloto (Alta e Econômico); sem WebGL cai na versão 2D.
+- Fuga no corredor (Nível 6, estilo Pac-Man): Vânia, depois Edileia, por último Márcio (com a Vânia). Recolher as palavras do tema falado; HALL PASS deixa quem persegue confuso.
+- Tetris das palavras (Níveis 4 e 6): peça do tema encaixa, fora do tema vai para o lixo; três temas por partida.
+- Botão Avançar (teste), só no npm run dev: liga a vistoria (nada salvo, nada vai para a planilha), conclui a próxima atividade e sobe de nível. Atalho Alt + seta para a direita.

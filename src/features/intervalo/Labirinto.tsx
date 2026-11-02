@@ -3,38 +3,15 @@ import { BotaoJogo, Estrelas, Icone, Painel } from '../../components/kit';
 import { audioService } from '../../services/audio';
 import { narrar } from '../../services/narracao';
 import { LUGARES } from '../../data/frasesIntervalo';
+import { gerarLabirinto, type Lab } from './labirintoLogica';
 import { calmo, Cruzeta, desenharAluno, imagemDoAvatar, PASSO, useDirecoes, type Direcao } from './grade';
 
-// LABIRINTO DA ESCOLA (intervalo do Nível 4): ouça o destino em inglês ("Go to the library!") e ache a porta certa
+// LABIRINTO DA ESCOLA, versão 2D (reserva do labirinto 3D para aparelhos sem WebGL): ouça o destino em inglês ("Go to the library!") e ache a porta certa
 // no labirinto de corredores antes do tempo acabar. Porta errada custa 5 segundos. Três rodadas, labirintos maiores.
 
 interface Props { avatar?: string; onFim: (r: { pontos: number }) => void; onSair: () => void }
 
 const RODADAS = [{ c: 7, l: 5, tempo: 45 }, { c: 9, l: 6, tempo: 50 }, { c: 11, l: 7, tempo: 55 }];
-
-interface Lab { c: number; l: number; paredes: boolean[][][]; portas: Array<{ x: number; y: number; lugar: number }>; alvo: number }
-
-// Labirinto perfeito (busca em profundidade). paredes[y][x] = [cima, dir, baixo, esq]
-function gerar(c: number, l: number): Lab {
-  const paredes = Array.from({ length: l }, () => Array.from({ length: c }, () => [true, true, true, true]));
-  const visto = Array.from({ length: l }, () => Array(c).fill(false));
-  const pilha: Array<[number, number]> = [[0, 0]]; visto[0][0] = true;
-  const viz: Array<[number, number, number, number]> = [[0, -1, 0, 2], [1, 0, 1, 3], [0, 1, 2, 0], [-1, 0, 3, 1]];
-  while (pilha.length) {
-    const [x, y] = pilha[pilha.length - 1];
-    const op = viz.filter(([dx, dy]) => { const nx = x + dx, ny = y + dy; return nx >= 0 && ny >= 0 && nx < c && ny < l && !visto[ny][nx]; });
-    if (!op.length) { pilha.pop(); continue; }
-    const [dx, dy, p, q] = op[Math.floor(Math.random() * op.length)];
-    paredes[y][x][p] = false; paredes[y + dy][x + dx][q] = false; visto[y + dy][x + dx] = true; pilha.push([x + dx, y + dy]);
-  }
-  // portas: becos sem saída longe da largada
-  const becos: Array<[number, number]> = [];
-  for (let y = 0; y < l; y++) for (let x = 0; x < c; x++) if ((x + y) > 3 && paredes[y][x].filter(Boolean).length === 3) becos.push([x, y]);
-  becos.sort(() => Math.random() - 0.5);
-  const lugares = [...LUGARES.keys()].sort(() => Math.random() - 0.5);
-  const portas = becos.slice(0, 4).map(([x, y], i) => ({ x, y, lugar: lugares[i] }));
-  return { c, l, paredes, portas, alvo: portas.length ? portas[Math.floor(Math.random() * portas.length)].lugar : 0 };
-}
 
 export const Labirinto: React.FC<Props> = ({ avatar, onFim, onSair }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -51,7 +28,7 @@ export const Labirinto: React.FC<Props> = ({ avatar, onFim, onSair }) => {
 
   const iniciarRodada = useCallback((r: number) => {
     const cfg = RODADAS[r];
-    const novo = gerar(cfg.c, cfg.l);
+    const novo = gerarLabirinto(cfg.c, cfg.l, 4);
     setLab(novo); setPos([0, 0]); setTempo(Math.round(cfg.tempo * (calmo() ? 1.5 : 1))); setAviso(null);
     narrar([{ texto: LUGARES[novo.alvo].frase, idioma: 'en-US', personagem: 'professora' }]);
   }, []);

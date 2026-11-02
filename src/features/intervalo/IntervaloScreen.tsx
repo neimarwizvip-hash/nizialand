@@ -5,7 +5,9 @@ import { useGame } from '../../context/GameContext';
 import { intervaloPorId } from './intervalos';
 import { TiroNasNotas } from './TiroNasNotas';
 import { PulaDistracao } from './PulaDistracao';
-import { Labirinto } from './Labirinto';
+import { Labirinto3D } from './Labirinto3D';
+import { FugaCorredor } from './FugaCorredor';
+import { TetrisPalavras } from './TetrisPalavras';
 import { MissaoBebedouro } from './MissaoBebedouro';
 
 // Tela do jogo de intervalo. Guarda a melhor nota do aluno em cada intervalo (não conta para concluir o nível).
@@ -34,8 +36,10 @@ export const IntervaloScreen: React.FC = () => {
         <main className="flex-1 w-full max-w-5xl mx-auto px-3 sm:px-4 py-3 short:py-1 flex flex-col">
           <div className="my-auto">
             {intervalo.jogo === 'notas' && <TiroNasNotas dificuldade={intervalo.dificuldade} onFim={r => registrar(r.nota)} onSair={sair} />}
-            {intervalo.jogo === 'labirinto' && <Labirinto avatar={currentPlayer?.avatar} onFim={r => registrar(r.pontos)} onSair={sair} />}
+            {intervalo.jogo === 'labirinto' && <Labirinto3D avatar={currentPlayer?.avatar} onFim={r => registrar(r.pontos)} onSair={sair} />}
             {intervalo.jogo === 'bebedouro' && <MissaoBebedouro avatar={currentPlayer?.avatar} onFim={r => registrar(r.pontos)} onSair={sair} />}
+            {intervalo.jogo === 'fuga' && <FugaCorredor avatar={currentPlayer?.avatar} onFim={r => registrar(r.pontos)} onSair={sair} />}
+            {intervalo.jogo === 'tetris' && <TetrisPalavras dificuldade={intervalo.dificuldade} onFim={r => registrar(r.pontos)} onSair={sair} />}
             {intervalo.jogo === 'pula' && <PulaDistracao dificuldade={intervalo.dificuldade} avatar={currentPlayer?.avatar} onFim={r => registrar(r.pontos)} onSair={sair} />}
           </div>
         </main>
