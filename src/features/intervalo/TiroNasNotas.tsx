@@ -45,7 +45,7 @@ export const TiroNasNotas: React.FC<Props> = ({ dificuldade, onFim, onSair }) =>
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const caixaRef = useRef<HTMLDivElement>(null);
   const [fase, setFase] = useState<'instrucoes' | 'jogando' | 'fim'>('instrucoes');
-  const [hud, setHud] = useState({ soma: 0, restantes: CONFIG[dificuldade].cartas });
+  const [hud, setHud] = useState<{ soma: number; restantes: number }>({ soma: 0, restantes: CONFIG[dificuldade].cartas });
   const [resultado, setResultado] = useState<{ nota: number; soma: number } | null>(null);
   const teclas = useRef<Record<string, boolean>>({});
   const toque = useRef({ esq: false, dir: false, tiro: false });

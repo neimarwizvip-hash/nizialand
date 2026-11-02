@@ -27,7 +27,7 @@ export const PulaDistracao: React.FC<Props> = ({ dificuldade, avatar, onFim, onS
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const caixaRef = useRef<HTMLDivElement>(null);
   const [fase, setFase] = useState<'instrucoes' | 'jogando' | 'fim'>('instrucoes');
-  const [hud, setHud] = useState({ pontos: 0, vidas: 3, falta: CFG[dificuldade].dur });
+  const [hud, setHud] = useState<{ pontos: number; vidas: number; falta: number }>({ pontos: 0, vidas: 3, falta: CFG[dificuldade].dur });
   const [res, setRes] = useState<{ pontos: number; vidas: number; pisadas: number } | null>(null);
   const comando = useRef({ pular: false, abaixar: false });
 

@@ -4,7 +4,7 @@ Uso (pela raiz do projeto): npm run vozes
 - Português: modelo local do Phonon pt (C:/Users/<você>/.claude-voice/model).
 - Inglês: hf://gradium/phonon-31m-en (já no cache do Hugging Face).
 - Só gera o que falta; apaga mp3 que não está mais no manifesto; grava indice.json (lista das chaves).
-- mp3 mono 32 kb/s sem metadados.
+- mp3 mono 32 kb/s sem metadados (nem a marca do codificador).
 """
 import json
 import os
@@ -53,7 +53,8 @@ def main() -> None:
         for n, m in enumerate(falta, 1):
             wav = Path(tmp) / f"{m['chave']}.wav"
             modelo(m["idioma"]).save(str(wav), m["texto"], voice=m["voz"])
-            subprocess.run([ff, "-loglevel", "error", "-y", "-i", str(wav), "-map_metadata", "-1", "-ac", "1", "-ar", "24000", "-b:a", "32k",
+            subprocess.run([ff, "-loglevel", "error", "-y", "-i", str(wav), "-map_metadata", "-1", "-fflags", "+bitexact", "-flags:a", "+bitexact", "-id3v2_version", "0", "-write_xing", "0",
+                            "-ac", "1", "-ar", "24000", "-b:a", "32k",
                             str(PASTA / f"{m['chave']}.mp3")], check=True)
             if n % 20 == 0 or n == len(falta):
                 print(f"  {n}/{len(falta)}")
