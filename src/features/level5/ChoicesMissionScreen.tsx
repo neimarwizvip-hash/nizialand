@@ -8,6 +8,7 @@ import { buildLevel5Result } from './level5Rules';
 import { getMissionProgress } from '../../engines/progression/progress';
 import { unlockForVistoria } from '../../services/vistoria';
 import { itensDaRodada } from '../../data/rodadasFases';
+import { dadosDoJogo } from '../../data/jogosFases';
 import { TelaFaseMissao } from '../levels/TelaFaseMissao';
 import { SEGUNDOS_POR_PERGUNTA } from '../levels/PhaseMissionScreen';
 import type { ResultadoRodada } from '../levels/RodadaAtividade';
@@ -33,6 +34,9 @@ export const ChoicesMissionScreen: React.FC = () => {
     return itensDaRodada(aberta.id, grade, porAtividade[aberta.id] ?? []);
   }, [aberta, grade, content]);
 
+  // Minijogo da atividade (memorizado: o jogo não pode reiniciar a cada nova renderização).
+  const dados = useMemo(() => (aberta ? dadosDoJogo(aberta.id, grade) : undefined), [aberta, grade]);
+
   const concluir = (r: ResultadoRodada) => {
     if (!aberta || !itens) return;
     const result = buildLevel5Result(aberta, grade, r.acertos * 100, r.acertos, itens[0] as Level5Question);
@@ -50,6 +54,7 @@ export const ChoicesMissionScreen: React.FC = () => {
       notaConclusao="Continue sua jornada no próximo nível."
       selecionada={aberta ? { id: aberta.id, nome: aberta.name } : null}
       itens={itens}
+      dados={dados}
       cronometro={aberta?.mechanic === 'timed' ? SEGUNDOS_POR_PERGUNTA : undefined}
       onConcluir={concluir}
       onAbrir={id => setParams({ atividade: id })}

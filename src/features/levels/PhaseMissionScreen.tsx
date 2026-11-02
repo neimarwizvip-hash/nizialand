@@ -6,6 +6,7 @@ import { getMissionProgress } from '../../engines/progression/progress';
 import type { Level } from '../../core/types';
 import { unlockForVistoria } from '../../services/vistoria';
 import { itensDaRodada } from '../../data/rodadasFases';
+import { dadosDoJogo } from '../../data/jogosFases';
 import { TelaFaseMissao } from './TelaFaseMissao';
 import type { ResultadoRodada } from './RodadaAtividade';
 
@@ -31,6 +32,9 @@ export const PhaseMissionScreen: React.FC<{ level: Level; content: any; accent: 
     return lista.length ? lista : content[grade].items;
   }, [aberta, grade, content]);
 
+  // Minijogo da atividade (memorizado: o jogo não pode reiniciar a cada nova renderização).
+  const dados = useMemo(() => (aberta ? dadosDoJogo(aberta.id, grade) : undefined), [aberta, grade]);
+
   const concluir = (r: ResultadoRodada) => {
     if (!aberta || !itens) return;
     const now = new Date().toISOString();
@@ -48,6 +52,7 @@ export const PhaseMissionScreen: React.FC<{ level: Level; content: any; accent: 
       notaConclusao={level.number === 8 ? 'O Nível 9 (Gincana) será lançado em breve. Seu progresso do Nível 8 foi registrado.' : 'Continue sua jornada no próximo nível.'}
       selecionada={aberta ? { id: aberta.id, nome: aberta.name } : null}
       itens={itens}
+      dados={dados}
       cronometro={aberta?.mechanic === 'timed' ? SEGUNDOS_POR_PERGUNTA : undefined}
       onConcluir={concluir}
       onAbrir={id => setP({ atividade: id })}

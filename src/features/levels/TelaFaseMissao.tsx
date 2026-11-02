@@ -7,7 +7,9 @@ import type { Mechanic } from '../../core/types';
 import { fala as falaDoRoteiro } from '../../data/falasAnfitrioes';
 import { useGame } from '../../context/GameContext';
 import type { ItemRodada } from '../../data/rodadasFases';
-import { RodadaAtividade, type ResultadoRodada } from './RodadaAtividade';
+import { type ResultadoRodada } from './RodadaAtividade';
+import { JogoAtividade } from '../jogos/JogoAtividade';
+import type { DadosJogo } from '../../data/jogosFases';
 
 // Tela comum das missões dos Níveis 3 a 7 (cartazes das atividades) e da pergunta de cada atividade.
 // Cada atividade abre uma rodada de perguntas (RodadaAtividade); os itens vêm de data/rodadasFases.ts.
@@ -23,6 +25,7 @@ interface Props {
   selecionada: { id: string; nome: string } | null;
   itens: ItemRodada[] | null; // perguntas da rodada da atividade aberta
   cronometro?: number; // segundos por pergunta nas atividades contra o relógio
+  dados?: DadosJogo; // minijogo da atividade (sem ele, rodada de perguntas)
   onConcluir: (r: ResultadoRodada) => void;
   onAbrir: (id: string) => void;
   onVoltar: () => void;
@@ -45,7 +48,7 @@ const Percevejo: React.FC<{ cor: string }> = ({ cor }) => (
 );
 
 export const TelaFaseMissao: React.FC<Props> = ({
-  nivel, titulo, subtitulo, descricao, atividades, concluido, notaConclusao, selecionada, itens, cronometro, onConcluir, onAbrir, onVoltar, onMapa,
+  nivel, titulo, subtitulo, descricao, atividades, concluido, notaConclusao, selecionada, itens, cronometro, dados, onConcluir, onAbrir, onVoltar, onMapa,
 }) => {
   const { currentPlayer } = useGame();
   const nome = currentPlayer?.displayName || currentPlayer?.name;
@@ -67,7 +70,7 @@ export const TelaFaseMissao: React.FC<Props> = ({
           {/* my-auto (e não justify-center): se a rodada for mais alta que a tela, rola sem cortar o topo */}
           <main className="flex-1 w-full max-w-4xl mx-auto px-3 sm:px-4 py-3 md:py-5 short:py-1 flex flex-col">
             <div className="my-auto">
-            <RodadaAtividade key={selecionada.id} nivel={nivel} nome={selecionada.nome} itens={itens} cronometro={cronometro} onConcluir={onConcluir} onVoltar={onVoltar} />
+            <JogoAtividade key={selecionada.id} nivel={nivel} nome={selecionada.nome} dados={dados ?? { tipo: 'rodada' }} itens={itens} cronometro={cronometro} onConcluir={onConcluir} onVoltar={onVoltar} />
             </div>
           </main>
         </div>
