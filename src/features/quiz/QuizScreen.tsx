@@ -13,7 +13,7 @@ import {
 } from './zeRules';
 import { audioService } from '../../services/audio';
 import { speechService } from '../../services/speech';
-import { falarComo } from '../../services/narracao';
+import { falarComo, pararComo } from '../../services/narracao';
 import { fireConfetti } from '../../components/ui/ConfettiEffect';
 import { BotaoJogo, Cenario, Cronometro, Ficha, Fita, Hud, Icone, Moedas, Painel } from '../../components/kit';
 
@@ -86,7 +86,7 @@ export const QuizScreen: React.FC = () => {
     setZeVisible(false);
     setZeTick(0);
     setZeBonusArmed(false);
-    window.speechSynthesis?.cancel();
+    pararComo('ze');
     if (zeQuestions.includes(currentIndex)) {
       zeTimersRef.current.push(window.setTimeout(() => {
         zeShownAtRef.current = Date.now();
@@ -96,7 +96,7 @@ export const QuizScreen: React.FC = () => {
     }
     return () => {
       clearZeTimers();
-      window.speechSynthesis?.cancel();
+      pararComo('ze');
     };
   }, [currentIndex, zeQuestions]);
 
@@ -105,7 +105,7 @@ export const QuizScreen: React.FC = () => {
     if (zeVisible && isQuestionResolved) {
       clearZeTimers();
       setZeVisible(false);
-      window.speechSynthesis?.cancel();
+      pararComo('ze');
       return;
     }
     if (zeVisible) falarComo('ze', zeLine(zeTick));
@@ -117,7 +117,7 @@ export const QuizScreen: React.FC = () => {
     audioService.playClick();
     clearZeTimers();
     setZeVisible(false);
-    window.speechSynthesis?.cancel();
+    pararComo('ze');
     if (Date.now() - zeShownAtRef.current <= 3000) setZeBonusArmed(true);
   };
 

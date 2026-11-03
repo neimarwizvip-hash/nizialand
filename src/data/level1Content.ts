@@ -61,6 +61,9 @@ export const SPEAKER_IMAGES: Record<Speaker, string> = {
   'Leia': '/assets/orientadora_leia.png',
 };
 
+// Voz gravada de quem fala no diálogo (a mesma do personagem no jogo inteiro).
+export const SPEAKER_VOZ: Record<Speaker, 'marcio' | 'vania' | 'leia'> = { 'Márcio': 'marcio', 'Vânia': 'vania', 'Leia': 'leia' };
+
 // Cartas escondidas do Zé na exploração (posições em %); tocar custa 5 s.
 export const EXPLORE_TRAPS: { x: number; y: number }[] = [
   { x: 30, y: 78 },

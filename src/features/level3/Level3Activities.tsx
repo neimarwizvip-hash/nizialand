@@ -264,6 +264,7 @@ const McRoom: React.FC<Level3ActivityProps & { activity: Activity; items: Level3
         {item.speak && <ListenButton onClick={() => speakEn(item.speak!)} />}
         <QuestionCard>{item.question}</QuestionCard>
       </div>
+      {item.speak && run.locked && <p role="status" className="mt-2 text-sm sm:text-base font-semibold text-nisia-azul-700">Você ouviu: “{item.speak}”</p>}
       <OptionGrid options={item.options} answer={item.answer} locked={run.locked} itemKey={run.index} onPick={run.answer} />
     </Level2Shell>
   );

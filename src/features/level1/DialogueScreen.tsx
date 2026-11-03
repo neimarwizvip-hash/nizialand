@@ -6,7 +6,7 @@ import { speechService } from '../../services/speech';
 import { audioService } from '../../services/audio';
 import { ZeCartinha } from '../../components/ze/ZeCartinha';
 import { LEVEL1_DIALOGUE } from '../../content/level1';
-import { LEVEL1_CONTENT, SPEAKER_IMAGES } from '../../data/level1Content';
+import { LEVEL1_CONTENT, SPEAKER_IMAGES, SPEAKER_VOZ } from '../../data/level1Content';
 import { ZE_INTERFERENCE, pickZeItems } from './level1Rules';
 import { useActivityRun } from './useActivityRun';
 import { ActivityShell, useZeInterrupt } from './ActivityShell';
@@ -23,7 +23,7 @@ const DialogueScreen: React.FC = () => {
   const [wrongPicks, setWrongPicks] = useState<number[]>([]);
 
   const play = () => {
-    if (audioService.isSoundOn()) speechService.speakEnglish(turn.line);
+    if (audioService.isSoundOn()) speechService.speakEnglish(turn.line, SPEAKER_VOZ[turn.speaker]);
   };
 
   useEffect(() => {

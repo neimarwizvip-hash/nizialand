@@ -1408,6 +1408,1326 @@
   ]
  },
  {
+  "chave": "1786f933",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "You should practice with us first.",
+  "origem": "jogo nivel5-conselho",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "184dc6f1",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Let me help you.",
+  "origem": "jogo nivel5-conselho",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "3db6f100",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Can I borrow your eraser, please?",
+  "origem": "jogo nivel5-conselho",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "518ef8a1",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Help clean the floor.",
+  "origem": "jogo nivel5-conselho",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "6b4f0886",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "You should apologize to her.",
+  "origem": "jogo nivel5-conselho",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "78b105e6",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "You should go to bed earlier.",
+  "origem": "jogo nivel5-conselho",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "832474a4",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I will learn more.",
+  "origem": "jogo nivel5-conselho",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "89225e1b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "We will have problems in the future.",
+  "origem": "jogo nivel5-conselho",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "a97bace7",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I can show you the way.",
+  "origem": "jogo nivel5-conselho",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "c63eca0a",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Give it to the teacher.",
+  "origem": "jogo nivel5-conselho",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "d13fc230",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Could you let her finish, please?",
+  "origem": "jogo nivel5-conselho",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "d407202f",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "You shouldn’t use your phone so late.",
+  "origem": "jogo nivel5-conselho",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "eff3110a",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I think we should write our own answers.",
+  "origem": "jogo nivel5-conselho",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "fdc71952",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Support the classmate and tell a teacher.",
+  "origem": "jogo nivel5-conselho",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "0b536c97",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "hungry",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "0f5364aa",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "confident",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "14da4c16",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "sad",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "21e264f4",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "bored",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "33b05cd4",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "frustrated",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "3be4d1e0",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "tired",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "47e92e7f",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "angry",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "58a084c6",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "disappointed",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "5b5fa638",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "excited",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "64391c09",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "calm",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "7f029a14",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "nervous",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "8af6b203",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "embarrassed",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "9f8d7fd0",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "proud",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "9faec3bb",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "surprised",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "a66babc8",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "grateful",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "b176e117",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "jealous",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "b349ff89",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "lonely",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "bc7ec857",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "anxious",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "c1bd53ee",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "worried",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "ed5ca482",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "scared",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "edc15494",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "happy",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "fc250faa",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "relieved",
+  "origem": "jogo nivel5-sentimentos",
+  "niveis": [
+   5
+  ]
+ },
+ {
+  "chave": "24616ac0",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "He deleted it and apologized.",
+  "origem": "jogo nivel6-tetris",
+  "niveis": [
+   6
+  ]
+ },
+ {
+  "chave": "346c6a23",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Because nobody shared the tasks.",
+  "origem": "jogo nivel6-tetris",
+  "niveis": [
+   6
+  ]
+ },
+ {
+  "chave": "3b224d97",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "She woke up.",
+  "origem": "jogo nivel6-tetris",
+  "niveis": [
+   6
+  ]
+ },
+ {
+  "chave": "41ce35e5",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Her friend smiled.",
+  "origem": "jogo nivel6-tetris",
+  "niveis": [
+   6
+  ]
+ },
+ {
+  "chave": "44b1851e",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Did you finish the task?",
+  "origem": "jogo nivel6-tetris",
+  "niveis": [
+   6
+  ]
+ },
+ {
+  "chave": "50782500",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "That’s interesting. Can you explain why?",
+  "origem": "jogo nivel6-tetris",
+  "niveis": [
+   6
+  ]
+ },
+ {
+  "chave": "514776b3",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "He failed the test.",
+  "origem": "jogo nivel6-tetris",
+  "niveis": [
+   6
+  ]
+ },
+ {
+  "chave": "7a8f600d",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "people will not listen.",
+  "origem": "jogo nivel6-tetris",
+  "niveis": [
+   6
+  ]
+ },
+ {
+  "chave": "971c0ebc",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Everybody helped clean it up.",
+  "origem": "jogo nivel6-tetris",
+  "niveis": [
+   6
+  ]
+ },
+ {
+  "chave": "993ba86e",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Why did you choose that project?",
+  "origem": "jogo nivel6-tetris",
+  "niveis": [
+   6
+  ]
+ },
+ {
+  "chave": "9e06d518",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "They listened to each other.",
+  "origem": "jogo nivel6-tetris",
+  "niveis": [
+   6
+  ]
+ },
+ {
+  "chave": "a1f1fbed",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "She went to school.",
+  "origem": "jogo nivel6-tetris",
+  "niveis": [
+   6
+  ]
+ },
+ {
+  "chave": "a3d12263",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "She helped her friend yesterday.",
+  "origem": "jogo nivel6-tetris",
+  "niveis": [
+   6
+  ]
+ },
+ {
+  "chave": "d82685bb",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Plan, practice, present.",
+  "origem": "jogo nivel6-tetris",
+  "niveis": [
+   6
+  ]
+ },
+ {
+  "chave": "0fe96e2c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Cut the oranges.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "1aef2e0e",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Preheat the oven.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "1e054441",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Pour a little batter.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "27038c22",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Add the egg and the milk.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "30e44a1e",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Let it cool before cutting.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "346bac46",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Bake it for thirty minutes.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "5a6bd7d7",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Wash the fruit carefully.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "5c07fb31",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Mix everything.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "6248f236",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Heat the pan.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "65dfd977",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Cut the fruit into small pieces.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "6aadd44b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Mix the ingredients.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "78881481",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Squeeze the juice.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "7fba0be9",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Take two slices of bread.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "7fc168b9",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Flip the pancake.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "8935d41d",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put it in the microwave.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "9402d8ab",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Pour the batter into the pan.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "a99d5961",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Wash the oranges.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "b57457f4",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Pour it into a glass.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "d4e5d1ee",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put cheese on the bread.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "d8023957",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Mix it in a big bowl.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "e671b86b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Mix the flour, eggs and milk.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "ee5dc373",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the flour in the mug.",
+  "origem": "jogo nivel7-cozinha",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "00b9deb3",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "glue",
+  "origem": "jogo nivel7-material",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "0f7f1269",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "handout",
+  "origem": "jogo nivel7-material",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "2209104c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "backpack",
+  "origem": "jogo nivel7-material",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "23dedbc8",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "sticky notes",
+  "origem": "jogo nivel7-material",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "2c51388e",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "compass",
+  "origem": "jogo nivel7-material",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "4f369c7a",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "worksheet",
+  "origem": "jogo nivel7-material",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "5a26440e",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "locker",
+  "origem": "jogo nivel7-material",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "65e4af86",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "planner",
+  "origem": "jogo nivel7-material",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "80181f3a",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "calculator",
+  "origem": "jogo nivel7-material",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "8fd11682",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "deadline",
+  "origem": "jogo nivel7-material",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "96dd9eea",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "binder",
+  "origem": "jogo nivel7-material",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "b39b5311",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "pencil case",
+  "origem": "jogo nivel7-material",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "bc28a7dc",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "protractor",
+  "origem": "jogo nivel7-material",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "bd1ed77a",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "sharpener",
+  "origem": "jogo nivel7-material",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "dd24a55a",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "folder",
+  "origem": "jogo nivel7-material",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "e5b12dbf",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "stapler",
+  "origem": "jogo nivel7-material",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "e6a078dc",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "textbook",
+  "origem": "jogo nivel7-material",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "fa59ac79",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "highlighter",
+  "origem": "jogo nivel7-material",
+  "niveis": [
+   7
+  ]
+ },
+ {
+  "chave": "0b16839a",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the clock on the shelf.",
+  "origem": "jogo nivel8-sala",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "154da9e5",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Leave the laptop on the teacher’s desk.",
+  "origem": "jogo nivel8-sala",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "216873d8",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Place the poster between the door and the board.",
+  "origem": "jogo nivel8-sala",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "31d16f62",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the backpack under the teacher’s desk.",
+  "origem": "jogo nivel8-sala",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "6d72dcce",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the plant in the corner, far from the door.",
+  "origem": "jogo nivel8-sala",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "7d57688c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Place the lamp on the shelf.",
+  "origem": "jogo nivel8-sala",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "7f7ebd67",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the easel next to the window, where there is more light.",
+  "origem": "jogo nivel8-sala",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "7ff62bcd",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Hide the box behind the door.",
+  "origem": "jogo nivel8-sala",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "8ab16396",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the chair next to the window.",
+  "origem": "jogo nivel8-sala",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "988977a2",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the chairs in front of the board.",
+  "origem": "jogo nivel8-sala",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "a93776c6",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the bag under the desk.",
+  "origem": "jogo nivel8-sala",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "b16d19d2",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Place the bookshelf between the door and the board.",
+  "origem": "jogo nivel8-sala",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "c2978e5a",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the bin in the corner.",
+  "origem": "jogo nivel8-sala",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "db15a576",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the ball behind the door.",
+  "origem": "jogo nivel8-sala",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "e7d31bca",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the rug in front of the board.",
+  "origem": "jogo nivel8-sala",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "ecf5dff6",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the globe next to the window.",
+  "origem": "jogo nivel8-sala",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "0250bf57",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Right, after the cafeteria.",
+  "origem": "jogo nivel8-semana",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "14edb070",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "In front of the desks.",
+  "origem": "jogo nivel8-semana",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "18b733f0",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Turning off notifications while studying.",
+  "origem": "jogo nivel8-semana",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "237cc964",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "We made it together.",
+  "origem": "jogo nivel8-semana",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "556d32a1",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Look left and right.",
+  "origem": "jogo nivel8-semana",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "83757799",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I studied English.",
+  "origem": "jogo nivel8-semana",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "8c7a8a2f",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Next week, I’m going to start earlier.",
+  "origem": "jogo nivel8-semana",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "91012d25",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "The hardest part was organizing the data.",
+  "origem": "jogo nivel8-semana",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "a9104b2b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "We finished earlier than we expected.",
+  "origem": "jogo nivel8-semana",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "b624bde0",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Left, at the library.",
+  "origem": "jogo nivel8-semana",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "d6420759",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Next to the window.",
+  "origem": "jogo nivel8-semana",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "dceb3065",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Between the door and the board.",
+  "origem": "jogo nivel8-semana",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "f9ee61ca",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Thank you for listening!",
+  "origem": "jogo nivel8-semana",
+  "niveis": [
+   8
+  ]
+ },
+ {
+  "chave": "fedff5ce",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "On the shelf.",
+  "origem": "jogo nivel8-semana",
+  "niveis": [
+   8
+  ]
+ },
+ {
   "chave": "91dfaf37",
   "idioma": "en-US",
   "voz": "Delia",
@@ -2197,6 +3517,3224 @@
   "origem": "missao mural",
   "niveis": [
    3
+  ]
+ },
+ {
+  "chave": "1d5db8ed",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Who played soccer yesterday?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "274d2918",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Who has a dog?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "3d254676",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Who visited their grandma last weekend?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "3de54a3d",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Who is 14 years old?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "454ec2ad",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Mateus is 14 years old. Who is younger than Mateus?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "45abfe0d",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Whose favorite color is red?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "46bff85a",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Who has a cat?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "5aaac4de",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Who stayed home because of the rain?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "64b53077",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Who watched something last night?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "6ae8841f",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Larissa is 13 years old. Who is older than Larissa?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "6f8be71b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Gabriel is 11 years old. Who is older than Gabriel?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "8af50bb1",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Who passed the test as a result of studying hard?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "9ad47dc0",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Rafael is 12 years old. Who is as old as Rafael?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "9da34474",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Who is from Bahia?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "9e774b0b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Who goes to school by bus?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "adbdec87",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Who has been to a European city?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "d2e2ad04",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Sofia is 12 years old. Who is as old as Sofia?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "e4ede690",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Who has already finished the homework?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "f39746c7",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Who gets up at 6 every day?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "faa6e20d",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Who has lived here since 2015?",
+  "origem": "nivel0 flashcards",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "46f748d0",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Complete the school rule: In Nisialand, we learn and play blank!",
+  "origem": "nivel0 historia",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "4ec99dab",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "What did Principal Márcio say about cell phones in the hallway?",
+  "origem": "nivel0 historia",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "53111222",
+  "idioma": "en-US",
+  "voz": "Zoey",
+  "personagem": "colega",
+  "texto": "Good morning! Hurry up, the bell is ringing! Today we have English class!",
+  "origem": "nivel0 historia",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "81d5b19b",
+  "idioma": "en-US",
+  "voz": "Trevor",
+  "personagem": "colegaM",
+  "texto": "Look at this school! It looks like a normal day at Nísia Vilela, but something feels magical here...",
+  "origem": "nivel0 historia",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "873463e3",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "How do we say 'prestar atenção' or 'vamos para a aula' in English?",
+  "origem": "nivel0 historia",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "96d47483",
+  "idioma": "en-US",
+  "voz": "Trevor",
+  "personagem": "colegaM",
+  "texto": "Oops! Mr. Márcio caught me! I need to put this phone away and get to class right now! Run!",
+  "origem": "nivel0 historia",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "bb71338c",
+  "idioma": "en-US",
+  "voz": "Zoey",
+  "personagem": "colega",
+  "texto": "Hi, friends! Wait for me! Please, put your phone in your bag before the principal sees it!",
+  "origem": "nivel0 historia",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "d938c235",
+  "idioma": "en-US",
+  "voz": "Zoey",
+  "personagem": "colega",
+  "texto": "Yes, Mr. Márcio! We are all different, and we learn together!",
+  "origem": "nivel0 historia",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "e5781968",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Attention, students! In this school, we learn and play together. No cell phones in the hallway! Let's go to class!",
+  "origem": "nivel0 historia",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "00460a48",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "He blank watching TV. He is sleeping.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "01010a6e",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "\"Pretend\" means...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "045bc3e1",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Choose the correct form: o cachorro do Lucas.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "07f50495",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "\"Library\" means...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "0903026b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Read: \"Think before you post. The internet never forgets.\" The main idea is...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "09603e27",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "The teacher writes on the blank.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "107a4e7a",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "My phone blank. I can't find it anywhere!",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "1390caed",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "My brother blank his homework at night.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "1555e082",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Your uncle's children are your...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "1a087071",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "We blank to the beach last Sunday.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "1a232103",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Choose the correct sentence.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "1c85e133",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Choose the negative: \"They are tired.\"",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "1d03f5b8",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Today is blank than yesterday.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "1f8eebfb",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Rafael is blank Juliana.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "212643af",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "If I blank rich, I would travel the world.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "257bc6ff",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Look! It blank.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "28173894",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "A tweet says: \"Can't believe I aced the test! 🎉\" The person feels...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "2e863049",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Which subject studies numbers?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "2eb312bf",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "\"Actually\" means...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "2f4ec1be",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "If you heat ice, it blank.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "311aa4fa",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "This is blank day of my life!",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "31bd0436",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Which month comes after March?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "381135cd",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "\"I will call you,\" he said. → He said he blank call me.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "3c2e785c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "\"I can swim.\" → He said he blank swim.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "3ca12276",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Who is older, Alice or Bruno?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "3de81153",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "She is blank student in the class.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "428228be",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Which one is the SAFEST password?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "432e9579",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "In \"She works hard; however, she earns little,\" \"however\" could be replaced by...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "43aabb4f",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "She blank speak three languages. She is amazing!",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "44534b36",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I blank like spicy food.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "44b66d6c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "It is 7:30. It is...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "475ce526",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "How do you write 15?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "4778879e",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I blank never blank to Disney.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "47e20000",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Mount Everest is blank mountain in the world.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "48a45538",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "We blank English right now.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "4ba05467",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "If it rains, we blank at home.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "4cd67c82",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "\"Régua\" in English is...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "4f3f2152",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "There blank some milk in the fridge.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "51569520",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "The books blank on the desk.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "527054ad",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I blank at home last night. I was sick.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "52d4959c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "A person who posts mean comments online is a...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "540573dc",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I think Brazil blank win the World Cup.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "568c41ce",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Choose the sentence in the passive voice.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "5740feaf",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Alice and Bruno are blank.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "58c1a321",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "If you study, you blank the test.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "5d5fec7b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "What blank you doing?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "60c8b39c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "blank you watch the game last night?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "60c96651",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Look at those clouds! It blank rain.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "61eb5071",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Mateus is blank Carlos.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "64dd1943",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "She didn't blank her homework.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "650af235",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "\"Where do you study?\" → She asked me where I blank.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "6522a308",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "My grades are blank than last year.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "66ed6c6c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Juliana is 12. Rafael is 12. Juliana is blank Rafael.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "6968bd73",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Read: \"Fast fashion produces cheap clothes quickly, but it creates tons of waste.\" The text criticizes...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "6b5ce710",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Paula is blank Marcos.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "6bb0ef87",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I would like blank orange, please.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "6ccc9ea6",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "In \"Despite the rain, the concert continued,\" \"despite\" expresses...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "700ced1c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "\"Don't run!\" → The teacher told us blank.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "711c1216",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "My father's brother is my...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "71df4d20",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "My mother's mother is my...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "73690593",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "\"Baixar um arquivo\" in English is...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "73f0085b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Who is younger, Paula or Marcos?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "7447c6b5",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "\"We live in Caxias.\" → They said they blank in Caxias.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "75802886",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Which word shows frequency?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "77fdc3da",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "The results blank tomorrow.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "78e74ffa",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Which word is a TRUE cognate?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "791eecb0",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "\"Push\" on a door means...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "7d47664b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Which day comes before Friday?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "7ebad197",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "How blank water do you drink a day?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "8292c5cb",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Has he eaten lunch blank?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "875ea578",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "What do you use to erase a mistake?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "889fcb64",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "They blank soccer on Saturdays.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "8942fbcb",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Passive of \"They built the school in 1990.\"",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "8afc3b95",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "We blank in the 6th grade.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "8b377c6c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "You blank eat so much sugar. It's bad for you.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "8f219fe0",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "What is 20 + 20?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "91086e77",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "\"Screen time\" means...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "91bce8f6",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Choose the correct -ing form of \"swim\".",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "91d11ef7",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "\"Fake news\" is information that is...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "92181a10",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Juliana is blank Sofia.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "9637382d",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "\"If I were you, I would apologize.\" This sentence gives...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "9c0a9d25",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Which sentence talks about an imaginary PAST situation?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "9c7f4655",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "My birthday is blank May 10th.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "9d01ac0b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "What is the past of \"buy\"?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "a1501074",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Have you blank this movie?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "a1cd7a50",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "She blank my best friend.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "a27d1613",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "If we blank earlier, we wouldn't have missed the bus.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "a31f6a8c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "How blank apples are there?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "a4670136",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "We blank travel next July. We bought the tickets.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "a6a61a70",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Choose the classroom command: \"Abram os livros.\"",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "ac47239b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Tomorrow is Saturday. I blank wake up early.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "af90df35",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Read: \"Less than half of the students had internet access at home.\" This means...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "afde210d",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "An elephant is blank a dog.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "b015496e",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "\"I am tired,\" she said. → She said that she blank tired.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "b2155a50",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "blank you help me tomorrow?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "b2f15a0d",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Are there blank eggs? No, there aren't blank.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "b4054e84",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Yesterday I blank my grandmother.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "b8fd143e",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Alice is blank Bruno.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "bbffe944",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I blank a student at Nísia Vilela.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "bd02b579",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Mateus is 14. Carlos is 13. Mateus is blank Carlos.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "bdd4b0cd",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "What would you do if you blank a million reais?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "c12e7a01",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Choose the superlative of \"happy\".",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "c22e616a",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "\"Feijão\" in English is...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "c5789cf2",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "English blank all over the world.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "c60ba7e0",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Where do students eat lunch at school?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "c95f2d0c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Choose the negative of \"She will come.\"",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "c9c7e6c7",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "You blank use your phone during the test. It is forbidden.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "cbf561a6",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Beatriz is blank Larissa.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "cc70cc61",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Gabriel is 11. Juliana is 12. Gabriel is blank Juliana.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "cd3034bb",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Gabriel is blank Rafael.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "ce6646b4",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "blank he play video games after school?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "cea214b3",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "\"Parents\" means...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "d1f572e8",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "We have lived here blank 2015.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "d451c325",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I will call you if I blank time.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "d48bb8f2",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "blank I go to the bathroom, please?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "d5455d09",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "You blank wear a seatbelt. It's the law.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "d90063a3",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "\"blank you 11 years old?\" \"Yes, I am.\"",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "d931d464",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "The Mona Lisa blank by Leonardo da Vinci.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "d9d6f7ce",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "The phone is ringing. I blank answer it!",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "dc84bb0b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Sign: \"Keep off the grass.\" It means...",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "e0cf5495",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "She blank to school by bus every day.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "e53deb41",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Mateus and Beatriz are 14. They are blank students in the group.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "e68e8e1b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "This book is blank than that one.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "e762bc1e",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "If she had studied, she blank the exam.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "e8e6918c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "If she blank late, she will miss the bus.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "ee1de6f1",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Choose the correct -ing form of \"dance\".",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "ef474acf",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "That was blank test of the year.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "f349e2af",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Which sentence is correct?",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "f94364cc",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "This is Ana. blank brother is Leo.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "fafc7380",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "She blank already finished her project.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "fc587eac",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "They have studied English blank three years.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "fff29cf2",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "This is Pedro. blank sister is Bia.",
+  "origem": "nivel0 quiz",
+  "niveis": [
+   0
+  ]
+ },
+ {
+  "chave": "022b3828",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "What did you do last weekend?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "075f7f86",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "How long have you studied at Nísia?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "0a590d76",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "What are you going to do after school?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "0a948540",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "What do you usually eat for breakfast?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "208109c4",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Good morning! What is your name?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "41f9ccf7",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "Will it rain during the field trip?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "53a892a1",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "How many pencils are on the desk?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "54a9f9b2",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "Which is more difficult: Math or English?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "6d4c674f",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Have you done the English homework yet?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "7691e852",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "How old are you?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "76b840f5",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Do you like fruit?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "881602e8",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Should we help the new student?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "95148a3a",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "What will you do if you miss the bus?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "97428ca0",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Are you ready for class?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "d7247e6f",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "What are you doing now?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "db9b572f",
+  "idioma": "en-US",
+  "voz": "Hadley",
+  "personagem": "vania",
+  "texto": "What time do you get up?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "e2614935",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Can I use my phone in class?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "ebcb6bf8",
+  "idioma": "en-US",
+  "voz": "Miles",
+  "personagem": "marcio",
+  "texto": "Did you see the new computer lab?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "edd8d5d2",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Is Ana playing in the court?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "fce564da",
+  "idioma": "en-US",
+  "voz": "Delia",
+  "personagem": "leia",
+  "texto": "Is this your backpack?",
+  "origem": "nivel1 dialogo",
+  "niveis": [
+   1
+  ]
+ },
+ {
+  "chave": "196e0a21",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Yesterday we visited the museum.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "22e577c9",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I will study for the test tomorrow.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "4939d857",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "It is a pencil.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "5a1a8161",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "The scissors are on the desk.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "5eab90c2",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "If it rains, we will stay inside.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "6078ac37",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Students must wear the school uniform.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "66813fa6",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "We have rice and beans for lunch.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "6a4d8373",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Twelve.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "6fcbadb5",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Leia is the tallest girl in the class.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "74b65f1d",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I wake up at six o'clock.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "8b80c611",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "She is eating an apple now.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "975c4f5e",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "He brushes his teeth every morning.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "9925c0b9",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "The library is bigger than the classroom.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "9e6e893d",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "They are playing soccer right now.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "a068411f",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Fifteen.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "aa5b74f0",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "My backpack is blue.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "af9025a4",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "This is a book.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "bed32dac",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Mr. Márcio went to the meeting last night.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "cb26186e",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I have already finished my project.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "dfb3949e",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "You should talk to Mrs. Vânia.",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "fc62c76c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Have you ever been to the city library?",
+  "origem": "nivel1 escuta",
+  "niveis": [
+   1,
+   3
+  ]
+ },
+ {
+  "chave": "0916fa37",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "The fire extinguisher must stay next to the door.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "0d167a3a",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "The test papers should be placed on the desk.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "134c4203",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Bags should be kept under the desk.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "196eae61",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "The laptop is safer in the box.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "32ed298a",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the ball next to the door.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "4ffc7888",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "The trash can stays next to the door.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "511241be",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Coats may be left on the chair.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "58e58c3a",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Phones must stay in the box during the test.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "5fd60c50",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the pencil in the box.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "622755f9",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Leo puts his ruler in the box.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "72ac66c8",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the backpack under the chair.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "7b8132a8",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the book on the desk.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3,
+   8
+  ]
+ },
+ {
+  "chave": "820943dc",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put your shoes under the desk, please.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "86d4903c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "She leaves her jacket on the chair.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "a649ee67",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "The teacher puts the dictionary on the desk.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "c0b135a2",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Ana keeps her backpack next to the door.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "ce8a0dda",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Put the notebook on the chair.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "daf6fad8",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "The calculator should be on the chair.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "dc0ed68c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Leave the umbrella under the chair.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "f957df59",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "The globe goes on the teacher’s desk.",
+  "origem": "nivel3 arrume",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "09af2cef",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "faster",
+  "origem": "nivel3 labirinto",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "1b6ec3dd",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "might",
+  "origem": "nivel3 labirinto",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "28e899ba",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "read",
+  "origem": "nivel3 labirinto",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "4a1bfe2b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "easier",
+  "origem": "nivel3 labirinto",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "54766a31",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "scissors",
+  "origem": "nivel3 labirinto",
+  "niveis": [
+   3,
+   7
+  ]
+ },
+ {
+  "chave": "5c62e342",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "taller",
+  "origem": "nivel3 labirinto",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "71e2ecfa",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "smaller",
+  "origem": "nivel3 labirinto",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "891d7375",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "pen",
+  "origem": "nivel3 labirinto",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "9d951c1f",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "study",
+  "origem": "nivel3 labirinto",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "a8e508d2",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "ruler",
+  "origem": "nivel3 labirinto",
+  "niveis": [
+   3,
+   7
+  ]
+ },
+ {
+  "chave": "ad4c8997",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "book",
+  "origem": "nivel3 labirinto",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "c7c480ad",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "listen",
+  "origem": "nivel3 labirinto",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "ca8259f8",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "can",
+  "origem": "nivel3 labirinto",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "d9ed161d",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "write",
+  "origem": "nivel3 labirinto",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "de754d7b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "could",
+  "origem": "nivel3 labirinto",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "ea97ed64",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "answer",
+  "origem": "nivel3 labirinto",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "ec2f51d3",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "notebook",
+  "origem": "nivel3 labirinto",
+  "niveis": [
+   3,
+   7
+  ]
+ },
+ {
+  "chave": "fe9f93a4",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "older",
+  "origem": "nivel3 labirinto",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "01d29bbe",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "eraser",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3,
+   7
+  ]
+ },
+ {
+  "chave": "099539b1",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "quieter",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "2b6c0499",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "break",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "33c76c84",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "although",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "4202c455",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "should",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "4538427b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "in front of",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "54c5d07c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "however",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "55595db5",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "library",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "5a4ed208",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "homework",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "71da774b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "chair",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "91fbb92f",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "must",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "b86b21f7",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "schedule",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3,
+   7
+  ]
+ },
+ {
+  "chave": "c2d4d18b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "desk",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "c5555902",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "lunch",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "cd8f3bf2",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "notice",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "d5f0986e",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "behind",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "e05e4512",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "board",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "e428a5a2",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "bigger",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "f6d6474a",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "between",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "ff435e47",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "pencil",
+  "origem": "nivel3 memoria",
+  "niveis": [
+   3,
+   7
+  ]
+ },
+ {
+  "chave": "0509cd08",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I’m sorry, I interrupted. Please continue.",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "107c6810",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Would you mind lending me your notes?",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "27f09c65",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "May I go out, please?",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "2b70fadd",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Repeat it now!",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "400a5a08",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Move! This is my chair!",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "60093a61",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Be quiet, you!",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "6aef667d",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Stop talking, I want to speak now!",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "6f34d06d",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Excuse me, could you speak more slowly?",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "7d0ce4b0",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Your group is the worst.",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "7d2243a3",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Can we work together on this?",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "95ae9f7b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I don’t understand. Could you explain?",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "aac5c50c",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Sorry, I’m late.",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "add93357",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I’m talking. Shut up!",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "b90eef1a",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Give me your notes, I need them.",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "c6ff984a",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Give me your pencil now!",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "d54dfe73",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "You’re wrong and that’s it.",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "d70cee67",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Can you help me, please?",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "da22b35e",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Could you repeat, please?",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "da488238",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Thank you, teacher!",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "e0c05589",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Explain it again. Fast!",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "ed55d72e",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "That’s a stupid idea.",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "f7a5d6ab",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Excuse me, can I sit here?",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "f8db9a79",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "I respectfully disagree, because the text says otherwise.",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "fcfdc482",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Whatever. I don’t care.",
+  "origem": "nivel3 quem",
+  "niveis": [
+   3
+  ]
+ },
+ {
+  "chave": "05cc50b6",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Choose the correct map instruction.",
+  "origem": "nivel4 direcoes",
+  "niveis": [
+   4
+  ]
+ },
+ {
+  "chave": "747a0070",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "In the corridor, the library is on the left. Which way should the group turn?",
+  "origem": "nivel4 direcoes",
+  "niveis": [
+   4
+  ]
+ },
+ {
+  "chave": "844fbc7b",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Choose the correct direction.",
+  "origem": "nivel4 direcoes",
+  "niveis": [
+   4
+  ]
+ },
+ {
+  "chave": "8afa3b59",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Listen: “Go straight to the library.” What should you do?",
+  "origem": "nivel4 direcoes",
+  "niveis": [
+   4
+  ]
+ },
+ {
+  "chave": "b5c6ba94",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "From the schoolyard to the corridor, which command means keep moving forward?",
+  "origem": "nivel4 direcoes",
+  "niveis": [
+   4
+  ]
+ },
+ {
+  "chave": "e1503597",
+  "idioma": "en-US",
+  "voz": "Juniper",
+  "personagem": "professora",
+  "texto": "Choose the clearest formal direction.",
+  "origem": "nivel4 direcoes",
+  "niveis": [
+   4
   ]
  },
  {

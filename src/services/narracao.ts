@@ -138,3 +138,8 @@ export function falarComo(personagem: NomeVoz, texto: string, idioma: Idioma = '
   pararPorPersonagem[personagem]?.();
   pararPorPersonagem[personagem] = narrar([{ texto, idioma, personagem }, ...(en ? [{ texto: en, idioma: 'en-US' as Idioma, personagem }] : [])]);
 }
+/** Cala a fala em andamento de um personagem (gravada ou do navegador). */
+export function pararComo(personagem: NomeVoz): void {
+  pararPorPersonagem[personagem]?.();
+  delete pararPorPersonagem[personagem];
+}

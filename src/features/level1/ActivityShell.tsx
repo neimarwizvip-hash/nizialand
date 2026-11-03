@@ -5,7 +5,7 @@ import { MolduraAtividade } from '../../components/kit/MolduraAtividade';
 import type { FeedbackMoldura } from '../../components/kit/MolduraAtividade';
 import { audioService } from '../../services/audio';
 import { speechService } from '../../services/speech';
-import { falarComo } from '../../services/narracao';
+import { falarComo, pararComo } from '../../services/narracao';
 import { ITEM_SECONDS, ITEM_WARNING_SECONDS, maxScore } from './level1Rules';
 import { ZE_LINE_MS, ZE_SIZES, isZeBlocking, zeLine, zeSizeStage } from '../quiz/zeRules';
 import type { Feedback } from './useActivityRun';
@@ -47,14 +47,14 @@ export function useZeInterrupt(active: boolean, resolved: boolean, itemKey: numb
         timers.current.push(window.setInterval(() => setTick(t => t + 1), ZE_LINE_MS));
       }, 1200));
     }
-    return () => { clear(); window.speechSynthesis?.cancel(); };
+    return () => { clear(); pararComo('ze'); };
   }, [active, itemKey]);
 
   useEffect(() => {
     if (visible && resolved) {
       clear();
       setVisible(false);
-      window.speechSynthesis?.cancel();
+      pararComo('ze');
       return;
     }
     if (visible) falarComo('ze', zeLine(tick));
@@ -64,7 +64,7 @@ export function useZeInterrupt(active: boolean, resolved: boolean, itemKey: numb
     audioService.playClick();
     clear();
     setVisible(false);
-    window.speechSynthesis?.cancel();
+    pararComo('ze');
   };
 
   return {

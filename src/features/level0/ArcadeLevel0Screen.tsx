@@ -434,7 +434,7 @@ export const ArcadeLevel0Screen: React.FC = () => {
                   </span>
                   <div className="flex gap-2">
                     <button
-                      onClick={() => speechService.speak(current.prompt.replace(/_+/g, 'blank'), 'en-US')}
+                      onClick={() => speechService.speak(current.prompt, 'en-US')}
                       className="p-2 short:p-1 rounded-xl bg-nisia-papel-escuro hover:bg-nisia-azul-100 text-nisia-azul-700 transition"
                       title="Ouvir em inglês"
                     >

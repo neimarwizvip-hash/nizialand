@@ -73,3 +73,11 @@
 ## 02/11/2026 — Camada 2.0: primeira missao viva
 
 - Nivel 3: 'O misterio do mural rasgado' (/nivel3/misterio), botao no quadro do nivel. Investigar pistas na sala, conversar em ingles com educacao (acusar fecha a conversa e tira pontos), linha do tempo, conclusao com provas e reconstruir o mural. Tres casos sorteados (Ze, Mane ou vento). Ainda nao conta para concluir o nivel; textos PROVISORIOS em src/data/missaoMural.ts.
+
+
+## 03/11/2026 - Revisao de falas e transcricoes
+
+- Os botoes 'ouvir' (speechService) agora passam pela narracao: fala gravada do elenco, voz do navegador so se faltar o arquivo. Cobertos: Nivel 0 (quiz, flashcards, historia), Nivel 1 (escuta e dialogo com a voz de quem fala), Nivel 3 (arrume, quem, memoria, labirinto), Nivel 4 (direcoes) e frases dos jogos dos Niveis 5 a 8. 872 falas gravadas.
+- Escutas mostram 'Voce ouviu: ...' depois da resposta (Nivel 1 e revisao do Nivel 3).
+- A fala do Ze agora para quando o balao fecha (pararComo).
+- Questoes cadastradas pelo professor continuam na voz do navegador (nao ha como gravar antes).

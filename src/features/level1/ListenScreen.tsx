@@ -114,6 +114,7 @@ const ListenScreen: React.FC = () => {
             );
           })}
         </div>
+        {run.locked && <p role="status" className="text-sm sm:text-base font-semibold text-nisia-azul-700 text-center">Você ouviu: “{item.audio}”</p>}
       </div>
     </ActivityShell>
   );

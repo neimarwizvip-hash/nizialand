@@ -30,6 +30,15 @@ import { LEVEL2_ZE_LINES, LEVEL2_CONTENT } from '../../src/data/level2Content';
 import { LEVEL3_ZE_LINES } from '../../src/data/level3Content';
 import { MANE_CORRIDOR_LINES, MANE_ROOM_START, MANE_ROOM_TIP, MANE_SIMPLE_LINE } from '../../src/data/level3Mane';
 import { LEVEL4_DISTRACTIONS, MANE_PADRAO, ZE_PADRAO } from '../../src/content/level4';
+import { textoFalado } from '../../src/services/speech';
+import { BUILT_IN_QUESTIONS } from '../../src/data/questionBank';
+import { QUIZ_QUESTIONS } from '../../src/data/quizQuestions';
+import { getFlashcardSet, SCHOOL_GRADES } from '../../src/data/level0Content';
+import { COMIC_PANELS, LEVEL0_QUESTIONS } from '../../src/data/historiaNivel0';
+import { LEVEL1_CONTENT, SPEAKER_VOZ } from '../../src/data/level1Content';
+import { LEVEL3_CONTENT } from '../../src/data/level3Content';
+import { level4QuestionPool } from '../../src/features/level4/level4QuestionPool';
+import { dadosDoJogo } from '../../src/data/jogosFases';
 
 interface Item { chave: string; idioma: IdiomaFala; voz: string; personagem: Personagem; texto: string; origem: string; niveis: number[] }
 const itens = new Map<string, Item>();
@@ -117,6 +126,47 @@ nos([3], () => {
   for (const f of [...MANE_ROOM_START, ...MANE_ROOM_TIP]) add('mane', 'pt-BR', f, 'mane');
 });
 nos([4], () => { for (const f of [MANE_PADRAO, ...Object.values(LEVEL4_DISTRACTIONS).map(d => d.mane)]) add('mane', 'pt-BR', f, 'mane'); });
+
+// ---- Frases em inglês das atividades (botões "ouvir" e falas lidas em voz alta: speechService) ----
+const ouvir = (p: Personagem, t: string, origem: string) => add(p, 'en-US', textoFalado(t), origem);
+// Nível 0: quiz (banco de questões e 8º ano), flashcards e a história de abertura
+nos([0], () => {
+  for (const q of BUILT_IN_QUESTIONS) ouvir('professora', q.prompt, 'nivel0 quiz');
+  for (const q of QUIZ_QUESTIONS) ouvir('professora', q.sentence, 'nivel0 quiz');
+  for (const g of SCHOOL_GRADES) for (const c of getFlashcardSet(g).challenges) ouvir('professora', c.questionEn, 'nivel0 flashcards');
+  for (const p of COMIC_PANELS) ouvir(p.voz, p.speechEn, 'nivel0 historia');
+  for (const q of LEVEL0_QUESTIONS) ouvir('professora', q.promptEn, 'nivel0 historia');
+});
+// Nível 1: escuta (também volta na revisão do Nível 3) e diálogo com a voz de quem fala
+for (const g of SCHOOL_GRADES) {
+  nos([1, 3], () => { for (const it of LEVEL1_CONTENT[g].listen) ouvir('professora', it.audio, 'nivel1 escuta'); });
+  nos([1], () => { for (const t of LEVEL1_CONTENT[g].dialogue) ouvir(SPEAKER_VOZ[t.speaker], t.line, 'nivel1 dialogo'); });
+}
+// Nível 3: arrume a sala, quem fala com educação, memória e labirinto
+nos([3], () => {
+  for (const g of SCHOOL_GRADES) {
+    const c = LEVEL3_CONTENT[g];
+    for (const it of c.arrange.place) ouvir('professora', it.instruction, 'nivel3 arrume');
+    for (const it of c.who) ouvir('professora', it.text, 'nivel3 quem');
+    for (const it of c.memory) ouvir('professora', it.en, 'nivel3 memoria');
+    for (const w of c.maze.words) ouvir('professora', w, 'nivel3 labirinto');
+  }
+});
+// Nível 4: siga as direções
+nos([4], () => { for (const g of SCHOOL_GRADES) for (const q of level4QuestionPool('nivel4-direcoes', g)) ouvir('professora', q.prompt, 'nivel4 direcoes'); });
+// Níveis 5 a 8: jogos (pares, memória, frase, ordem, sala e perguntas faladas)
+for (const nivel of [LEVEL5, LEVEL6, LEVEL7, LEVEL8]) nos([nivel.number], () => {
+  for (const a of nivel.mission.activities) for (const g of SCHOOL_GRADES) {
+    const d = dadosDoJogo(a.id, g);
+    const o = `jogo ${a.id}`;
+    if (d.tipo === 'pares' && d.falarEsquerda) d.fases.flat().forEach(p => ouvir('professora', p[0], o));
+    if (d.tipo === 'memoria') d.fases.flat().forEach(p => ouvir('professora', p[0], o));
+    if (d.tipo === 'frase') d.fases.flat().forEach(f => ouvir('professora', f, o));
+    if (d.tipo === 'ordem' && d.falar) d.fases.flat().forEach(sq => sq.passos.forEach(x => ouvir('professora', x, o)));
+    if (d.tipo === 'sala') d.fases.flat().forEach(x => ouvir('professora', x.instrucao, o));
+    if (d.tipo === 'chuva' || d.tipo === 'travessia' || d.tipo === 'corrida') d.fases.flat().forEach(it => { if (it.ouvir) ouvir('professora', it.ouvir, o); });
+  }
+});
 
 const lista = [...itens.values()].sort((a, b) => a.origem.localeCompare(b.origem) || a.chave.localeCompare(b.chave));
 const pasta = join(process.cwd(), 'public', 'assets', 'vozes');
