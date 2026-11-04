@@ -81,3 +81,12 @@
 - Escutas mostram 'Voce ouviu: ...' depois da resposta (Nivel 1 e revisao do Nivel 3).
 - A fala do Ze agora para quando o balao fecha (pararComo).
 - Questoes cadastradas pelo professor continuam na voz do navegador (nao ha como gravar antes).
+
+
+## 04/11/2026 - Teste do 8o ano: comparativos (turma 805)
+
+- Rota /teste8 e aviso no mapa. Janela: 04/11 17h ate 11/11 23h59 (src/data/teste8.ts, TESTE8_INICIO/FIM).
+- Cada acesso dura 15 min e trava ao fim; 1 acesso por dia (atividade teste8-AAAA-MM-DD na planilha, vale o melhor do dia; os dias somam).
+- Perguntas sorteadas a cada acesso (mesma estrutura, frases e opcoes novas): escolher, certo/errado, montar a frase, cartoes com dados. 5 fases + bonus; 5 acertos sobem de fase.
+- Acesso so para nomes da chamada da 805: cadastro com primeiro nome + um sobrenome (tolerancia de grafia).
+- Area do professor: aba 'Teste 8o ano (805)' com acessos, pontos por dia e acumulados, melhor fase, quem ainda nao fez e CSV.

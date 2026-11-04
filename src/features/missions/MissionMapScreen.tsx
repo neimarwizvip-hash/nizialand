@@ -4,6 +4,8 @@ import { useGame } from '../../context/GameContext';
 import { getMissionMapState, LANCAMENTO, MISSION_MAP } from '../../data/missionMap';
 import { storageService } from '../../services/storage';
 import { audioService } from '../../services/audio';
+import { getPlayerGrade } from '../../services/grade';
+import { alunoAutorizado, janela } from '../../data/teste8';
 import { PlayerAvatar } from '../../components/ui/PlayerAvatar';
 import { BotaoJogo, Cenario, Ficha, Fita, Hud, Icone, ICONE_NIVEL, Medalha, NOME_MEDALHA, Painel, Titulo } from '../../components/kit';
 
@@ -207,6 +209,13 @@ export const MissionMapScreen: React.FC = () => {
 
           {/* Ficha do nível escolhido */}
           <aside className="flex flex-col gap-3 short:gap-1.5">
+            {currentPlayer && currentPlayer.kind !== 'guest' && janela() !== 'encerrado' && alunoAutorizado([currentPlayer.name, currentPlayer.displayName], getPlayerGrade(currentPlayer)) && (
+              <Painel tipo="lousa" className="p-3 short:p-2 text-white flex flex-col gap-2">
+                <p className="font-display text-lg short:text-sm leading-tight">Teste do 8º ano: Comparatives</p>
+                <p className="text-sm short:text-xs leading-snug">{janela() === 'antes' ? 'Abre hoje às 17h. 15 minutos por dia, pontos para o professor.' : '15 minutos por dia. Frases novas a cada acesso.'}</p>
+                <BotaoJogo cor="sol" onClick={() => { audioService.playClick(); navigate('/teste8'); }} className="w-full short:min-h-[36px] short:text-sm">Fazer o teste</BotaoJogo>
+              </Painel>
+            )}
             <Painel tipo="papel" fita className="p-4 pt-5 short:p-2.5 short:pt-3">
               <div className="flex items-center justify-between gap-2">
                 <Ficha cor={nivelSel.state === 'completed' ? 'verde' : nivelSel.state === 'available' ? 'sol' : 'papel'}>Nível {nivelSel.number}</Ficha>

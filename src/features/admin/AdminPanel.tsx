@@ -36,6 +36,7 @@ import { nameModerationService, ReportedNameRecord } from '../../services/nameMo
 import { QuestionBankManager } from './QuestionBankManager';
 import { planilha } from '../../services/planilha';
 import { converterListaProfessor } from './listaProfessor';
+import { PainelTeste8 } from './PainelTeste8';
 
 // Token do professor (vale 6 h na planilha): só no sessionStorage, some ao fechar a aba.
 const TOKEN_PROF = 'nisialand_prof_token';
@@ -70,7 +71,8 @@ export const AdminPanel: React.FC = () => {
   const [reports, setReports] = useState<ReportedNameRecord[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filterClass, setFilterClass] = useState<string>('all');
-  const [activeTab, setActiveTab] = useState<'roster' | 'analytics' | 'moderation' | 'audit' | 'questions'>('roster');
+  const [activeTab, setActiveTab] = useState<'roster' | 'analytics' | 'moderation' | 'audit' | 'questions' | 'teste8'>('roster');
+  const [resultadosPlanilha, setResultadosPlanilha] = useState<Array<Record<string, unknown>>>([]);
 
   const [semConexao, setSemConexao] = useState<boolean>(false);
   const [entrando, setEntrando] = useState<boolean>(false);
@@ -92,6 +94,7 @@ export const AdminPanel: React.FC = () => {
       const lista = converterListaProfessor(r);
       setPlayers(lista.players);
       setLeaderboard(lista.leaderboard);
+      setResultadosPlanilha((Array.isArray(r.resultados) ? r.resultados : []) as Array<Record<string, unknown>>);
       setSemConexao(false);
     } else if (r.rede) {
       setSemConexao(true);
@@ -400,6 +403,15 @@ export const AdminPanel: React.FC = () => {
 
         {/* Tab Navigation */}
         <div className="flex flex-wrap items-center gap-2 border-b border-slate-800 pb-2">
+          <button
+            type="button"
+            onClick={() => setActiveTab('teste8')}
+            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all ${
+              activeTab === 'teste8' ? 'bg-amber-500 text-slate-950 shadow' : 'text-amber-300 hover:text-white hover:bg-slate-900'
+            }`}
+          >
+            <span>📝 Teste 8º ano (805)</span>
+          </button>
           <button
             type="button"
             onClick={() => setActiveTab('roster')}
@@ -724,6 +736,8 @@ export const AdminPanel: React.FC = () => {
             </div>
           </div>
         )}
+
+        {activeTab === 'teste8' && <PainelTeste8 players={players} resultados={resultadosPlanilha} semConexao={semConexao} />}
 
         {/* --- TAB 5: QUESTION BANK (TREINO LIVRE) --- */}
         {activeTab === 'questions' && (
