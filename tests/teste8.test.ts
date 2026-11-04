@@ -8,7 +8,8 @@ describe('Teste do 8º ano — comparativos', () => {
       for (let s = 1; s <= 300; s++) {
         const p = gerarPergunta(fase, sorteioComSemente(s * 7919 + fase));
         expect(p.fase).toBe(fase);
-        if (p.tipo === 'escolha' || p.tipo === 'dados') {
+        expect(p.cartoes).toHaveLength(2);
+        if (p.tipo === 'escolha') {
           expect(p.opcoes).toContain(p.certa);
           expect(new Set(p.opcoes).size).toBe(p.opcoes.length);
           expect(p.opcoes.length).toBeGreaterThanOrEqual(3);
@@ -31,13 +32,25 @@ describe('Teste do 8º ano — comparativos', () => {
     }
   });
 
-  it('cartões de dados: valores iguais pedem as… as', () => {
-    for (let s = 1; s <= 400; s++) {
-      const p = gerarPergunta(5, sorteioComSemente(s));
-      if (p.tipo !== 'dados') continue;
-      const [a, b] = p.cartoes.map(c => c.valor);
-      if (a === b) expect(p.certa.startsWith('as ')).toBe(true);
-      else expect(p.certa.startsWith('as ')).toBe(false);
+  it('respostas lógicas: igualdade só com valores iguais; o primeiro da frase tem mais (sup) ou menos (inferioridade)', () => {
+    const num = (v: string) => (v.match(/★/g)?.length ?? 0) + Number(v.replace(/[^\d,-]/g, '').replace(',', '.')) * (/ h$/.test(v) ? 60 : 1);
+    for (let s = 1; s <= 600; s++) {
+      for (const fase of [1, 2, 3, 4, 5]) {
+        const p = gerarPergunta(fase, sorteioComSemente(s * 31 + fase));
+        if (p.tipo !== 'escolha') continue;
+        const [a, b] = p.cartoes.map(c => c.valor);
+        if (p.certa.startsWith('as ')) expect(a).toBe(b);
+        else expect(a).not.toBe(b);
+        const primeiro = p.frase.replace(/^.*?: /, '').replace(/^(So|According to the cards), /, '').split(' is ')[0].toLowerCase();
+        const cA = p.cartoes.find(c => c.nome.toLowerCase() === primeiro);
+        const cB = p.cartoes.find(c => c.nome.toLowerCase() !== primeiro);
+        expect(cA, p.frase).toBeTruthy();
+        const maior = num(cA!.valor) > num(cB!.valor);
+        const negativos = ['short', 'young', 'cheap', 'light', 'small', 'slow', 'safe', 'cold', 'bad'];
+        const sinal = negativos.includes(p.dica) ? -1 : 1;
+        if (/than$/.test(p.certa) && !p.certa.startsWith('less')) expect(maior === (sinal === 1), `${p.frase} ${p.certa} ${JSON.stringify(p.cartoes)}`).toBe(true);
+        if (p.certa.startsWith('less') || p.certa.startsWith('not as')) expect(maior === (sinal === 1), `${p.frase} ${p.certa} ${JSON.stringify(p.cartoes)}`).toBe(false);
+      }
     }
   });
 

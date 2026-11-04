@@ -22,7 +22,7 @@ type Retorno = { certo: boolean; texto: string; regra: string } | null;
 
 const Teste8Screen: React.FC = () => {
   const navigate = useNavigate();
-  const { currentPlayer } = useGame();
+  const { currentPlayer, logout } = useGame();
   const [agora, setAgora] = useState(() => Date.now());
   const [acesso, setAcesso] = useState<AcessoTeste8 | null>(() => (currentPlayer ? lerAcesso(currentPlayer.id) : null));
   const [pergunta, setPergunta] = useState<Pergunta | null>(null);
@@ -130,7 +130,8 @@ const Teste8Screen: React.FC = () => {
 
   if (visitante) return aviso('Teste do 8º ano', 'Entre com o seu código de aluno para fazer o teste. Visitante não pontua.');
   if (!autorizado)
-    return aviso('Teste do 8º ano', <>Este teste é da <b>turma 805</b>. O seu cadastro precisa ter <b>primeiro nome e sobrenome</b> iguais aos da chamada (você entrou como “{currentPlayer?.name}”). Fale com o professor.</>);
+    return aviso('Teste do 8º ano', <>Este teste é da <b>turma 805</b>. O cadastro precisa ter <b>primeiro nome e sobrenome</b> como na chamada (você entrou como “{currentPlayer?.name}”). Faça um novo cadastro com nome e sobrenome: ele passa a ser o seu perfil oficial.</>,
+      <BotaoJogo cor="laranja" onClick={() => { logout(); navigate('/'); }} className="self-center">Fazer novo cadastro</BotaoJogo>);
   if (estadoJanela === 'antes' && !acesso) return aviso('Teste do 8º ano', <>O teste abre <b>{dataHora(TESTE8_INICIO)}</b>. Volte nesse horário!</>);
   if (estadoJanela === 'encerrado' && !emAndamento) return aviso('Teste encerrado', <>O teste terminou {dataHora(TESTE8_FIM)}. Os seus pontos estão com o professor.</>);
 
@@ -159,6 +160,7 @@ const Teste8Screen: React.FC = () => {
           <ul className="text-sm sm:text-base leading-snug list-disc pl-5 flex flex-col gap-1">
             <li><b>15 minutos</b> a partir do começo. Quando o tempo acaba, o teste trava e o resultado vai para o professor.</li>
             <li><b>Um acesso por dia</b>. Cada dia sorteia frases e opções novas. Os pontos dos dias somam.</li>
+            <li>Toda pergunta traz <b>dados</b> (altura, preço, velocidade…): a resposta tem que estar certa na gramática <b>e</b> combinar com os dados.</li>
             <li>Acerte {ACERTOS_POR_FASE} para subir de fase. Fases mais altas valem mais pontos. 3 acertos seguidos: +5.</li>
             <li>Se fechar a página, o relógio continua: volte logo para não perder tempo.</li>
           </ul>
@@ -235,21 +237,23 @@ const CorpoPergunta: React.FC<{
     : op === certa ? 'bg-nisia-verde-100 border-nisia-verde-500 text-nisia-verde-700'
     : op === escolhida ? 'bg-red-50 border-nisia-erro text-nisia-erro' : 'bg-white border-nisia-papel-linha opacity-60';
 
-  if (p.tipo === 'escolha' || p.tipo === 'dados') {
+  const cartoes = (
+    <div className="grid grid-cols-2 gap-2 sm:gap-3" aria-label="Dados para comparar">
+      {p.cartoes.map(c => (
+        <div key={c.nome} className="rounded-2xl bg-nisia-azul-500 text-white text-center py-2 sm:py-3 short:py-1 px-2 border-2 border-nisia-azul-700">
+          <div className="font-display text-base sm:text-xl short:text-sm leading-tight">{c.nome}</div>
+          <div className="text-lg sm:text-2xl short:text-base font-bold leading-tight">{c.valor}</div>
+        </div>
+      ))}
+    </div>
+  );
+
+  if (p.tipo === 'escolha') {
     return (
-      <div className="flex flex-col gap-3">
-        {p.tipo === 'dados' && (
-          <div className="grid grid-cols-2 gap-2 sm:gap-3">
-            {p.cartoes.map(c => (
-              <div key={c.nome} className="rounded-2xl bg-nisia-azul-500 text-white text-center py-3 px-2 border-2 border-nisia-azul-700">
-                <div className="font-display text-lg sm:text-xl">{c.nome}</div>
-                <div className="text-xl sm:text-2xl font-bold">{c.valor}</div>
-              </div>
-            ))}
-          </div>
-        )}
+      <div className="flex flex-col gap-3 short:gap-1.5">
+        {cartoes}
         <p className="font-display text-xl sm:text-2xl short:text-lg leading-snug">{p.frase.replace('___', '______')}</p>
-        {p.tipo === 'escolha' && <p className="text-sm text-nisia-tinta/80">Adjetivo: <b>{p.dica}</b></p>}
+        <p className="text-sm text-nisia-tinta/80">Use os dados. Adjetivo: <b>{p.dica}</b></p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {p.opcoes.map(op => (
             <button key={op} type="button" disabled={travado} onClick={() => marcar(op)} className={`${botaoOpcao} ${cor(op, p.certa)}`}>{op}</button>
@@ -261,9 +265,10 @@ const CorpoPergunta: React.FC<{
 
   if (p.tipo === 'certoErrado') {
     return (
-      <div className="flex flex-col gap-3">
-        <p className="text-sm font-bold">A frase está certa ou errada?</p>
-        <p className="font-display text-xl sm:text-2xl leading-snug">“{p.frase}”</p>
+      <div className="flex flex-col gap-3 short:gap-1.5">
+        {cartoes}
+        <p className="text-sm font-bold">Olhe os dados: a frase está certa ou errada? (gramática e informação)</p>
+        <p className="font-display text-xl sm:text-2xl short:text-lg leading-snug">“{p.frase}”</p>
         <div className="grid grid-cols-2 gap-2">
           <button type="button" disabled={travado} onClick={() => marcar(true)} className={`${botaoOpcao} text-center ${cor(true, p.certo)}`}>✔ Certa</button>
           <button type="button" disabled={travado} onClick={() => marcar(false)} className={`${botaoOpcao} text-center ${cor(false, p.certo)}`}>✘ Errada</button>
@@ -276,8 +281,9 @@ const CorpoPergunta: React.FC<{
   const usadas = new Set(montagem);
   const frase = montagem.map(i => p.palavras[i]);
   return (
-    <div className="flex flex-col gap-3">
-      <p className="text-sm font-bold">Monte a frase. Sobra uma palavra intrusa. <span className="font-normal">({p.dica})</span></p>
+    <div className="flex flex-col gap-3 short:gap-1.5">
+      {cartoes}
+      <p className="text-sm font-bold">Monte uma frase verdadeira com <i>{p.dica}</i>. Sobra uma palavra intrusa.</p>
       <div className="min-h-[3.25rem] rounded-2xl border-2 border-dashed border-nisia-azul-500 bg-white p-2 flex flex-wrap gap-2" aria-label="Sua frase">
         {frase.length === 0 && <span className="text-nisia-tinta/50 self-center px-1">Toque nas palavras na ordem certa…</span>}
         {montagem.map((i, k) => (

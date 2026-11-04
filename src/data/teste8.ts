@@ -55,208 +55,195 @@ function dois<T>(r: Sorteio, lista: readonly T[]): [T, T] {
   return [a, b];
 }
 
-// ---------------------------------------------------------------- vocabulário
-interface Curto { adj: string; comp: string; erro: string } // erro = forma errada comum ("biger", "happyer")
-interface Longo { adj: string }
-interface Irregular { adj: string; comp: string; erros: string[] }
+// ---------------------------------------------------------------- dados (respostas lógicas)
+// Toda pergunta mostra dois cartões com dados reais ou plausíveis. A resposta certa precisa ser
+// gramaticalmente certa E verdadeira para os dados: "The mouse is bigger than the elephant" é errada.
+
+interface Adj {
+  adj: string;
+  sinal: 1 | -1; // 1 = quem tem MAIS do valor; -1 = quem tem MENOS (small, slow, cold...)
+  comp?: string; // forma curta (bigger); sem comp = adjetivo longo (more/less)
+  erro?: string; // erro comum de grafia (biger)
+  irregular?: string[]; // erros típicos dos irregulares (gooder, more good...)
+}
+interface Escala {
+  itens: Array<[string, number]> | (() => Array<[string, number]>);
+  mostrar: (n: number) => string;
+  adjs: Adj[];
+  geravel?: boolean; // valores sorteados: dá para ter valores iguais (igualdade)
+  faixa?: [number, number];
+}
 
 const PESSOAS = ['Ana', 'Bia', 'Leo', 'Tom', 'Duda', 'Caio', 'Malu', 'Davi', 'Lara', 'Enzo', 'Sofia', 'Theo', 'Nina', 'Rafa', 'Julia', 'Pedro', 'Maya', 'Gabriel'];
-const C = (adj: string, comp: string, erro: string): Curto => ({ adj, comp, erro });
+const COISAS = ['the backpack', 'the phone', 'the guitar', 'the skateboard', 'the speaker', 'the camera', 'the watch', 'the headphones'];
+const curto = (adj: string, sinal: 1 | -1, comp: string, erro: string): Adj => ({ adj, sinal, comp, erro });
+const longo = (adj: string, sinal: 1 | -1 = 1): Adj => ({ adj, sinal });
+const mil = (n: number) => n.toLocaleString('pt-BR');
 
-// Cada grupo junta coisas que fazem sentido comparar entre si, com adjetivos que combinam com elas.
-interface Grupo { itens: string[]; curtos: Curto[]; longos: Longo[]; irregulares: string[]; inferior: Longo[] }
-const GRUPOS: Grupo[] = [
-  { // pessoas
-    itens: PESSOAS,
-    curtos: [C('tall', 'taller', 'taler'), C('short', 'shorter', 'shortter'), C('old', 'older', 'oldder'), C('young', 'younger', 'youngger'), C('strong', 'stronger', 'strongger'), C('fast', 'faster', 'fastter'), C('funny', 'funnier', 'funnyer'), C('smart', 'smarter', 'smartter'), C('busy', 'busier', 'busyer'), C('happy', 'happier', 'happyer'), C('nice', 'nicer', 'niceer'), C('quiet', 'quieter', 'quietter')],
-    longos: [{ adj: 'intelligent' }, { adj: 'creative' }, { adj: 'patient' }, { adj: 'organized' }, { adj: 'famous' }, { adj: 'popular' }],
-    irregulares: ['good', 'bad'],
-    inferior: [{ adj: 'patient' }, { adj: 'organized' }, { adj: 'creative' }, { adj: 'popular' }],
-  },
-  { // meios de transporte
-    itens: ['the car', 'the bike', 'the bus', 'the train', 'the plane', 'the motorcycle', 'the boat'],
-    curtos: [C('fast', 'faster', 'fastter'), C('slow', 'slower', 'slowwer'), C('big', 'bigger', 'biger'), C('small', 'smaller', 'smallier'), C('cheap', 'cheaper', 'cheapper'), C('safe', 'safer', 'safeer'), C('heavy', 'heavier', 'heavyer')],
-    longos: [{ adj: 'expensive' }, { adj: 'comfortable' }, { adj: 'dangerous' }, { adj: 'modern' }],
-    irregulares: ['good', 'bad'],
-    inferior: [{ adj: 'expensive' }, { adj: 'comfortable' }, { adj: 'dangerous' }],
-  },
-  { // filmes, livros, jogos
-    itens: ['the movie', 'the book', 'the game', 'the song', 'the series', 'the cartoon', 'the comic'],
-    curtos: [C('long', 'longer', 'longger'), C('short', 'shorter', 'shortter'), C('funny', 'funnier', 'funnyer'), C('cheap', 'cheaper', 'cheapper'), C('new', 'newer', 'neweer'), C('old', 'older', 'oldder'), C('scary', 'scarier', 'scaryer')],
-    longos: [{ adj: 'interesting' }, { adj: 'boring' }, { adj: 'exciting' }, { adj: 'popular' }, { adj: 'expensive' }],
-    irregulares: ['good', 'bad'],
-    inferior: [{ adj: 'interesting' }, { adj: 'exciting' }, { adj: 'popular' }, { adj: 'expensive' }],
-  },
-  { // comida
-    itens: ['the pizza', 'the cake', 'the salad', 'the burger', 'the soup', 'the ice cream', 'the sandwich', 'the juice'],
-    curtos: [C('hot', 'hotter', 'hoter'), C('cold', 'colder', 'coldder'), C('big', 'bigger', 'biger'), C('cheap', 'cheaper', 'cheapper'), C('sweet', 'sweeter', 'sweetter'), C('tasty', 'tastier', 'tastyer'), C('salty', 'saltier', 'saltyer')],
-    longos: [{ adj: 'delicious' }, { adj: 'expensive' }, { adj: 'healthy' }, { adj: 'popular' }],
-    irregulares: ['good', 'bad'],
-    inferior: [{ adj: 'delicious' }, { adj: 'expensive' }, { adj: 'popular' }],
-  },
-  { // matérias da escola
-    itens: ['Math', 'English', 'History', 'Science', 'Geography', 'Art', 'P.E.'],
-    curtos: [C('easy', 'easier', 'easyer'), C('hard', 'harder', 'hardder'), C('cool', 'cooler', 'cooller')],
-    longos: [{ adj: 'difficult' }, { adj: 'interesting' }, { adj: 'important' }, { adj: 'boring' }, { adj: 'popular' }],
-    irregulares: ['good', 'bad'],
-    inferior: [{ adj: 'difficult' }, { adj: 'interesting' }, { adj: 'boring' }, { adj: 'popular' }],
-  },
-  { // animais
-    itens: ['the elephant', 'the dog', 'the cat', 'the horse', 'the mouse', 'the cheetah', 'the turtle', 'the lion', 'the rabbit'],
-    curtos: [C('big', 'bigger', 'biger'), C('small', 'smaller', 'smallier'), C('fast', 'faster', 'fastter'), C('slow', 'slower', 'slowwer'), C('strong', 'stronger', 'strongger'), C('heavy', 'heavier', 'heavyer'), C('cute', 'cuter', 'cuteer')],
-    longos: [{ adj: 'dangerous' }, { adj: 'intelligent' }, { adj: 'beautiful' }, { adj: 'friendly' }],
-    irregulares: [],
-    inferior: [{ adj: 'dangerous' }, { adj: 'intelligent' }, { adj: 'beautiful' }],
-  },
-  { // lugares
-    itens: ['Rio', 'São Paulo', 'Duque de Caxias', 'Belo Horizonte', 'Salvador', 'my street', 'the park', 'the beach'],
-    curtos: [C('hot', 'hotter', 'hoter'), C('cold', 'colder', 'coldder'), C('big', 'bigger', 'biger'), C('small', 'smaller', 'smallier'), C('noisy', 'noisier', 'noisyer'), C('quiet', 'quieter', 'quietter'), C('busy', 'busier', 'busyer')],
-    longos: [{ adj: 'beautiful' }, { adj: 'expensive' }, { adj: 'crowded' }, { adj: 'dangerous' }],
-    irregulares: ['good', 'bad'],
-    inferior: [{ adj: 'beautiful' }, { adj: 'expensive' }, { adj: 'crowded' }],
-  },
+const ESCALAS: Escala[] = [
+  // pessoas (valores sorteados)
+  { geravel: true, faixa: [145, 185], itens: () => PESSOAS.map(p => [p, 0] as [string, number]), mostrar: n => `${(n / 100).toFixed(2).replace('.', ',')} m`,
+    adjs: [curto('tall', 1, 'taller', 'taler'), curto('short', -1, 'shorter', 'shortter')] },
+  { geravel: true, faixa: [11, 16], itens: () => PESSOAS.map(p => [p, 0] as [string, number]), mostrar: n => `${n} years old`,
+    adjs: [curto('old', 1, 'older', 'oldder'), curto('young', -1, 'younger', 'youngger')] },
+  { geravel: true, faixa: [40, 900], itens: () => COISAS.map(c => [c, 0] as [string, number]), mostrar: n => `R$ ${mil(n)}`,
+    adjs: [longo('expensive'), curto('cheap', -1, 'cheaper', 'cheapper')] },
+  // animais
+  { itens: [['the elephant', 6000], ['the horse', 500], ['the lion', 190], ['the dog', 30], ['the cat', 4], ['the rabbit', 2], ['the mouse', 0.03]], mostrar: n => `${mil(n)} kg`,
+    adjs: [curto('heavy', 1, 'heavier', 'heavyer'), curto('big', 1, 'bigger', 'biger'), curto('light', -1, 'lighter', 'lightter'), curto('small', -1, 'smaller', 'smallier')] },
+  { itens: [['the cheetah', 110], ['the lion', 80], ['the horse', 70], ['the rabbit', 56], ['the cat', 48], ['the dog', 45], ['the mouse', 13], ['the turtle', 1]], mostrar: n => `${n} km/h`,
+    adjs: [curto('fast', 1, 'faster', 'fastter'), curto('slow', -1, 'slower', 'slowwer')] },
+  { itens: [['the lion', 9], ['the elephant', 7], ['the cheetah', 6], ['the horse', 3], ['the dog', 2], ['the cat', 1], ['the rabbit', 0]], mostrar: n => `perigo ${n}/10`,
+    adjs: [longo('dangerous'), curto('safe', -1, 'safer', 'safeer')] },
+  // transportes
+  { itens: [['the plane', 900], ['the train', 300], ['the car', 120], ['the motorcycle', 110], ['the bus', 80], ['the boat', 40], ['the bike', 20]], mostrar: n => `${n} km/h`,
+    adjs: [curto('fast', 1, 'faster', 'fastter'), curto('slow', -1, 'slower', 'slowwer')] },
+  { itens: [['the plane', 100000000], ['the train', 30000000], ['the bus', 800000], ['the boat', 500000], ['the car', 80000], ['the motorcycle', 15000], ['the bike', 1000]], mostrar: n => `R$ ${mil(n)}`,
+    adjs: [longo('expensive'), curto('cheap', -1, 'cheaper', 'cheapper')] },
+  { itens: [['the motorcycle', 9], ['the bike', 6], ['the car', 5], ['the bus', 3], ['the train', 2], ['the plane', 1]], mostrar: n => `risco ${n}/10`,
+    adjs: [longo('dangerous'), curto('safe', -1, 'safer', 'safeer')] },
+  // comida
+  { itens: [['the soup', 70], ['the pizza', 60], ['the burger', 50], ['the sandwich', 25], ['the cake', 22], ['the salad', 15], ['the juice', 8], ['the ice cream', -5]], mostrar: n => `${n} °C`,
+    adjs: [curto('hot', 1, 'hotter', 'hoter'), curto('cold', -1, 'colder', 'coldder')] },
+  { itens: [['the salad', 10], ['the juice', 8], ['the soup', 7], ['the sandwich', 5], ['the pizza', 3], ['the burger', 2], ['the cake', 1]], mostrar: n => `saúde ${n}/10`,
+    adjs: [curto('healthy', 1, 'healthier', 'healthyer')] },
+  { itens: [['the cake', 10], ['the ice cream', 9], ['the juice', 6], ['the sandwich', 2], ['the pizza', 1], ['the salad', 0]], mostrar: n => `açúcar ${n}/10`,
+    adjs: [curto('sweet', 1, 'sweeter', 'sweetter')] },
+  // cidades
+  { itens: [['São Paulo', 11.5], ['Rio', 6.2], ['Salvador', 2.4], ['Belo Horizonte', 2.3], ['Curitiba', 1.8], ['Duque de Caxias', 0.8]], mostrar: n => `${mil(n)} milhões de pessoas`,
+    adjs: [curto('big', 1, 'bigger', 'biger'), curto('small', -1, 'smaller', 'smallier'), longo('crowded')] },
+  { itens: [['Salvador', 26], ['Duque de Caxias', 25], ['Rio', 24], ['Belo Horizonte', 21], ['São Paulo', 19], ['Curitiba', 17]], mostrar: n => `média ${n} °C`,
+    adjs: [curto('hot', 1, 'hotter', 'hoter'), curto('cold', -1, 'colder', 'coldder')] },
+  // filmes, livros, jogos
+  { itens: [['the series', 600], ['the book', 360], ['the movie', 120], ['the cartoon', 20], ['the song', 3]], mostrar: n => (n >= 60 ? `${n / 60} h` : `${n} min`),
+    adjs: [curto('long', 1, 'longer', 'longger'), curto('short', -1, 'shorter', 'shortter')] },
+  { itens: [['the video game', 250], ['the book', 60], ['the movie ticket', 30], ['the comic', 20]], mostrar: n => `R$ ${n}`,
+    adjs: [longo('expensive'), curto('cheap', -1, 'cheaper', 'cheapper')] },
+  // irregulares: avaliação de lugares (estrelas)
+  { itens: [['the pizzeria', 5], ['the bakery', 4], ['the snack bar', 3], ['the cafeteria', 2], ['the food truck', 1]], mostrar: n => '★'.repeat(n) + '☆'.repeat(5 - n),
+    adjs: [{ adj: 'good', sinal: 1, comp: 'better', irregular: ['gooder', 'more good', 'best', 'more better'] }, { adj: 'bad', sinal: -1, comp: 'worse', irregular: ['badder', 'more bad', 'worst', 'more worse'] }] },
 ];
 
-const IRREGULARES: Record<string, Irregular> = {
-  good: { adj: 'good', comp: 'better', erros: ['gooder', 'more good', 'best', 'more better'] },
-  bad: { adj: 'bad', comp: 'worse', erros: ['badder', 'more bad', 'worst', 'more worse'] },
-};
-
-// Começos de frase: mesma estrutura, frases diferentes a cada vez.
-const MOLDES = ['{A} is ___ {B}.', 'I think {A} is ___ {B}.', 'In my opinion, {A} is ___ {B}.', 'My friend says {A} is ___ {B}.', 'Everybody knows {A} is ___ {B}.', 'This year, {A} is ___ {B}.'];
-
 // ---------------------------------------------------------------- perguntas
-export type Pergunta =
-  | { tipo: 'escolha'; fase: number; frase: string; dica: string; opcoes: string[]; certa: string; regra: string }
-  | { tipo: 'certoErrado'; fase: number; frase: string; certo: boolean; correcao: string; regra: string }
-  | { tipo: 'montar'; fase: number; dica: string; palavras: string[]; resposta: string[]; regra: string }
-  | { tipo: 'dados'; fase: number; cartoes: [Cartao, Cartao]; frase: string; opcoes: string[]; certa: string; regra: string };
 export interface Cartao { nome: string; valor: string }
+export type Pergunta =
+  | { tipo: 'escolha'; fase: number; cartoes: [Cartao, Cartao]; frase: string; dica: string; opcoes: string[]; certa: string; regra: string }
+  | { tipo: 'certoErrado'; fase: number; cartoes: [Cartao, Cartao]; frase: string; certo: boolean; correcao: string; regra: string }
+  | { tipo: 'montar'; fase: number; cartoes: [Cartao, Cartao]; dica: string; palavras: string[]; resposta: string[]; regra: string };
 
+type Forma = 'sup' | 'igual' | 'naoIgual' | 'menos';
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
-const montarFrase = (molde: string, a: string, b: string) => {
-  const f = molde.replace('{A}', a).replace('{B}', b);
-  return cap(f);
+const MOLDES = ['{A} is ___ {B}.', 'Look at the data: {A} is ___ {B}.', 'According to the cards, {A} is ___ {B}.', 'So, {A} is ___ {B}.'];
+
+function texto(forma: Forma, a: Adj): string {
+  if (forma === 'sup') return a.comp ? `${a.comp} than` : `more ${a.adj} than`;
+  if (forma === 'igual') return `as ${a.adj} as`;
+  if (forma === 'naoIgual') return `not as ${a.adj} as`;
+  return `less ${a.adj} than`;
+}
+/** Erros de forma (gramática). */
+function errosDeForma(forma: Forma, a: Adj): string[] {
+  const c = a.comp ?? `more ${a.adj}`;
+  if (forma === 'sup') {
+    if (a.irregular) return a.irregular.map(e => `${e} than`);
+    if (a.comp) return [`more ${a.comp} than`, `${a.erro} than`, `more ${a.adj} than`, `${a.comp} that`, `the ${a.comp.replace(/er$/, 'est')}`];
+    return [`${a.adj}er than`, `most ${a.adj} than`, `more ${a.adj}er than`, `more ${a.adj} that`];
+  }
+  if (forma === 'igual') return [`as ${c} as`, `as ${a.adj} than`, `so ${a.adj} than`, `${c} as`];
+  if (forma === 'naoIgual') return [`not as ${c} as`, `not as ${a.adj} than`, `not ${a.adj} as`, `less ${c} than`];
+  return [`less ${a.adj}er than`, `fewer ${a.adj} than`, `less ${a.adj} as`, `more less ${a.adj} than`];
+}
+const REGRA: Record<Forma, string> = {
+  sup: 'Superioridade: adjetivo curto + -er than; longo: more + adjetivo + than (good → better, bad → worse).',
+  igual: 'Valores iguais → igualdade: as + adjetivo + as.',
+  naoIgual: 'O primeiro tem menos → not as + adjetivo + as.',
+  menos: 'O primeiro tem menos → inferioridade: less + adjetivo + than (com adjetivo longo).',
 };
 
-function opcoesCom(r: Sorteio, certa: string, erradas: string[]): string[] {
-  const unicas = [...new Set(erradas.filter(e => e !== certa))];
-  return embaralhar(r, [certa, ...embaralhar(r, unicas).slice(0, 3)]);
-}
+interface Montagem { forma: Forma; a: Adj; A: string; B: string; cartoes: [Cartao, Cartao]; certa: string; logica: string; frase: string }
 
-/** Forma comparativa e opções erradas típicas para cada tipo. */
-function superioridade(r: Sorteio, g: Grupo, longo: boolean) {
-  if (longo) {
-    const usarIrregular = g.irregulares.length > 0 && r() < 0.35;
-    if (usarIrregular) {
-      const ir = IRREGULARES[um(r, g.irregulares)];
-      return { adj: ir.adj, certa: `${ir.comp} than`, erradas: ir.erros.map(e => `${e} than`), regra: `${ir.adj} é irregular: ${ir.comp} than.` };
+/** Sorteia uma comparação verdadeira para a forma pedida. */
+function comparar(r: Sorteio, forma: Forma, soLongo = false): Montagem {
+  for (let tentativa = 0; tentativa < 50; tentativa++) {
+    const opcoesEscala = ESCALAS.filter(e => (forma !== 'igual' || e.geravel));
+    const e = um(r, opcoesEscala);
+    const adjsOk = e.adjs.filter(a =>
+      forma === 'menos' ? !a.comp && a.sinal === 1
+      : forma === 'sup' && soLongo ? (!a.comp || !!a.irregular)
+      : forma === 'sup' ? !!a.comp && !a.irregular
+      : a.sinal === 1 || forma === 'naoIgual');
+    if (!adjsOk.length) continue;
+    const a = um(r, adjsOk);
+    let itens = typeof e.itens === 'function' ? e.itens() : e.itens;
+    let [x, y] = dois(r, itens);
+    if (e.geravel) {
+      const base = e.faixa ?? [1, 100];
+      const vx = base[0] + Math.floor(r() * (base[1] - base[0]));
+      const dif = 1 + Math.floor(r() * (base[1] - base[0] > 10 ? 15 : 3));
+      const vy = forma === 'igual' ? vx : vx + (r() < 0.5 ? dif : -dif);
+      x = [x[0], vx]; y = [y[0], Math.min(base[1] + 2, Math.max(base[0] - 1, vy))];
+      itens = [x, y];
     }
-    const { adj } = um(r, g.longos);
-    return { adj, certa: `more ${adj} than`, erradas: [`${adj}er than`, `most ${adj} than`, `more ${adj}er than`, `as ${adj} than`, `the most ${adj}`], regra: `Adjetivo longo: more + adjetivo + than.` };
+    if (forma !== 'igual' && x[1] === y[1]) continue;
+    // quem vem primeiro: superioridade → quem tem mais do adjetivo; menos/naoIgual → quem tem menos
+    const maisDoAdj = (p: [string, number], q: [string, number]) => (p[1] - q[1]) * a.sinal > 0;
+    let A = x, B = y;
+    if (forma === 'sup' && !maisDoAdj(A, B)) [A, B] = [B, A];
+    if ((forma === 'menos' || forma === 'naoIgual') && maisDoAdj(A, B)) [A, B] = [B, A];
+    const certa = texto(forma, a);
+    // erro de lógica: a forma "oposta", certa na gramática mas falsa para os dados
+    const logica = forma === 'sup' ? (a.comp ? `not as ${a.adj} as` : `less ${a.adj} than`) : forma === 'igual' ? texto('sup', a) : texto('sup', a);
+    const frase = cap(um(r, MOLDES).replace('{A}', A[0]).replace('{B}', B[0]));
+    const cartoes: [Cartao, Cartao] = [{ nome: cap(A[0]), valor: e.mostrar(A[1]) }, { nome: cap(B[0]), valor: e.mostrar(B[1]) }];
+    // os cartões aparecem em ordem sorteada (a ordem não entrega a resposta)
+    if (r() < 0.5) cartoes.reverse();
+    return { forma, a, A: A[0], B: B[0], cartoes, certa, logica, frase };
   }
-  const c = um(r, g.curtos);
-  return { adj: c.adj, certa: `${c.comp} than`, erradas: [`more ${c.comp} than`, `${c.erro} than`, `more ${c.adj} than`, `the ${c.comp.replace(/er$/, 'est')}`, `${c.comp} that`], regra: `Adjetivo curto: ${c.adj} → ${c.comp} than.` };
+  throw new Error('sem comparação possível');
 }
 
-function igualdade(r: Sorteio, g: Grupo) {
-  const neg = r() < 0.4;
-  const c = r() < 0.6 ? um(r, g.curtos) : null;
-  const adj = c ? c.adj : um(r, g.longos).adj;
-  const comp = c ? c.comp : `more ${adj}`;
-  if (neg) return { adj, certa: `not as ${adj} as`, erradas: [`not as ${comp} as`, `not as ${adj} than`, `not ${adj} as`, `not so ${adj} than`], regra: 'Igualdade negativa: not as + adjetivo + as (sem -er, sem more).' };
-  return { adj, certa: `as ${adj} as`, erradas: [`as ${comp} as`, `as ${adj} than`, `so ${adj} than`, `${comp} as`], regra: 'Igualdade: as + adjetivo + as (o adjetivo não muda).' };
+function formaDaFase(r: Sorteio, fase: number): { forma: Forma; soLongo: boolean } {
+  if (fase === 1) return { forma: 'sup', soLongo: false };
+  if (fase === 2) return { forma: 'sup', soLongo: true };
+  if (fase === 3) return { forma: r() < 0.6 ? 'igual' : 'naoIgual', soLongo: false };
+  if (fase === 4) return { forma: r() < 0.65 ? 'menos' : 'naoIgual', soLongo: false };
+  return formaDaFase(r, um(r, [1, 2, 3, 4]));
 }
 
-function inferioridade(r: Sorteio, g: Grupo) {
-  if (r() < 0.3) { // forma com not as… as para adjetivo curto
-    const c = um(r, g.curtos);
-    return { adj: c.adj, certa: `not as ${c.adj} as`, erradas: [`less ${c.comp} than`, `not as ${c.comp} as`, `less ${c.adj} as`, `not ${c.adj} than`], regra: 'Com adjetivo curto, o inglês prefere not as + adjetivo + as.' };
-  }
-  const { adj } = um(r, g.inferior);
-  return { adj, certa: `less ${adj} than`, erradas: [`less ${adj}er than`, `fewer ${adj} than`, `less ${adj} as`, `more less ${adj} than`, `least ${adj} than`], regra: 'Inferioridade: less + adjetivo + than (o adjetivo não muda).' };
-}
-
-function formaDaFase(r: Sorteio, fase: number, g: Grupo) {
-  if (fase === 1) return superioridade(r, g, false);
-  if (fase === 2) return superioridade(r, g, true);
-  if (fase === 3) return igualdade(r, g);
-  if (fase === 4) return inferioridade(r, g);
-  const tipo = um(r, [1, 2, 3, 4]);
-  return formaDaFase(r, tipo, g);
+function opcoesCom(r: Sorteio, certa: string, logica: string, erradas: string[]): string[] {
+  const forma = embaralhar(r, [...new Set(erradas.filter(e => e !== certa && e !== logica))]).slice(0, 2);
+  return embaralhar(r, [certa, logica, ...forma]);
 }
 
 function perguntaEscolha(r: Sorteio, fase: number): Pergunta {
-  const g = um(r, GRUPOS);
-  const [a, b] = dois(r, g.itens);
-  const f = formaDaFase(r, fase, g);
-  return { tipo: 'escolha', fase, frase: montarFrase(um(r, MOLDES), a, b), dica: f.adj, opcoes: opcoesCom(r, f.certa, f.erradas), certa: f.certa, regra: f.regra };
+  const { forma, soLongo } = formaDaFase(r, fase);
+  const m = comparar(r, forma, soLongo);
+  return { tipo: 'escolha', fase, cartoes: m.cartoes, frase: m.frase, dica: m.a.adj, opcoes: opcoesCom(r, m.certa, m.logica, errosDeForma(forma, m.a)), certa: m.certa, regra: REGRA[forma] };
 }
 
 function perguntaCertoErrado(r: Sorteio, fase: number): Pergunta {
-  const g = um(r, GRUPOS);
-  const [a, b] = dois(r, g.itens);
-  const f = formaDaFase(r, fase, g);
+  const { forma, soLongo } = formaDaFase(r, fase);
+  const m = comparar(r, forma, soLongo);
   const certo = r() < 0.5;
-  const usada = certo ? f.certa : um(r, f.erradas);
-  const molde = um(r, MOLDES);
-  return { tipo: 'certoErrado', fase, frase: montarFrase(molde, a, b).replace('___', usada), certo, correcao: montarFrase(molde, a, b).replace('___', f.certa), regra: f.regra };
+  const usada = certo ? m.certa : r() < 0.5 ? m.logica : um(r, errosDeForma(forma, m.a));
+  const regra = !certo && usada === m.logica ? `A gramática está certa, mas os dados dizem o contrário. ${REGRA[forma]}` : REGRA[forma];
+  return { tipo: 'certoErrado', fase, cartoes: m.cartoes, frase: m.frase.replace('___', usada), certo, correcao: m.frase.replace('___', m.certa), regra };
 }
 
 function perguntaMontar(r: Sorteio, fase: number): Pergunta {
-  const g = um(r, GRUPOS);
-  const [a, b] = dois(r, g.itens);
-  const f = formaDaFase(r, fase, g);
-  const resposta = `${cap(a)} is ${f.certa} ${b}`.split(' ');
-  // Palavras extras que pegam o erro típico (uma por vez, para não ficar impossível).
+  const { forma, soLongo } = formaDaFase(r, fase);
+  const m = comparar(r, forma, soLongo);
+  const resposta = `${cap(m.A)} is ${m.certa} ${m.B}`.split(' ');
   const extra = um(r, ['more', 'that', 'most', 'as', 'less', 'than', 'the'].filter(w => !resposta.includes(w)));
-  const palavras = embaralhar(r, [...resposta, extra]);
-  return { tipo: 'montar', fase, dica: `${f.adj} · ${cap(a)} e ${b}`, palavras, resposta, regra: f.regra };
+  return { tipo: 'montar', fase, cartoes: m.cartoes, dica: m.a.adj, palavras: embaralhar(r, [...resposta, extra]), resposta, regra: REGRA[forma] };
 }
 
-// Cartões com números: a relação (maior, igual, menor) decide a forma certa.
-interface Medida { adj: string; contrario: string; longo: boolean; unidade: (n: number) => string; faixa: [number, number] }
-const MEDIDAS: Array<Medida & { quem: 'pessoas' | 'coisas' }> = [
-  { quem: 'pessoas', adj: 'tall', contrario: 'short', longo: false, unidade: n => `${(n / 100).toFixed(2).replace('.', ',')} m`, faixa: [145, 185] },
-  { quem: 'pessoas', adj: 'old', contrario: 'young', longo: false, unidade: n => `${n} years old`, faixa: [11, 16] },
-  { quem: 'coisas', adj: 'expensive', contrario: 'cheap', longo: true, unidade: n => `R$ ${n}`, faixa: [20, 300] },
-  { quem: 'coisas', adj: 'heavy', contrario: 'light', longo: false, unidade: n => `${n} kg`, faixa: [1, 40] },
-];
-const COISAS = ['the backpack', 'the bike', 'the game', 'the phone', 'the guitar', 'the skateboard', 'the speaker', 'the camera'];
-
-function perguntaDados(r: Sorteio, fase: number): Pergunta {
-  const m = um(r, MEDIDAS);
-  const [a, b] = dois(r, m.quem === 'pessoas' ? PESSOAS : COISAS);
-  const va = m.faixa[0] + Math.floor(r() * (m.faixa[1] - m.faixa[0]));
-  const rel = um(r, ['maior', 'igual', 'menor'] as const);
-  let vb = rel === 'igual' ? va : rel === 'maior' ? va - (1 + Math.floor(r() * 8)) : va + (1 + Math.floor(r() * 8));
-  if (vb < 1) vb = va + 3; // garante um número válido
-  const relReal = va === vb ? 'igual' : va > vb ? 'maior' : 'menor';
-  const comp = m.longo ? `more ${m.adj}` : m.adj === 'heavy' ? 'heavier' : `${m.adj}er`;
-  const formas = {
-    maior: `${comp} than`,
-    igual: `as ${m.adj} as`,
-    menor: m.longo ? `less ${m.adj} than` : `not as ${m.adj} as`,
-  };
-  const certa = formas[relReal];
-  const erradas = [...Object.values(formas).filter(f => f !== certa), m.longo ? `${m.adj}er than` : `more ${comp} than`, `as ${comp} as`];
-  const regra = relReal === 'igual' ? 'Valores iguais → as + adjetivo + as.' : relReal === 'maior' ? 'O primeiro tem mais → comparativo de superioridade.' : 'O primeiro tem menos → inferioridade (less… than / not as… as).';
-  return {
-    tipo: 'dados', fase,
-    cartoes: [{ nome: cap(a), valor: m.unidade(va) }, { nome: cap(b), valor: m.unidade(vb) }],
-    frase: `${cap(a)} is ___ ${b}.`, opcoes: opcoesCom(r, certa, erradas), certa, regra,
-  };
-}
-
-/** Uma pergunta nova para a fase (o formato varia: escolher, certo ou errado, montar a frase, cartões com dados). */
+/** Uma pergunta nova para a fase (o formato varia: escolher, certo ou errado, montar a frase). */
 export function gerarPergunta(fase: number, r: Sorteio = Math.random): Pergunta {
   const f = Math.max(1, Math.min(fase, 6));
   const formatos: Array<(r: Sorteio, f: number) => Pergunta> =
-    f === 1 ? [perguntaEscolha, perguntaEscolha, perguntaCertoErrado, perguntaMontar]
-    : f === 2 ? [perguntaEscolha, perguntaCertoErrado, perguntaMontar]
-    : f === 3 ? [perguntaEscolha, perguntaCertoErrado, perguntaMontar]
-    : f === 4 ? [perguntaEscolha, perguntaMontar, perguntaCertoErrado]
-    : [perguntaDados, perguntaDados, perguntaEscolha, perguntaMontar, perguntaCertoErrado];
+    f <= 2 ? [perguntaEscolha, perguntaEscolha, perguntaCertoErrado, perguntaMontar]
+    : [perguntaEscolha, perguntaCertoErrado, perguntaMontar];
   return um(r, formatos)(r, f);
 }
 
@@ -304,7 +291,7 @@ export function alunoNaLista(nome: string, lista: string[] = TESTE8_ALUNOS): boo
 }
 /** Resposta igual à esperada (montar a frase: ordem das palavras). */
 export function respostaCerta(p: Pergunta, resposta: string | boolean | string[]): boolean {
-  if (p.tipo === 'escolha' || p.tipo === 'dados') return resposta === p.certa;
+  if (p.tipo === 'escolha') return resposta === p.certa;
   if (p.tipo === 'certoErrado') return resposta === p.certo;
   return Array.isArray(resposta) && resposta.join(' ') === p.resposta.join(' ');
 }
